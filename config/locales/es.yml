@@ -1,4 +1,9 @@
 es:
+  helpers:
+    submit:
+      create: Crear %{model}
+      update: Actualizar %{model}
+      submit: Guardar %{model}
   activerecord:
     models:
       user:
