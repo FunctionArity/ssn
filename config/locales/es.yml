@@ -1,0 +1,36 @@
+es:
+  activerecord:
+    models:
+      user:
+        one: Usuario
+        other: Usuarios
+    attributes:
+      user:
+        first_name: Nombre
+        last_name: Apellido
+        email: Correo electrónico
+  users:
+    index:
+      title: Usuarios
+      new_user: Nuevo usuario
+      show: Ver
+    show:
+      edit: Editar este usuario
+      back: Volver a usuarios
+      destroy: Eliminar este usuario
+    new:
+      title: Nuevo usuario
+      back: Volver a usuarios
+    edit:
+      title: Editando usuario
+      show: Ver este usuario
+      back: Volver a usuarios
+    form:
+      errors:
+        title:
+          one: "%{count} error impidió que este usuario fuera guardado:"
+          other: "%{count} errores impidieron que este usuario fuera guardado:"
+    notices:
+      created: El usuario fue creado exitosamente.
+      updated: El usuario fue actualizado exitosamente.
+      destroyed: El usuario fue eliminado exitosamente.

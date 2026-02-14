@@ -1,12 +1,10 @@
-<% content_for :title, "Editing user" %>
+<div class="max-w-lg mx-auto py-8">
+  <h1 class="text-2xl font-bold mb-6"><%= t(".title") %></h1>
 
-<h1>Editing user</h1>
+  <%= render "form", user: @user %>
 
-<%= render "form", user: @user %>
-
-<br>
-
-<div>
-  <%= link_to "Show this user", @user %> |
-  <%= link_to "Back to users", users_path %>
+  <div class="mt-6 flex gap-4">
+    <%= link_to t(".show"), @user, class: "text-blue-600 hover:underline" %>
+    <%= link_to t(".back"), users_path, class: "text-blue-600 hover:underline" %>
+  </div>
 </div>

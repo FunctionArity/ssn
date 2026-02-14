@@ -1,11 +1,9 @@
-<% content_for :title, "New user" %>
+<div class="max-w-lg mx-auto py-8">
+  <h1 class="text-2xl font-bold mb-6"><%= t(".title") %></h1>
 
-<h1>New user</h1>
+  <%= render "form", user: @user %>
 
-<%= render "form", user: @user %>
-
-<br>
-
-<div>
-  <%= link_to "Back to users", users_path %>
+  <div class="mt-6">
+    <%= link_to t(".back"), users_path, class: "text-blue-600 hover:underline" %>
+  </div>
 </div>
