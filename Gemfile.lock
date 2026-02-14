@@ -101,7 +101,7 @@ GEM
     crass (1.0.6)
     cssbundling-rails (1.4.3)
       railties (>= 6.0.0)
-    date (3.4.1)
+    date (3.5.1)
     debug (1.11.0)
       irb (~> 1.10)
       reline (>= 0.3.8)
@@ -158,7 +158,7 @@ GEM
     minitest (6.0.1)
       prism (~> 1.5)
     msgpack (1.8.0)
-    net-imap (0.5.10)
+    net-imap (0.6.3)
       date
       net-protocol
     net-pop (0.1.2)
@@ -329,7 +329,7 @@ GEM
     thruster (0.1.15-aarch64-linux)
     thruster (0.1.15-arm64-darwin)
     thruster (0.1.15-x86_64-linux)
-    timeout (0.4.3)
+    timeout (0.6.0)
     tsort (0.2.0)
     turbo-rails (2.0.17)
       actionpack (>= 7.1.0)
