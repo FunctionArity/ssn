@@ -1,0 +1,47 @@
+<div class="max-w-md mx-auto">
+  <h2 class="text-2xl font-bold text-gray-900 mb-6"><%= t("devise_views.registrations.edit.title") %></h2>
+
+  <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put, class: "space-y-6" }) do |f| %>
+    <%= render "devise/shared/error_messages", resource: resource %>
+
+    <div>
+      <%= f.label :email, class: "block text-sm font-medium text-gray-700 mb-1" %>
+      <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500" %>
+    </div>
+
+    <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+      <p class="text-sm text-gray-500">Currently waiting confirmation for: <%= resource.unconfirmed_email %></p>
+    <% end %>
+
+    <div>
+      <%= f.label :password, class: "block text-sm font-medium text-gray-700 mb-1" %>
+      <p class="text-xs text-gray-500 mb-1"><em><%= t("devise_views.registrations.edit.password_hint") %></em></p>
+      <%= f.password_field :password, autocomplete: "new-password", class: "w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500" %>
+      <% if @minimum_password_length %>
+        <p class="text-xs text-gray-500 mt-1"><em><%= t("devise_views.registrations.edit.minimum_password_length", count: @minimum_password_length) %></em></p>
+      <% end %>
+    </div>
+
+    <div>
+      <%= f.label :password_confirmation, class: "block text-sm font-medium text-gray-700 mb-1" %>
+      <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500" %>
+    </div>
+
+    <div>
+      <%= f.label :current_password, class: "block text-sm font-medium text-gray-700 mb-1" %>
+      <p class="text-xs text-gray-500 mb-1"><em><%= t("devise_views.registrations.edit.current_password_hint") %></em></p>
+      <%= f.password_field :current_password, autocomplete: "current-password", class: "w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500" %>
+    </div>
+
+    <div>
+      <%= f.submit t("devise_views.registrations.edit.submit"), class: "cursor-pointer w-full rounded-md bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500" %>
+    </div>
+  <% end %>
+
+  <div class="mt-8 pt-6 border-t border-gray-200">
+    <h3 class="text-lg font-semibold text-gray-900 mb-2"><%= t("devise_views.registrations.edit.cancel_title") %></h3>
+    <p class="text-sm text-gray-600 mb-3"><%= t("devise_views.registrations.edit.cancel_prompt") %> <%= button_to t("devise_views.registrations.edit.cancel_button"), registration_path(resource_name), data: { confirm: t("devise_views.registrations.edit.cancel_confirm"), turbo_confirm: t("devise_views.registrations.edit.cancel_confirm") }, method: :delete, class: "text-red-600 hover:text-red-800 font-medium cursor-pointer" %></p>
+  </div>
+
+  <%= link_to t("devise_views.registrations.edit.back"), :back, class: "text-blue-600 hover:text-blue-800 text-sm font-medium" %>
+</div>

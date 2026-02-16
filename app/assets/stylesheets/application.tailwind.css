@@ -1,1 +1,19 @@
 @import "tailwindcss";
+
+label.has_error {
+  color: var(--color-red-600);
+}
+
+input.has_error,
+textarea.has_error,
+select.has_error {
+  border-color: var(--color-red-500);
+  color: var(--color-red-700);
+}
+
+input.has_error:focus,
+textarea.has_error:focus,
+select.has_error:focus {
+  border-color: var(--color-red-500);
+  outline-color: var(--color-red-500);
+}

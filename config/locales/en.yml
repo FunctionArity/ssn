@@ -9,6 +9,8 @@ en:
         first_name: First name
         last_name: Last name
         email: Email
+        password: Password
+        password_confirmation: Password confirmation
   users:
     index:
       title: Users
@@ -34,3 +36,60 @@ en:
       created: User was successfully created.
       updated: User was successfully updated.
       destroyed: User was successfully destroyed.
+  devise_views:
+    sessions:
+      title: "Log in"
+      submit: "Log in"
+      remember_me: "Remember me"
+    registrations:
+      new:
+        title: "Sign up"
+        submit: "Sign up"
+        minimum_password_length: "(%{count} characters minimum)"
+      edit:
+        title: "Edit account"
+        password_hint: "(leave blank if you don't want to change it)"
+        minimum_password_length: "%{count} characters minimum"
+        current_password_hint: "(we need your current password to confirm your changes)"
+        submit: "Update"
+        cancel_title: "Cancel my account"
+        cancel_confirm: "Are you sure?"
+        cancel_prompt: "Unhappy?"
+        cancel_button: "Cancel my account"
+        back: "Back"
+    passwords:
+      new:
+        title: "Forgot your password?"
+        submit: "Send me password reset instructions"
+      edit:
+        title: "Change your password"
+        new_password: "New password"
+        confirm_new_password: "Confirm new password"
+        minimum_password_length: "(%{count} characters minimum)"
+        submit: "Change my password"
+    shared:
+      log_in: "Log in"
+      sign_up: "Sign up"
+      forgot_password: "Forgot your password?"
+      confirmation_instructions: "Didn't receive confirmation instructions?"
+      unlock_instructions: "Didn't receive unlock instructions?"
+    mailer:
+      greeting: "Hello %{email}!"
+      welcome: "Welcome %{email}!"
+      reset_password:
+        intro: "Someone has requested a link to change your password. You can do this through the link below."
+        action: "Change my password"
+        ignore: "If you didn't request this, please ignore this email."
+        no_change: "Your password won't change until you access the link above and create a new one."
+      confirmation:
+        intro: "You can confirm your account email through the link below:"
+        action: "Confirm my account"
+      email_changed:
+        changing: "We're contacting you to notify you that your email is being changed to %{email}."
+        changed: "We're contacting you to notify you that your email has been changed to %{email}."
+      password_change:
+        message: "We're contacting you to notify you that your password has been changed."
+      unlock:
+        intro: "Your account has been locked due to an excessive number of unsuccessful sign in attempts."
+        instruction: "Click the link below to unlock your account:"
+        action: "Unlock my account"
