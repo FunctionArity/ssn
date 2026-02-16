@@ -13,10 +13,23 @@ es:
       user:
         first_name: Nombre
         last_name: Apellido
-        email: Correo electrónico
+        email: Correo electrónico        
         password: Contraseña
-        password_confirmation: Confirmación de contraseña
+        password_confirmation: Confirmación de contraseña        
     errors:
+      models:
+        user:
+          attributes:
+            first_name:
+              too_short: "el nombre es demasiado corto (mínimo %{count} caracteres)"
+            last_name:
+              too_short: "el apellido es demasiado corto (mínimo %{count} caracteres)"
+            email:
+              invalid: "no es válido"
+            password:
+              too_short: "es demasiado corta (mínimo %{count} caracteres)"
+            password_confirmation:
+              confirmation: "y la contraseña no coinciden"
       messages:
         already_confirmed: "ya fue confirmado, por favor intenta iniciar sesión"
         confirmation_period_expired: "necesita ser confirmado en %{period}, por favor solicita uno nuevo"
