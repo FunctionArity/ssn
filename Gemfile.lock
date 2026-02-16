@@ -80,10 +80,7 @@ GEM
     ast (2.4.3)
     base64 (0.3.0)
     bcrypt_pbkdf (1.1.1)
-<<<<<<< dependabot/bundler/solid_cache-1.0.10
     benchmark (0.5.0)
-=======
->>>>>>> main
     bigdecimal (3.3.1)
     bindex (0.8.1)
     bootsnap (1.23.0)
@@ -221,11 +218,7 @@ GEM
       nio4r (~> 2.0)
     raabro (1.4.0)
     racc (1.8.1)
-<<<<<<< dependabot/bundler/solid_cache-1.0.10
     rack (3.2.4)
-=======
-    rack (3.2.3)
->>>>>>> main
     rack-session (2.1.1)
       base64 (>= 0.1.0)
       rack (>= 3.0.0)
@@ -265,11 +258,7 @@ GEM
       zeitwerk (~> 2.6)
     rainbow (3.1.1)
     rake (13.3.1)
-<<<<<<< dependabot/bundler/solid_cache-1.0.10
     rdoc (6.15.1)
-=======
-    rdoc (6.15.0)
->>>>>>> main
       erb
       psych (>= 4.0.0)
       tsort
