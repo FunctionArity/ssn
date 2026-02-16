@@ -4,8 +4,12 @@ one:
   first_name: Pablo
   last_name: Rodriguez
   email: pablo@rodriguez.com
+  encrypted_password: <%= Devise::Encryptor.digest(User, 'password123') %>
+
 
 two:
   first_name: Lucia
   last_name: Rodriguez
   email: luis@rodriguez.com
+  encrypted_password: <%= Devise::Encryptor.digest(User, 'password123') %>
+

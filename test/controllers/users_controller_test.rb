@@ -1,8 +1,11 @@
 require "test_helper"
 
 class UsersControllerTest < ActionDispatch::IntegrationTest
+  include Devise::Test::IntegrationHelpers
+
   setup do
     @user = users(:one)
+    sign_in @user
   end
 
   test "should get index" do
@@ -40,7 +43,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
   test "should destroy user" do
     assert_difference("User.count", -1) do
-      delete user_url(@user)
+      delete user_url(users(:two))
     end
 
     assert_redirected_to users_url

@@ -1,8 +1,15 @@
 require "application_system_test_case"
 
 class UsersTest < ApplicationSystemTestCase
+  include Warden::Test::Helpers
+
   setup do
     @user = users(:one)
+    login_as(@user, scope: :user)
+  end
+
+  teardown do
+    Warden.test_reset!
   end
 
   test "visiting the index" do
@@ -17,6 +24,8 @@ class UsersTest < ApplicationSystemTestCase
     fill_in User.human_attribute_name(:email), with: Faker::Internet.email
     fill_in User.human_attribute_name(:first_name), with: @user.first_name
     fill_in User.human_attribute_name(:last_name), with: @user.last_name
+    fill_in User.human_attribute_name(:password), with: "password123", match: :first
+    fill_in User.human_attribute_name(:password_confirmation), with: "password123"
     click_on I18n.t("helpers.submit.create", model: User.model_name.human)
 
     assert_text I18n.t("users.notices.created")
@@ -37,7 +46,7 @@ class UsersTest < ApplicationSystemTestCase
   end
 
   test "should destroy User" do
-    visit user_url(@user)
+    visit user_url(users(:two))
     click_on I18n.t("users.show.destroy"), match: :first
 
     assert_text I18n.t("users.notices.destroyed")
