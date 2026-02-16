@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  first_name: Pablo
+  last_name: Rodriguez
+  email: pablo@rodriguez.com
+
+two:
+  first_name: Lucia
+  last_name: Rodriguez
+  email: luis@rodriguez.com
