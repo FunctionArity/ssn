@@ -94,6 +94,26 @@ es:
       forgot_password: "¿Olvidaste tu contraseña?"
       confirmation_instructions: "¿No recibiste las instrucciones de confirmación?"
       unlock_instructions: "¿No recibiste las instrucciones de desbloqueo?"
+    mailer:
+      greeting: "¡Hola %{email}!"
+      welcome: "¡Bienvenido %{email}!"
+      reset_password:
+        intro: "Alguien ha solicitado un enlace para cambiar tu contraseña. Puedes hacerlo a través del siguiente enlace."
+        action: "Cambiar mi contraseña"
+        ignore: "Si no solicitaste esto, por favor ignora este correo electrónico."
+        no_change: "Tu contraseña no cambiará hasta que accedas al enlace de arriba y crees una nueva."
+      confirmation:
+        intro: "Puedes confirmar tu cuenta a través del siguiente enlace:"
+        action: "Confirmar mi cuenta"
+      email_changed:
+        changing: "Te contactamos para notificarte que tu correo electrónico está siendo cambiado a %{email}."
+        changed: "Te contactamos para notificarte que tu correo electrónico ha sido cambiado a %{email}."
+      password_change:
+        message: "Te contactamos para notificarte que tu contraseña ha sido cambiada."
+      unlock:
+        intro: "Tu cuenta ha sido bloqueada debido a un número excesivo de intentos de inicio de sesión fallidos."
+        instruction: "Haz clic en el siguiente enlace para desbloquear tu cuenta:"
+        action: "Desbloquear mi cuenta"
   devise:
     confirmations:
       confirmed: "Tu dirección de correo electrónico ha sido confirmada exitosamente."
