@@ -14,7 +14,7 @@ class UsersTest < ApplicationSystemTestCase
     visit users_url
     click_on I18n.t("users.index.new_user")
 
-    fill_in User.human_attribute_name(:email), with: @user.email
+    fill_in User.human_attribute_name(:email), with: Faker::Internet.email
     fill_in User.human_attribute_name(:first_name), with: @user.first_name
     fill_in User.human_attribute_name(:last_name), with: @user.last_name
     click_on I18n.t("helpers.submit.create", model: User.model_name.human)
@@ -27,7 +27,7 @@ class UsersTest < ApplicationSystemTestCase
     visit user_url(@user)
     click_on I18n.t("users.show.edit"), match: :first
 
-    fill_in User.human_attribute_name(:email), with: @user.email
+    fill_in User.human_attribute_name(:email), with: Faker::Internet.email
     fill_in User.human_attribute_name(:first_name), with: @user.first_name
     fill_in User.human_attribute_name(:last_name), with: @user.last_name
     click_on I18n.t("helpers.submit.update", model: User.model_name.human)
