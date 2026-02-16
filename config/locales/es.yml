@@ -57,6 +57,43 @@ es:
       created: El usuario fue creado exitosamente.
       updated: El usuario fue actualizado exitosamente.
       destroyed: El usuario fue eliminado exitosamente.
+  devise_views:
+    sessions:
+      title: "Iniciar sesión"
+      submit: "Iniciar sesión"
+      remember_me: "Recordarme"
+    registrations:
+      new:
+        title: "Registrarse"
+        submit: "Registrarse"
+        minimum_password_length: "(%{count} caracteres mínimo)"
+      edit:
+        title: "Editar cuenta"
+        password_hint: "(dejar en blanco si no deseas cambiarla)"
+        minimum_password_length: "%{count} caracteres mínimo"
+        current_password_hint: "(necesitamos tu contraseña actual para confirmar los cambios)"
+        submit: "Actualizar"
+        cancel_title: "Cancelar mi cuenta"
+        cancel_confirm: "¿Estás seguro?"
+        cancel_prompt: "¿No estás contento?"
+        cancel_button: "Cancelar mi cuenta"
+        back: "Volver"
+    passwords:
+      new:
+        title: "¿Olvidaste tu contraseña?"
+        submit: "Enviar instrucciones para restablecer contraseña"
+      edit:
+        title: "Cambiar tu contraseña"
+        new_password: "Nueva contraseña"
+        confirm_new_password: "Confirmar nueva contraseña"
+        minimum_password_length: "(%{count} caracteres mínimo)"
+        submit: "Cambiar mi contraseña"
+    shared:
+      log_in: "Iniciar sesión"
+      sign_up: "Registrarse"
+      forgot_password: "¿Olvidaste tu contraseña?"
+      confirmation_instructions: "¿No recibiste las instrucciones de confirmación?"
+      unlock_instructions: "¿No recibiste las instrucciones de desbloqueo?"
   devise:
     confirmations:
       confirmed: "Tu dirección de correo electrónico ha sido confirmada exitosamente."
