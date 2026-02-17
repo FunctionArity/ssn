@@ -1,4 +1,13 @@
 es:
+  date:
+    month_names: [~, enero, febrero, marzo, abril, mayo, junio, julio, agosto, septiembre, octubre, noviembre, diciembre]
+    abbr_month_names: [~, ene, feb, mar, abr, may, jun, jul, ago, sep, oct, nov, dic]
+    day_names: [domingo, lunes, martes, miércoles, jueves, viernes, sábado]
+    abbr_day_names: [dom, lun, mar, mié, jue, vie, sáb]
+    formats:
+      default: "%d/%m/%Y"
+      short: "%d de %b"
+      long: "%d de %B de %Y"
   helpers:
     submit:
       create: Crear %{model}
@@ -9,7 +18,16 @@ es:
       user:
         one: Usuario
         other: Usuarios
+      guard:
+        one: Guardia
+        other: Guardias
     attributes:
+      guard:
+        day: Día
+        notes: Notas
+        vocal: Vocal
+        priest: Sacerdote
+        guardians: Guardianes
       user:
         first_name: Nombre
         last_name: Apellido
@@ -75,6 +93,36 @@ es:
       created: El usuario fue creado exitosamente.
       updated: El usuario fue actualizado exitosamente.
       destroyed: El usuario fue eliminado exitosamente.
+  guards:
+    index:
+      title: Guardias
+      new_guard: Nueva guardia
+      show: Ver
+      guardians_count:
+        one: "%{count} guardián"
+        other: "%{count} guardianes"
+    show:
+      edit: Editar esta guardia
+      back: Volver a guardias
+      destroy: Eliminar esta guardia
+    new:
+      title: Nueva guardia
+      back: Volver a guardias
+    edit:
+      title: Editando guardia
+      show: Ver esta guardia
+      back: Volver a guardias
+    form:
+      select_vocal: Seleccionar un vocal
+      select_priest: Seleccionar un sacerdote
+      errors:
+        title:
+          one: "%{count} error impidió que esta guardia fuera guardada:"
+          other: "%{count} errores impidieron que esta guardia fuera guardada:"
+    notices:
+      created: La guardia fue creada exitosamente.
+      updated: La guardia fue actualizada exitosamente.
+      destroyed: La guardia fue eliminada exitosamente.
   devise_views:
     sessions:
       title: "Iniciar sesión"

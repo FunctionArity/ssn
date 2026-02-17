@@ -10,9 +10,30 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_16_232205) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_17_170255) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "guard_guardians", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.bigint "guard_id", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["guard_id", "user_id"], name: "index_guard_guardians_on_guard_id_and_user_id", unique: true
+    t.index ["guard_id"], name: "index_guard_guardians_on_guard_id"
+    t.index ["user_id"], name: "index_guard_guardians_on_user_id"
+  end
+
+  create_table "guards", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.date "day", null: false
+    t.text "notes"
+    t.bigint "priest_id", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "vocal_id", null: false
+    t.index ["priest_id"], name: "index_guards_on_priest_id"
+    t.index ["vocal_id"], name: "index_guards_on_vocal_id"
+  end
 
   create_table "users", force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -28,4 +49,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_16_232205) do
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
+
+  add_foreign_key "guard_guardians", "guards"
+  add_foreign_key "guard_guardians", "users"
+  add_foreign_key "guards", "users", column: "priest_id"
+  add_foreign_key "guards", "users", column: "vocal_id"
 end

@@ -1,0 +1,8 @@
+<aside class="w-[20%] shrink-0 bg-white border-r border-gray-200 px-4 py-6">
+  <% if user_signed_in? %>
+    <nav class="space-y-1">
+      <%= link_to t("users.index.title"), users_path, class: "block rounded-md px-3 py-2 text-sm font-medium #{request.path.start_with?('/users') ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'}" %>
+      <%= link_to t("guards.index.title"), guards_path, class: "block rounded-md px-3 py-2 text-sm font-medium #{request.path.start_with?('/guards') ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'}" %>
+    </nav>
+  <% end %>
+</aside>
