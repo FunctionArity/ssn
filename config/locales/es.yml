@@ -15,7 +15,12 @@ es:
         last_name: Apellido
         email: Correo electrónico        
         password: Contraseña
-        password_confirmation: Confirmación de contraseña        
+        password_confirmation: Confirmación de contraseña
+        role: Rol
+        roles:
+          guardian: Guardian
+          vocal: Vocal
+          priest: Sacerdote
     errors:
       models:
         user:
