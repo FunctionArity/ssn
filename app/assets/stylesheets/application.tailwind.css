@@ -1,4 +1,21 @@
 @import "tailwindcss";
+@source "../../views/**/*.erb";
+
+
+.badge_red {
+  @apply
+    inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 inset-ring inset-ring-red-600/10
+}
+
+.badge_green {
+  @apply
+    inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 inset-ring inset-ring-green-600/20
+}
+
+.badge_purple {
+  @apply
+    inline-flex items-center rounded-md bg-purple-50 px-2 py-1 text-xs font-medium text-purple-700 inset-ring inset-ring-purple-700/10
+}
 
 label.has_error {
   color: var(--color-red-600);

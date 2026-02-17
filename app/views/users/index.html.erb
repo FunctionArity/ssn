@@ -8,7 +8,10 @@
     <% @users.each do |user| %>
       <div class="border border-gray-200 rounded-lg p-4 flex items-center justify-between">
         <div>
-          <p class="font-semibold"><%= user.first_name %> <%= user.last_name %></p>
+          <p class="font-semibold">
+            <%= user.first_name %> <%= user.last_name %>
+            <span class="ml-2 inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium <%= user.role_badge_class %>"><%= t("activerecord.attributes.user.roles.#{user.role}") %></span>
+          </p>
           <p class="text-sm text-gray-500"><%= user.email %></p>
         </div>
         <%= link_to t(".show"), user, class: "text-blue-600 hover:underline text-sm" %>

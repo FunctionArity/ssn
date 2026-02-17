@@ -13,4 +13,9 @@
     <span class="text-sm font-medium text-gray-500"><%= User.human_attribute_name(:email) %></span><br>
     <span class="text-gray-900"><%= user.email %></span>
   </p>
+
+  <p>
+    <span class="text-sm font-medium text-gray-500"><%= User.human_attribute_name(:role) %></span><br>
+    <span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium <%= user.role_badge_class %>"><%= t("activerecord.attributes.user.roles.#{user.role}") %></span>
+  </p>
 </div>
