@@ -4,7 +4,7 @@ class Guard < ApplicationRecord
   has_many :guard_guardians, dependent: :destroy
   has_many :guardians, through: :guard_guardians, source: :user
 
-  validates :day, presence: true
+  validates :day_number, presence: true
   validate :at_least_one_guardian
 
   private

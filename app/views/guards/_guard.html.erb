@@ -1,7 +1,7 @@
 <div id="<%= dom_id guard %>" class="border border-gray-200 rounded-lg p-6 space-y-3">
   <p>
-    <span class="text-sm font-medium text-gray-500"><%= Guard.human_attribute_name(:day) %></span><br>
-    <span class="text-gray-900"><%= l(guard.day, format: :long) %></span>
+    <span class="text-sm font-medium text-gray-500"><%= Guard.human_attribute_name(:day_number) %></span><br>
+    <span class="text-gray-900"><%= guard.day_number %></span>
   </p>
 
   <p>

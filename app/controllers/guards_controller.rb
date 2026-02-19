@@ -2,7 +2,7 @@ class GuardsController < ApplicationController
   before_action :set_guard, only: %i[ show edit update destroy ]
 
   def index
-    @guards = Guard.includes(:vocal, :priest, :guardians).order(day: :desc)
+    @guards = Guard.includes(:vocal, :priest, :guardians).order(:day_number)
   end
 
   def show
@@ -57,6 +57,6 @@ class GuardsController < ApplicationController
   end
 
   def guard_params
-    params.expect(guard: [ :day, :notes, :vocal_id, :priest_id, guardian_ids: [] ])
+    params.expect(guard: [ :day_number, :notes, :vocal_id, :priest_id, guardian_ids: [] ])
   end
 end

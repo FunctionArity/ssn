@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_17_170255) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_17_195255) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -26,7 +26,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_17_170255) do
 
   create_table "guards", force: :cascade do |t|
     t.datetime "created_at", null: false
-    t.date "day", null: false
+    t.integer "day_number", null: false
     t.text "notes"
     t.bigint "priest_id", null: false
     t.datetime "updated_at", null: false

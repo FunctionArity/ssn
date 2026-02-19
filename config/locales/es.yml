@@ -23,7 +23,7 @@ es:
         other: Guardias
     attributes:
       guard:
-        day: Día
+        day_number: Número de día
         notes: Notas
         vocal: Vocal
         priest: Sacerdote
@@ -31,7 +31,7 @@ es:
       user:
         first_name: Nombre
         last_name: Apellido
-        email: Correo electrónico        
+        email: Correo electrónico
         password: Contraseña
         password_confirmation: Confirmación de contraseña
         role: Rol
@@ -115,6 +115,7 @@ es:
     form:
       select_vocal: Seleccionar un vocal
       select_priest: Seleccionar un sacerdote
+      search_guardians: Buscar guardianes
       errors:
         title:
           one: "%{count} error impidió que esta guardia fuera guardada:"

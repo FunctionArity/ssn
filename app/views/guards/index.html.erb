@@ -8,7 +8,7 @@
     <% @guards.each do |guard| %>
       <div class="border border-gray-200 rounded-lg p-4 flex items-center justify-between">
         <div>
-          <p class="font-semibold"><%= l(guard.day, format: :long) %></p>
+          <p class="font-semibold"><%= guard.day_number %></p>
           <p class="text-sm text-gray-500">
             <%= Guard.human_attribute_name(:vocal) %>: <%= guard.vocal.first_name %> <%= guard.vocal.last_name %> &middot;
             <%= Guard.human_attribute_name(:priest) %>: <%= guard.priest.first_name %> <%= guard.priest.last_name %> &middot;

@@ -20,7 +20,7 @@ en:
           vocal: Vocal
           priest: Priest
       guard:
-        day: Day
+        day_number: Day number
         notes: Notes
         vocal: Vocal
         priest: Priest

@@ -13,7 +13,7 @@ class GuardsControllerTest < ActionDispatch::IntegrationTest
     assert_difference("Guard.count") do
       post guards_url, params: {
         guard: {
-          day: Date.tomorrow,
+          day_number: 5,
           notes: "New guard notes",
           vocal_id: users(:one).id,
           priest_id: users(:two).id,
@@ -29,7 +29,7 @@ class GuardsControllerTest < ActionDispatch::IntegrationTest
     new_notes = "Updated notes"
     patch guard_url(@guard), params: {
       guard: {
-        day: @guard.day,
+        day_number: @guard.day_number,
         notes: new_notes,
         vocal_id: @guard.vocal_id,
         priest_id: @guard.priest_id,
