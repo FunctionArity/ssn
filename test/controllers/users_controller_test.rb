@@ -43,7 +43,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
   test "should destroy user" do
     assert_difference("User.count", -1) do
-      delete user_url(users(:two))
+      delete user_url(users(:agustin))
     end
 
     assert_redirected_to users_url

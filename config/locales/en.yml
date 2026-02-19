@@ -4,6 +4,9 @@ en:
       user:
         one: User
         other: Users
+      guard:
+        one: Guard
+        other: Guards
     attributes:
       user:
         first_name: First name
@@ -16,6 +19,12 @@ en:
           guardian: Guardian
           vocal: Vocal
           priest: Priest
+      guard:
+        day_number: Day number
+        notes: Notes
+        vocal: Vocal
+        priest: Priest
+        guardians: Guardians
   users:
     index:
       title: Users
@@ -41,6 +50,36 @@ en:
       created: User was successfully created.
       updated: User was successfully updated.
       destroyed: User was successfully destroyed.
+  guards:
+    index:
+      title: Guards
+      new_guard: New guard
+      show: Show
+      guardians_count:
+        one: "%{count} guardian"
+        other: "%{count} guardians"
+    show:
+      edit: Edit this guard
+      back: Back to guards
+      destroy: Destroy this guard
+    new:
+      title: New guard
+      back: Back to guards
+    edit:
+      title: Editing guard
+      show: Show this guard
+      back: Back to guards
+    form:
+      select_vocal: Select a vocal
+      select_priest: Select a priest
+      errors:
+        title:
+          one: "%{count} error prohibited this guard from being saved:"
+          other: "%{count} errors prohibited this guard from being saved:"
+    notices:
+      created: Guard was successfully created.
+      updated: Guard was successfully updated.
+      destroyed: Guard was successfully destroyed.
   devise_views:
     sessions:
       title: "Log in"

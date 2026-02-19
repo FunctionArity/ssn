@@ -1,0 +1,22 @@
+<div class="py-8">
+  <div class="flex items-center justify-between mb-6">
+    <h1 class="text-2xl font-bold"><%= t(".title") %></h1>
+    <%= link_to t(".new_guard"), new_guard_path, class: "rounded-md bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500" %>
+  </div>
+
+  <div id="guards" class="space-y-4">
+    <% @guards.each do |guard| %>
+      <div class="border border-gray-200 rounded-lg p-4 flex items-center justify-between">
+        <div>
+          <p class="font-semibold"><%= guard.day_number %></p>
+          <p class="text-sm text-gray-500">
+            <%= Guard.human_attribute_name(:vocal) %>: <%= guard.vocal.first_name %> <%= guard.vocal.last_name %> &middot;
+            <%= Guard.human_attribute_name(:priest) %>: <%= guard.priest.first_name %> <%= guard.priest.last_name %> &middot;
+            <%= t(".guardians_count", count: guard.guardians.size) %>
+          </p>
+        </div>
+        <%= link_to t(".show"), guard, class: "text-blue-600 hover:underline text-sm" %>
+      </div>
+    <% end %>
+  </div>
+</div>

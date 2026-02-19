@@ -311,6 +311,11 @@
     "@parcel/watcher-win32-ia32" "2.5.1"
     "@parcel/watcher-win32-x64" "2.5.1"
 
+"@phosphor-icons/web@^2.1.2":
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/@phosphor-icons/web/-/web-2.1.2.tgz#edb7170a5fc740bd2448efc09321231e24558d68"
+  integrity sha512-rPAR9o/bEcp4Cw4DEeZHXf+nlGCMNGkNDRizYHM47NLxz9vvEHp/Tt6FMK1NcWadzw/pFDPnRBGi/ofRya958A==
+
 "@rails/actioncable@>=7.0":
   version "8.0.300"
   resolved "https://registry.yarnpkg.com/@rails/actioncable/-/actioncable-8.0.300.tgz#ae78fbb42ae688f66852206ba02fea3518749791"

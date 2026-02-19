@@ -1,0 +1,30 @@
+<div id="<%= dom_id guard %>" class="border border-gray-200 rounded-lg p-6 space-y-3">
+  <p>
+    <span class="text-sm font-medium text-gray-500"><%= Guard.human_attribute_name(:day_number) %></span><br>
+    <span class="text-gray-900"><%= guard.day_number %></span>
+  </p>
+
+  <p>
+    <span class="text-sm font-medium text-gray-500"><%= Guard.human_attribute_name(:vocal) %></span><br>
+    <span class="text-gray-900"><%= guard.vocal.first_name %> <%= guard.vocal.last_name %></span>
+  </p>
+
+  <p>
+    <span class="text-sm font-medium text-gray-500"><%= Guard.human_attribute_name(:priest) %></span><br>
+    <span class="text-gray-900"><%= guard.priest.first_name %> <%= guard.priest.last_name %></span>
+  </p>
+
+  <p>
+    <span class="text-sm font-medium text-gray-500"><%= Guard.human_attribute_name(:guardians) %></span><br>
+    <% guard.guardians.each do |guardian| %>
+      <span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium badge_green mr-1"><%= guardian.first_name %> <%= guardian.last_name %></span>
+    <% end %>
+  </p>
+
+  <% if guard.notes.present? %>
+    <p>
+      <span class="text-sm font-medium text-gray-500"><%= Guard.human_attribute_name(:notes) %></span><br>
+      <span class="text-gray-900"><%= guard.notes %></span>
+    </p>
+  <% end %>
+</div>
