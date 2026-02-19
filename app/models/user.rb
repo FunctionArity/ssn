@@ -7,7 +7,7 @@ class User < ApplicationRecord
   enum :role, { guardian: 0, vocal: 1, priest: 2 }, default: :guardian
 
   has_many :guard_guardians, dependent: :destroy
-  has_many :guarded_guards, through: :guard_guardians, source: :guard
+  has_many :guards, through: :guard_guardians
 
   def role_badge_class
     case role

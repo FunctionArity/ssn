@@ -46,7 +46,7 @@ class UsersTest < ApplicationSystemTestCase
   end
 
   test "should destroy User" do
-    visit user_url(users(:two))
+    visit user_url(users(:agustin))
     click_on I18n.t("users.show.destroy"), match: :first
 
     assert_text I18n.t("users.notices.destroyed")
