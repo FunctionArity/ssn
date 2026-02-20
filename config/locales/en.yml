@@ -7,6 +7,9 @@ en:
       guard:
         one: Guard
         other: Guards
+      guard_setup:
+        one: Guard Setup
+        other: Guard Setups
     attributes:
       user:
         first_name: First name
@@ -20,6 +23,12 @@ en:
           vocal: Vocal
           priest: Priest
       guard:
+        day_number: Day number
+        notes: Notes
+        vocal: Vocal
+        priest: Priest
+        guardians: Guardians
+      guard_setup:
         day_number: Day number
         notes: Notes
         vocal: Vocal
@@ -80,6 +89,37 @@ en:
       created: Guard was successfully created.
       updated: Guard was successfully updated.
       destroyed: Guard was successfully destroyed.
+  guard_setups:
+    index:
+      title: Guard Setups
+      new_guard_setup: New guard setup
+      show: Show
+      guardians_count:
+        one: "%{count} guardian"
+        other: "%{count} guardians"
+    show:
+      edit: Edit this guard setup
+      back: Back to guard setups
+      destroy: Destroy this guard setup
+    new:
+      title: New guard setup
+      back: Back to guard setups
+    edit:
+      title: Editing guard setup
+      show: Show this guard setup
+      back: Back to guard setups
+    form:
+      select_vocal: Select a vocal
+      select_priest: Select a priest
+      search_guardians: Search guardians
+      errors:
+        title:
+          one: "%{count} error prohibited this guard setup from being saved:"
+          other: "%{count} errors prohibited this guard setup from being saved:"
+    notices:
+      created: Guard setup was successfully created.
+      updated: Guard setup was successfully updated.
+      destroyed: Guard setup was successfully destroyed.
   devise_views:
     sessions:
       title: "Log in"

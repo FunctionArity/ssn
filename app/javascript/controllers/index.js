@@ -8,4 +8,6 @@ import HelloController from "./hello_controller"
 application.register("hello", HelloController)
 
 import GuardianSearchController from "./guardian_search_controller"
+import GuardianSetupSearchController from "./guardian_setup_search_controller"
 application.register("guardian-search", GuardianSearchController)
+application.register("guardian-setup-search", GuardianSetupSearchController)

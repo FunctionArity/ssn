@@ -21,8 +21,17 @@ es:
       guard:
         one: Guardia
         other: Guardias
+      guard_setup:
+        one: Configuración de guardia
+        other: Configuraciones de guardia
     attributes:
       guard:
+        day_number: Número de día
+        notes: Notas
+        vocal: Vocal
+        priest: Sacerdote
+        guardians: Guardianes
+      guard_setup:
         day_number: Número de día
         notes: Notas
         vocal: Vocal
@@ -124,6 +133,37 @@ es:
       created: La guardia fue creada exitosamente.
       updated: La guardia fue actualizada exitosamente.
       destroyed: La guardia fue eliminada exitosamente.
+  guard_setups:
+    index:
+      title: Configuraciones de guardia
+      new_guard_setup: Nueva configuración de guardia
+      show: Ver
+      guardians_count:
+        one: "%{count} guardián"
+        other: "%{count} guardianes"
+    show:
+      edit: Editar esta configuración de guardia
+      back: Volver a configuraciones de guardia
+      destroy: Eliminar esta configuración de guardia
+    new:
+      title: Nueva configuración de guardia
+      back: Volver a configuraciones de guardia
+    edit:
+      title: Editando configuración de guardia
+      show: Ver esta configuración de guardia
+      back: Volver a configuraciones de guardia
+    form:
+      select_vocal: Seleccionar un vocal
+      select_priest: Seleccionar un sacerdote
+      search_guardians: Buscar guardianes
+      errors:
+        title:
+          one: "%{count} error impidió que esta configuración de guardia fuera guardada:"
+          other: "%{count} errores impidieron que esta configuración de guardia fuera guardada:"
+    notices:
+      created: La configuración de guardia fue creada exitosamente.
+      updated: La configuración de guardia fue actualizada exitosamente.
+      destroyed: La configuración de guardia fue eliminada exitosamente.
   devise_views:
     sessions:
       title: "Iniciar sesión"

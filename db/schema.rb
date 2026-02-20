@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_17_195255) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_19_000002) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -22,6 +22,27 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_17_195255) do
     t.index ["guard_id", "user_id"], name: "index_guard_guardians_on_guard_id_and_user_id", unique: true
     t.index ["guard_id"], name: "index_guard_guardians_on_guard_id"
     t.index ["user_id"], name: "index_guard_guardians_on_user_id"
+  end
+
+  create_table "guard_setup_guardians", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.bigint "guard_setup_id", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["guard_setup_id", "user_id"], name: "index_guard_setup_guardians_on_guard_setup_id_and_user_id", unique: true
+    t.index ["guard_setup_id"], name: "index_guard_setup_guardians_on_guard_setup_id"
+    t.index ["user_id"], name: "index_guard_setup_guardians_on_user_id"
+  end
+
+  create_table "guard_setups", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.integer "day_number", null: false
+    t.text "notes"
+    t.bigint "priest_id", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "vocal_id", null: false
+    t.index ["priest_id"], name: "index_guard_setups_on_priest_id"
+    t.index ["vocal_id"], name: "index_guard_setups_on_vocal_id"
   end
 
   create_table "guards", force: :cascade do |t|
@@ -52,6 +73,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_17_195255) do
 
   add_foreign_key "guard_guardians", "guards"
   add_foreign_key "guard_guardians", "users"
+  add_foreign_key "guard_setup_guardians", "guard_setups"
+  add_foreign_key "guard_setup_guardians", "users"
+  add_foreign_key "guard_setups", "users", column: "priest_id"
+  add_foreign_key "guard_setups", "users", column: "vocal_id"
   add_foreign_key "guards", "users", column: "priest_id"
   add_foreign_key "guards", "users", column: "vocal_id"
 end
