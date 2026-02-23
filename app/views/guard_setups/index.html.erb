@@ -15,7 +15,10 @@
             <%= t(".guardians_count", count: guard_setup.guardians.size) %>
           </p>
         </div>
-        <%= link_to t(".show"), guard_setup, class: "text-blue-600 hover:underline text-sm" %>
+        <div class="flex items-center gap-3">
+          <%= link_to t(".create_guard"), new_guard_path(guard_setup_id: guard_setup.id), class: "text-green-600 hover:underline text-sm" %>
+          <%= link_to t(".show"), guard_setup, class: "text-blue-600 hover:underline text-sm" %>
+        </div>
       </div>
     <% end %>
   </div>

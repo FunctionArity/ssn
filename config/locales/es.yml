@@ -138,6 +138,7 @@ es:
       title: Configuraciones de guardia
       new_guard_setup: Nueva configuración de guardia
       show: Ver
+      create_guard: Crear guardia
       guardians_count:
         one: "%{count} guardián"
         other: "%{count} guardianes"

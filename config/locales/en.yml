@@ -94,6 +94,7 @@ en:
       title: Guard Setups
       new_guard_setup: New guard setup
       show: Show
+      create_guard: Create guard
       guardians_count:
         one: "%{count} guardian"
         other: "%{count} guardians"

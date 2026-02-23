@@ -9,6 +9,21 @@ class GuardsControllerTest < ActionDispatch::IntegrationTest
     sign_in @user
   end
 
+  test "should get new without guard_setup_id" do
+    get new_guard_url
+    assert_response :success
+  end
+
+  test "should get new with guard_setup_id and render the form" do
+    get new_guard_url, params: { guard_setup_id: guard_setups(:one).id }
+    assert_response :success
+  end
+
+  test "should return not found when guard_setup_id does not exist" do
+    get new_guard_url, params: { guard_setup_id: -1 }
+    assert_response :not_found
+  end
+
   test "should create guard with valid parameters" do
     assert_difference("Guard.count") do
       post guards_url, params: {
