@@ -20,6 +20,36 @@
     inline-flex items-center rounded-md bg-purple-50 px-2 py-1 text-xs font-medium text-purple-700 inset-ring inset-ring-purple-700/10
 }
 
+.sidebar {
+  width: 4rem;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+.sidebar-label {
+  display: none;
+}
+
+.sidebar-link {
+  justify-content: center;
+}
+
+@media (min-width: 768px) {
+  .sidebar {
+    width: 20%;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .sidebar-label {
+    display: inline;
+  }
+
+  .sidebar-link {
+    justify-content: flex-start;
+  }
+}
+
 label.has_error {
   color: var(--color-red-600);
 }

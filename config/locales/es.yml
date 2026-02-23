@@ -22,8 +22,8 @@ es:
         one: Guardia
         other: Guardias
       guard_setup:
-        one: Configuración de guardia
-        other: Configuraciones de guardia
+        one: Configuración
+        other: Configuraciones
     attributes:
       guard:
         day_number: Número de día
@@ -135,7 +135,7 @@ es:
       destroyed: La guardia fue eliminada exitosamente.
   guard_setups:
     index:
-      title: Configuraciones de guardia
+      title: Configuraciones
       new_guard_setup: Nueva configuración de guardia
       show: Ver
       create_guard: Crear guardia

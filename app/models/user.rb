@@ -19,4 +19,8 @@ class User < ApplicationRecord
     when "priest"   then "badge_purple"
     end
   end
+
+  def full_name
+    "#{first_name} #{last_name}"
+  end
 end

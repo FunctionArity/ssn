@@ -23,12 +23,16 @@
   </head>
 
   <body class="min-h-screen bg-gray-50">
-    <%= render "layouts/navbar" %>
+    <% unless controller_name == "home" && !user_signed_in? %>
+      <%= render "layouts/navbar" %>
+    <% end %>
 
-    <div class="flex" style="min-height: calc(100vh - 3.5rem);">
-      <%= render "layouts/sidebar" %>
+    <div class="flex" style="min-height: <%= controller_name == 'home' && !user_signed_in? ? '100vh' : 'calc(100vh - 3.5rem)' %>;">
+      <% if user_signed_in? %>
+        <%= render "layouts/sidebar" %>
+      <% end %>
 
-      <main class="w-[80%] min-w-0 px-6 py-6 overflow-auto">
+      <main class="<%= user_signed_in? ? 'flex-1' : 'w-full' %> min-w-0 px-6 py-6 overflow-auto">
         <% if notice.present? %>
           <p class="mb-4 px-4 py-2 bg-green-50 border border-green-300 text-green-800 rounded-lg"><%= notice %></p>
         <% end %>
