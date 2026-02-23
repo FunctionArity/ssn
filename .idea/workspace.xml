@@ -1,16 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="3de4ba99-b3e1-4e7d-a3cc-f22b014502c0" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/javascript/controllers/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/javascript/controllers/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models/user.rb" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/user.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/views/layouts/_sidebar.html.erb" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/layouts/_sidebar.html.erb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/locales/en.yml" beforeDir="false" afterPath="$PROJECT_DIR$/config/locales/en.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/locales/es.yml" beforeDir="false" afterPath="$PROJECT_DIR$/config/locales/es.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/routes.rb" beforeDir="false" afterPath="$PROJECT_DIR$/config/routes.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db/schema.rb" beforeDir="false" afterPath="$PROJECT_DIR$/db/schema.rb" afterDir="false" />
-    </list>
+    <list default="true" id="3de4ba99-b3e1-4e7d-a3cc-f22b014502c0" name="Changes" comment="add guard setup logic" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -352,24 +343,29 @@
       <updated>1771421277050</updated>
       <workItem from="1771421278098" duration="456000" />
       <workItem from="1771452076881" duration="4404000" />
-      <workItem from="1771621572770" duration="3638000" />
+      <workItem from="1771621572770" duration="3954000" />
     </task>
+    <task id="LOCAL-00001" summary="add guard setup logic">
+      <option name="closed" value="true" />
+      <created>1771627309499</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1771627309499</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="add guard setup logic" />
+    <option name="LAST_COMMIT_MESSAGE" value="add guard setup logic" />
+  </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint enabled="true" type="ruby-line">
-          <url>file://$PROJECT_DIR$/app/controllers/guard_setups_controller.rb</url>
-          <line>18</line>
-          <properties myBlockOrdinal="-1">
-            <option name="block-ordinal" value="-1" />
-          </properties>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
         <line-breakpoint enabled="true" type="ruby-line">
           <url>file://$PROJECT_DIR$/app/views/guards/_form.html.erb</url>
           <line>28</line>
