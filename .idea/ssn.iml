@@ -60,7 +60,7 @@
     <orderEntry type="library" scope="PROVIDED" name="cssbundling-rails (v1.4.3, rbenv: 4.0.1) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="date (v3.5.1, rbenv: 4.0.1) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="debug (v1.11.1, rbenv: 4.0.1) [gem]" level="application" />
-    <orderEntry type="library" scope="PROVIDED" name="devise (v5.0.1, rbenv: 4.0.1) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="devise (v5.0.2, rbenv: 4.0.1) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="dotenv (v3.2.0, rbenv: 4.0.1) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="drb (v2.2.3, rbenv: 4.0.1) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="ed25519 (v1.4.0, rbenv: 4.0.1) [gem]" level="application" />
@@ -135,10 +135,10 @@
     <orderEntry type="library" scope="PROVIDED" name="ruby-progressbar (v1.13.0, rbenv: 4.0.1) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="rubyzip (v3.2.2, rbenv: 4.0.1) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="securerandom (v0.4.1, rbenv: 4.0.1) [gem]" level="application" />
-    <orderEntry type="library" scope="TEST" name="selenium-webdriver (v4.40.0, rbenv: 4.0.1) [gem]" level="application" />
+    <orderEntry type="library" scope="TEST" name="selenium-webdriver (v4.41.0, rbenv: 4.0.1) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="solid_cable (v3.0.12, rbenv: 4.0.1) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="solid_cache (v1.0.10, rbenv: 4.0.1) [gem]" level="application" />
-    <orderEntry type="library" scope="PROVIDED" name="solid_queue (v1.3.1, rbenv: 4.0.1) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="solid_queue (v1.3.2, rbenv: 4.0.1) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="sshkit (v1.25.0, rbenv: 4.0.1) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="stimulus-rails (v1.3.4, rbenv: 4.0.1) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="stringio (v3.2.0, rbenv: 4.0.1) [gem]" level="application" />
@@ -158,7 +158,7 @@
     <orderEntry type="library" scope="PROVIDED" name="websocket-driver (v0.8.0, rbenv: 4.0.1) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="websocket-extensions (v0.1.5, rbenv: 4.0.1) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="xpath (v3.2.0, rbenv: 4.0.1) [gem]" level="application" />
-    <orderEntry type="library" scope="PROVIDED" name="zeitwerk (v2.7.4, rbenv: 4.0.1) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="zeitwerk (v2.7.5, rbenv: 4.0.1) [gem]" level="application" />
     <orderEntry type="module" module-name="" />
   </component>
   <component name="RModuleSettingsStorage">
