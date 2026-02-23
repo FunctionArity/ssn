@@ -9,6 +9,9 @@ class User < ApplicationRecord
   has_many :guard_guardians, dependent: :destroy
   has_many :guards, through: :guard_guardians
 
+  has_many :guard_setup_guardians, dependent: :destroy
+  has_many :guard_setups, through: :guard_setup_guardians
+
   def role_badge_class
     case role
     when "guardian" then "badge_green"

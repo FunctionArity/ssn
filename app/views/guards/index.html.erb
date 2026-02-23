@@ -15,7 +15,9 @@
             <%= t(".guardians_count", count: guard.guardians.size) %>
           </p>
         </div>
-        <%= link_to t(".show"), guard, class: "text-blue-600 hover:underline text-sm" %>
+        <%= link_to guard, class: "flex items-center gap-1 text-blue-600 hover:underline text-sm" do %>
+          <i class="ph ph-eye"></i> <%= t(".show") %>
+        <% end %>
       </div>
     <% end %>
   </div>

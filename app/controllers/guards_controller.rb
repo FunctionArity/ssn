@@ -10,6 +10,9 @@ class GuardsController < ApplicationController
 
   def new
     @guard = Guard.new
+    if params[:guard_setup_id].present?
+      @guard = CreateGuardFromSetupService.new(params[:guard_setup_id]).call
+    end
   end
 
   def edit

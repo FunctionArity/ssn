@@ -1,24 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="3de4ba99-b3e1-4e7d-a3cc-f22b014502c0" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/app/assets/stylesheets/application.tailwind.css" beforeDir="false" afterPath="$PROJECT_DIR$/app/assets/stylesheets/application.tailwind.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/controllers/guards_controller.rb" beforeDir="false" afterPath="$PROJECT_DIR$/app/controllers/guards_controller.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models/guard.rb" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/guard.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/views/guards/_form.html.erb" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/guards/_form.html.erb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/views/guards/_guard.html.erb" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/guards/_guard.html.erb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/views/guards/index.html.erb" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/guards/index.html.erb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/views/layouts/_sidebar.html.erb" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/layouts/_sidebar.html.erb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/views/users/index.html.erb" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/users/index.html.erb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/locales/en.yml" beforeDir="false" afterPath="$PROJECT_DIR$/config/locales/en.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/locales/es.yml" beforeDir="false" afterPath="$PROJECT_DIR$/config/locales/es.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db/schema.rb" beforeDir="false" afterPath="$PROJECT_DIR$/db/schema.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/controllers/guards_controller_test.rb" beforeDir="false" afterPath="$PROJECT_DIR$/test/controllers/guards_controller_test.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/fixtures/guards.yml" beforeDir="false" afterPath="$PROJECT_DIR$/test/fixtures/guards.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/models/guard_test.rb" beforeDir="false" afterPath="$PROJECT_DIR$/test/models/guard_test.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
-    </list>
+    <list default="true" id="3de4ba99-b3e1-4e7d-a3cc-f22b014502c0" name="Changes" comment="create guard from setup service" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -63,19 +46,24 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "Rails.ssn.executor": "Run",
+    "Rails.ssn.executor": "Debug",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "com.intellij.lang.ruby.rbs.tools.collection.workspace.sync.RbsCollectionUpdateProjectActivity#LAST_UPDATE_TIMESTAMP": "1771421337072",
-    "git-widget-placeholder": "#34 on add__guards",
-    "last_opened_file_path": "/Users/pablo/sites/rails/ssn",
+    "com.intellij.lang.ruby.rbs.tools.collection.workspace.sync.RbsCollectionUpdateProjectActivity#LAST_UPDATE_TIMESTAMP": "1771621631761",
+    "git-widget-placeholder": "add__guard__setup",
+    "last_opened_file_path": "/Users/pablo/sites/rails/ssn/app/javascript/controllers",
     "nodejs_package_manager_path": "yarn",
     "ruby.structure.view.model.defaults.configured": "true",
     "settings.editor.selected.configurable": "org.jetbrains.plugins.ruby.settings.RubyActiveModuleSdkConfigurable"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/app/javascript/controllers" />
+    </key>
+  </component>
   <component name="RunManager" selected="Rails.ssn">
     <configuration default="true" type="CucumberRunConfigurationType" factoryName="Cucumber">
       <predefined_log_file enabled="true" id="RUBY_CUCUMBER" />
@@ -355,14 +343,67 @@
       <updated>1771421277050</updated>
       <workItem from="1771421278098" duration="456000" />
       <workItem from="1771452076881" duration="4404000" />
+      <workItem from="1771621572770" duration="6429000" />
     </task>
+    <task id="LOCAL-00001" summary="add guard setup logic">
+      <option name="closed" value="true" />
+      <created>1771627309499</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1771627309499</updated>
+    </task>
+    <task id="LOCAL-00002" summary="add guard setup logic">
+      <option name="closed" value="true" />
+      <created>1771817467768</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1771817467768</updated>
+    </task>
+    <task id="LOCAL-00003" summary="create guard from setup service">
+      <option name="closed" value="true" />
+      <created>1771818375833</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1771818375833</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="add guard setup logic" />
+    <MESSAGE value="create guard from setup service" />
+    <option name="LAST_COMMIT_MESSAGE" value="create guard from setup service" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="ruby-line">
+          <url>file://$PROJECT_DIR$/app/views/guards/_form.html.erb</url>
+          <line>28</line>
+          <properties myBlockOrdinal="-1">
+            <option name="block-ordinal" value="-1" />
+          </properties>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="ruby-line">
+          <url>file://$PROJECT_DIR$/app/views/guard_setups/_form.html.erb</url>
+          <line>28</line>
+          <properties myBlockOrdinal="-1">
+            <option name="block-ordinal" value="-1" />
+          </properties>
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/ssn@ssn.rcov" NAME="ssn Coverage Results" MODIFIED="1771452970440" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" MODULE_NAME="ssn" />
+    <SUITE FILE_PATH="coverage/ssn@ssn.rcov" NAME="ssn Coverage Results" MODIFIED="1771817937576" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" MODULE_NAME="ssn" />
   </component>
   <component name="github-copilot-workspace">
     <instructionFileLocations>
