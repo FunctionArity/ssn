@@ -10,7 +10,8 @@ class CreateGuardFromSetupService
         notes: @guard_setup.notes,
         vocal: @guard_setup.vocal,
         priest: @guard_setup.priest,
-        guardian_ids: @guard_setup.guardian_ids
+        guardian_ids: @guard_setup.guardian_ids,
+        guard_setup_id: @guard_setup.id
       )
 
       guard
