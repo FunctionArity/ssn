@@ -60,6 +60,6 @@ class GuardsController < ApplicationController
   end
 
   def guard_params
-    params.expect(guard: [ :day_number, :notes, :vocal_id, :priest_id, guardian_ids: [] ])
+    params.expect(guard: [ :day_number, :due_date, :notes, :vocal_id, :priest_id, :guard_setup_id, guardian_ids: [] ])
   end
 end

@@ -1,10 +1,12 @@
 class Guard < ApplicationRecord
   belongs_to :vocal, class_name: "User"
   belongs_to :priest, class_name: "User"
+  belongs_to :guard_setup
   has_many :guard_guardians, dependent: :destroy
   has_many :guardians, through: :guard_guardians, source: :user
 
   validates :day_number, presence: true
+  validates :due_date, presence: true
   validate :at_least_one_guardian
 
   private
