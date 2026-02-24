@@ -1,14 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="3de4ba99-b3e1-4e7d-a3cc-f22b014502c0" name="Changes" comment="add home page">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/controllers/guards_controller.rb" beforeDir="false" afterPath="$PROJECT_DIR$/app/controllers/guards_controller.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models/guard.rb" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/guard.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/services/create_guard_from_setup_service.rb" beforeDir="false" afterPath="$PROJECT_DIR$/app/services/create_guard_from_setup_service.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/views/guards/_form.html.erb" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/guards/_form.html.erb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db/schema.rb" beforeDir="false" afterPath="$PROJECT_DIR$/db/schema.rb" afterDir="false" />
-    </list>
+    <list default="true" id="3de4ba99-b3e1-4e7d-a3cc-f22b014502c0" name="Changes" comment="add home page" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />

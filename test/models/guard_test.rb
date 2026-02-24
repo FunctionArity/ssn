@@ -17,7 +17,7 @@ class GuardTest < ActiveSupport::TestCase
   end
 
   test "is valid with day_number and at least one guardian" do
-    guard = Guard.new(day_number: 1, vocal: users(:one), priest: users(:two))
+    guard = Guard.new(day_number: 1, due_date: Date.today, vocal: users(:one), priest: users(:two), guard_setup: guard_setups(:one))
     guard.guardians << users(:one)
 
     assert guard.valid?

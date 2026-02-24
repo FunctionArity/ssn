@@ -29,9 +29,11 @@ class GuardsControllerTest < ActionDispatch::IntegrationTest
       post guards_url, params: {
         guard: {
           day_number: 5,
+          due_date: Date.today,
           notes: "New guard notes",
           vocal_id: users(:one).id,
           priest_id: users(:two).id,
+          guard_setup_id: guard_setups(:one).id,
           guardian_ids: [ users(:one).id ]
         }
       }
