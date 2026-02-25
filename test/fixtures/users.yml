@@ -18,3 +18,17 @@ agustin:
   email: agustin@rodriguez.com
   encrypted_password: <%= Devise::Encryptor.digest(User, 'password123') %>
 
+priest_one:
+  first_name: Carlos
+  last_name: Mendez
+  email: carlos@mendez.com
+  role: 2
+  encrypted_password: <%= Devise::Encryptor.digest(User, 'password123') %>
+
+priest_two:
+  first_name: Jorge
+  last_name: Perez
+  email: jorge@perez.com
+  role: 2
+  encrypted_password: <%= Devise::Encryptor.digest(User, 'password123') %>
+

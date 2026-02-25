@@ -276,3 +276,17 @@ es:
       send_instructions: "Recibirás un correo electrónico con instrucciones sobre cómo desbloquear tu cuenta en unos minutos."
       send_paranoid_instructions: "Si tu cuenta existe, recibirás un correo electrónico con instrucciones sobre cómo desbloquearla en unos minutos."
       unlocked: "Tu cuenta ha sido desbloqueada exitosamente. Por favor inicia sesión para continuar."
+  priest_setups:
+    confirm:
+      destroy: ¿Estás seguro de que deseas eliminar esta asignación?
+    assign:
+      title: Asignación de Sacerdotes
+      priests: Sacerdotes
+      week_names:
+        - Primero
+        - Segundo
+        - Tercero
+        - Cuarto
+    notices:
+      created: Sacerdote asignado exitosamente.
+      destroyed: Asignación eliminada exitosamente.

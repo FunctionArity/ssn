@@ -1,0 +1,72 @@
+<div class="py-8" data-controller="priest-assign">
+  <div class="flex items-center justify-between mb-6">
+    <h1 class="text-2xl font-bold"><%= t(".title") %></h1>
+  </div>
+
+  <%# Priests panel %>
+  <div class="mb-6 rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
+    <h2 class="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3"><%= t(".priests") %></h2>
+    <div class="flex flex-wrap gap-2">
+      <% @priests.each do |priest| %>
+        <div class="cursor-grab rounded-lg border border-purple-200 bg-purple-50 px-3 py-2 shadow-sm select-none"
+             draggable="true"
+             data-priest-id="<%= priest.id %>"
+             data-action="dragstart->priest-assign#dragStart dragend->priest-assign#dragEnd">
+          <p class="text-sm font-medium text-purple-800"><%= priest.full_name %></p>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <%# Assignment grid %>
+  <div class="overflow-x-auto">
+
+        <%# Header row %>
+        <table class="table-fixed min-w-max">
+          <thead>
+            <th class="w-24"></th>
+            <% t("date.day_names").each do |day| %>
+              <td class="text-center text-xs font-semibold text-gray-500 uppercase">
+                <%= day %>
+              </td>
+            <% end %>
+          </thead>
+          <tbody>
+            <% t(".week_names").each_with_index do |week_name, week_idx| %>
+              <tr class="even:bg-gray-50">
+                <td class="text-sm font-medium text-gray-600 pr-2 align-middle whitespace-nowrap">
+                  <%= week_name %>
+                </td>
+                <% (0..6).each do |day_idx| %>
+                  <% slot = @day_slots.find { |s| s[:week_number] == week_idx + 1 && s[:day_of_week] == day_idx } %>
+                  <td class="relative align-top h-16 w-36 min-w-36 max-w-36 rounded-lg border-2 border-dashed border-gray-200 bg-white p-2 transition-colors"
+                      data-week-number="<%= week_idx + 1 %>"
+                      data-day-of-week="<%= day_idx %>"
+                      data-action="dragover->priest-assign#dragOver dragleave->priest-assign#dragLeave drop->priest-assign#drop">
+                    <% if slot[:assignment] %>
+                      <div class="rounded bg-purple-100 px-2 py-1 flex items-center justify-between gap-1">
+                        <p class="text-xs font-medium text-purple-800 leading-tight truncate"><%= slot[:assignment].priest.full_name %></p>
+                        <%= button_to priest_setup_path(slot[:assignment]),
+                              method: :delete,
+                              class: "text-purple-400 hover:text-red-400 leading-none shrink-0",
+                              data: { turbo_confirm: t("priest_setups.confirm.destroy") } do %>
+                          <i class="ph ph-trash text-xs"></i>
+                        <% end %>
+                      </div>
+                    <% end %>
+                  </td>
+                <% end %>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+
+  </div>
+
+  <%# Hidden form for drag & drop submission %>
+  <%= form_with model: PriestSetup.new, url: priest_setups_path, id: "priest-assign-form", data: { turbo: false } do |f| %>
+    <%= f.hidden_field :priest_id, id: "form_priest_id" %>
+    <%= f.hidden_field :week_number, id: "form_week_number" %>
+    <%= f.hidden_field :day_of_week, id: "form_day_of_week" %>
+  <% end %>
+</div>

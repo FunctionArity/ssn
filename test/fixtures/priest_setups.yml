@@ -1,0 +1,9 @@
+one:
+  priest: priest_one
+  week_number: 1
+  day_of_week: 1
+
+two:
+  priest: priest_two
+  week_number: 2
+  day_of_week: 3
