@@ -3,14 +3,12 @@ class PriestSetupsController < ApplicationController
 
   def assign
     assignments = PriestSetup.includes(:priest).index_by { |ps| [ ps.week_number, ps.day_of_week ] }
-    @day_slots = (1..4).flat_map do |week|
+    @day_slots = (1..5).flat_map do |week|
       (0..6).map do |day|
         { week_number: week, day_of_week: day, assignment: assignments[[ week, day ]] }
       end
     end
-    assigned_priest_ids = PriestSetup.distinct.pluck(:priest_id)
-    @priests = User.where(role: :priest).where.not(id: assigned_priest_ids).order(:first_name, :last_name)
-    PriestSetup.new
+    @priests = User.priests_without_setup.order(:first_name, :last_name)
   end
 
   def create

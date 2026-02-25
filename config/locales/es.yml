@@ -27,6 +27,7 @@ es:
     attributes:
       guard:
         day_number: Número de día
+        due_date: Fecha de guardia
         notes: Notas
         vocal: Vocal
         priest: Sacerdote
@@ -287,6 +288,7 @@ es:
         - Segundo
         - Tercero
         - Cuarto
+        - Quinta
     notices:
       created: Sacerdote asignado exitosamente.
       destroyed: Asignación eliminada exitosamente.

@@ -6,6 +6,11 @@ class User < ApplicationRecord
 
   enum :role, { guardian: 0, vocal: 1, priest: 2 }, default: :guardian
 
+  scope :guardians, -> { where(role: :guardian) }
+  scope :vocals, -> { where(role: :vocal) }
+  scope :priests, -> { where(role: :priest) }
+  scope :priests_without_setup, -> { priests.where.not(id: PriestSetup.select(:priest_id)) }
+
   has_many :guard_guardians, dependent: :destroy
   has_many :guards, through: :guard_guardians
 
@@ -22,5 +27,17 @@ class User < ApplicationRecord
 
   def full_name
     "#{first_name} #{last_name}"
+  end
+
+  def self.current_priest
+    date = Date.current
+    week_day = date.wday
+    week_month = week_of_month(date)
+    PriestSetup.find_priest_by_week_and_day(week_day,week_month)
+  end
+
+  def self.week_of_month(date)
+    first_monday = date.beginning_of_month.beginning_of_week
+    ((date - first_monday) / 7).floor + 1
   end
 end

@@ -24,6 +24,7 @@ en:
           priest: Priest
       guard:
         day_number: Day number
+        due_date: Due date
         notes: Notes
         vocal: Vocal
         priest: Priest
@@ -132,6 +133,7 @@ en:
         - Second
         - Third
         - Fourth
+        - Fifth
     notices:
       created: Priest was successfully assigned.
       destroyed: Assignment was successfully removed.

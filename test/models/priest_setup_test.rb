@@ -56,4 +56,12 @@ class PriestSetupTest < ActiveSupport::TestCase
     priest_setup = PriestSetup.new(week_number: 4, day_of_week: 6)
     assert_equal "Fourth Saturday", priest_setup.description
   end
+
+  test "find_by_week_and_day returns correct record" do
+    setup = PriestSetup.find_by_week_and_day(1, 1)
+    assert_equal priest_setups(:one), setup
+    setup2 = PriestSetup.find_by_week_and_day(2, 3)
+    assert_equal priest_setups(:two), setup2
+    assert_nil PriestSetup.find_by_week_and_day(4, 0)
+  end
 end
