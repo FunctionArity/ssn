@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_24_000001) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_27_113109) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -38,10 +38,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_24_000001) do
     t.datetime "created_at", null: false
     t.integer "day_number", null: false
     t.text "notes"
-    t.bigint "priest_id", null: false
     t.datetime "updated_at", null: false
     t.bigint "vocal_id", null: false
-    t.index ["priest_id"], name: "index_guard_setups_on_priest_id"
     t.index ["vocal_id"], name: "index_guard_setups_on_vocal_id"
   end
 
@@ -88,7 +86,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_24_000001) do
   add_foreign_key "guard_guardians", "users"
   add_foreign_key "guard_setup_guardians", "guard_setups"
   add_foreign_key "guard_setup_guardians", "users"
-  add_foreign_key "guard_setups", "users", column: "priest_id"
   add_foreign_key "guard_setups", "users", column: "vocal_id"
   add_foreign_key "guards", "guard_setups"
   add_foreign_key "guards", "users", column: "priest_id"

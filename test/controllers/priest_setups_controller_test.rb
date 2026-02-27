@@ -48,7 +48,7 @@ class PriestSetupsControllerTest < ActionDispatch::IntegrationTest
       post priest_setups_url, params: {
         priest_setup: {
           priest_id: users(:priest_one).id,
-          week_number: 5,
+          week_number: 6,
           day_of_week: 1
         }
       }

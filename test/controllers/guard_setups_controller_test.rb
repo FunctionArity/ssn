@@ -36,7 +36,6 @@ class GuardSetupsControllerTest < ActionDispatch::IntegrationTest
           day_number: 5,
           notes: "New guard setup notes",
           vocal_id: users(:one).id,
-          priest_id: users(:two).id,
           guardian_ids: [ users(:one).id ]
         }
       }
@@ -52,7 +51,6 @@ class GuardSetupsControllerTest < ActionDispatch::IntegrationTest
         day_number: @guard_setup.day_number,
         notes: new_notes,
         vocal_id: @guard_setup.vocal_id,
-        priest_id: @guard_setup.priest_id,
         guardian_ids: [ users(:one).id ]
       }
     }

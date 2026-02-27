@@ -11,7 +11,6 @@ class CreateGuardFromSetupServiceTest < ActiveSupport::TestCase
     assert_equal @guard_setup.day_number, guard.day_number
     assert_equal @guard_setup.notes, guard.notes
     assert_equal @guard_setup.vocal, guard.vocal
-    assert_equal @guard_setup.priest, guard.priest
   end
 
   test "builds a guard with the same guardians as the setup" do

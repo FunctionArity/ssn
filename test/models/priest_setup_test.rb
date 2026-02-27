@@ -18,8 +18,8 @@ class PriestSetupTest < ActiveSupport::TestCase
     assert priest_setup.errors[:day_of_week].any?
   end
 
-  test "validates week_number is between 1 and 4" do
-    [ 0, 5 ].each do |invalid|
+  test "validates week_number is between 1 and 5" do
+    [ 0, 6 ].each do |invalid|
       priest_setup = PriestSetup.new(priest: users(:priest_one), week_number: invalid, day_of_week: 1)
       assert_not priest_setup.valid?, "Expected week_number #{invalid} to be invalid"
       assert priest_setup.errors[:week_number].any?
@@ -55,13 +55,5 @@ class PriestSetupTest < ActiveSupport::TestCase
   test "description returns correct string for last week and day" do
     priest_setup = PriestSetup.new(week_number: 4, day_of_week: 6)
     assert_equal "Fourth Saturday", priest_setup.description
-  end
-
-  test "find_by_week_and_day returns correct record" do
-    setup = PriestSetup.find_by_week_and_day(1, 1)
-    assert_equal priest_setups(:one), setup
-    setup2 = PriestSetup.find_by_week_and_day(2, 3)
-    assert_equal priest_setups(:two), setup2
-    assert_nil PriestSetup.find_by_week_and_day(4, 0)
   end
 end
