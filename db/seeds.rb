@@ -19,3 +19,17 @@ end
 puts "Seeded 2 users:"
 puts "  alice@example.com / password123"
 puts "  bob@example.com   / password123"
+
+require "csv"
+
+csv_path = Rails.root.join("db", "mendoza_health_facilities.csv")
+count = 0
+
+CSV.foreach(csv_path, headers: true) do |row|
+  HealthFacility.find_or_create_by!(name: row["name"]) do |facility|
+    facility.address = row["full_address"]
+  end
+  count += 1
+end
+
+puts "Seeded #{count} health facilities from mendoza_health_facilities.csv"

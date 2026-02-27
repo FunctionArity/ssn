@@ -28,6 +28,11 @@
           <i class="ph ph-calendar text-lg"></i>
           <span class="sidebar-label"><%= t("priest_assignments.index.title") %></span>
         <% end %>
+        <%= link_to health_facilities_path, class: "sidebar-link flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium #{request.path.start_with?('/health_facilities') ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'}" do %>
+          <i class="ph ph-hospital text-lg"></i>
+          <span class="sidebar-label"><%= t("health_facilities.index.title") %></span>
+        <% end %>
+
       </div>
     </details>
   </nav>

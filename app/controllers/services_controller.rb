@@ -10,8 +10,15 @@ class ServicesController < ApplicationController
 
   def new
     @service = Service.new(due_date: Date.current)
-    @service.guard_id = params[:guard_id] if params[:guard_id].present?
+
+    @service.guard_id = if params[:guard_id].present?
+       params[:guard_id]
+    else
+      GuardService.current&.id
+    end
   end
+
+
 
   def edit
   end
@@ -59,6 +66,6 @@ class ServicesController < ApplicationController
   end
 
   def service_params
-    params.expect(service: [ :guard_id, :due_date, :full_name, :age, :status, :caller_full_name, :caller_phone, :caller_relationship, :comments, :address, :place ])
+    params.expect(service: [ :guard_id, :due_date, :full_name, :age, :status, :caller_full_name, :caller_phone, :caller_relationship, :comments, :address, :health_facility_id ])
   end
 end

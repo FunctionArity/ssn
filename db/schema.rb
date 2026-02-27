@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_27_120000) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_27_150000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -57,6 +57,13 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_27_120000) do
     t.index ["vocal_id"], name: "index_guards_on_vocal_id"
   end
 
+  create_table "health_facilities", force: :cascade do |t|
+    t.string "address", null: false
+    t.datetime "created_at", null: false
+    t.string "name", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "priest_setups", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.integer "day_of_week", null: false
@@ -79,11 +86,12 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_27_120000) do
     t.date "due_date", null: false
     t.string "full_name", null: false
     t.bigint "guard_id", null: false
-    t.integer "place"
+    t.bigint "health_facility_id"
     t.integer "status", default: 0, null: false
     t.datetime "updated_at", null: false
     t.index ["created_by_id"], name: "index_services_on_created_by_id"
     t.index ["guard_id"], name: "index_services_on_guard_id"
+    t.index ["health_facility_id"], name: "index_services_on_health_facility_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -111,5 +119,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_27_120000) do
   add_foreign_key "guards", "users", column: "vocal_id"
   add_foreign_key "priest_setups", "users", column: "priest_id"
   add_foreign_key "services", "guards"
+  add_foreign_key "services", "health_facilities"
   add_foreign_key "services", "users", column: "created_by_id"
 end

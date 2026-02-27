@@ -1,0 +1,20 @@
+<div id="<%= dom_id health_facility %>" class="border border-gray-200 rounded-lg p-6 space-y-3">
+  <p>
+    <span class="text-sm font-medium text-gray-500"><%= HealthFacility.human_attribute_name(:name) %></span><br>
+    <span class="text-gray-900"><%= health_facility.name %></span>
+  </p>
+
+  <p>
+    <span class="text-sm font-medium text-gray-500"><%= HealthFacility.human_attribute_name(:address) %></span><br>
+    <span class="text-gray-900"><%= health_facility.address %></span>
+  </p>
+
+  <% if health_facility.address.present? %>
+    <div data-controller="address-map"
+         data-address-map-initial-address-value="<%= health_facility.address %>">
+      <div data-address-map-target="map"
+           class="mt-1 rounded-md overflow-hidden border border-gray-200"
+           style="height: 400px;"></div>
+    </div>
+  <% end %>
+</div>

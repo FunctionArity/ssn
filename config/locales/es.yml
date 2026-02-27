@@ -27,6 +27,9 @@ es:
       service:
         one: Servicio
         other: Servicios
+      health_facility:
+        one: Centro de Salud
+        other: Centros de Salud
     attributes:
       guard:
         day_number: Número de día
@@ -41,13 +44,16 @@ es:
         vocal: Vocal
         priest: Sacerdote
         guardians: Guardianes
+      health_facility:
+        name: Nombre
+        address: Dirección
       service:
         guard: Guardia
+        health_facility: Centro de salud
         full_name: Nombre completo
         age: Edad
         due_date: Fecha
         status: Estado
-        place: Lugar
         address: Dirección
         caller_full_name: Nombre del llamante
         caller_phone: Teléfono del llamante
@@ -294,6 +300,31 @@ es:
       send_instructions: "Recibirás un correo electrónico con instrucciones sobre cómo desbloquear tu cuenta en unos minutos."
       send_paranoid_instructions: "Si tu cuenta existe, recibirás un correo electrónico con instrucciones sobre cómo desbloquearla en unos minutos."
       unlocked: "Tu cuenta ha sido desbloqueada exitosamente. Por favor inicia sesión para continuar."
+  health_facilities:
+    index:
+      title: Centros de Salud
+      new_health_facility: Nuevo centro de salud
+      show: Ver
+    show:
+      edit: Editar este centro de salud
+      back: Volver a centros de salud
+      destroy: Eliminar este centro de salud
+    new:
+      title: Nuevo centro de salud
+      back: Volver a centros de salud
+    edit:
+      title: Editando centro de salud
+      show: Ver este centro de salud
+      back: Volver a centros de salud
+    form:
+      errors:
+        title:
+          one: "%{count} error impidió que este centro de salud fuera guardado:"
+          other: "%{count} errores impidieron que este centro de salud fuera guardado:"
+    notices:
+      created: El centro de salud fue creado exitosamente.
+      updated: El centro de salud fue actualizado exitosamente.
+      destroyed: El centro de salud fue eliminado exitosamente.
   services:
     index:
       title: Servicios
@@ -311,6 +342,8 @@ es:
       show: Ver este servicio
       back: Volver a servicios
     form:
+      search_health_facility: Buscar centro de salud...
+      no_guard_warning: No hay guardia asignada a este servicio. Por favor seleccione una guardia antes de guardar.
       errors:
         title:
           one: "%{count} error impidió que este servicio fuera guardado:"
@@ -322,11 +355,6 @@ es:
     status:
       pending: Pendiente
       completed: Completado
-    place:
-      home: Domicilio
-      hospital: Hospital
-      nursing_home: Residencia
-      other: Otro
   priest_setups:
     confirm:
       destroy: ¿Estás seguro de que deseas eliminar esta asignación?

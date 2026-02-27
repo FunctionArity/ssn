@@ -24,14 +24,16 @@
     </span>
   </p>
 
-  <% if service.place.present? %>
+  <% if service.health_facility.present? %>
     <p>
-      <span class="text-sm font-medium text-gray-500"><%= Service.human_attribute_name(:place) %></span><br>
-      <span class="text-gray-900"><%= t("services.place.#{service.place}") %></span>
+      <span class="text-sm font-medium text-gray-500"><%= Service.human_attribute_name(:health_facility) %></span><br>
+      <span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium badge_purple">
+        <%= link_to service.health_facility.name, service.health_facility, class: "hover:underline" %>
+      </span>
     </p>
   <% end %>
 
-  <% if service.address.present? %>
+<% if service.address.present? %>
     <p>
       <span class="text-sm font-medium text-gray-500"><%= Service.human_attribute_name(:address) %></span><br>
       <span class="text-gray-900"><%= service.address %></span>

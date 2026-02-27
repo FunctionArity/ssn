@@ -18,27 +18,30 @@ export default class extends Controller {
 
     await this.loadScript(apiKey)
 
-    this.map = new google.maps.Map(this.mapTarget, {
+    const { Map } = await google.maps.importLibrary("maps")
+    const { AdvancedMarkerElement } = await google.maps.importLibrary("marker")
+
+    this.map = new Map(this.mapTarget, {
       center: { lat: -34.6, lng: -64.2 },
       zoom: 5,
       mapTypeControl: false,
+      mapId: "DEMO_MAP_ID",
     })
 
     this.geocoder = new google.maps.Geocoder()
 
-    this.marker = new google.maps.Marker({
-      map: this.map,
-      draggable: true,
-      visible: false,
+    this.marker = new AdvancedMarkerElement({
+      map: null,
+      gmpDraggable: true,
     })
 
     this.marker.addListener("dragend", () => {
-      this.reverseGeocode(this.marker.getPosition())
+      if (this.marker.position) this.reverseGeocode(this.marker.position)
     })
 
     this.map.addListener("click", (e) => {
-      this.marker.setPosition(e.latLng)
-      this.marker.setVisible(true)
+      this.marker.position = e.latLng
+      this.marker.map = this.map
       this.reverseGeocode(e.latLng)
     })
 
@@ -54,7 +57,7 @@ export default class extends Controller {
       if (address.length > 3) {
         this.geocode(address)
       } else {
-        this.marker?.setVisible(false)
+        if (this.marker) this.marker.map = null
       }
     }, 600)
   }
@@ -67,8 +70,8 @@ export default class extends Controller {
           const location = results[0].geometry.location
           this.map.setCenter(location)
           this.map.setZoom(15)
-          this.marker.setPosition(location)
-          this.marker.setVisible(true)
+          this.marker.position = location
+          this.marker.map = this.map
         }
       }
     )
@@ -92,9 +95,7 @@ export default class extends Controller {
         resolve()
       }
       const script = document.createElement("script")
-      script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&callback=__googleMapsReady`
-      script.async = true
-      script.defer = true
+      script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&callback=__googleMapsReady&loading=async`
       script.onerror = () => {
         delete window.__googleMapsPromise
         reject(new Error("Failed to load Google Maps API"))

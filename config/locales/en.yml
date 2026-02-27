@@ -13,6 +13,9 @@ en:
       service:
         one: Service
         other: Services
+      health_facility:
+        one: Health Facility
+        other: Health Facilities
     attributes:
       user:
         first_name: First name
@@ -38,13 +41,16 @@ en:
         vocal: Vocal
         priest: Priest
         guardians: Guardians
+      health_facility:
+        name: Name
+        address: Address
       service:
         guard: Guard
+        health_facility: Health facility
         full_name: Full name
         age: Age
         due_date: Due date
         status: Status
-        place: Place
         address: Address
         caller_full_name: Caller full name
         caller_phone: Caller phone
@@ -139,6 +145,31 @@ en:
       created: Guard setup was successfully created.
       updated: Guard setup was successfully updated.
       destroyed: Guard setup was successfully destroyed.
+  health_facilities:
+    index:
+      title: Health Facilities
+      new_health_facility: New health facility
+      show: Show
+    show:
+      edit: Edit this health facility
+      back: Back to health facilities
+      destroy: Destroy this health facility
+    new:
+      title: New health facility
+      back: Back to health facilities
+    edit:
+      title: Editing health facility
+      show: Show this health facility
+      back: Back to health facilities
+    form:
+      errors:
+        title:
+          one: "%{count} error prohibited this health facility from being saved:"
+          other: "%{count} errors prohibited this health facility from being saved:"
+    notices:
+      created: Health facility was successfully created.
+      updated: Health facility was successfully updated.
+      destroyed: Health facility was successfully destroyed.
   services:
     index:
       title: Services
@@ -156,6 +187,8 @@ en:
       show: Show this service
       back: Back to services
     form:
+      search_health_facility: Search health facility...
+      no_guard_warning: No guard is assigned to this service. Please select a guard before saving.
       errors:
         title:
           one: "%{count} error prohibited this service from being saved:"
@@ -167,11 +200,6 @@ en:
     status:
       pending: Pending
       completed: Completed
-    place:
-      home: Home
-      hospital: Hospital
-      nursing_home: Nursing home
-      other: Other
   priest_setups:
     confirm:
       destroy: Are you sure you want to remove this priest assignment?

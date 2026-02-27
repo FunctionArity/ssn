@@ -1,19 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="3de4ba99-b3e1-4e7d-a3cc-f22b014502c0" name="Changes" comment="add priest assignment">
+    <list default="true" id="3de4ba99-b3e1-4e7d-a3cc-f22b014502c0" name="Changes" comment="add skill to create pull request">
+      <change beforePath="$PROJECT_DIR$/.idea/ssn.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/ssn.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/controllers/priest_setups_controller.rb" beforeDir="false" afterPath="$PROJECT_DIR$/app/controllers/priest_setups_controller.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Gemfile" beforeDir="false" afterPath="$PROJECT_DIR$/Gemfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Gemfile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/Gemfile.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/controllers/services_controller.rb" beforeDir="false" afterPath="$PROJECT_DIR$/app/controllers/services_controller.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/javascript/controllers/address_map_controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/javascript/controllers/address_map_controller.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/javascript/controllers/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/javascript/controllers/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/javascript/controllers/priest_assign_controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/javascript/controllers/priest_assign_controller.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/models/service.rb" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/service.rb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/views/layouts/_sidebar.html.erb" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/layouts/_sidebar.html.erb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/views/layouts/application.html.erb" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/layouts/application.html.erb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/views/priest_assignments/index.html.erb" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/priest_assignments/index.html.erb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/credentials.yml.enc" beforeDir="false" afterPath="$PROJECT_DIR$/config/credentials.yml.enc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/views/services/_form.html.erb" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/services/_form.html.erb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/views/services/_service.html.erb" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/services/_service.html.erb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/config/locales/en.yml" beforeDir="false" afterPath="$PROJECT_DIR$/config/locales/en.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/config/locales/es.yml" beforeDir="false" afterPath="$PROJECT_DIR$/config/locales/es.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/config/routes.rb" beforeDir="false" afterPath="$PROJECT_DIR$/config/routes.rb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/db/schema.rb" beforeDir="false" afterPath="$PROJECT_DIR$/db/schema.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/seeds.rb" beforeDir="false" afterPath="$PROJECT_DIR$/db/seeds.rb" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -73,7 +77,7 @@
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
     "Test::Unit/Shoulda/Minitest.test_should_not_create_priest_setup_with_invalid_week_number.executor": "Debug",
     "com.intellij.lang.ruby.rbs.tools.collection.workspace.sync.RbsCollectionUpdateProjectActivity#LAST_UPDATE_TIMESTAMP": "1772206665993",
-    "git-widget-placeholder": "main",
+    "git-widget-placeholder": "#45 on add__services",
     "last_opened_file_path": "/Users/pablo/sites/rails/ssn/app/javascript/controllers",
     "nodejs_package_manager_path": "yarn",
     "ruby.structure.view.model.defaults.configured": "true",
@@ -83,6 +87,9 @@
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/app/javascript/controllers" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/db" />
     </key>
   </component>
   <component name="RunManager" selected="Rails.ssn">
@@ -406,7 +413,8 @@
       <workItem from="1772033854998" duration="1179000" />
       <workItem from="1772045862733" duration="713000" />
       <workItem from="1772048166058" duration="1559000" />
-      <workItem from="1772206607040" duration="6432000" />
+      <workItem from="1772206607040" duration="7449000" />
+      <workItem from="1772229484975" duration="3952000" />
     </task>
     <task id="LOCAL-00001" summary="add guard setup logic">
       <option name="closed" value="true" />
@@ -456,7 +464,31 @@
       <option name="project" value="LOCAL" />
       <updated>1772023230901</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="add services to guard">
+      <option name="closed" value="true" />
+      <created>1772216493466</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1772216493466</updated>
+    </task>
+    <task id="LOCAL-00008" summary="fix style">
+      <option name="closed" value="true" />
+      <created>1772216703218</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1772216703218</updated>
+    </task>
+    <task id="LOCAL-00009" summary="add skill to create pull request">
+      <option name="closed" value="true" />
+      <created>1772216714410</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1772216714410</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -467,7 +499,10 @@
     <MESSAGE value="create guard from setup service" />
     <MESSAGE value="add home page" />
     <MESSAGE value="add priest assignment" />
-    <option name="LAST_COMMIT_MESSAGE" value="add priest assignment" />
+    <MESSAGE value="add services to guard" />
+    <MESSAGE value="fix style" />
+    <MESSAGE value="add skill to create pull request" />
+    <option name="LAST_COMMIT_MESSAGE" value="add skill to create pull request" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

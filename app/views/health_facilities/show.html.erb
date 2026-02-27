@@ -1,0 +1,9 @@
+<div class="py-8">
+  <%= render @health_facility %>
+
+  <div class="mt-6 flex items-center gap-4">
+    <%= link_to t(".edit"), edit_health_facility_path(@health_facility), class: "text-blue-600 hover:underline" %>
+    <%= link_to t(".back"), health_facilities_path, class: "text-blue-600 hover:underline" %>
+    <%= button_to t(".destroy"), @health_facility, method: :delete, class: "cursor-pointer rounded-md bg-red-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500" %>
+  </div>
+</div>
