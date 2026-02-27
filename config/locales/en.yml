@@ -10,6 +10,9 @@ en:
       guard_setup:
         one: Guard Setup
         other: Guard Setups
+      service:
+        one: Service
+        other: Services
     attributes:
       user:
         first_name: First name
@@ -35,6 +38,18 @@ en:
         vocal: Vocal
         priest: Priest
         guardians: Guardians
+      service:
+        guard: Guard
+        full_name: Full name
+        age: Age
+        due_date: Due date
+        status: Status
+        place: Place
+        address: Address
+        caller_full_name: Caller full name
+        caller_phone: Caller phone
+        caller_relationship: Caller relationship
+        comments: Comments
   sidebar:
     setup: Setup
   users:
@@ -124,6 +139,39 @@ en:
       created: Guard setup was successfully created.
       updated: Guard setup was successfully updated.
       destroyed: Guard setup was successfully destroyed.
+  services:
+    index:
+      title: Services
+      new_service: New service
+      show: Show
+    show:
+      edit: Edit this service
+      back: Back to services
+      destroy: Destroy this service
+    new:
+      title: New service
+      back: Back to services
+    edit:
+      title: Editing service
+      show: Show this service
+      back: Back to services
+    form:
+      errors:
+        title:
+          one: "%{count} error prohibited this service from being saved:"
+          other: "%{count} errors prohibited this service from being saved:"
+    notices:
+      created: Service was successfully created.
+      updated: Service was successfully updated.
+      destroyed: Service was successfully destroyed.
+    status:
+      pending: Pending
+      completed: Completed
+    place:
+      home: Home
+      hospital: Hospital
+      nursing_home: Nursing home
+      other: Other
   priest_setups:
     confirm:
       destroy: Are you sure you want to remove this priest assignment?

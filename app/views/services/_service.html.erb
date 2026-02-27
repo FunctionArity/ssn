@@ -1,0 +1,73 @@
+<div id="<%= dom_id service %>" class="border border-gray-200 rounded-lg p-6 space-y-3">
+  <p>
+    <span class="text-sm font-medium text-gray-500"><%= Service.human_attribute_name(:full_name) %></span><br>
+    <span class="text-gray-900"><%= service.full_name %></span>
+  </p>
+
+  <% if service.age.present? %>
+    <p>
+      <span class="text-sm font-medium text-gray-500"><%= Service.human_attribute_name(:age) %></span><br>
+      <span class="text-gray-900"><%= service.age %></span>
+    </p>
+  <% end %>
+
+  <p>
+    <span class="text-sm font-medium text-gray-500"><%= Service.human_attribute_name(:due_date) %></span><br>
+    <span class="text-gray-900"><%= service.due_date %></span>
+  </p>
+
+  <p>
+    <span class="text-sm font-medium text-gray-500"><%= Service.human_attribute_name(:status) %></span><br>
+    <% status_class = service.pending? ? "badge_yellow" : "badge_green" %>
+    <span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium <%= status_class %>">
+      <%= t("services.status.#{service.status}") %>
+    </span>
+  </p>
+
+  <% if service.place.present? %>
+    <p>
+      <span class="text-sm font-medium text-gray-500"><%= Service.human_attribute_name(:place) %></span><br>
+      <span class="text-gray-900"><%= t("services.place.#{service.place}") %></span>
+    </p>
+  <% end %>
+
+  <% if service.address.present? %>
+    <p>
+      <span class="text-sm font-medium text-gray-500"><%= Service.human_attribute_name(:address) %></span><br>
+      <span class="text-gray-900"><%= service.address %></span>
+    </p>
+  <% end %>
+
+  <p>
+    <span class="text-sm font-medium text-gray-500"><%= Service.human_attribute_name(:guard) %></span><br>
+    <span class="text-gray-900"><%= link_to service.guard.day_number, service.guard, class: "text-blue-600 hover:underline" %></span>
+  </p>
+
+  <% if service.caller_full_name.present? %>
+    <p>
+      <span class="text-sm font-medium text-gray-500"><%= Service.human_attribute_name(:caller_full_name) %></span><br>
+      <span class="text-gray-900"><%= service.caller_full_name %></span>
+    </p>
+  <% end %>
+
+  <% if service.caller_phone.present? %>
+    <p>
+      <span class="text-sm font-medium text-gray-500"><%= Service.human_attribute_name(:caller_phone) %></span><br>
+      <span class="text-gray-900"><%= service.caller_phone %></span>
+    </p>
+  <% end %>
+
+  <% if service.caller_relationship.present? %>
+    <p>
+      <span class="text-sm font-medium text-gray-500"><%= Service.human_attribute_name(:caller_relationship) %></span><br>
+      <span class="text-gray-900"><%= service.caller_relationship %></span>
+    </p>
+  <% end %>
+
+  <% if service.comments.present? %>
+    <p>
+      <span class="text-sm font-medium text-gray-500"><%= Service.human_attribute_name(:comments) %></span><br>
+      <span class="text-gray-900"><%= service.comments %></span>
+    </p>
+  <% end %>
+</div>

@@ -1,0 +1,27 @@
+<div class="py-8">
+  <div class="flex items-center justify-between mb-6">
+    <h1 class="text-2xl font-bold"><%= t(".title") %></h1>
+    <%= link_to t(".new_service"), new_service_path, class: "rounded-md bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500" %>
+  </div>
+
+  <div id="services" class="space-y-4">
+    <% @services.each do |service| %>
+      <div class="border border-gray-200 rounded-lg p-4 flex items-center justify-between">
+        <div>
+          <p class="font-semibold"><%= service.full_name %></p>
+          <p class="text-sm text-gray-500">
+            <%= Service.human_attribute_name(:due_date) %>: <%= service.due_date %> &middot;
+            <%= Service.human_attribute_name(:guard) %>: <%= service.guard.day_number %>
+          </p>
+          <% status_class = service.pending? ? "badge_yellow" : "badge_green" %>
+          <span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium <%= status_class %> mt-1">
+            <%= t("services.status.#{service.status}") %>
+          </span>
+        </div>
+        <%= link_to service, class: "flex items-center gap-1 text-blue-600 hover:underline text-sm" do %>
+          <i class="ph ph-eye"></i> <%= t(".show") %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>

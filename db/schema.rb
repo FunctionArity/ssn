@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_27_113109) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_27_120000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -67,6 +67,25 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_27_113109) do
     t.index ["week_number", "day_of_week"], name: "index_priest_setups_on_week_number_and_day_of_week", unique: true
   end
 
+  create_table "services", force: :cascade do |t|
+    t.string "address"
+    t.integer "age"
+    t.string "caller_full_name"
+    t.string "caller_phone"
+    t.string "caller_relationship"
+    t.text "comments"
+    t.datetime "created_at", null: false
+    t.bigint "created_by_id", null: false
+    t.date "due_date", null: false
+    t.string "full_name", null: false
+    t.bigint "guard_id", null: false
+    t.integer "place"
+    t.integer "status", default: 0, null: false
+    t.datetime "updated_at", null: false
+    t.index ["created_by_id"], name: "index_services_on_created_by_id"
+    t.index ["guard_id"], name: "index_services_on_guard_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "email", default: "", null: false
@@ -91,4 +110,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_27_113109) do
   add_foreign_key "guards", "users", column: "priest_id"
   add_foreign_key "guards", "users", column: "vocal_id"
   add_foreign_key "priest_setups", "users", column: "priest_id"
+  add_foreign_key "services", "guards"
+  add_foreign_key "services", "users", column: "created_by_id"
 end

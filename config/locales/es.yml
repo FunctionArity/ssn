@@ -24,6 +24,9 @@ es:
       guard_setup:
         one: Configuración
         other: Configuraciones
+      service:
+        one: Servicio
+        other: Servicios
     attributes:
       guard:
         day_number: Número de día
@@ -38,6 +41,18 @@ es:
         vocal: Vocal
         priest: Sacerdote
         guardians: Guardianes
+      service:
+        guard: Guardia
+        full_name: Nombre completo
+        age: Edad
+        due_date: Fecha
+        status: Estado
+        place: Lugar
+        address: Dirección
+        caller_full_name: Nombre del llamante
+        caller_phone: Teléfono del llamante
+        caller_relationship: Parentesco del llamante
+        comments: Comentarios
       user:
         first_name: Nombre
         last_name: Apellido
@@ -279,6 +294,39 @@ es:
       send_instructions: "Recibirás un correo electrónico con instrucciones sobre cómo desbloquear tu cuenta en unos minutos."
       send_paranoid_instructions: "Si tu cuenta existe, recibirás un correo electrónico con instrucciones sobre cómo desbloquearla en unos minutos."
       unlocked: "Tu cuenta ha sido desbloqueada exitosamente. Por favor inicia sesión para continuar."
+  services:
+    index:
+      title: Servicios
+      new_service: Nuevo servicio
+      show: Ver
+    show:
+      edit: Editar este servicio
+      back: Volver a servicios
+      destroy: Eliminar este servicio
+    new:
+      title: Nuevo servicio
+      back: Volver a servicios
+    edit:
+      title: Editando servicio
+      show: Ver este servicio
+      back: Volver a servicios
+    form:
+      errors:
+        title:
+          one: "%{count} error impidió que este servicio fuera guardado:"
+          other: "%{count} errores impidieron que este servicio fuera guardado:"
+    notices:
+      created: El servicio fue creado exitosamente.
+      updated: El servicio fue actualizado exitosamente.
+      destroyed: El servicio fue eliminado exitosamente.
+    status:
+      pending: Pendiente
+      completed: Completado
+    place:
+      home: Domicilio
+      hospital: Hospital
+      nursing_home: Residencia
+      other: Otro
   priest_setups:
     confirm:
       destroy: ¿Estás seguro de que deseas eliminar esta asignación?

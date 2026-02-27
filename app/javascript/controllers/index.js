@@ -17,3 +17,6 @@ application.register("priest-assign", PriestAssignController)
 
 import DisclosureController from "./disclosure_controller"
 application.register("disclosure", DisclosureController)
+
+import AddressMapController from "./address_map_controller"
+application.register("address-map", AddressMapController)

@@ -8,6 +8,10 @@
       <i class="ph ph-shield text-lg"></i>
       <span class="sidebar-label"><%= t("guards.index.title") %></span>
     <% end %>
+    <%= link_to services_path, class: "sidebar-link flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium #{request.path.start_with?('/services') ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'}" do %>
+      <i class="ph ph-hand-heart text-lg"></i>
+      <span class="sidebar-label"><%= t("services.index.title") %></span>
+    <% end %>
     <% setup_active = request.path.start_with?('/guard_setups') || request.path.start_with?('/priest_assignments') %>
     <details class="group" data-controller="disclosure" <%= 'open' if setup_active %>>
       <summary data-action="click->disclosure#toggle" class="sidebar-link flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900 cursor-pointer list-none select-none">

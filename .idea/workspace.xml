@@ -2,19 +2,18 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3de4ba99-b3e1-4e7d-a3cc-f22b014502c0" name="Changes" comment="add priest assignment">
-      <change beforePath="$PROJECT_DIR$/.idea/ssn.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/ssn.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Gemfile" beforeDir="false" afterPath="$PROJECT_DIR$/Gemfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Gemfile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/Gemfile.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models/user.rb" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/user.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/application.rb" beforeDir="false" afterPath="$PROJECT_DIR$/config/application.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/controllers/priest_setups_controller.rb" beforeDir="false" afterPath="$PROJECT_DIR$/app/controllers/priest_setups_controller.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/javascript/controllers/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/javascript/controllers/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/javascript/controllers/priest_assign_controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/javascript/controllers/priest_assign_controller.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/views/layouts/_sidebar.html.erb" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/layouts/_sidebar.html.erb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/views/layouts/application.html.erb" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/layouts/application.html.erb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/views/priest_assignments/index.html.erb" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/priest_assignments/index.html.erb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/credentials.yml.enc" beforeDir="false" afterPath="$PROJECT_DIR$/config/credentials.yml.enc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/locales/en.yml" beforeDir="false" afterPath="$PROJECT_DIR$/config/locales/en.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/locales/es.yml" beforeDir="false" afterPath="$PROJECT_DIR$/config/locales/es.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/routes.rb" beforeDir="false" afterPath="$PROJECT_DIR$/config/routes.rb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/db/schema.rb" beforeDir="false" afterPath="$PROJECT_DIR$/db/schema.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/controllers/guard_setups_controller_test.rb" beforeDir="false" afterPath="$PROJECT_DIR$/test/controllers/guard_setups_controller_test.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/controllers/priest_setups_controller_test.rb" beforeDir="false" afterPath="$PROJECT_DIR$/test/controllers/priest_setups_controller_test.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/fixtures/guard_setups.yml" beforeDir="false" afterPath="$PROJECT_DIR$/test/fixtures/guard_setups.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/models/guard_setup_test.rb" beforeDir="false" afterPath="$PROJECT_DIR$/test/models/guard_setup_test.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/models/priest_setup_test.rb" beforeDir="false" afterPath="$PROJECT_DIR$/test/models/priest_setup_test.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/services/create_guard_from_setup_service_test.rb" beforeDir="false" afterPath="$PROJECT_DIR$/test/services/create_guard_from_setup_service_test.rb" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -73,8 +72,8 @@
     "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
     "Test::Unit/Shoulda/Minitest.test_should_not_create_priest_setup_with_invalid_week_number.executor": "Debug",
-    "com.intellij.lang.ruby.rbs.tools.collection.workspace.sync.RbsCollectionUpdateProjectActivity#LAST_UPDATE_TIMESTAMP": "1772033913322",
-    "git-widget-placeholder": "#42 on add__priest__assignment",
+    "com.intellij.lang.ruby.rbs.tools.collection.workspace.sync.RbsCollectionUpdateProjectActivity#LAST_UPDATE_TIMESTAMP": "1772206665993",
+    "git-widget-placeholder": "main",
     "last_opened_file_path": "/Users/pablo/sites/rails/ssn/app/javascript/controllers",
     "nodejs_package_manager_path": "yarn",
     "ruby.structure.view.model.defaults.configured": "true",
@@ -86,7 +85,7 @@
       <recent name="$PROJECT_DIR$/app/javascript/controllers" />
     </key>
   </component>
-  <component name="RunManager" selected="Test::Unit/Shoulda/Minitest.test_should_not_create_priest_setup_with_invalid_week_number">
+  <component name="RunManager" selected="Rails.ssn">
     <configuration default="true" type="CucumberRunConfigurationType" factoryName="Cucumber">
       <predefined_log_file enabled="true" id="RUBY_CUCUMBER" />
       <CUCUMBER_RUN_CONFIG_SETTINGS_ID NAME="RUBY_ARGS" VALUE="" />
@@ -407,6 +406,7 @@
       <workItem from="1772033854998" duration="1179000" />
       <workItem from="1772045862733" duration="713000" />
       <workItem from="1772048166058" duration="1559000" />
+      <workItem from="1772206607040" duration="6432000" />
     </task>
     <task id="LOCAL-00001" summary="add guard setup logic">
       <option name="closed" value="true" />
@@ -480,20 +480,12 @@
           </properties>
           <option name="timeStamp" value="5" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="ruby-line">
-          <url>file://$PROJECT_DIR$/app/controllers/priest_setups_controller.rb</url>
-          <line>19</line>
-          <properties myBlockOrdinal="-1">
-            <option name="block-ordinal" value="-1" />
-          </properties>
-          <option name="timeStamp" value="6" />
-        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/ssn@ssn.rcov" NAME="ssn Coverage Results" MODIFIED="1772048988902" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" MODULE_NAME="ssn" />
-    <SUITE FILE_PATH="coverage/ssn@test_should_not_create_priest_setup_with_invalid_week_number.rcov" NAME="test_should_not_create_priest_setup_with_invalid_week_number Coverage Results" MODIFIED="1772192481879" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" MODULE_NAME="ssn" />
+    <SUITE FILE_PATH="coverage/ssn@ssn.rcov" NAME="ssn Coverage Results" MODIFIED="1772210246150" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" MODULE_NAME="ssn" />
+    <SUITE FILE_PATH="coverage/ssn@test_should_not_create_priest_setup_with_invalid_week_number.rcov" NAME="test_should_not_create_priest_setup_with_invalid_week_number Coverage Results" MODIFIED="1772206646538" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" MODULE_NAME="ssn" />
   </component>
   <component name="github-copilot-workspace">
     <instructionFileLocations>
