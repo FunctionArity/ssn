@@ -3,11 +3,8 @@ Rails.application.routes.draw do
   resources :users
   resources :guards
   resources :guard_setups
-  resources :priest_setups, only: %i[create destroy] do
-    collection do
-      get :assign
-    end
-  end
+  resources :priest_setups, only: %i[create destroy]
+  resources :priest_assignments, only: %i[index]
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

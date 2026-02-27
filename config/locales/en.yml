@@ -125,7 +125,11 @@ en:
   priest_setups:
     confirm:
       destroy: Are you sure you want to remove this priest assignment?
-    assign:
+    notices:
+      created: Priest was successfully assigned.
+      destroyed: Assignment was successfully removed.
+  priest_assignments:
+    index:
       title: Priest Assignments
       priests: Priests
       week_names:
@@ -134,9 +138,6 @@ en:
         - Third
         - Fourth
         - Fifth
-    notices:
-      created: Priest was successfully assigned.
-      destroyed: Assignment was successfully removed.
   devise_views:
     sessions:
       title: "Log in"

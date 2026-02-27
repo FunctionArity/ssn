@@ -280,7 +280,11 @@ es:
   priest_setups:
     confirm:
       destroy: ¿Estás seguro de que deseas eliminar esta asignación?
-    assign:
+    notices:
+      created: Sacerdote asignado exitosamente.
+      destroyed: Asignación eliminada exitosamente.
+  priest_assignments:
+    index:
       title: Asignación de Sacerdotes
       priests: Sacerdotes
       week_names:
@@ -289,6 +293,3 @@ es:
         - Tercero
         - Cuarto
         - Quinta
-    notices:
-      created: Sacerdote asignado exitosamente.
-      destroyed: Asignación eliminada exitosamente.

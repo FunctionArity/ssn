@@ -9,11 +9,6 @@ class PriestSetupsControllerTest < ActionDispatch::IntegrationTest
     sign_in @user
   end
 
-  test "should get assign" do
-    get assign_priest_setups_url
-    assert_response :success
-  end
-
   test "should create priest setup" do
     assert_difference("PriestSetup.count") do
       post priest_setups_url, params: {
@@ -25,7 +20,7 @@ class PriestSetupsControllerTest < ActionDispatch::IntegrationTest
       }
     end
 
-    assert_redirected_to assign_priest_setups_url
+    assert_redirected_to priest_assignments_url
   end
 
   test "should replace existing assignment when creating for same slot" do
@@ -39,7 +34,7 @@ class PriestSetupsControllerTest < ActionDispatch::IntegrationTest
       }
     end
 
-    assert_redirected_to assign_priest_setups_url
+    assert_redirected_to priest_assignments_url
     assert_equal users(:priest_two).id, PriestSetup.find_by(week_number: @priest_setup.week_number, day_of_week: @priest_setup.day_of_week).priest_id
   end
 
@@ -54,7 +49,7 @@ class PriestSetupsControllerTest < ActionDispatch::IntegrationTest
       }
     end
 
-    assert_redirected_to assign_priest_setups_url
+    assert_redirected_to priest_assignments_url
   end
 
   test "should destroy priest setup" do
@@ -62,12 +57,6 @@ class PriestSetupsControllerTest < ActionDispatch::IntegrationTest
       delete priest_setup_url(@priest_setup)
     end
 
-    assert_redirected_to assign_priest_setups_url
-  end
-
-  test "should require authentication" do
-    sign_out @user
-    get assign_priest_setups_url
-    assert_response :redirect
+    assert_redirected_to priest_assignments_url
   end
 end
