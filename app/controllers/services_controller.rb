@@ -9,7 +9,7 @@ class ServicesController < ApplicationController
   end
 
   def new
-    @service = Service.new(:due_date => Date.current)
+    @service = Service.new(due_date: Date.current)
     @service.guard_id = params[:guard_id] if params[:guard_id].present?
   end
 

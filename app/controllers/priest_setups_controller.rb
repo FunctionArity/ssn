@@ -41,6 +41,5 @@ class PriestSetupsController < ApplicationController
     )&.destroy
 
     PriestSetup.find_by(id: params[:source_setup_id])&.destroy if params[:source_setup_id].present?
-
   end
 end
