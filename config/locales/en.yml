@@ -35,6 +35,8 @@ en:
         vocal: Vocal
         priest: Priest
         guardians: Guardians
+  sidebar:
+    setup: Setup
   users:
     index:
       title: Users

@@ -78,6 +78,8 @@ es:
       not_a_number: "no es un número"
       not_an_integer: "debe ser un entero"
       taken: "ya ha sido tomado"
+  sidebar:
+    setup: Configuración
   users:
     index:
       title: Usuarios
@@ -136,7 +138,7 @@ es:
       destroyed: La guardia fue eliminada exitosamente.
   guard_setups:
     index:
-      title: Configuraciones
+      title: Guardias
       new_guard_setup: Nueva configuración de guardia
       show: Ver
       create_guard: Crear guardia
@@ -285,7 +287,7 @@ es:
       destroyed: Asignación eliminada exitosamente.
   priest_assignments:
     index:
-      title: Asignación de Sacerdotes
+      title: Sacerdotes
       priests: Sacerdotes
       week_names:
         - Primero
