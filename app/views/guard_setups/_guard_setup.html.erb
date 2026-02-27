@@ -10,11 +10,6 @@
   </p>
 
   <p>
-    <span class="text-sm font-medium text-gray-500"><%= GuardSetup.human_attribute_name(:priest) %></span><br>
-    <span class="text-gray-900"><%= guard_setup.priest.first_name %> <%= guard_setup.priest.last_name %></span>
-  </p>
-
-  <p>
     <span class="text-sm font-medium text-gray-500"><%= GuardSetup.human_attribute_name(:guardians) %></span><br>
     <% guard_setup.guardians.each do |guardian| %>
       <span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium badge_green mr-1"><%= guardian.first_name %> <%= guardian.last_name %></span>

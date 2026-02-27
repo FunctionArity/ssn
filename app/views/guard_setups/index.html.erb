@@ -11,7 +11,6 @@
           <p class="font-semibold"><%= guard_setup.day_number %></p>
           <p class="text-sm text-gray-500">
             <%= GuardSetup.human_attribute_name(:vocal) %>: <%= guard_setup.vocal.first_name %> <%= guard_setup.vocal.last_name %> &middot;
-            <%= GuardSetup.human_attribute_name(:priest) %>: <%= guard_setup.priest.first_name %> <%= guard_setup.priest.last_name %> &middot;
             <%= t(".guardians_count", count: guard_setup.guardians.size) %>
           </p>
         </div>

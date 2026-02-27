@@ -2,7 +2,7 @@ class GuardSetupsController < ApplicationController
   before_action :set_guard_setup, only: %i[ show edit update destroy ]
 
   def index
-    @guard_setups = GuardSetup.includes(:vocal, :priest, :guardians).order(:day_number)
+    @guard_setups = GuardSetup.includes(:vocal, :guardians).order(:day_number)
   end
 
   def show

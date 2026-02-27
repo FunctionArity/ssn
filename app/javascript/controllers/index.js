@@ -11,3 +11,9 @@ import GuardianSearchController from "./guardian_search_controller"
 import GuardianSetupSearchController from "./guardian_setup_search_controller"
 application.register("guardian-search", GuardianSearchController)
 application.register("guardian-setup-search", GuardianSetupSearchController)
+
+import PriestAssignController from "./priest_assign_controller"
+application.register("priest-assign", PriestAssignController)
+
+import DisclosureController from "./disclosure_controller"
+application.register("disclosure", DisclosureController)

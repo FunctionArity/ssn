@@ -59,12 +59,12 @@ export default class extends Controller {
     this.selectedGuardians.set(id, name)
 
     const chip = document.createElement("div")
-    chip.className = "inline-flex items-center gap-1 rounded-full bg-blue-100 text-blue-800 px-3 py-1 text-sm"
+    chip.className = "inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium badge_green"
     chip.dataset.guardianId = id
     chip.innerHTML = `
       <span>${this.escapeHtml(name)}</span>
       <input type="hidden" name="guard[guardian_ids][]" value="${id}">
-      <button type="button" data-action="click->guardian-search#remove" data-id="${id}" class="ml-1 text-blue-600 hover:text-blue-900 cursor-pointer">&times;</button>
+      <button type="button" data-action="click->guardian-search#remove" data-id="${id}" class="ml-1 text-green-600 hover:text-green-900 cursor-pointer">&times;</button>
     `
     this.selectedListTarget.appendChild(chip)
   }

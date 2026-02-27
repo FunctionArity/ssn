@@ -25,8 +25,8 @@ module Ssn
     # config.eager_load_paths << Rails.root.join("extras")
     config.i18n.default_locale = :es
 
-    config.action_view.field_error_proc = proc { |html_tag, _instance|
-      html_tag.sub(/class="/, 'class="has_error ').html_safe
-    }
+    # config.action_view.field_error_proc = proc { |html_tag, _instance|
+    #  html_tag.sub(/class="/, 'class="has_error ').html_safe
+    # }
   end
 end

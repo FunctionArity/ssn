@@ -1,0 +1,5 @@
+Run the Rails system test suite using: bundle exec rails test:system $ARGS
+
+If $ARGS is provided, pass it directly to the test command (e.g. a file path or test name filter).
+If no $ARGS, run the full system test suite.
+

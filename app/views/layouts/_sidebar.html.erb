@@ -8,9 +8,23 @@
       <i class="ph ph-shield text-lg"></i>
       <span class="sidebar-label"><%= t("guards.index.title") %></span>
     <% end %>
-    <%= link_to guard_setups_path, class: "sidebar-link flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium #{request.path.start_with?('/guard_setups') ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'}" do %>
-      <i class="ph ph-gear text-lg"></i>
-      <span class="sidebar-label"><%= t("guard_setups.index.title") %></span>
-    <% end %>
+    <% setup_active = request.path.start_with?('/guard_setups') || request.path.start_with?('/priest_assignments') %>
+    <details class="group" data-controller="disclosure" <%= 'open' if setup_active %>>
+      <summary data-action="click->disclosure#toggle" class="sidebar-link flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900 cursor-pointer list-none select-none">
+        <i class="ph ph-sliders text-lg"></i>
+        <span class="sidebar-label"><%= t("sidebar.setup") %></span>
+        <i class="ph ph-caret-right text-xs ml-auto transition-transform group-open:rotate-90"></i>
+      </summary>
+      <div data-disclosure-target="content" class="pl-4 mt-1 space-y-1 overflow-hidden">
+        <%= link_to guard_setups_path, class: "sidebar-link flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium #{request.path.start_with?('/guard_setups') ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'}" do %>
+          <i class="ph ph-gear text-lg"></i>
+          <span class="sidebar-label"><%= t("guard_setups.index.title") %></span>
+        <% end %>
+        <%= link_to priest_assignments_path, class: "sidebar-link flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium #{request.path.start_with?('/priest_assignments') ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'}" do %>
+          <i class="ph ph-calendar text-lg"></i>
+          <span class="sidebar-label"><%= t("priest_assignments.index.title") %></span>
+        <% end %>
+      </div>
+    </details>
   </nav>
 </aside>

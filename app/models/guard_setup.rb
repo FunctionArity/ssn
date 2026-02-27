@@ -1,6 +1,6 @@
 class GuardSetup < ApplicationRecord
   belongs_to :vocal, class_name: "User"
-  belongs_to :priest, class_name: "User"
+
   has_many :guard_setup_guardians, dependent: :destroy
   has_many :guardians, through: :guard_setup_guardians, source: :user
   has_many :guards, dependent: :destroy

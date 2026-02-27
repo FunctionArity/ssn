@@ -24,6 +24,7 @@ en:
           priest: Priest
       guard:
         day_number: Day number
+        due_date: Due date
         notes: Notes
         vocal: Vocal
         priest: Priest
@@ -34,6 +35,8 @@ en:
         vocal: Vocal
         priest: Priest
         guardians: Guardians
+  sidebar:
+    setup: Setup
   users:
     index:
       title: Users
@@ -121,6 +124,22 @@ en:
       created: Guard setup was successfully created.
       updated: Guard setup was successfully updated.
       destroyed: Guard setup was successfully destroyed.
+  priest_setups:
+    confirm:
+      destroy: Are you sure you want to remove this priest assignment?
+    notices:
+      created: Priest was successfully assigned.
+      destroyed: Assignment was successfully removed.
+  priest_assignments:
+    index:
+      title: Priest Assignments
+      priests: Priests
+      week_names:
+        - First
+        - Second
+        - Third
+        - Fourth
+        - Fifth
   devise_views:
     sessions:
       title: "Log in"
