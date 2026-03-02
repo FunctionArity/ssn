@@ -29,6 +29,10 @@ en:
           guardian: Guardian
           vocal: Vocal
           priest: Priest
+        roles_plural:
+          guardian: Guardians
+          vocal: Vocals
+          priest: Priests
       guard:
         day_number: Day number
         due_date: Due date
@@ -93,6 +97,9 @@ en:
       title: Guards
       new_guard: New guard
       show: Show
+      services_count:
+        one: service
+        other: services
       guardians_count:
         one: "%{count} guardian"
         other: "%{count} guardians"

@@ -1,3 +1,60 @@
-<svg width="512" height="512" xmlns="http://www.w3.org/2000/svg">
-  <circle cx="256" cy="256" r="256" fill="red"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <defs>
+    <!-- Radial gradient for the enamel surface (creamy yellow, slightly aged) -->
+    <radialGradient id="enamelGrad" cx="42%" cy="38%" r="58%">
+      <stop offset="0%"   stop-color="#f5edb0"/>
+      <stop offset="55%"  stop-color="#e8d97a"/>
+      <stop offset="85%"  stop-color="#d4c05a"/>
+      <stop offset="100%" stop-color="#b8a040"/>
+    </radialGradient>
+
+    <!-- Radial gradient for the gold rim -->
+    <radialGradient id="rimGrad" cx="40%" cy="35%" r="60%">
+      <stop offset="0%"   stop-color="#e8c96a"/>
+      <stop offset="40%"  stop-color="#c8a030"/>
+      <stop offset="75%"  stop-color="#a07820"/>
+      <stop offset="100%" stop-color="#7a5810"/>
+    </radialGradient>
+
+    <!-- Subtle noise/texture filter for aged enamel look -->
+    <filter id="texture" x="0%" y="0%" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4" seed="3" result="noise"/>
+      <feColorMatrix type="saturate" values="0" in="noise" result="grayNoise"/>
+      <feBlend in="SourceGraphic" in2="grayNoise" mode="soft-light" result="blended"/>
+      <feComposite in="blended" in2="SourceGraphic" operator="in"/>
+    </filter>
+
+    <!-- Drop shadow for depth -->
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="2" dy="3" stdDeviation="4" flood-color="#00000055"/>
+    </filter>
+
+    <!-- Clip to circle -->
+    <clipPath id="circleClip">
+      <circle cx="100" cy="100" r="88"/>
+    </clipPath>
+  </defs>
+
+  <!-- Outer gold rim -->
+  <circle cx="100" cy="100" r="96" fill="url(#rimGrad)" filter="url(#shadow)"/>
+
+  <!-- Inner rim highlight ring -->
+  <circle cx="100" cy="100" r="92" fill="none" stroke="#f0d060" stroke-width="1.5" opacity="0.5"/>
+
+  <!-- Enamel face -->
+  <circle cx="100" cy="100" r="88" fill="url(#enamelGrad)" filter="url(#texture)"/>
+
+  <!-- Subtle specular highlight on enamel -->
+  <ellipse cx="82" cy="72" rx="28" ry="18" fill="white" opacity="0.18"/>
+
+  <!-- Cross symbol — dark, slightly worn, centered slightly above middle -->
+  <g fill="#2a2218" opacity="0.88">
+    <!-- Vertical bar -->
+    <rect x="91" y="56" width="18" height="52" rx="3" ry="3"/>
+    <!-- Horizontal bar -->
+    <rect x="78" y="70" width="44" height="18" rx="3" ry="3"/>
+  </g>
+
+  <!-- Very subtle edge vignette inside enamel -->
+  <circle cx="100" cy="100" r="88" fill="none" stroke="#8a6a10" stroke-width="3" opacity="0.25"/>
 </svg>

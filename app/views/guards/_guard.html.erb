@@ -5,8 +5,15 @@
       <p class="text-xs font-medium text-indigo-400 uppercase tracking-wide"><%= l(guard.due_date, format: :long) %></p>
       <h2 class="text-2xl font-bold text-gray-900 mt-0.5"># <%= guard.day_number %></h2>
     </div>
-    <div class="flex items-center justify-center w-12 h-12 rounded-full bg-indigo-100 text-indigo-700">
-      <i class="ph ph-calendar-check text-xl"></i>
+    <div class="flex flex-col items-end gap-1">
+      <div class="flex items-center justify-center w-12 h-12 rounded-full bg-indigo-100 text-indigo-700">
+        <i class="ph ph-calendar-check text-xl"></i>
+      </div>
+      <% if defined?(@services_count) && @services_count %>
+        <span class="flex items-center gap-1 text-xs text-gray-400">
+          <i class="ph ph-first-aid"></i> <%= @services_count %> <%= t("guards.index.services_count", count: @services_count) %>
+        </span>
+      <% end %>
     </div>
   </div>
 

@@ -4,6 +4,7 @@ class Guard < ApplicationRecord
   belongs_to :guard_setup
   has_many :guard_guardians, dependent: :destroy
   has_many :guardians, through: :guard_guardians, source: :user
+  has_many :services
 
   validates :day_number, presence: true
   validates :due_date, presence: true

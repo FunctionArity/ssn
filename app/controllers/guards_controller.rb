@@ -1,8 +1,10 @@
 class GuardsController < ApplicationController
   before_action :set_guard, only: %i[ show edit update destroy ]
+  before_action :set_services_count, only: %i[ show ]
 
   def index
     @guards = Guard.includes(:vocal, :priest, :guardians).order(:day_number)
+    @services_count_by_guard = Service.group(:guard_id).count
   end
 
   def show
@@ -54,6 +56,10 @@ class GuardsController < ApplicationController
 
   def set_guard
     @guard = Guard.find(params.expect(:id))
+  end
+
+  def set_services_count
+    @services_count = @guard.services.count
   end
 
   def guard_params

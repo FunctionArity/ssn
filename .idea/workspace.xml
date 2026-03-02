@@ -1,20 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="3de4ba99-b3e1-4e7d-a3cc-f22b014502c0" name="Changes" comment="add service and improve styles">
-      <change beforePath="$PROJECT_DIR$/.idea/ssn.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/ssn.iml" afterDir="false" />
+    <list default="true" id="3de4ba99-b3e1-4e7d-a3cc-f22b014502c0" name="Changes" comment="generate pdf for a service">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Gemfile" beforeDir="false" afterPath="$PROJECT_DIR$/Gemfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Gemfile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/Gemfile.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/controllers/services_controller.rb" beforeDir="false" afterPath="$PROJECT_DIR$/app/controllers/services_controller.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/controllers/users_controller.rb" beforeDir="false" afterPath="$PROJECT_DIR$/app/controllers/users_controller.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/views/layouts/_sidebar.html.erb" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/layouts/_sidebar.html.erb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/views/services/show.html.erb" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/services/show.html.erb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/views/users/_form.html.erb" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/users/_form.html.erb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/controllers/guards_controller.rb" beforeDir="false" afterPath="$PROJECT_DIR$/app/controllers/guards_controller.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/models/guard.rb" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/guard.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/views/guards/_guard.html.erb" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/guards/_guard.html.erb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/views/guards/index.html.erb" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/guards/index.html.erb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/views/layouts/_navbar.html.erb" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/layouts/_navbar.html.erb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/views/services/index.html.erb" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/services/index.html.erb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/views/users/index.html.erb" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/users/index.html.erb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/config/locales/en.yml" beforeDir="false" afterPath="$PROJECT_DIR$/config/locales/en.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/config/locales/es.yml" beforeDir="false" afterPath="$PROJECT_DIR$/config/locales/es.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/routes.rb" beforeDir="false" afterPath="$PROJECT_DIR$/config/routes.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/icon.svg" beforeDir="false" afterPath="$PROJECT_DIR$/public/icon.svg" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -412,7 +410,7 @@
       <workItem from="1772045862733" duration="713000" />
       <workItem from="1772048166058" duration="1559000" />
       <workItem from="1772206607040" duration="7449000" />
-      <workItem from="1772229484975" duration="25537000" />
+      <workItem from="1772229484975" duration="27121000" />
     </task>
     <task id="LOCAL-00001" summary="add guard setup logic">
       <option name="closed" value="true" />
@@ -502,7 +500,15 @@
       <option name="project" value="LOCAL" />
       <updated>1772479479132</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="generate pdf for a service">
+      <option name="closed" value="true" />
+      <created>1772483275637</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1772483275637</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -518,7 +524,8 @@
     <MESSAGE value="add skill to create pull request" />
     <MESSAGE value="add service attributes" />
     <MESSAGE value="add service and improve styles" />
-    <option name="LAST_COMMIT_MESSAGE" value="add service and improve styles" />
+    <MESSAGE value="generate pdf for a service" />
+    <option name="LAST_COMMIT_MESSAGE" value="generate pdf for a service" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -543,7 +550,7 @@
     </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/ssn@ssn.rcov" NAME="ssn Coverage Results" MODIFIED="1772482945061" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" MODULE_NAME="ssn" />
+    <SUITE FILE_PATH="coverage/ssn@ssn.rcov" NAME="ssn Coverage Results" MODIFIED="1772484043387" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" MODULE_NAME="ssn" />
     <SUITE FILE_PATH="coverage/ssn@test_should_not_create_priest_setup_with_invalid_week_number.rcov" NAME="test_should_not_create_priest_setup_with_invalid_week_number Coverage Results" MODIFIED="1772206646538" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" MODULE_NAME="ssn" />
   </component>
   <component name="github-copilot-workspace">

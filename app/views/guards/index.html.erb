@@ -53,7 +53,11 @@
           </div>
         </div>
 
-        <div class="px-5 py-3 border-t border-gray-100 flex justify-end">
+        <div class="px-5 py-3 border-t border-gray-100 flex items-center justify-between">
+          <span class="flex items-center gap-1 text-xs text-gray-400">
+            <i class="ph ph-first-aid"></i>
+            <%= @services_count_by_guard[guard.id] || 0 %> <%= t("guards.index.services_count", count: @services_count_by_guard[guard.id] || 0) %>
+          </span>
           <%= link_to guard, class: "flex items-center gap-1 text-sm font-medium text-blue-600 hover:text-blue-800" do %>
             <i class="ph ph-arrow-right"></i> <%= t(".show") %>
           <% end %>

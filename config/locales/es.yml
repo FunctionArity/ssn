@@ -75,6 +75,10 @@ es:
           guardian: Guardian
           vocal: Vocal
           priest: Sacerdote
+        roles_plural:
+          guardian: Guardianes
+          vocal: Vocales
+          priest: Sacerdotes
     errors:
       models:
         user:
@@ -104,6 +108,9 @@ es:
       not_a_number: "no es un número"
       not_an_integer: "debe ser un entero"
       taken: "ya ha sido tomado"
+      not_saved:
+        one: "1 error impidió guardar este %{resource}:"
+        other: "%{count} errores impidieron guardar este %{resource}:"
   sidebar:
     setup: Configuración
   users:
@@ -136,6 +143,9 @@ es:
       title: Guardias
       new_guard: Nueva guardia
       show: Ver
+      services_count:
+        one: servicio
+        other: servicios
       guardians_count:
         one: "%{count} guardián"
         other: "%{count} guardianes"
