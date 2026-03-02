@@ -1,9 +1,12 @@
 <div id="<%= dom_id service %>" class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
 
   <%# Header %>
-  <div class="px-6 py-5 flex items-center justify-between bg-gradient-to-r from-sky-50 to-white border-b border-gray-100">
+  <% header_class = service.pending? ? "bg-gradient-to-r from-red-100 to-white" : "bg-gradient-to-r from-green-100 to-white" %>
+  <% date_class   = service.pending? ? "text-red-500" : "text-green-600" %>
+  <% icon_class   = service.pending? ? "bg-red-200 text-red-700" : "bg-green-200 text-green-700" %>
+  <div class="px-6 py-5 flex items-center justify-between <%= header_class %> border-b border-gray-100">
     <div>
-      <p class="text-xs font-medium text-sky-500 uppercase tracking-wide"><%= l(service.due_date, format: :long) %></p>
+      <p class="text-xs font-medium <%= date_class %> uppercase tracking-wide"><%= l(service.due_date, format: :long) %></p>
       <h2 class="text-xl font-bold text-gray-900 mt-0.5"><%= service.full_name %></h2>
       <% if service.age.present? %>
         <p class="text-sm text-gray-500 mt-0.5"><%= Service.human_attribute_name(:age) %>: <%= service.age %></p>
@@ -12,7 +15,7 @@
     <div class="flex flex-col items-end gap-2">
       <% status_class = service.pending? ? "badge_red" : "badge_green" %>
       <span class="<%= status_class %>"><%= t("services.status.#{service.status}") %></span>
-      <div class="flex items-center justify-center w-10 h-10 rounded-full bg-sky-100 text-sky-700">
+      <div class="flex items-center justify-center w-10 h-10 rounded-full <%= icon_class %>">
         <i class="ph ph-first-aid text-lg"></i>
       </div>
     </div>

@@ -2,7 +2,7 @@ require "prawn"
 require "prawn-svg"
 
 class ServicePdf
-  MARGIN      = [18, 25, 18, 25].freeze
+  MARGIN      = [ 18, 25, 18, 25 ].freeze
   LABEL_SIZE  = 9
   VALUE_SIZE  = 9
   LINE_HEIGHT = 26
@@ -42,20 +42,20 @@ class ServicePdf
   def build_header(pdf, w, top)
     svg_path = Rails.root.join("app/assets/images/icon.svg")
     if File.exist?(svg_path)
-      pdf.svg(File.read(svg_path), at: [0, top], width: LOGO_SIZE, height: LOGO_SIZE)
+      pdf.svg(File.read(svg_path), at: [ 0, top ], width: LOGO_SIZE, height: LOGO_SIZE)
     end
 
     # Center: TOMA DE LLAMADO / SERVICIO SACERDOTAL NOCTURNO
     cx = LOGO_SIZE + 8
     cw = w - cx - 145
-    pdf.bounding_box([cx, top], width: cw, height: LOGO_SIZE) do
+    pdf.bounding_box([ cx, top ], width: cw, height: LOGO_SIZE) do
       pdf.move_down 4
       pdf.text "SERVICIO SACERDOTAL NOCTURNO", size: 11, style: :bold, align: :center
     end
 
     # Right: FECHA DE GUARDIA + date value
     rx = w - 140
-    pdf.bounding_box([rx, top], width: 140, height: LOGO_SIZE) do
+    pdf.bounding_box([ rx, top ], width: 140, height: LOGO_SIZE) do
       pdf.move_down 8
       pdf.text "FECHA DE GUARDIA", size: 9, style: :bold, align: :center
       pdf.move_down 8
@@ -113,8 +113,8 @@ class ServicePdf
   def field(pdf, x, y, width, label, value)
     value_str = value.present? ? value.to_s : ""
 
-    pdf.bounding_box([x, y], width: width, height: 16) do
-      parts = [{ text: label, styles: [:bold], size: LABEL_SIZE }]
+    pdf.bounding_box([ x, y ], width: width, height: 16) do
+      parts = [ { text: label, styles: [ :bold ], size: LABEL_SIZE } ]
       parts << { text: " #{value_str}", size: VALUE_SIZE } unless value_str.empty?
       pdf.formatted_text(parts)
     end

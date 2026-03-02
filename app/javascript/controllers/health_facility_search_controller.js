@@ -57,6 +57,11 @@ export default class extends Controller {
     }
   }
 
+  clearSelection() {
+    this.hiddenFieldTarget.value = ""
+    this.inputTarget.value = ""
+  }
+
   escapeHtml(str) {
     const div = document.createElement("div")
     div.textContent = str

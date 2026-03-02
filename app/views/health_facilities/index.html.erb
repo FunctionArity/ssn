@@ -1,8 +1,10 @@
-<div class="py-8">
-  <div class="flex items-center justify-between mb-6">
-    <h1 class="text-2xl font-bold"><%= t(".title") %></h1>
-    <%= link_to t(".new_health_facility"), new_health_facility_path, class: "rounded-md bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500" %>
-  </div>
+<div>
+  <%= render "shared/page_header",
+        title: t(".title"),
+        icon: "ph-hospital",
+        icon_class: "bg-teal-100 text-teal-700",
+        action_label: t(".new_health_facility"),
+        action_path: new_health_facility_path %>
 
   <div id="health_facilities" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
     <% @health_facilities.each do |health_facility| %>

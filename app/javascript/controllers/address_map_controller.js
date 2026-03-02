@@ -51,6 +51,7 @@ export default class extends Controller {
   }
 
   search(event) {
+    this.dispatch("input", { bubbles: true })
     clearTimeout(this._debounce)
     this._debounce = setTimeout(() => {
       const address = event.target.value.trim()

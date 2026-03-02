@@ -1,7 +1,8 @@
 <div data-controller="priest-assign">
-  <div class="flex items-center justify-between mb-6">
-    <h1 class="text-2xl font-bold"><%= t(".title") %></h1>
-  </div>
+  <%= render "shared/page_header",
+        title: t(".title"),
+        icon: "ph-calendar",
+        icon_class: "bg-purple-100 text-purple-700" %>
 
   <%# Priests panel %>
   <% if @priests.any? %>

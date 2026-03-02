@@ -1,53 +1,81 @@
-<%= form_with(model: user, class: "space-y-6") do |form| %>
+<%= form_with(model: user, class: "space-y-5") do |form| %>
   <% if user.errors.any? %>
-    <div class="bg-red-50 border border-red-300 text-red-800 rounded-lg p-4">
-      <h2 class="font-semibold mb-2"><%= t("users.form.errors.title", count: user.errors.count) %></h2>
-      <ul class="list-disc list-inside">
-        <% user.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
+    <div class="flex items-start gap-3 bg-red-50 border border-red-200 text-red-800 rounded-xl p-4">
+      <i class="ph ph-warning-circle text-lg text-red-500 shrink-0 mt-0.5"></i>
+      <div>
+        <p class="font-semibold text-sm mb-1"><%= t("users.form.errors.title", count: user.errors.count) %></p>
+        <ul class="list-disc list-inside text-sm space-y-0.5">
+          <% user.errors.each do |error| %>
+            <li><%= error.full_message %></li>
+          <% end %>
+        </ul>
+      </div>
     </div>
   <% end %>
 
-  <div class="grid grid-cols-2 gap-4">
-    <div>
-      <%= form.label :first_name, class: "block text-sm font-medium text-gray-700 mb-1" %>
-      <%= form.text_field :first_name, class: "w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500" %>
+  <%# Personal info %>
+  <div class="space-y-4">
+    <p class="text-xs font-semibold text-gray-400 uppercase tracking-wide"><%= t("activerecord.models.user.one") %></p>
+
+    <div class="grid grid-cols-2 gap-4">
+      <div>
+        <%= form.label :first_name, class: "block text-sm font-medium text-gray-700 mb-1.5" %>
+        <%= form.text_field :first_name, class: "w-full rounded-md border border-gray-300 px-3 py-2.5 text-sm shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500" %>
+      </div>
+      <div>
+        <%= form.label :last_name, class: "block text-sm font-medium text-gray-700 mb-1.5" %>
+        <%= form.text_field :last_name, class: "w-full rounded-md border border-gray-300 px-3 py-2.5 text-sm shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500" %>
+      </div>
     </div>
-    <div>
-      <%= form.label :last_name, class: "block text-sm font-medium text-gray-700 mb-1" %>
-      <%= form.text_field :last_name, class: "w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500" %>
+
+    <div class="grid grid-cols-2 gap-4">
+      <div>
+        <%= form.label :email, class: "block text-sm font-medium text-gray-700 mb-1.5" %>
+        <%= form.text_field :email, class: "w-full rounded-md border border-gray-300 px-3 py-2.5 text-sm shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500" %>
+      </div>
+      <div>
+        <%= form.label :phone, class: "block text-sm font-medium text-gray-700 mb-1.5" %>
+        <%= form.telephone_field :phone, class: "w-full rounded-md border border-gray-300 px-3 py-2.5 text-sm shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500" %>
+      </div>
     </div>
   </div>
 
-  <div class="grid grid-cols-2 gap-4">
+  <div class="border-t border-gray-100"></div>
+
+  <%# Role & credentials %>
+  <div class="space-y-4">
+    <p class="text-xs font-semibold text-gray-400 uppercase tracking-wide"><%= t("activerecord.attributes.user.role") %> & <%= t("activerecord.attributes.user.password") %></p>
+
     <div>
-      <%= form.label :email, class: "block text-sm font-medium text-gray-700 mb-1" %>
-      <%= form.text_field :email, class: "w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500" %>
+      <%= form.label :role, class: "block text-sm font-medium text-gray-700 mb-1.5" %>
+      <%# role-selector JS-dynamic classes (keep for Tailwind scanner): bg-green-50 text-green-700 ring-green-600/20 bg-red-50 text-red-700 ring-red-600/10 bg-purple-50 text-purple-700 ring-purple-700/10 %>
+      <div data-controller="role-selector" class="relative flex rounded-md border border-gray-200 overflow-hidden bg-white shadow-sm">
+        <div data-role-selector-target="pill" class="absolute inset-y-1 rounded-md ring-1 ring-inset transition-all duration-300 ease-in-out pointer-events-none"></div>
+        <% User.roles.keys.each_with_index do |role, i| %>
+          <label data-role-selector-target="label" data-role="<%= role %>"
+                 class="relative flex-1 cursor-pointer text-gray-600 z-10 transition-colors duration-300 <%= i > 0 ? "border-gray-200" : "" %>">
+            <%= form.radio_button :role, role, class: "sr-only", data: { action: "change->role-selector#change" } %>
+            <span class="block px-4 py-2.5 text-sm font-medium text-center">
+              <%= t("activerecord.attributes.user.roles.#{role}") %>
+            </span>
+          </label>
+        <% end %>
+      </div>
     </div>
-    <div>
-      <%= form.label :phone, class: "block text-sm font-medium text-gray-700 mb-1" %>
-      <%= form.telephone_field :phone, class: "w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500" %>
+
+    <div class="grid grid-cols-2 gap-4">
+      <div>
+        <%= form.label :password, class: "block text-sm font-medium text-gray-700 mb-1.5" %>
+        <%= form.password_field :password, class: "w-full rounded-md border border-gray-300 px-3 py-2.5 text-sm shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500" %>
+      </div>
+      <div>
+        <%= form.label :password_confirmation, class: "block text-sm font-medium text-gray-700 mb-1.5" %>
+        <%= form.password_field :password_confirmation, class: "w-full rounded-md border border-gray-300 px-3 py-2.5 text-sm shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500" %>
+      </div>
     </div>
   </div>
 
-  <div class="grid grid-cols-3 gap-4">
-    <div>
-      <%= form.label :role, class: "block text-sm font-medium text-gray-700 mb-1" %>
-      <%= form.select :role, User.roles.keys.map { |r| [t("activerecord.attributes.user.roles.#{r}"), r] }, {}, class: "w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500" %>
-    </div>
-    <div>
-      <%= form.label :password, class: "block text-sm font-medium text-gray-700 mb-1" %>
-      <%= form.password_field :password, class: "w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500" %>
-    </div>
-    <div>
-      <%= form.label :password_confirmation, class: "block text-sm font-medium text-gray-700 mb-1" %>
-      <%= form.password_field :password_confirmation, class: "w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500" %>
-    </div>
-  </div>
-
-  <div>
-    <%= form.submit class: "cursor-pointer rounded-md bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500" %>
+  <div class="border-t border-gray-100 pt-4 flex justify-end">
+    <%= form.submit class: "cursor-pointer rounded-md bg-blue-600 px-6 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 transition-colors" %>
   </div>
 <% end %>

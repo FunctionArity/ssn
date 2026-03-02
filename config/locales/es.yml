@@ -350,6 +350,7 @@ es:
       edit: Editar
       back: Volver a servicios
       destroy: Eliminar
+      destroy_confirm: "¿Estás seguro de que querés eliminar este servicio?"
       complete: Completar
     new:
       title: Nuevo servicio

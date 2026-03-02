@@ -1,0 +1,17 @@
+<%# locals: (title:, icon:, icon_class: "bg-blue-100 text-blue-700", action_label: nil, action_path: nil) %>
+<div class="flex items-center justify-between mb-8 px-6 py-5 bg-white rounded-2xl border border-gray-200 shadow-sm">
+  <div class="flex items-center gap-4">
+    <div class="flex items-center justify-center w-12 h-12 rounded-xl shadow-sm <%= icon_class %>">
+      <i class="ph <%= icon %> text-2xl"></i>
+    </div>
+    <div>
+      <h1 class="text-2xl font-bold text-gray-900 leading-tight"><%= title %></h1>
+    </div>
+  </div>
+  <% if action_label && action_path %>
+    <%= link_to action_path, class: "flex items-center gap-2 rounded-xl bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 transition-colors" do %>
+      <i class="ph ph-plus text-base"></i>
+      <%= action_label %>
+    <% end %>
+  <% end %>
+</div>
