@@ -1,20 +1,33 @@
-<div id="<%= dom_id health_facility %>" class="border border-gray-200 rounded-lg p-6 space-y-3">
-  <p>
-    <span class="text-sm font-medium text-gray-500"><%= HealthFacility.human_attribute_name(:name) %></span><br>
-    <span class="text-gray-900"><%= health_facility.name %></span>
-  </p>
+<div id="<%= dom_id health_facility %>" class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
 
-  <p>
-    <span class="text-sm font-medium text-gray-500"><%= HealthFacility.human_attribute_name(:address) %></span><br>
-    <span class="text-gray-900"><%= health_facility.address %></span>
-  </p>
-
-  <% if health_facility.address.present? %>
-    <div data-controller="address-map"
-         data-address-map-initial-address-value="<%= health_facility.address %>">
-      <div data-address-map-target="map"
-           class="mt-1 rounded-md overflow-hidden border border-gray-200"
-           style="height: 400px;"></div>
+  <div class="px-6 py-5 flex items-center justify-between bg-gradient-to-r from-teal-50 to-white border-b border-gray-100">
+    <div>
+      <p class="text-xs font-medium text-teal-500 uppercase tracking-wide"><%= HealthFacility.human_attribute_name(:name) %></p>
+      <h2 class="text-xl font-bold text-gray-900 mt-0.5"><%= health_facility.name %></h2>
     </div>
-  <% end %>
+    <div class="flex items-center justify-center w-12 h-12 rounded-full bg-teal-100 text-teal-700 shrink-0">
+      <i class="ph ph-hospital text-xl"></i>
+    </div>
+  </div>
+
+  <div class="flex flex-col lg:flex-row">
+    <div class="px-6 py-4 flex items-start gap-4 border-b border-gray-100 lg:border-b-0 lg:border-r lg:w-80 lg:shrink-0">
+      <div class="flex items-center justify-center w-8 h-8 rounded-full bg-gray-100 text-gray-500 shrink-0 mt-0.5">
+        <i class="ph ph-map-pin text-sm"></i>
+      </div>
+      <div>
+        <p class="text-xs font-medium text-gray-400 uppercase tracking-wide"><%= HealthFacility.human_attribute_name(:address) %></p>
+        <p class="text-sm text-gray-900 mt-0.5"><%= health_facility.address %></p>
+      </div>
+    </div>
+
+    <% if health_facility.address.present? %>
+      <div class="grow" data-controller="address-map"
+           data-address-map-initial-address-value="<%= health_facility.address %>">
+        <div data-address-map-target="map"
+             class="w-full h-64 lg:h-full"
+             style="min-height: 300px;"></div>
+      </div>
+    <% end %>
+  </div>
 </div>

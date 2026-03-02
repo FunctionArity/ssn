@@ -4,20 +4,63 @@
     <%= link_to t(".new_user"), new_user_path, class: "rounded-md bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500" %>
   </div>
 
-  <div id="users" class="space-y-4">
-    <% @users.each do |user| %>
-      <div class="border border-gray-200 rounded-lg p-4 flex items-center justify-between">
-        <div>
-          <p class="font-semibold">
-            <span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium <%= user.role_badge_class %>"><%= t("activerecord.attributes.user.roles.#{user.role}") %></span>
-            <%= user.first_name %> <%= user.last_name %>
-          </p>
-          <p class="text-sm text-gray-500"><%= user.email %></p>
+  <% %w[guardian vocal priest].each do |role| %>
+    <% users = @users_by_role[role] %>
+    <% next if users.blank? %>
+
+    <%
+      accent_class = case role
+        when "guardian" then "border-l-green-500"
+        when "vocal"    then "border-l-red-500"
+        when "priest"   then "border-l-purple-500"
+      end
+      avatar_class = case role
+        when "guardian" then "bg-green-100 text-green-700"
+        when "vocal"    then "bg-red-100 text-red-700"
+        when "priest"   then "bg-purple-100 text-purple-700"
+      end
+      accent_top_class = case role
+        when "guardian" then "border-t-green-500"
+        when "vocal"    then "border-t-red-500"
+        when "priest"   then "border-t-purple-500"
+      end
+    %>
+
+    <details class="mb-4 group border border-gray-200 border-l-4 <%= accent_class %> rounded-xl bg-white shadow-sm" open>
+      <summary class="flex items-center justify-between px-5 py-4 cursor-pointer select-none list-none">
+        <div class="flex items-center gap-2">
+          <h2 class="text-base font-semibold text-gray-700"><%= t("activerecord.attributes.user.roles.#{role}") %></h2>
+          <span class="text-xs text-gray-400 font-medium">(<%= users.count %>)</span>
         </div>
-        <%= link_to user, class: "flex items-center gap-1 text-blue-600 hover:underline text-sm" do %>
-          <i class="ph ph-eye"></i> <%= t(".show") %>
-        <% end %>
+        <i class="ph ph-caret-down text-gray-400 text-lg transition-transform duration-200 group-open:rotate-180"></i>
+      </summary>
+
+      <div class="px-5 pb-5">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+          <% users.each do |user| %>
+            <div class="bg-white border border-gray-200 border-t-4 <%= accent_top_class %> rounded-xl p-5 flex flex-col gap-4 shadow-sm hover:shadow-lg transition-all duration-200 hover:-translate-y-0.5">
+              <div class="flex items-center gap-3">
+                <div class="flex items-center justify-center w-11 h-11 rounded-full text-base font-bold shrink-0 <%= avatar_class %>">
+                  <%= user.first_name[0] %><%= user.last_name[0] %>
+                </div>
+                <div class="min-w-0">
+                  <p class="font-semibold text-gray-900 leading-tight truncate"><%= user.full_name %></p>
+                  <p class="text-xs text-gray-400 truncate mt-0.5"><%= user.email %></p>
+                  <% if user.phone.present? %>
+                    <p class="text-xs text-gray-400 truncate mt-0.5"><i class="ph ph-phone"></i> <%= user.phone %></p>
+                  <% end %>
+                </div>
+              </div>
+
+              <div class="flex items-center justify-end mt-auto pt-3 border-t border-gray-100">
+                <%= link_to user, class: "flex items-center gap-1 text-sm font-medium text-blue-600 hover:text-blue-800" do %>
+                  <i class="ph ph-arrow-right"></i> <%= t(".show") %>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+        </div>
       </div>
-    <% end %>
-  </div>
+    </details>
+  <% end %>
 </div>

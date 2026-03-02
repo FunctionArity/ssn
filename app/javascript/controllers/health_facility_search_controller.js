@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["input", "dropdown", "hiddenField", "addressInput"]
+  static targets = ["input", "dropdown", "hiddenField"]
   static values = { facilities: Array, selectedId: Number, selectedName: String }
 
   connect() {
@@ -52,9 +52,8 @@ export default class extends Controller {
     this.inputTarget.value = name
     this.dropdownTarget.classList.add("hidden")
 
-    if (address && this.hasAddressInputTarget) {
-      this.addressInputTarget.value = address
-      this.addressInputTarget.dispatchEvent(new Event("input", { bubbles: true }))
+    if (address) {
+      this.dispatch("select", { detail: { address } })
     }
   }
 

@@ -20,6 +20,10 @@
     inline-flex items-center rounded-md bg-purple-50 px-2 py-1 text-xs font-medium text-purple-700 inset-ring inset-ring-purple-700/10
 }
 
+.badge_blue {
+  @apply
+  inline-flex items-center rounded-md bg-purple-50 px-2 py-1 text-xs font-medium text-blue-700 inset-ring inset-ring-blue-700/10
+}
 .sidebar {
   width: 4rem;
   padding-left: 0.5rem;

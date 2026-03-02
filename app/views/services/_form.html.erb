@@ -13,23 +13,39 @@
   <%= form.hidden_field :guard_id %>
 
   <% if service.guard_id.blank? %>
-    <div class="bg-red-50 border border-red-200 text-red-700 rounded-lg p-3 text-sm">
+    <div class="flex items-center gap-3 bg-red-50 border border-red-200 text-red-700 rounded-xl p-4 text-sm">
+      <i class="ph ph-warning text-lg shrink-0"></i>
       <%= t("services.form.no_guard_warning") %>
     </div>
   <% else %>
-    <% guard = service.guard || Guard.find(service.guard_id) %>
-    <div class="bg-blue-50 border border-blue-100 rounded-lg p-4 grid grid-cols-3 gap-4 text-sm">
-      <div>
-        <span class="block text-xs font-medium text-gray-400 mb-0.5"><%= Guard.human_attribute_name(:due_date) %></span>
-        <span class="text-gray-700"><%= l(guard.due_date, format: :long) %></span>
+    <% guard = service.guard %>
+    <div class="bg-gradient-to-r from-indigo-50 to-white border border-indigo-100 rounded-xl overflow-hidden">
+      <div class="px-4 py-3 border-b border-indigo-100 flex items-center gap-2">
+        <div class="flex items-center justify-center w-7 h-7 rounded-full bg-indigo-100 text-indigo-700">
+          <i class="ph ph-calendar-check text-sm"></i>
+        </div>
+        <span class="text-xs font-semibold text-indigo-600 uppercase tracking-wide"><%= Guard.human_attribute_name(:due_date) %>: <%= l(guard.due_date, format: :long) %></span>
+        <span class="ml-auto text-xs font-bold text-indigo-400"># <%= guard.day_number %></span>
       </div>
-      <div>
-        <span class="block text-xs font-medium text-gray-400 mb-0.5"><%= Guard.human_attribute_name(:priest) %></span>
-        <span class="text-gray-700"><%= guard.priest.first_name %> <%= guard.priest.last_name %></span>
-      </div>
-      <div>
-        <span class="block text-xs font-medium text-gray-400 mb-0.5"><%= Guard.human_attribute_name(:vocal) %></span>
-        <span class="text-gray-700"><%= guard.vocal.first_name %> <%= guard.vocal.last_name %></span>
+      <div class="grid grid-cols-2 divide-x divide-indigo-100">
+        <div class="px-4 py-3 flex items-center gap-3">
+          <div class="flex items-center justify-center w-7 h-7 rounded-full bg-purple-100 text-purple-600 shrink-0">
+            <i class="ph ph-cross text-xs"></i>
+          </div>
+          <div>
+            <p class="text-xs text-gray-400"><%= Guard.human_attribute_name(:priest) %></p>
+            <p class="text-sm font-semibold text-gray-800"><%= guard.priest.full_name %></p>
+          </div>
+        </div>
+        <div class="px-4 py-3 flex items-center gap-3">
+          <div class="flex items-center justify-center w-7 h-7 rounded-full bg-red-100 text-red-600 shrink-0">
+            <i class="ph ph-user text-xs"></i>
+          </div>
+          <div>
+            <p class="text-xs text-gray-400"><%= Guard.human_attribute_name(:vocal) %></p>
+            <p class="text-sm font-semibold text-gray-800"><%= guard.vocal.full_name %></p>
+          </div>
+        </div>
       </div>
     </div>
   <% end %>
@@ -64,7 +80,23 @@
     </div>
   </div>
 
-  <div data-controller="health-facility-search"
+  <div class="grid grid-cols-3 gap-4">
+    <div class="col-span-1">
+      <%= form.label :pathology, class: "block text-sm font-medium text-gray-700 mb-1" %>
+      <%= form.text_field :pathology, class: "w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500" %>
+    </div>
+    <div class="col-span-1">
+      <%= form.label :health_status, class: "block text-sm font-medium text-gray-700 mb-1" %>
+      <%= form.text_field :health_status, class: "w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500" %>
+    </div>
+    <div class="col-span-1">
+      <%= form.label :sacraments, class: "block text-sm font-medium text-gray-700 mb-1" %>
+      <%= form.text_field :sacraments, class: "w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500" %>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-3 gap-4">
+    <div class="col-span-2" data-controller="health-facility-search"
        data-health-facility-search-facilities-value="<%= HealthFacility.order(:name).map { |f| { id: f.id, name: f.name, address: f.address } }.to_json %>"
        data-health-facility-search-selected-id-value="<%= service.health_facility_id.to_i %>"
        data-health-facility-search-selected-name-value="<%= service.health_facility&.name %>">
@@ -80,14 +112,14 @@
       <div data-health-facility-search-target="dropdown"
            class="hidden absolute z-10 mt-1 w-full rounded-md border border-gray-200 bg-white shadow-lg max-h-48 overflow-y-auto"></div>
     </div>
+    </div>
+    <div class="col-span-1">
+      <%= form.label :health_facility_place, class: "block text-sm font-medium text-gray-700 mb-1" %>
+      <%= form.text_field :health_facility_place, class: "w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500" %>
+    </div>
   </div>
 
-  <div>
-    <%= form.label :comments, class: "block text-sm font-medium text-gray-700 mb-1" %>
-    <%= form.text_area :comments, rows: 3, class: "w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500" %>
-  </div>
-
-<div data-controller="address-map"
+  <div data-controller="address-map"
        data-address-map-initial-address-value="<%= service.address %>">
     <%= form.label :address, class: "block text-sm font-medium text-gray-700 mb-1" %>
     <%= form.text_field :address,
@@ -96,6 +128,11 @@
     <div data-address-map-target="map"
          class="mt-2 rounded-md overflow-hidden border border-gray-200"
          style="height: 400px;"></div>
+  </div>
+
+  <div>
+    <%= form.label :comments, class: "block text-sm font-medium text-gray-700 mb-1" %>
+    <%= form.text_area :comments, rows: 3, class: "w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500" %>
   </div>
 
   <div>

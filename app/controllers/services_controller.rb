@@ -66,6 +66,6 @@ class ServicesController < ApplicationController
   end
 
   def service_params
-    params.expect(service: [ :guard_id, :due_date, :full_name, :age, :status, :caller_full_name, :caller_phone, :caller_relationship, :comments, :address, :health_facility_id ])
+    params.expect(service: [ :guard_id, :due_date, :full_name, :age, :status, :caller_full_name, :caller_phone, :caller_relationship, :comments, :address, :health_facility_id, :health_facility_place, :pathology, :health_status, :sacraments ])
   end
 end

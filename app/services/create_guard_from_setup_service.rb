@@ -1,6 +1,10 @@
 class CreateGuardFromSetupService
   def initialize(guard_setup_id)
-    @guard_setup = GuardSetup.find(guard_setup_id)
+    @guard_setup = if guard_setup_id.present?
+                     GuardSetup.find(guard_setup_id)
+    else
+                     GuardSetup.find_by(day_number: Date.current.day)
+    end
   end
 
   def call

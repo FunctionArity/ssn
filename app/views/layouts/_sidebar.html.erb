@@ -22,7 +22,7 @@
       <div data-disclosure-target="content" class="pl-4 mt-1 space-y-1 overflow-hidden">
         <%= link_to guard_setups_path, class: "sidebar-link flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium #{request.path.start_with?('/guard_setups') ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'}" do %>
           <i class="ph ph-gear text-lg"></i>
-          <span class="sidebar-label"><%= t("guard_setups.index.title") %></span>
+          <span class="sidebar-label"><%= t("guard_setups.index.menu_title") %></span>
         <% end %>
         <%= link_to priest_assignments_path, class: "sidebar-link flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium #{request.path.start_with?('/priest_assignments') ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'}" do %>
           <i class="ph ph-calendar text-lg"></i>

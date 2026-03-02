@@ -50,14 +50,18 @@ es:
       service:
         guard: Guardia
         health_facility: Centro de salud
+        health_facility_place: Piso / Habitación / Cama / Lugar
+        pathology: Patología
+        health_status: Estado de salud
+        sacraments: Sacramentos
         full_name: Nombre completo
         age: Edad
         due_date: Fecha
         status: Estado
         address: Dirección
-        caller_full_name: Nombre del llamante
-        caller_phone: Teléfono del llamante
-        caller_relationship: Parentesco del llamante
+        caller_full_name: Solicito
+        caller_phone: Teléfono
+        caller_relationship: Parentesco
         comments: Comentarios
       user:
         first_name: Nombre
@@ -65,6 +69,7 @@ es:
         email: Correo electrónico
         password: Contraseña
         password_confirmation: Confirmación de contraseña
+        phone: Teléfono
         role: Rol
         roles:
           guardian: Guardian
@@ -159,7 +164,8 @@ es:
       destroyed: La guardia fue eliminada exitosamente.
   guard_setups:
     index:
-      title: Guardias
+      menu_title: Guardias
+      title: Configuración de Guardias
       new_guard_setup: Nueva configuración de guardia
       show: Ver
       create_guard: Crear guardia

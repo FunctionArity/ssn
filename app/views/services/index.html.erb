@@ -4,23 +4,68 @@
     <%= link_to t(".new_service"), new_service_path, class: "rounded-md bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500" %>
   </div>
 
-  <div id="services" class="space-y-4">
+  <div id="services" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
     <% @services.each do |service| %>
-      <div class="border border-gray-200 rounded-lg p-4 flex items-center justify-between">
-        <div>
-          <p class="font-semibold"><%= service.full_name %></p>
-          <p class="text-sm text-gray-500">
-            <%= Service.human_attribute_name(:due_date) %>: <%= service.due_date %> &middot;
-            <%= Service.human_attribute_name(:guard) %>: <%= service.guard.day_number %>
-          </p>
-          <% status_class = service.pending? ? "badge_yellow" : "badge_green" %>
-          <span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium <%= status_class %> mt-1">
-            <%= t("services.status.#{service.status}") %>
-          </span>
+      <div class="bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-0.5 overflow-hidden flex flex-col">
+
+        <div class="px-5 py-4 flex items-center justify-between bg-gradient-to-r from-sky-50 to-white border-b border-gray-100">
+          <div class="min-w-0 pr-3">
+            <p class="text-xs font-medium text-sky-500 uppercase tracking-wide"><%= l(service.due_date, format: :long) %></p>
+            <p class="text-base font-bold text-gray-900 truncate mt-0.5"><%= service.full_name %></p>
+          </div>
+          <div class="flex flex-col items-end gap-2 shrink-0">
+            <% status_class = service.pending? ? "badge_red" : "badge_green" %>
+            <span class="<%= status_class %>"><%= t("services.status.#{service.status}") %></span>
+            <div class="flex items-center justify-center w-8 h-8 rounded-full bg-sky-100 text-sky-700">
+              <i class="ph ph-first-aid text-sm"></i>
+            </div>
+          </div>
         </div>
-        <%= link_to service, class: "flex items-center gap-1 text-blue-600 hover:underline text-sm" do %>
-          <i class="ph ph-eye"></i> <%= t(".show") %>
-        <% end %>
+
+        <div class="px-5 py-4 flex flex-col gap-3 grow">
+          <div class="flex items-center gap-2">
+            <div class="flex items-center justify-center w-7 h-7 rounded-full bg-indigo-100 text-indigo-600 shrink-0">
+              <i class="ph ph-shield text-xs"></i>
+            </div>
+            <div class="min-w-0">
+              <p class="text-xs text-gray-400"><%= Service.human_attribute_name(:guard) %></p>
+              <p class="text-sm font-medium text-gray-900">
+                <%= link_to "Guardia ##{service.guard.day_number}", service.guard, class: "text-indigo-600 hover:underline" %>
+              </p>
+            </div>
+          </div>
+
+          <% if service.health_facility.present? %>
+            <div class="flex items-center gap-2">
+              <div class="flex items-center justify-center w-7 h-7 rounded-full bg-teal-100 text-teal-600 shrink-0">
+                <i class="ph ph-hospital text-xs"></i>
+              </div>
+              <div class="min-w-0">
+                <p class="text-xs text-gray-400"><%= Service.human_attribute_name(:health_facility) %></p>
+                <p class="text-sm font-medium text-gray-900 truncate"><%= service.health_facility.name %></p>
+              </div>
+            </div>
+          <% end %>
+
+          <% if service.pathology.present? %>
+            <div class="flex items-center gap-2">
+              <div class="flex items-center justify-center w-7 h-7 rounded-full bg-orange-100 text-orange-600 shrink-0">
+                <i class="ph ph-heartbeat text-xs"></i>
+              </div>
+              <div class="min-w-0">
+                <p class="text-xs text-gray-400"><%= Service.human_attribute_name(:pathology) %></p>
+                <p class="text-sm text-gray-700 truncate"><%= service.pathology %></p>
+              </div>
+            </div>
+          <% end %>
+        </div>
+
+        <div class="px-5 py-3 border-t border-gray-100 flex justify-end">
+          <%= link_to service, class: "flex items-center gap-1 text-sm font-medium text-blue-600 hover:text-blue-800" do %>
+            <i class="ph ph-arrow-right"></i> <%= t(".show") %>
+          <% end %>
+        </div>
+
       </div>
     <% end %>
   </div>

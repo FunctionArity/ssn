@@ -23,6 +23,7 @@ en:
         email: Email
         password: Password
         password_confirmation: Password confirmation
+        phone: Phone
         role: Role
         roles:
           guardian: Guardian
@@ -52,6 +53,10 @@ en:
         due_date: Due date
         status: Status
         address: Address
+        health_facility_place: Place
+        pathology: Pathology
+        health_status: Health status
+        sacraments: Sacraments
         caller_full_name: Caller full name
         caller_phone: Caller phone
         caller_relationship: Caller relationship
@@ -115,6 +120,7 @@ en:
       destroyed: Guard was successfully destroyed.
   guard_setups:
     index:
+      menu_title: Guards
       title: Guard Setups
       new_guard_setup: New guard setup
       show: Show

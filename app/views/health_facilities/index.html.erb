@@ -4,16 +4,24 @@
     <%= link_to t(".new_health_facility"), new_health_facility_path, class: "rounded-md bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500" %>
   </div>
 
-  <div id="health_facilities" class="space-y-4">
+  <div id="health_facilities" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
     <% @health_facilities.each do |health_facility| %>
-      <div class="border border-gray-200 rounded-lg p-4 flex items-center justify-between">
-        <div>
-          <p class="font-semibold"><%= health_facility.name %></p>
-          <p class="text-sm text-gray-500"><%= health_facility.address %></p>
+      <div class="bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-0.5 overflow-hidden">
+        <div class="px-5 py-4 flex items-center gap-3 border-b border-gray-100 bg-gradient-to-r from-teal-50 to-white">
+          <div class="flex items-center justify-center w-9 h-9 rounded-full bg-teal-100 text-teal-700 shrink-0">
+            <i class="ph ph-hospital text-base"></i>
+          </div>
+          <p class="font-semibold text-gray-900 truncate"><%= health_facility.name %></p>
         </div>
-        <%= link_to health_facility, class: "flex items-center gap-1 text-blue-600 hover:underline text-sm" do %>
-          <i class="ph ph-eye"></i> <%= t(".show") %>
-        <% end %>
+        <div class="px-5 py-3 flex items-center justify-between gap-3">
+          <div class="flex items-center gap-2 min-w-0">
+            <i class="ph ph-map-pin text-gray-400 shrink-0"></i>
+            <p class="text-sm text-gray-500 truncate"><%= health_facility.address %></p>
+          </div>
+          <%= link_to health_facility, class: "flex items-center gap-1 text-sm font-medium text-blue-600 hover:text-blue-800 shrink-0" do %>
+            <i class="ph ph-arrow-right"></i> <%= t(".show") %>
+          <% end %>
+        </div>
       </div>
     <% end %>
   </div>

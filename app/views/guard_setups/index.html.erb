@@ -4,24 +4,55 @@
     <%= link_to t(".new_guard_setup"), new_guard_setup_path, class: "rounded-md bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500" %>
   </div>
 
-  <div id="guard_setups" class="space-y-4">
+  <div id="guard_setups" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
     <% @guard_setups.each do |guard_setup| %>
-      <div class="border border-gray-200 rounded-lg p-4 flex items-center justify-between">
-        <div>
-          <p class="font-semibold"><%= guard_setup.day_number %></p>
-          <p class="text-sm text-gray-500">
-            <%= GuardSetup.human_attribute_name(:vocal) %>: <%= guard_setup.vocal.first_name %> <%= guard_setup.vocal.last_name %> &middot;
-            <%= t(".guardians_count", count: guard_setup.guardians.size) %>
-          </p>
+      <div class="bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-0.5 overflow-hidden flex flex-col">
+
+        <div class="px-5 py-4 flex items-center justify-between bg-gradient-to-r from-blue-50 to-white border-b border-gray-100">
+          <div>
+            <p class="text-xs font-medium text-blue-400 uppercase tracking-wide"><%= GuardSetup.human_attribute_name(:day_number) %></p>
+            <p class="text-2xl font-bold text-gray-900"># <%= guard_setup.day_number %></p>
+          </div>
+          <div class="flex items-center justify-center w-10 h-10 rounded-full bg-blue-100 text-blue-700">
+            <i class="ph ph-shield text-lg"></i>
+          </div>
         </div>
-        <div class="flex items-center gap-3">
-          <%= link_to new_guard_path(guard_setup_id: guard_setup.id), class: "flex items-center gap-1 text-green-600 hover:underline text-sm" do %>
+
+        <div class="px-5 py-4 flex flex-col gap-3 grow">
+          <div class="flex items-center gap-2">
+            <div class="flex items-center justify-center w-7 h-7 rounded-full bg-red-100 text-red-600 shrink-0">
+              <i class="ph ph-user text-xs"></i>
+            </div>
+            <div class="min-w-0">
+              <p class="text-xs text-gray-400"><%= GuardSetup.human_attribute_name(:vocal) %></p>
+              <p class="text-sm font-medium text-gray-900 truncate"><%= guard_setup.vocal.full_name %></p>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-2">
+            <div class="flex items-center justify-center w-7 h-7 rounded-full bg-green-100 text-green-600 shrink-0 mt-0.5">
+              <i class="ph ph-users text-xs"></i>
+            </div>
+            <div class="min-w-0">
+              <p class="text-xs text-gray-400"><%= t(".guardians_count", count: guard_setup.guardians.size) %></p>
+              <div class="flex flex-wrap gap-1 mt-1">
+                <% guard_setup.guardians.order(:last_name, :first_name).each do |guardian| %>
+                  <span class="badge_green"><%= guardian.full_name %></span>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="px-5 py-3 border-t border-gray-100 flex items-center justify-between gap-2">
+          <%= link_to new_guard_path(guard_setup_id: guard_setup.id), class: "flex items-center gap-1 text-sm font-medium text-green-600 hover:text-green-800" do %>
             <i class="ph ph-plus-circle"></i> <%= t(".create_guard") %>
           <% end %>
-          <%= link_to guard_setup, class: "flex items-center gap-1 text-blue-600 hover:underline text-sm" do %>
-            <i class="ph ph-eye"></i> <%= t(".show") %>
+          <%= link_to guard_setup, class: "flex items-center gap-1 text-sm font-medium text-blue-600 hover:text-blue-800" do %>
+            <i class="ph ph-arrow-right"></i> <%= t(".show") %>
           <% end %>
         </div>
+
       </div>
     <% end %>
   </div>

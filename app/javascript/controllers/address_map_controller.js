@@ -77,6 +77,14 @@ export default class extends Controller {
     )
   }
 
+  handleFacilitySelect(event) {
+    const address = event.detail.address
+    if (address) {
+      this.inputTarget.value = address
+      this.geocode(address)
+    }
+  }
+
   reverseGeocode(latLng) {
     this.geocoder.geocode({ location: latLng }, (results, status) => {
       if (status === "OK" && results[0]) {
