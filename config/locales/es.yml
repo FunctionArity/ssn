@@ -337,9 +337,10 @@ es:
       new_service: Nuevo servicio
       show: Ver
     show:
-      edit: Editar este servicio
+      edit: Editar
       back: Volver a servicios
-      destroy: Eliminar este servicio
+      destroy: Eliminar
+      complete: Completar
     new:
       title: Nuevo servicio
       back: Volver a servicios
@@ -358,6 +359,7 @@ es:
       created: El servicio fue creado exitosamente.
       updated: El servicio fue actualizado exitosamente.
       destroyed: El servicio fue eliminado exitosamente.
+      completed: El servicio fue marcado como completado.
     status:
       pending: Pendiente
       completed: Completado

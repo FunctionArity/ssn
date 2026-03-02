@@ -185,6 +185,7 @@ en:
       edit: Edit this service
       back: Back to services
       destroy: Destroy this service
+      complete: Mark as completed
     new:
       title: New service
       back: Back to services
@@ -203,6 +204,7 @@ en:
       created: Service was successfully created.
       updated: Service was successfully updated.
       destroyed: Service was successfully destroyed.
+      completed: Service was successfully completed.
     status:
       pending: Pending
       completed: Completed

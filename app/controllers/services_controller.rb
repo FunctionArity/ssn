@@ -1,11 +1,24 @@
 class ServicesController < ApplicationController
-  before_action :set_service, only: %i[ show edit update destroy ]
+  before_action :set_service, only: %i[ show edit update destroy pdf complete ]
 
   def index
     @services = Service.includes(:guard, :created_by).order(due_date: :desc)
   end
 
   def show
+  end
+
+  def complete
+    @service.completed!
+    redirect_to @service, notice: t("services.notices.completed")
+  end
+
+  def pdf
+    pdf_data = ServicePdf.new(@service).render
+    send_data pdf_data,
+      filename: "servicio_#{@service.id}.pdf",
+      type: "application/pdf",
+      disposition: "inline"
   end
 
   def new

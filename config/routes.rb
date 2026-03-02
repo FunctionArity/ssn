@@ -5,7 +5,12 @@ Rails.application.routes.draw do
   resources :guard_setups
   resources :priest_setups, only: %i[create destroy]
   resources :priest_assignments, only: %i[index]
-  resources :services
+  resources :services do
+    member do
+      get  :pdf
+      post :complete
+    end
+  end
   resources :health_facilities
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
