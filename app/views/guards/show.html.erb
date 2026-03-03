@@ -9,7 +9,9 @@
 
   <div class="mt-4 flex items-center gap-3">
     <%= link_to t("edit"), edit_guard_path(@guard), class: "flex items-center gap-1.5 rounded-md bg-white border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50" %>
-    <%= button_to t("destroy"), @guard, method: :delete, class: "cursor-pointer flex items-center gap-1.5 rounded-md bg-red-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500" %>
+    <%= button_to @guard, method: :delete, form: { data: { turbo_confirm: t(".destroy_confirm") } }, class: "cursor-pointer flex items-center gap-1.5 rounded-md bg-red-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500" do %>
+      <i class="ph ph-trash"></i> <%= t("destroy") %>
+    <% end %>
   </div>
 
   <div class="mt-8">
@@ -26,7 +28,7 @@
           <%= link_to service, class: "flex items-center gap-4 px-4 py-3 hover:bg-gray-50 transition-colors" do %>
             <% icon_class = service.pending? ? "bg-red-100 text-red-600" : "bg-green-100 text-green-600" %>
             <div class="flex items-center justify-center w-8 h-8 rounded-full <%= icon_class %> shrink-0">
-              <i class="ph ph-first-aid text-sm"></i>
+              <i class="ph ph-hand-heart text-sm"></i>
             </div>
             <div class="flex-1 min-w-0">
               <p class="text-sm font-medium text-gray-900 truncate"><%= service.full_name %></p>

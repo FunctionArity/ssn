@@ -155,6 +155,7 @@ es:
       edit: Editar esta guardia
       back: Volver a guardias
       destroy: Eliminar esta guardia
+      destroy_confirm: "¿Estás seguro de que querés eliminar esta guardia?"
     new:
       title: Nueva guardia
       back: Volver a guardias
@@ -183,7 +184,7 @@ es:
       title: Configuración de Guardias
       new_guard_setup: Nueva configuración de guardia
       show: Ver
-      create_guard: Crear guardia
+      create_guard: Abrir Guardia
       guardians_count:
         one: "%{count} guardián"
         other: "%{count} guardianes"

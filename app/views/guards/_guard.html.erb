@@ -4,7 +4,7 @@
   <div class="px-6 py-5 flex items-center justify-between <%= header_bg %> border-b border-gray-100">
     <div>
       <p class="text-xs font-medium text-indigo-400 uppercase tracking-wide"><%= l(guard.due_date, format: :long) %></p>
-      <h2 class="text-2xl font-bold text-gray-900 mt-0.5"># <%= guard.day_number %></h2>
+      <h2 class="text-2xl font-bold text-gray-900 mt-0.5"># <%= guard.day_number %><%= " #{content_tag(:i, '', class: 'ph ph-lock-simple text-lg text-gray-400 align-middle')}".html_safe if guard.closed? %></h2>
     </div>
     <div class="flex flex-col items-end gap-2">
       <div class="flex items-center justify-center w-12 h-12 rounded-full <%= guard.open? ? 'bg-indigo-100 text-indigo-700' : 'bg-gray-200 text-gray-400' %>">
