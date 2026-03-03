@@ -8,7 +8,9 @@
   <%= render @user %>
 
   <div class="mt-4 flex items-center gap-3">
-    <%= link_to t(".edit"), edit_user_path(@user), class: "flex items-center gap-1.5 rounded-md bg-white border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50" %>
-    <%= button_to t(".destroy"), @user, method: :delete, class: "cursor-pointer flex items-center gap-1.5 rounded-md bg-red-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500" %>
+    <%= link_to t("edit"), edit_user_path(@user), class: "flex items-center gap-1.5 rounded-md bg-white border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50" %>
+    <%= button_to @user, method: :delete, form: { data: { turbo_confirm: t(".destroy_confirm") } }, class: "cursor-pointer flex items-center gap-1.5 rounded-md bg-red-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500" do %>
+      <i class="ph ph-trash"></i> <%= t("destroy") %>
+    <% end %>
   </div>
 </div>

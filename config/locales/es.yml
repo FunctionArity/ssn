@@ -123,6 +123,7 @@ es:
       edit: Editar este usuario
       back: Volver a usuarios
       destroy: Eliminar este usuario
+      destroy_confirm: "¿Estás seguro de que querés eliminar este usuario?"
     new:
       title: Nuevo usuario
       back: Volver a usuarios
