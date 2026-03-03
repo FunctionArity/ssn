@@ -76,6 +76,23 @@ jobs:
           # REDIS_URL: redis://localhost:6379/0
         run: bin/rails db:test:prepare test test:system
 
+      - name: Report coverage
+        if: always()
+        run: |
+          COVERAGE=$(ruby -rjson -e "puts JSON.parse(File.read('coverage/.last_run.json')).dig('result', 'line').round(2)")
+          if (( $(echo "$COVERAGE >= 80" | bc -l) )); then
+            ICON="✅"
+          elif (( $(echo "$COVERAGE >= 60" | bc -l) )); then
+            ICON="⚠️"
+          else
+            ICON="❌"
+          fi
+          echo "## $ICON Test Coverage" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Metric | Value |" >> $GITHUB_STEP_SUMMARY
+          echo "|--------|-------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Line coverage | **${COVERAGE}%** |" >> $GITHUB_STEP_SUMMARY
+
       - name: Keep screenshots from failed system tests
         uses: actions/upload-artifact@v7
         if: failure()
