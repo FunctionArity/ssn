@@ -39,3 +39,5 @@
 /node_modules
 
 /coverage
+
+/.idea/workspace.xml
