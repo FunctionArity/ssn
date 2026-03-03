@@ -59,10 +59,11 @@ class GuardsController < ApplicationController
   end
 
   def set_services_count
-    @services_count = @guard.services.count
+    @services = @guard.services.includes(:health_facility).order(due_date: :desc)
+    @services_count = @services.size
   end
 
   def guard_params
-    params.expect(guard: [ :day_number, :due_date, :notes, :vocal_id, :priest_id, :guard_setup_id, guardian_ids: [] ])
+    params.expect(guard: [ :day_number, :due_date, :notes, :status, :vocal_id, :priest_id, :guard_setup_id, guardian_ids: [] ])
   end
 end

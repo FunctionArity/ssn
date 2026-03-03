@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_03_02_184305) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_03_033422) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -50,6 +50,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_02_184305) do
     t.bigint "guard_setup_id", null: false
     t.text "notes"
     t.bigint "priest_id", null: false
+    t.integer "status", default: 0, null: false
     t.datetime "updated_at", null: false
     t.bigint "vocal_id", null: false
     t.index ["guard_setup_id"], name: "index_guards_on_guard_setup_id"

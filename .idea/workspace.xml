@@ -1,28 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="3de4ba99-b3e1-4e7d-a3cc-f22b014502c0" name="Changes" comment="wip">
+    <list default="true" id="3de4ba99-b3e1-4e7d-a3cc-f22b014502c0" name="Changes" comment="add index header">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/javascript/application.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/javascript/application.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/javascript/controllers/address_map_controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/javascript/controllers/address_map_controller.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/javascript/controllers/health_facility_search_controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/javascript/controllers/health_facility_search_controller.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/javascript/controllers/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/javascript/controllers/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/services/service_pdf.rb" beforeDir="false" afterPath="$PROJECT_DIR$/app/services/service_pdf.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/views/guard_setups/index.html.erb" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/guard_setups/index.html.erb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/controllers/guards_controller.rb" beforeDir="false" afterPath="$PROJECT_DIR$/app/controllers/guards_controller.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/javascript/confirm_dialog.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/javascript/confirm_dialog.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/models/guard.rb" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/guard.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/services/create_guard_from_setup_service.rb" beforeDir="false" afterPath="$PROJECT_DIR$/app/services/create_guard_from_setup_service.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/views/guards/_form.html.erb" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/guards/_form.html.erb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/views/guards/_guard.html.erb" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/guards/_guard.html.erb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/views/guards/index.html.erb" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/guards/index.html.erb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/views/health_facilities/index.html.erb" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/health_facilities/index.html.erb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/views/guards/show.html.erb" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/guards/show.html.erb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/views/home/index.html.erb" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/home/index.html.erb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/views/layouts/application.html.erb" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/layouts/application.html.erb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/views/priest_assignments/index.html.erb" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/priest_assignments/index.html.erb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/views/services/_form.html.erb" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/services/_form.html.erb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/views/services/_service.html.erb" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/services/_service.html.erb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/views/services/index.html.erb" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/services/index.html.erb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/views/services/show.html.erb" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/services/show.html.erb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/views/users/_form.html.erb" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/users/_form.html.erb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/views/users/index.html.erb" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/users/index.html.erb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/views/users/new.html.erb" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/users/new.html.erb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/locales/en.yml" beforeDir="false" afterPath="$PROJECT_DIR$/config/locales/en.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/config/locales/es.yml" beforeDir="false" afterPath="$PROJECT_DIR$/config/locales/es.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/schema.rb" beforeDir="false" afterPath="$PROJECT_DIR$/db/schema.rb" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -81,7 +74,7 @@
     "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
     "Test::Unit/Shoulda/Minitest.test_should_not_create_priest_setup_with_invalid_week_number.executor": "Debug",
-    "com.intellij.lang.ruby.rbs.tools.collection.workspace.sync.RbsCollectionUpdateProjectActivity#LAST_UPDATE_TIMESTAMP": "1772206665993",
+    "com.intellij.lang.ruby.rbs.tools.collection.workspace.sync.RbsCollectionUpdateProjectActivity#LAST_UPDATE_TIMESTAMP": "1772498195100",
     "git-widget-placeholder": "#45 on add__services",
     "last_opened_file_path": "/Users/pablo/sites/rails/ssn/app/javascript/controllers",
     "nodejs_package_manager_path": "yarn",
@@ -420,7 +413,8 @@
       <workItem from="1772045862733" duration="713000" />
       <workItem from="1772048166058" duration="1559000" />
       <workItem from="1772206607040" duration="7449000" />
-      <workItem from="1772229484975" duration="33346000" />
+      <workItem from="1772229484975" duration="33989000" />
+      <workItem from="1772498136061" duration="4144000" />
     </task>
     <task id="LOCAL-00001" summary="add guard setup logic">
       <option name="closed" value="true" />
@@ -526,7 +520,15 @@
       <option name="project" value="LOCAL" />
       <updated>1772485023012</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="add index header">
+      <option name="closed" value="true" />
+      <created>1772492220649</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1772492220649</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -544,7 +546,8 @@
     <MESSAGE value="add service and improve styles" />
     <MESSAGE value="generate pdf for a service" />
     <MESSAGE value="wip" />
-    <option name="LAST_COMMIT_MESSAGE" value="wip" />
+    <MESSAGE value="add index header" />
+    <option name="LAST_COMMIT_MESSAGE" value="add index header" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -559,7 +562,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="ruby-line">
           <url>file://$PROJECT_DIR$/app/services/create_guard_from_setup_service.rb</url>
-          <line>16</line>
+          <line>18</line>
           <properties myBlockOrdinal="-1">
             <option name="block-ordinal" value="-1" />
           </properties>
@@ -569,7 +572,7 @@
     </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/ssn@ssn.rcov" NAME="ssn Coverage Results" MODIFIED="1772485807154" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" MODULE_NAME="ssn" />
+    <SUITE FILE_PATH="coverage/ssn@ssn.rcov" NAME="ssn Coverage Results" MODIFIED="1772498139513" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" MODULE_NAME="ssn" />
     <SUITE FILE_PATH="coverage/ssn@test_should_not_create_priest_setup_with_invalid_week_number.rcov" NAME="test_should_not_create_priest_setup_with_invalid_week_number Coverage Results" MODIFIED="1772206646538" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" MODULE_NAME="ssn" />
   </component>
   <component name="github-copilot-workspace">

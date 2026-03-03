@@ -6,6 +6,8 @@ class Guard < ApplicationRecord
   has_many :guardians, through: :guard_guardians, source: :user
   has_many :services
 
+  enum :status, { open: 0, closed: 1 }, default: :open
+
   validates :day_number, presence: true
   validates :due_date, presence: true
   validate :at_least_one_guardian

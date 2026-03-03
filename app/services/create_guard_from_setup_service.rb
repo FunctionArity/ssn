@@ -8,6 +8,8 @@ class CreateGuardFromSetupService
   end
 
   def call
+    return Guard.new(due_date: Date.current) if @guard_setup.nil?
+
     ActiveRecord::Base.transaction do
       guard = Guard.new(
         day_number: @guard_setup.day_number,

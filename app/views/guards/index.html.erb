@@ -8,15 +8,29 @@
 
   <div id="guards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
     <% @guards.each do |guard| %>
-      <div class="bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-0.5 overflow-hidden flex flex-col">
+      <% header_bg = guard.open? ? "bg-gradient-to-r from-indigo-50 to-white" : "bg-gradient-to-r from-gray-100 to-white" %>
+      <div class="<%= guard.open? ? 'bg-white border-gray-200' : 'bg-gray-50 border-gray-200' %> border rounded-xl shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-0.5 overflow-hidden flex flex-col">
 
-        <div class="px-5 py-4 flex items-center justify-between bg-gradient-to-r from-indigo-50 to-white border-b border-gray-100">
+        <div class="px-5 py-4 flex items-center justify-between <%= header_bg %> border-b border-gray-100">
           <div>
             <p class="text-xs font-medium text-indigo-400 uppercase tracking-wide"><%= l(guard.due_date, format: :long) %></p>
             <p class="text-2xl font-bold text-gray-900"># <%= guard.day_number %></p>
           </div>
-          <div class="flex items-center justify-center w-10 h-10 rounded-full bg-indigo-100 text-indigo-700">
-            <i class="ph ph-calendar-check text-lg"></i>
+          <div class="flex flex-col items-end gap-1.5">
+            <% if guard.open? %>
+              <span class="inline-flex items-center gap-1.5 rounded-full bg-green-50 px-2.5 py-1 text-xs font-semibold text-green-700 ring-1 ring-green-600/20">
+                <span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
+                <%= t("guards.status.open") %>
+              </span>
+            <% else %>
+              <span class="inline-flex items-center gap-1.5 rounded-full bg-gray-100 px-2.5 py-1 text-xs font-semibold text-gray-500 ring-1 ring-gray-400/30">
+                <i class="ph ph-lock-simple"></i>
+                <%= t("guards.status.closed") %>
+              </span>
+            <% end %>
+            <div class="flex items-center justify-center w-10 h-10 rounded-full <%= guard.open? ? 'bg-indigo-100 text-indigo-700' : 'bg-gray-200 text-gray-400' %>">
+              <i class="ph ph-calendar-check text-lg"></i>
+            </div>
           </div>
         </div>
 
