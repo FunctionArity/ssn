@@ -22,6 +22,7 @@ class UsersController < ApplicationController
   # POST /users or /users.json
   def create
     @user = User.new(user_params)
+    @user.password = SecureRandom.hex(12) if user_params[:password].blank?
 
     respond_to do |format|
       if @user.save

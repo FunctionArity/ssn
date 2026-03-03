@@ -1,15 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="3de4ba99-b3e1-4e7d-a3cc-f22b014502c0" name="Changes" comment="fix confirm dialog, add status to guard">
-      <change beforePath="$PROJECT_DIR$/.github/workflows/ci.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/ci.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/ssn.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/ssn.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Gemfile" beforeDir="false" afterPath="$PROJECT_DIR$/Gemfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Gemfile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/Gemfile.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/views/guards/_guard.html.erb" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/guards/_guard.html.erb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/views/guards/show.html.erb" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/guards/show.html.erb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/test_helper.rb" beforeDir="false" afterPath="$PROJECT_DIR$/test/test_helper.rb" afterDir="false" />
+    <list default="true" id="3de4ba99-b3e1-4e7d-a3cc-f22b014502c0" name="Changes" comment="add test coverage">
+      <change beforePath="$PROJECT_DIR$/app/controllers/users_controller.rb" beforeDir="false" afterPath="$PROJECT_DIR$/app/controllers/users_controller.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/views/users/_form.html.erb" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/users/_form.html.erb" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -408,7 +402,7 @@
       <workItem from="1772048166058" duration="1559000" />
       <workItem from="1772206607040" duration="7449000" />
       <workItem from="1772229484975" duration="33989000" />
-      <workItem from="1772498136061" duration="4783000" />
+      <workItem from="1772498136061" duration="5167000" />
     </task>
     <task id="LOCAL-00001" summary="add guard setup logic">
       <option name="closed" value="true" />
@@ -530,7 +524,15 @@
       <option name="project" value="LOCAL" />
       <updated>1772509206339</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="add test coverage">
+      <option name="closed" value="true" />
+      <created>1772509968741</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1772509968741</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -550,7 +552,8 @@
     <MESSAGE value="wip" />
     <MESSAGE value="add index header" />
     <MESSAGE value="fix confirm dialog, add status to guard" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix confirm dialog, add status to guard" />
+    <MESSAGE value="add test coverage" />
+    <option name="LAST_COMMIT_MESSAGE" value="add test coverage" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
