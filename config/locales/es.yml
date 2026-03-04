@@ -358,6 +358,7 @@ es:
       destroy: Eliminar
       destroy_confirm: "¿Estás seguro de que querés eliminar este servicio?"
       complete: Completar
+      complete_confirm: "¿Estás seguro de que querés marcar este servicio como completado?"
     new:
       title: Nuevo servicio
       back: Volver a servicios
