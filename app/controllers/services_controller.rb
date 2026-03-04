@@ -10,7 +10,10 @@ class ServicesController < ApplicationController
 
   def complete
     @service.completed!
-    redirect_to @service, notice: t("services.notices.completed")
+    respond_to do |format|
+      format.turbo_stream { render turbo_stream: turbo_stream.replace(@service, partial: "services/small_view", locals: { service: @service }) }
+      format.html { redirect_to @service, notice: t("services.notices.completed") }
+    end
   end
 
   def pdf
