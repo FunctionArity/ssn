@@ -1,24 +1,39 @@
-# README
+<p align="center">
+ <img src="app/assets/images/icon.svg" width="80" height="80" alt="Servicio Sacerdotal Nocturno">  
+</p>
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+# Servicio Sacerdotal Nocturno
 
-Things you may want to cover:
+Sistema de gestión para la asignación y seguimiento de guardias y turnos nocturnos del servicio sacerdotal, asegurando una cobertura continua y organizada.
 
-* Ruby version
+## Módulos
 
-* System dependencies
+- **Guardias** — Organización y seguimiento de turnos nocturnos
+- **Sacerdotes** — Coordinación de disponibilidad y asignaciones
+- **Servicios** — Gestión de servicios realizados
 
-* Configuration
+## Requisitos
 
-* Database creation
+- Ruby 4.0.1
+- Rails 8.1
+- PostgreSQL
 
-* Database initialization
+## Configuración
 
-* How to run the test suite
+```bash
+bundle install
+rails db:create db:migrate db:seed
+```
 
-* Services (job queues, cache servers, search engines, etc.)
+## Servidor de desarrollo
 
-* Deployment instructions
+```bash
+bin/dev
+```
 
-* ...
+## Tests
+
+```bash
+bundle exec rails test
+bundle exec rails test:system
+```
