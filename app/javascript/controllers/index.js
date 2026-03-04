@@ -17,3 +17,12 @@ application.register("priest-assign", PriestAssignController)
 
 import DisclosureController from "./disclosure_controller"
 application.register("disclosure", DisclosureController)
+
+import AddressMapController from "./address_map_controller"
+application.register("address-map", AddressMapController)
+
+import HealthFacilitySearchController from "./health_facility_search_controller"
+application.register("health-facility-search", HealthFacilitySearchController)
+
+import RoleSelectorController from "./role_selector_controller"
+application.register("role-selector", RoleSelectorController)

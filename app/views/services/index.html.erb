@@ -1,0 +1,14 @@
+<div>
+  <%= render "shared/page_header",
+        title: t(".title"),
+        icon: "ph-hand-heart",
+        icon_class: "bg-sky-100 text-sky-700",
+        action_label: t(".new_service"),
+        action_path: new_service_path %>
+
+  <div id="services" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+    <% @services.each do |service| %>
+      <%= render partial: "small_view", locals: { service: service } %>
+    <% end %>
+  </div>
+</div>

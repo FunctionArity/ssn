@@ -3,6 +3,7 @@ import { Controller } from "@hotwired/stimulus"
 export default class extends Controller {
   dragStart(event) {
     this.draggedPriestId = event.currentTarget.dataset.priestId
+    this.sourceSetupId = event.currentTarget.dataset.sourceSetupId || ""
     event.dataTransfer.setData("text/plain", this.draggedPriestId)
     event.dataTransfer.effectAllowed = "move"
     event.currentTarget.classList.add("opacity-50")
@@ -35,6 +36,7 @@ export default class extends Controller {
     document.getElementById("form_priest_id").value = priestId
     document.getElementById("form_week_number").value = weekNumber
     document.getElementById("form_day_of_week").value = dayOfWeek
+    document.getElementById("form_source_setup_id").value = this.sourceSetupId || ""
 
     document.getElementById("priest-assign-form").submit()
   }

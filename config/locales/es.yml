@@ -24,10 +24,17 @@ es:
       guard_setup:
         one: Configuración
         other: Configuraciones
+      service:
+        one: Servicio
+        other: Servicios
+      health_facility:
+        one: Centro de Salud
+        other: Centros de Salud
     attributes:
       guard:
         day_number: Número de día
         due_date: Fecha de guardia
+        status: Estado
         notes: Notas
         vocal: Vocal
         priest: Sacerdote
@@ -38,17 +45,41 @@ es:
         vocal: Vocal
         priest: Sacerdote
         guardians: Guardianes
+      health_facility:
+        name: Nombre
+        address: Dirección
+      service:
+        guard: Guardia
+        health_facility: Centro de salud
+        health_facility_place: Piso / Habitación / Cama / Lugar
+        pathology: Patología
+        health_status: Estado de salud
+        sacraments: Sacramentos
+        full_name: Nombre completo
+        age: Edad
+        due_date: Fecha
+        status: Estado
+        address: Dirección
+        caller_full_name: Solicito
+        caller_phone: Teléfono
+        caller_relationship: Parentesco
+        comments: Comentarios
       user:
         first_name: Nombre
         last_name: Apellido
         email: Correo electrónico
         password: Contraseña
         password_confirmation: Confirmación de contraseña
+        phone: Teléfono
         role: Rol
         roles:
           guardian: Guardian
           vocal: Vocal
           priest: Sacerdote
+        roles_plural:
+          guardian: Guardianes
+          vocal: Vocales
+          priest: Sacerdotes
     errors:
       models:
         user:
@@ -78,6 +109,9 @@ es:
       not_a_number: "no es un número"
       not_an_integer: "debe ser un entero"
       taken: "ya ha sido tomado"
+      not_saved:
+        one: "1 error impidió guardar este %{resource}:"
+        other: "%{count} errores impidieron guardar este %{resource}:"
   sidebar:
     setup: Configuración
   users:
@@ -89,6 +123,7 @@ es:
       edit: Editar este usuario
       back: Volver a usuarios
       destroy: Eliminar este usuario
+      destroy_confirm: "¿Estás seguro de que querés eliminar este usuario?"
     new:
       title: Nuevo usuario
       back: Volver a usuarios
@@ -110,6 +145,9 @@ es:
       title: Guardias
       new_guard: Nueva guardia
       show: Ver
+      services_count:
+        one: servicio
+        other: servicios
       guardians_count:
         one: "%{count} guardián"
         other: "%{count} guardianes"
@@ -117,6 +155,7 @@ es:
       edit: Editar esta guardia
       back: Volver a guardias
       destroy: Eliminar esta guardia
+      destroy_confirm: "¿Estás seguro de que querés eliminar esta guardia?"
     new:
       title: Nueva guardia
       back: Volver a guardias
@@ -132,16 +171,20 @@ es:
         title:
           one: "%{count} error impidió que esta guardia fuera guardada:"
           other: "%{count} errores impidieron que esta guardia fuera guardada:"
+    status:
+      open: Abierta
+      closed: Cerrada
     notices:
       created: La guardia fue creada exitosamente.
       updated: La guardia fue actualizada exitosamente.
       destroyed: La guardia fue eliminada exitosamente.
   guard_setups:
     index:
-      title: Guardias
+      menu_title: Guardias
+      title: Configuración de Guardias
       new_guard_setup: Nueva configuración de guardia
       show: Ver
-      create_guard: Crear guardia
+      create_guard: Abrir Guardia
       guardians_count:
         one: "%{count} guardián"
         other: "%{count} guardianes"
@@ -279,6 +322,65 @@ es:
       send_instructions: "Recibirás un correo electrónico con instrucciones sobre cómo desbloquear tu cuenta en unos minutos."
       send_paranoid_instructions: "Si tu cuenta existe, recibirás un correo electrónico con instrucciones sobre cómo desbloquearla en unos minutos."
       unlocked: "Tu cuenta ha sido desbloqueada exitosamente. Por favor inicia sesión para continuar."
+  health_facilities:
+    index:
+      title: Centros de Salud
+      new_health_facility: Nuevo centro de salud
+      show: Ver
+    show:
+      edit: Editar este centro de salud
+      back: Volver a centros de salud
+      destroy: Eliminar este centro de salud
+    new:
+      title: Nuevo centro de salud
+      back: Volver a centros de salud
+    edit:
+      title: Editando centro de salud
+      show: Ver este centro de salud
+      back: Volver a centros de salud
+    form:
+      errors:
+        title:
+          one: "%{count} error impidió que este centro de salud fuera guardado:"
+          other: "%{count} errores impidieron que este centro de salud fuera guardado:"
+    notices:
+      created: El centro de salud fue creado exitosamente.
+      updated: El centro de salud fue actualizado exitosamente.
+      destroyed: El centro de salud fue eliminado exitosamente.
+  services:
+    index:
+      title: Servicios
+      new_service: Nuevo servicio
+      show: Ver
+    show:
+      edit: Editar
+      back: Volver a servicios
+      destroy: Eliminar
+      destroy_confirm: "¿Estás seguro de que querés eliminar este servicio?"
+      complete: Completar
+      complete_confirm: "¿Estás seguro de que querés marcar este servicio como completado?"
+    new:
+      title: Nuevo servicio
+      back: Volver a servicios
+    edit:
+      title: Editando servicio
+      show: Ver este servicio
+      back: Volver a servicios
+    form:
+      search_health_facility: Buscar centro de salud...
+      no_guard_warning: No hay guardia asignada a este servicio. Por favor seleccione una guardia antes de guardar.
+      errors:
+        title:
+          one: "%{count} error impidió que este servicio fuera guardado:"
+          other: "%{count} errores impidieron que este servicio fuera guardado:"
+    notices:
+      created: El servicio fue creado exitosamente.
+      updated: El servicio fue actualizado exitosamente.
+      destroyed: El servicio fue eliminado exitosamente.
+      completed: El servicio fue marcado como completado.
+    status:
+      pending: Pendiente
+      completed: Completado
   priest_setups:
     confirm:
       destroy: ¿Estás seguro de que deseas eliminar esta asignación?
@@ -295,3 +397,8 @@ es:
         - Tercero
         - Cuarto
         - Quinta
+  edit: Editar
+  delete: Eliminar
+  destroy: Eliminar
+  view: Ver
+  back: Volver

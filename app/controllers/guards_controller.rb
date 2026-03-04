@@ -1,18 +1,17 @@
 class GuardsController < ApplicationController
   before_action :set_guard, only: %i[ show edit update destroy ]
+  before_action :set_services_count, only: %i[ show ]
 
   def index
     @guards = Guard.includes(:vocal, :priest, :guardians).order(:day_number)
+    @services_count_by_guard = Service.group(:guard_id).count
   end
 
   def show
   end
 
   def new
-    @guard = Guard.new
-    if params[:guard_setup_id].present?
-      @guard = CreateGuardFromSetupService.new(params[:guard_setup_id]).call
-    end
+    @guard = CreateGuardFromSetupService.new(params[:guard_setup_id]).call
   end
 
   def edit
@@ -59,7 +58,12 @@ class GuardsController < ApplicationController
     @guard = Guard.find(params.expect(:id))
   end
 
+  def set_services_count
+    @services = @guard.services.includes(:health_facility).order(due_date: :desc)
+    @services_count = @services.size
+  end
+
   def guard_params
-    params.expect(guard: [ :day_number, :due_date, :notes, :vocal_id, :priest_id, :guard_setup_id, guardian_ids: [] ])
+    params.expect(guard: [ :day_number, :due_date, :notes, :status, :vocal_id, :priest_id, :guard_setup_id, guardian_ids: [] ])
   end
 end

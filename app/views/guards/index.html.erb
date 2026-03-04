@@ -1,23 +1,73 @@
-<div class="py-8">
-  <div class="flex items-center justify-between mb-6">
-    <h1 class="text-2xl font-bold"><%= t(".title") %></h1>
-    <%= link_to t(".new_guard"), new_guard_path, class: "rounded-md bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500" %>
-  </div>
+<div>
+  <%= render "shared/page_header",
+        title: t(".title"),
+        icon: "ph-calendar-check",
+        icon_class: "bg-indigo-100 text-indigo-700",
+        action_label: t(".new_guard"),
+        action_path: new_guard_path %>
 
-  <div id="guards" class="space-y-4">
+  <div id="guards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
     <% @guards.each do |guard| %>
-      <div class="border border-gray-200 rounded-lg p-4 flex items-center justify-between">
-        <div>
-          <p class="font-semibold"><%= guard.day_number %></p>
-          <p class="text-sm text-gray-500">
-            <%= Guard.human_attribute_name(:vocal) %>: <%= guard.vocal.first_name %> <%= guard.vocal.last_name %> &middot;
-            <%= Guard.human_attribute_name(:priest) %>: <%= guard.priest.first_name %> <%= guard.priest.last_name %> &middot;
-            <%= t(".guardians_count", count: guard.guardians.size) %>
-          </p>
+      <% header_bg = guard.open? ? "bg-gradient-to-r from-indigo-50 to-white" : "bg-gradient-to-r from-gray-100 to-white" %>
+      <div class="<%= guard.open? ? 'bg-white border-gray-200' : 'bg-gray-50 border-gray-200' %> border rounded-xl shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-0.5 overflow-hidden flex flex-col">
+
+        <div class="px-5 py-4 flex items-center justify-between <%= header_bg %> border-b border-gray-100">
+          <div>
+            <p class="text-xs font-medium text-indigo-400 uppercase tracking-wide"><%= l(guard.due_date, format: :long) %></p>
+            <p class="text-2xl font-bold text-gray-900"># <%= guard.day_number %><%= " #{content_tag(:i, '', class: 'ph ph-lock-simple text-lg text-gray-400 align-middle')}".html_safe if guard.closed? %></p>
+          </div>
+          <div class="flex flex-col items-end gap-1.5">
+            <div class="flex items-center justify-center w-10 h-10 rounded-full <%= guard.open? ? 'bg-indigo-100 text-indigo-700' : 'bg-gray-200 text-gray-400' %>">
+              <i class="ph ph-calendar-check text-lg"></i>
+            </div>
+          </div>
         </div>
-        <%= link_to guard, class: "flex items-center gap-1 text-blue-600 hover:underline text-sm" do %>
-          <i class="ph ph-eye"></i> <%= t(".show") %>
-        <% end %>
+
+        <div class="px-5 py-4 flex flex-col gap-3 grow">
+          <div class="flex items-center gap-2">
+            <div class="flex items-center justify-center w-7 h-7 rounded-full bg-purple-100 text-purple-600 shrink-0">
+              <i class="ph ph-cross text-xs"></i>
+            </div>
+            <div class="min-w-0">
+              <p class="text-xs text-gray-400"><%= Guard.human_attribute_name(:priest) %></p>
+              <p class="text-sm font-medium text-gray-900 truncate"><%= guard.priest.full_name %></p>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <div class="flex items-center justify-center w-7 h-7 rounded-full bg-red-100 text-red-600 shrink-0">
+              <i class="ph ph-user text-xs"></i>
+            </div>
+            <div class="min-w-0">
+              <p class="text-xs text-gray-400"><%= Guard.human_attribute_name(:vocal) %></p>
+              <p class="text-sm font-medium text-gray-900 truncate"><%= guard.vocal.full_name %></p>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-2">
+            <div class="flex items-center justify-center w-7 h-7 rounded-full bg-green-100 text-green-600 shrink-0 mt-0.5">
+              <i class="ph ph-users text-xs"></i>
+            </div>
+            <div class="min-w-0">
+              <div class="flex flex-wrap gap-1 mt-1">
+                <% guard.guardians.order(:last_name, :first_name).each do |guardian| %>
+                  <span class="badge_green"><%= guardian.full_name %></span>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="px-5 py-3 border-t border-gray-100 flex items-center justify-between">
+          <span class="flex items-center gap-1 text-xs text-gray-400">
+            <i class="ph ph-hand-heart"></i>
+            <%= @services_count_by_guard[guard.id] || 0 %> <%= t("guards.index.services_count", count: @services_count_by_guard[guard.id] || 0) %>
+          </span>
+          <%= link_to guard, class: "flex items-center gap-1 text-sm font-medium text-blue-600 hover:text-blue-800" do %>
+            <i class="ph ph-arrow-right"></i> <%= t(".show") %>
+          <% end %>
+        </div>
+
       </div>
     <% end %>
   </div>

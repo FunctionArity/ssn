@@ -1,7 +1,8 @@
 <div data-controller="priest-assign">
-  <div class="flex items-center justify-between mb-6">
-    <h1 class="text-2xl font-bold"><%= t(".title") %></h1>
-  </div>
+  <%= render "shared/page_header",
+        title: t(".title"),
+        icon: "ph-calendar",
+        icon_class: "bg-purple-100 text-purple-700" %>
 
   <%# Priests panel %>
   <% if @priests.any? %>
@@ -45,7 +46,11 @@
                       data-day-of-week="<%= day_idx %>"
                       data-action="dragover->priest-assign#dragOver dragleave->priest-assign#dragLeave drop->priest-assign#drop">
                     <% if slot[:assignment] %>
-                      <div class="rounded bg-purple-100 px-2 py-1 flex items-center justify-between gap-1">
+                      <div class="rounded bg-purple-100 px-2 py-1 flex items-center justify-between gap-1 cursor-grab select-none"
+                           draggable="true"
+                           data-priest-id="<%= slot[:assignment].priest_id %>"
+                           data-source-setup-id="<%= slot[:assignment].id %>"
+                           data-action="dragstart->priest-assign#dragStart dragend->priest-assign#dragEnd">
                         <p class="text-xs font-medium text-purple-800 leading-tight truncate"><%= slot[:assignment].priest.full_name %></p>
                         <%= button_to priest_setup_path(slot[:assignment]),
                               method: :delete,
@@ -69,5 +74,6 @@
     <%= f.hidden_field :priest_id, id: "form_priest_id" %>
     <%= f.hidden_field :week_number, id: "form_week_number" %>
     <%= f.hidden_field :day_of_week, id: "form_day_of_week" %>
+    <input type="hidden" id="form_source_setup_id" name="source_setup_id" value="">
   <% end %>
 </div>

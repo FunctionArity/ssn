@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_27_113109) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_03_033422) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -50,11 +50,19 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_27_113109) do
     t.bigint "guard_setup_id", null: false
     t.text "notes"
     t.bigint "priest_id", null: false
+    t.integer "status", default: 0, null: false
     t.datetime "updated_at", null: false
     t.bigint "vocal_id", null: false
     t.index ["guard_setup_id"], name: "index_guards_on_guard_setup_id"
     t.index ["priest_id"], name: "index_guards_on_priest_id"
     t.index ["vocal_id"], name: "index_guards_on_vocal_id"
+  end
+
+  create_table "health_facilities", force: :cascade do |t|
+    t.string "address", null: false
+    t.datetime "created_at", null: false
+    t.string "name", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "priest_setups", force: :cascade do |t|
@@ -67,12 +75,37 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_27_113109) do
     t.index ["week_number", "day_of_week"], name: "index_priest_setups_on_week_number_and_day_of_week", unique: true
   end
 
+  create_table "services", force: :cascade do |t|
+    t.string "address"
+    t.integer "age"
+    t.string "caller_full_name"
+    t.string "caller_phone"
+    t.string "caller_relationship"
+    t.text "comments"
+    t.datetime "created_at", null: false
+    t.bigint "created_by_id", null: false
+    t.date "due_date", null: false
+    t.string "full_name", null: false
+    t.bigint "guard_id", null: false
+    t.bigint "health_facility_id"
+    t.string "health_facility_place"
+    t.string "health_status"
+    t.string "pathology"
+    t.string "sacraments"
+    t.integer "status", default: 0, null: false
+    t.datetime "updated_at", null: false
+    t.index ["created_by_id"], name: "index_services_on_created_by_id"
+    t.index ["guard_id"], name: "index_services_on_guard_id"
+    t.index ["health_facility_id"], name: "index_services_on_health_facility_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "first_name"
     t.string "last_name"
+    t.string "phone"
     t.datetime "remember_created_at"
     t.datetime "reset_password_sent_at"
     t.string "reset_password_token"
@@ -91,4 +124,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_27_113109) do
   add_foreign_key "guards", "users", column: "priest_id"
   add_foreign_key "guards", "users", column: "vocal_id"
   add_foreign_key "priest_setups", "users", column: "priest_id"
+  add_foreign_key "services", "guards"
+  add_foreign_key "services", "health_facilities"
+  add_foreign_key "services", "users", column: "created_by_id"
 end

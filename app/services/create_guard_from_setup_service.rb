@@ -1,9 +1,15 @@
 class CreateGuardFromSetupService
   def initialize(guard_setup_id)
-    @guard_setup = GuardSetup.find(guard_setup_id)
+    @guard_setup = if guard_setup_id.present?
+                     GuardSetup.find(guard_setup_id)
+    else
+                     GuardSetup.find_by(day_number: Date.current.day)
+    end
   end
 
   def call
+    return Guard.new(due_date: Date.current) if @guard_setup.nil?
+
     ActiveRecord::Base.transaction do
       guard = Guard.new(
         day_number: @guard_setup.day_number,

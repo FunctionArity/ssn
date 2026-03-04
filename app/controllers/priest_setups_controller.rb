@@ -1,12 +1,7 @@
 class PriestSetupsController < ApplicationController
   before_action :set_priest_setup, only: %i[destroy]
-
+  before_action :clear_previous_assignments, only: %i[create]
   def create
-    PriestSetup.find_by(
-      week_number: priest_setup_params[:week_number],
-      day_of_week: priest_setup_params[:day_of_week]
-    )&.destroy
-
     @priest_setup = PriestSetup.new(priest_setup_params)
 
     respond_to do |format|
@@ -37,5 +32,14 @@ class PriestSetupsController < ApplicationController
 
   def priest_setup_params
     params.expect(priest_setup: [ :priest_id, :week_number, :day_of_week ])
+  end
+
+  def clear_previous_assignments
+    PriestSetup.find_by(
+      week_number: priest_setup_params[:week_number],
+      day_of_week: priest_setup_params[:day_of_week]
+    )&.destroy
+
+    PriestSetup.find_by(id: params[:source_setup_id])&.destroy if params[:source_setup_id].present?
   end
 end

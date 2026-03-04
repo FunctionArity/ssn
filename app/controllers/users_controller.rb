@@ -3,7 +3,7 @@ class UsersController < ApplicationController
 
   # GET /users or /users.json
   def index
-    @users = User.all
+    @users_by_role = User.order(:last_name, :first_name).group_by(&:role)
   end
 
   # GET /users/1 or /users/1.json
@@ -22,6 +22,7 @@ class UsersController < ApplicationController
   # POST /users or /users.json
   def create
     @user = User.new(user_params)
+    @user.password = SecureRandom.hex(12) if user_params[:password].blank?
 
     respond_to do |format|
       if @user.save
@@ -65,7 +66,7 @@ class UsersController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def user_params
-      params.expect(user: [ :first_name, :last_name, :email, :role, :password, :password_confirmation ])
+      params.expect(user: [ :first_name, :last_name, :email, :phone, :role, :password, :password_confirmation ])
     end
 
     def update_user_params

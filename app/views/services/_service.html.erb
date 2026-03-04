@@ -1,0 +1,172 @@
+<div id="<%= dom_id service %>" class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
+
+  <%# Header %>
+  <% header_class = service.pending? ? "bg-gradient-to-r from-red-100 to-white" : "bg-gradient-to-r from-green-100 to-white" %>
+  <% date_class   = service.pending? ? "text-red-500" : "text-green-600" %>
+  <% icon_class   = service.pending? ? "bg-red-200 text-red-700" : "bg-green-200 text-green-700" %>
+  <div class="px-6 py-5 flex items-center justify-between <%= header_class %> border-b border-gray-100">
+    <div>
+      <p class="text-xs font-medium <%= date_class %> uppercase tracking-wide"><%= l(service.due_date, format: :long) %></p>
+      <h2 class="text-xl font-bold text-gray-900 mt-0.5"><%= service.full_name %></h2>
+      <% if service.age.present? %>
+        <p class="text-sm text-gray-500 mt-0.5"><%= Service.human_attribute_name(:age) %>: <%= service.age %></p>
+      <% end %>
+    </div>
+    <div class="flex flex-col items-end gap-2">
+      <% status_class = service.pending? ? "badge_red" : "badge_green" %>
+      <span class="<%= status_class %>"><%= t("services.status.#{service.status}") %></span>
+      <div class="flex items-center justify-center w-10 h-10 rounded-full <%= icon_class %>">
+        <i class="ph ph-first-aid text-lg"></i>
+      </div>
+    </div>
+  </div>
+
+  <div class="divide-y divide-gray-100">
+
+    <%# Patient info %>
+    <% if service.pathology.present? || service.health_status.present? || service.sacraments.present? %>
+      <div class="px-6 py-4 grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <% if service.pathology.present? %>
+          <div class="flex items-start gap-3">
+            <div class="flex items-center justify-center w-8 h-8 rounded-full bg-orange-100 text-orange-600 shrink-0 mt-0.5">
+              <i class="ph ph-heartbeat text-sm"></i>
+            </div>
+            <div>
+              <p class="text-xs font-medium text-gray-400 uppercase tracking-wide"><%= Service.human_attribute_name(:pathology) %></p>
+              <p class="text-sm text-gray-900 mt-0.5"><%= service.pathology %></p>
+            </div>
+          </div>
+        <% end %>
+        <% if service.health_status.present? %>
+          <div class="flex items-start gap-3">
+            <div class="flex items-center justify-center w-8 h-8 rounded-full bg-blue-100 text-blue-600 shrink-0 mt-0.5">
+              <i class="ph ph-activity text-sm"></i>
+            </div>
+            <div>
+              <p class="text-xs font-medium text-gray-400 uppercase tracking-wide"><%= Service.human_attribute_name(:health_status) %></p>
+              <p class="text-sm text-gray-900 mt-0.5"><%= service.health_status %></p>
+            </div>
+          </div>
+        <% end %>
+        <% if service.sacraments.present? %>
+          <div class="flex items-start gap-3">
+            <div class="flex items-center justify-center w-8 h-8 rounded-full bg-purple-100 text-purple-600 shrink-0 mt-0.5">
+              <i class="ph ph-cross text-sm"></i>
+            </div>
+            <div>
+              <p class="text-xs font-medium text-gray-400 uppercase tracking-wide"><%= Service.human_attribute_name(:sacraments) %></p>
+              <p class="text-sm text-gray-900 mt-0.5"><%= service.sacraments %></p>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+
+    <%# Health facility %>
+    <% if service.health_facility.present? || service.health_facility_place.present? || service.address.present? %>
+      <div class="px-6 py-4 grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <% if service.health_facility.present? %>
+          <div class="flex items-start gap-3">
+            <div class="flex items-center justify-center w-8 h-8 rounded-full bg-teal-100 text-teal-600 shrink-0 mt-0.5">
+              <i class="ph ph-hospital text-sm"></i>
+            </div>
+            <div>
+              <p class="text-xs font-medium text-gray-400 uppercase tracking-wide"><%= Service.human_attribute_name(:health_facility) %></p>
+              <span class="badge_purple mt-1 inline-block">
+                <%= link_to service.health_facility.name, service.health_facility, class: "hover:underline" %>
+              </span>
+            </div>
+          </div>
+        <% end %>
+        <% if service.health_facility_place.present? %>
+          <div class="flex items-start gap-3">
+            <div class="flex items-center justify-center w-8 h-8 rounded-full bg-gray-100 text-gray-500 shrink-0 mt-0.5">
+              <i class="ph ph-door text-sm"></i>
+            </div>
+            <div>
+              <p class="text-xs font-medium text-gray-400 uppercase tracking-wide"><%= Service.human_attribute_name(:health_facility_place) %></p>
+              <p class="text-sm text-gray-900 mt-0.5"><%= service.health_facility_place %></p>
+            </div>
+          </div>
+        <% end %>
+        <% if service.address.present? %>
+          <div class="flex items-start gap-3">
+            <div class="flex items-center justify-center w-8 h-8 rounded-full bg-gray-100 text-gray-500 shrink-0 mt-0.5">
+              <i class="ph ph-map-pin text-sm"></i>
+            </div>
+            <div>
+              <p class="text-xs font-medium text-gray-400 uppercase tracking-wide"><%= Service.human_attribute_name(:address) %></p>
+              <p class="text-sm text-gray-900 mt-0.5"><%= service.address %></p>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+
+    <%# Guard %>
+    <div class="px-6 py-4 flex items-center gap-3">
+      <div class="flex items-center justify-center w-8 h-8 rounded-full bg-indigo-100 text-indigo-600 shrink-0">
+        <i class="ph ph-shield text-sm"></i>
+      </div>
+      <div>
+        <p class="text-xs font-medium text-gray-400 uppercase tracking-wide"><%= Service.human_attribute_name(:guard) %></p>
+        <p class="text-sm font-semibold text-gray-900 mt-0.5">
+          <%= link_to "Guardia ##{service.guard.day_number}", service.guard, class: "text-indigo-600 hover:underline" %>
+        </p>
+      </div>
+    </div>
+
+    <%# Caller info %>
+    <% if service.caller_full_name.present? || service.caller_phone.present? || service.caller_relationship.present? %>
+      <div class="px-6 py-4 grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <% if service.caller_full_name.present? %>
+          <div class="flex items-start gap-3">
+            <div class="flex items-center justify-center w-8 h-8 rounded-full bg-gray-100 text-gray-500 shrink-0 mt-0.5">
+              <i class="ph ph-user text-sm"></i>
+            </div>
+            <div>
+              <p class="text-xs font-medium text-gray-400 uppercase tracking-wide"><%= Service.human_attribute_name(:caller_full_name) %></p>
+              <p class="text-sm text-gray-900 mt-0.5"><%= service.caller_full_name %></p>
+            </div>
+          </div>
+        <% end %>
+        <% if service.caller_phone.present? %>
+          <div class="flex items-start gap-3">
+            <div class="flex items-center justify-center w-8 h-8 rounded-full bg-gray-100 text-gray-500 shrink-0 mt-0.5">
+              <i class="ph ph-phone text-sm"></i>
+            </div>
+            <div>
+              <p class="text-xs font-medium text-gray-400 uppercase tracking-wide"><%= Service.human_attribute_name(:caller_phone) %></p>
+              <p class="text-sm text-gray-900 mt-0.5"><%= service.caller_phone %></p>
+            </div>
+          </div>
+        <% end %>
+        <% if service.caller_relationship.present? %>
+          <div class="flex items-start gap-3">
+            <div class="flex items-center justify-center w-8 h-8 rounded-full bg-gray-100 text-gray-500 shrink-0 mt-0.5">
+              <i class="ph ph-users text-sm"></i>
+            </div>
+            <div>
+              <p class="text-xs font-medium text-gray-400 uppercase tracking-wide"><%= Service.human_attribute_name(:caller_relationship) %></p>
+              <p class="text-sm text-gray-900 mt-0.5"><%= service.caller_relationship %></p>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+
+    <%# Comments %>
+    <% if service.comments.present? %>
+      <div class="px-6 py-4 flex items-start gap-3">
+        <div class="flex items-center justify-center w-8 h-8 rounded-full bg-gray-100 text-gray-500 shrink-0 mt-0.5">
+          <i class="ph ph-note text-sm"></i>
+        </div>
+        <div>
+          <p class="text-xs font-medium text-gray-400 uppercase tracking-wide"><%= Service.human_attribute_name(:comments) %></p>
+          <p class="text-sm text-gray-700 mt-0.5"><%= service.comments %></p>
+        </div>
+      </div>
+    <% end %>
+
+  </div>
+</div>

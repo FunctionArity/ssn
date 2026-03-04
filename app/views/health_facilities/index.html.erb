@@ -1,0 +1,30 @@
+<div>
+  <%= render "shared/page_header",
+        title: t(".title"),
+        icon: "ph-hospital",
+        icon_class: "bg-teal-100 text-teal-700",
+        action_label: t(".new_health_facility"),
+        action_path: new_health_facility_path %>
+
+  <div id="health_facilities" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+    <% @health_facilities.each do |health_facility| %>
+      <div class="bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-0.5 overflow-hidden">
+        <div class="px-5 py-4 flex items-center gap-3 border-b border-gray-100 bg-gradient-to-r from-teal-50 to-white">
+          <div class="flex items-center justify-center w-9 h-9 rounded-full bg-teal-100 text-teal-700 shrink-0">
+            <i class="ph ph-hospital text-base"></i>
+          </div>
+          <p class="font-semibold text-gray-900 truncate"><%= health_facility.name %></p>
+        </div>
+        <div class="px-5 py-3 flex items-center justify-between gap-3">
+          <div class="flex items-center gap-2 min-w-0">
+            <i class="ph ph-map-pin text-gray-400 shrink-0"></i>
+            <p class="text-sm text-gray-500 truncate"><%= health_facility.address %></p>
+          </div>
+          <%= link_to health_facility, class: "flex items-center gap-1 text-sm font-medium text-blue-600 hover:text-blue-800 shrink-0" do %>
+            <i class="ph ph-arrow-right"></i> <%= t(".show") %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
