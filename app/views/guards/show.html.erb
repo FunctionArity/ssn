@@ -9,6 +9,11 @@
 
   <div class="mt-4 flex items-center gap-3">
     <%= link_to t("edit"), edit_guard_path(@guard), class: "flex items-center gap-1.5 rounded-md bg-white border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50" %>
+    <% if @guard.open? %>
+      <%= button_to close_guard_path(@guard), method: :post, form: { data: { turbo_confirm: t(".close_confirm") } }, class: "cursor-pointer flex items-center gap-1.5 rounded-md bg-green-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500" do %>
+        <i class="ph ph-check-circle"></i> <%= t(".close_guard") %>
+      <% end %>
+    <% end %>
     <%= button_to @guard, method: :delete, form: { data: { turbo_confirm: t(".destroy_confirm") } }, class: "cursor-pointer flex items-center gap-1.5 rounded-md bg-red-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500" do %>
       <i class="ph ph-trash"></i> <%= t("destroy") %>
     <% end %>

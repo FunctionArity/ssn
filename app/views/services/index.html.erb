@@ -6,9 +6,18 @@
         action_label: t(".new_service"),
         action_path: new_service_path %>
 
-  <div id="services" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-    <% @services.each do |service| %>
-      <%= render partial: "small_view", locals: { service: service } %>
+  <div id="services" class="space-y-6">
+    <% @services.group_by { |s| s.due_date.to_date }.sort.reverse.each do |date, services| %>
+      <div>
+        <h2 class="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3">
+          <%= l(date, format: :long) %>
+        </h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <% services.each do |service| %>
+            <%= render partial: "small_view", locals: { service: service } %>
+          <% end %>
+        </div>
+      </div>
     <% end %>
   </div>
 </div>

@@ -156,6 +156,8 @@ es:
       back: Volver a guardias
       destroy: Eliminar esta guardia
       destroy_confirm: "¿Estás seguro de que querés eliminar esta guardia?"
+      close_guard: Finalizar guardia
+      close_confirm: "¿Estás seguro de que querés finalizar esta guardia?"
     new:
       title: Nueva guardia
       back: Volver a guardias
@@ -178,6 +180,7 @@ es:
       created: La guardia fue creada exitosamente.
       updated: La guardia fue actualizada exitosamente.
       destroyed: La guardia fue eliminada exitosamente.
+      closed: La guardia fue finalizada exitosamente.
   guard_setups:
     index:
       menu_title: Guardias

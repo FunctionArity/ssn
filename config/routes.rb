@@ -1,7 +1,11 @@
 Rails.application.routes.draw do
   devise_for :users, path: "auth"
   resources :users
-  resources :guards
+  resources :guards do
+    member do
+      post :close
+    end
+  end
   resources :guard_setups
   resources :priest_setups, only: %i[create destroy]
   resources :priest_assignments, only: %i[index]

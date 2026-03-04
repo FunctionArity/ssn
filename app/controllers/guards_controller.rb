@@ -1,13 +1,18 @@
 class GuardsController < ApplicationController
-  before_action :set_guard, only: %i[ show edit update destroy ]
+  before_action :set_guard, only: %i[ show edit update destroy close ]
   before_action :set_services_count, only: %i[ show ]
 
   def index
-    @guards = Guard.includes(:vocal, :priest, :guardians).order(:day_number)
+    @guards = Guard.includes(:vocal, :priest, :guardians).order("due_date DESC")
     @services_count_by_guard = Service.group(:guard_id).count
   end
 
   def show
+  end
+
+  def close
+    @guard.closed!
+    redirect_to @guard, notice: t("guards.notices.closed")
   end
 
   def new
