@@ -59,3 +59,12 @@ CSV.foreach(Rails.root.join("db/data/vocal_users.csv"), headers: true) do |row|
 end
 
 puts "Seeded 30 vocal users from vocal_users.csv"
+
+CSV.foreach(Rails.root.join("db/data/church.csv"), headers: true) do |row|
+  Church.find_or_create_by!(name: row["name"]) do |church|
+    church.phone   = row["phone"].presence
+    church.address = row["address"]
+  end
+end
+
+puts "Seeded #{Church.count} churches from church.csv"

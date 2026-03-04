@@ -13,10 +13,12 @@ class UsersController < ApplicationController
   # GET /users/new
   def new
     @user = User.new
+    @churches = Church.all
   end
 
   # GET /users/1/edit
   def edit
+    @churches = Church.all
   end
 
   # POST /users or /users.json
@@ -66,7 +68,9 @@ class UsersController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def user_params
-      params.expect(user: [ :first_name, :last_name, :email, :phone, :role, :password, :password_confirmation ])
+      permitted = params.expect(user: [ :first_name, :last_name, :email, :phone, :role, :password, :password_confirmation, :church_id ])
+      permitted[:church_id] = nil unless permitted[:role] == "priest"
+      permitted
     end
 
     def update_user_params

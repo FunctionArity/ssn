@@ -26,3 +26,6 @@ application.register("health-facility-search", HealthFacilitySearchController)
 
 import RoleSelectorController from "./role_selector_controller"
 application.register("role-selector", RoleSelectorController)
+
+import ChurchMapController from "./church_map_controller"
+application.register("church-map", ChurchMapController)

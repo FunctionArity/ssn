@@ -64,6 +64,10 @@ es:
         caller_phone: Teléfono
         caller_relationship: Parentesco
         comments: Comentarios
+      church:
+        name: Nombre
+        phone: Teléfono
+        address: Dirección
       user:
         first_name: Nombre
         last_name: Apellido
@@ -72,6 +76,7 @@ es:
         password_confirmation: Confirmación de contraseña
         phone: Teléfono
         role: Rol
+        church: Parroquia
         roles:
           guardian: Guardian
           vocal: Vocal
@@ -132,6 +137,7 @@ es:
       show: Ver este usuario
       back: Volver a usuarios
     form:
+      select_church: Seleccionar una parroquia
       errors:
         title:
           one: "%{count} error impidió que este usuario fuera guardado:"
@@ -405,3 +411,26 @@ es:
   destroy: Eliminar
   view: Ver
   back: Volver
+  churches:
+    index:
+      title: Parroquias
+      new_church: Nueva parroquia
+      show: Ver
+    show:
+      back: Volver a parroquias
+      destroy_confirm: "¿Estás seguro de que querés eliminar esta parroquia?"
+    new:
+      title: Nueva parroquia
+      back: Volver a parroquias
+    edit:
+      title: Editando parroquia
+      back: Volver a parroquia
+    form:
+      errors:
+        title:
+          one: "%{count} error impidió que esta parroquia fuera guardada:"
+          other: "%{count} errores impidieron que esta parroquia fuera guardada:"
+    notices:
+      created: La parroquia fue creada exitosamente.
+      updated: La parroquia fue actualizada exitosamente.
+      destroyed: La parroquia fue eliminada exitosamente.
