@@ -4,7 +4,7 @@ class Guard < ApplicationRecord
   belongs_to :guard_setup
   has_many :guard_guardians, dependent: :destroy
   has_many :guardians, through: :guard_guardians, source: :user
-  has_many :services
+  has_many :services, dependent: :destroy
 
   enum :status, { open: 0, closed: 1 }, default: :open
 
