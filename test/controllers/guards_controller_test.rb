@@ -143,4 +143,43 @@ class GuardsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to guard_url(@guard)
     assert @guard.reload.closed?
   end
+
+  test "should return PDF for guard" do
+    get pdf_guard_url(@guard)
+
+    assert_response :success
+    assert_equal "application/pdf", response.content_type
+  end
+
+  test "PDF response starts with PDF magic bytes" do
+    get pdf_guard_url(@guard)
+
+    assert response.body.start_with?("%PDF")
+  end
+
+  test "PDF filename includes guard id" do
+    get pdf_guard_url(@guard)
+
+    assert_match "guardia_#{@guard.id}.pdf", response.headers["Content-Disposition"]
+  end
+
+  test "should return PDF for guard with no services" do
+    @guard.services.destroy_all
+
+    get pdf_guard_url(@guard)
+
+    assert_response :success
+    assert_equal "application/pdf", response.content_type
+  end
+
+  test "should return PDF for guard with multiple pages of services" do
+    4.times do |i|
+      @guard.services.create!(full_name: "Service #{i}", due_date: Date.today, created_by: @user)
+    end
+
+    get pdf_guard_url(@guard)
+
+    assert_response :success
+    assert response.body.start_with?("%PDF")
+  end
 end
