@@ -2,22 +2,24 @@
 
 require "optparse"
 
-def setup
+def setup(skip_db: false)
   log "Installing gems"
   # Only do bundle install if the much-faster
   # bundle check indicates we need to
   system! "bundle check || bundle install"
 
-  log "Dropping & recreating the development database"
-  # Note that the very first time this runs, db:reset
-  # will fail, but this failure is fixed by
-  # doing a db:migrate
-  system! "bin/rails db:reset || bin/rails db:migrate"
+  unless skip_db
+    log "Dropping & recreating the development database"
+    # Note that the very first time this runs, db:reset
+    # will fail, but this failure is fixed by
+    # doing a db:migrate
+    system! "bin/rails db:reset || bin/rails db:migrate"
 
-  log "Dropping & recreating the test database"
-  # Setting the RAILS_ENV explicitly to be sure
-  # we actually reset the test database
-  system!({ "RAILS_ENV" => "test" }, "bin/rails db:reset")
+    log "Dropping & recreating the test database"
+    # Setting the RAILS_ENV explicitly to be sure
+    # we actually reset the test database
+    system!({ "RAILS_ENV" => "test" }, "bin/rails db:reset")
+  end
 
   log "All set up."
   log ""
@@ -75,10 +77,18 @@ end
 
 # end of helpers
 
+options = {}
+
 OptionParser.new do |parser|
   parser.on("-h", "--help") do
     help
     exit
+  end
+  parser.on("--skip-server") do
+    # This option is used by bin/ci but not currently implemented in setup
+  end
+  parser.on("--skip-db", "Skip dropping and recreating the databases") do
+    options[:skip_db] = true
   end
 end.parse!
 
@@ -88,5 +98,5 @@ elsif !ARGV[0].nil?
   puts "Unknown argument: '#{ARGV[0]}'"
   exit 1
 else
-  setup
+  setup(**options)
 end

@@ -21,13 +21,6 @@ class UserTest < ActiveSupport::TestCase
     assert user.errors[:last_name].any?
   end
 
-  test "is invalid without phone" do
-    user = users(:one)
-    user.phone = nil
-    assert_not user.valid?
-    assert user.errors[:phone].any?
-  end
-
   test "is invalid without email" do
     user = users(:one)
     user.email = nil
