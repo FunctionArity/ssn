@@ -30,6 +30,9 @@ es:
       health_facility:
         one: Centro de Salud
         other: Centros de Salud
+      church:
+        one: Parroquia
+        other: Parroquias
     attributes:
       guard:
         day_number: Número de día

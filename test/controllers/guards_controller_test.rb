@@ -125,4 +125,22 @@ class GuardsControllerTest < ActionDispatch::IntegrationTest
 
     assert_redirected_to guards_url
   end
+
+  test "should close an open guard" do
+    assert @guard.open?
+
+    post close_guard_url(@guard)
+
+    assert_redirected_to guard_url(@guard)
+    assert @guard.reload.closed?
+  end
+
+  test "should not close an already closed guard" do
+    @guard.closed!
+
+    post close_guard_url(@guard)
+
+    assert_redirected_to guard_url(@guard)
+    assert @guard.reload.closed?
+  end
 end
