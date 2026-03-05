@@ -1,6 +1,6 @@
 <%= form_with(model: church, class: "space-y-5") do |form| %>
   <% if church.errors.any? %>
-    <div class="flex items-start gap-3 bg-red-50 border border-red-200 text-red-800 rounded-xl p-4">
+    <div class="flex items-start gap-3 bg-red-50 border border-red-200 text-red-800 rounded-md p-4">
       <i class="ph ph-warning-circle text-lg text-red-500 shrink-0 mt-0.5"></i>
       <div>
         <p class="font-semibold text-sm mb-1"><%= t("churches.form.errors.title", count: church.errors.count) %></p>
@@ -16,25 +16,23 @@
   <div class="space-y-4">
     <div>
       <%= form.label :name, class: "block text-sm font-medium text-gray-700 mb-1.5" %>
-      <%= form.text_field :name, class: "w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm shadow-sm focus:border-purple-500 focus:ring-1 focus:ring-purple-500 outline-none" %>
+      <%= form.text_field :name, class: "w-full rounded-md border border-gray-200 px-3 py-2.5 text-sm shadow-sm focus:border-purple-500 focus:ring-1 focus:ring-purple-500 outline-none" %>
     </div>
     <div>
       <%= form.label :phone, class: "block text-sm font-medium text-gray-700 mb-1.5" %>
-      <%= form.telephone_field :phone, class: "w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm shadow-sm focus:border-purple-500 focus:ring-1 focus:ring-purple-500 outline-none" %>
+      <%= form.telephone_field :phone, class: "w-full rounded-md border border-gray-200 px-3 py-2.5 text-sm shadow-sm focus:border-purple-500 focus:ring-1 focus:ring-purple-500 outline-none" %>
     </div>
     <div data-controller="address-map"
          data-address-map-initial-address-value="<%= church.address %>">
       <%= form.label :address, class: "block text-sm font-medium text-gray-700 mb-1.5" %>
       <%= form.text_field :address,
-            class: "w-full rounded-xl border border-gray-200 px-3 py-2.5 text-sm shadow-sm focus:border-purple-500 focus:ring-1 focus:ring-purple-500 outline-none",
+            class: "w-full rounded-md border border-gray-200 px-3 py-2.5 text-sm shadow-sm focus:border-purple-500 focus:ring-1 focus:ring-purple-500 outline-none",
             data: { address_map_target: "input", action: "input->address-map#search" } %>
-      <% if church.persisted? %>
-        <div data-address-map-target="map" class="mt-3 w-full h-56 rounded-xl overflow-hidden border border-gray-200 shadow-sm"></div>
-      <% end %>
+      <div data-address-map-target="map" class="mt-3 w-full h-100 rounded-md overflow-hidden border border-gray-200 shadow-sm"></div>
     </div>
   </div>
 
   <div class="border-t border-gray-100 pt-4 flex justify-end">
-    <%= form.submit class: "cursor-pointer rounded-xl bg-purple-600 px-6 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-purple-500 transition-colors" %>
+    <%= form.submit class: "cursor-pointer rounded-md bg-purple-600 px-6 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-purple-500 transition-colors" %>
   </div>
 <% end %>

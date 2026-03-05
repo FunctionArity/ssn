@@ -35,13 +35,13 @@ class User < ApplicationRecord
 
   def self.current_priest
     date = Date.current
-    week_day = date.wday
+    week_day = date.wday + 1
     week_month = week_of_month(date)
     PriestSetup.find_priest_by_week_and_day(week_day, week_month)
   end
 
   def self.week_of_month(date)
     first_monday = date.beginning_of_month.beginning_of_week
-    ((date - first_monday) / 7).floor + 1
+    ((date - first_monday) / 7).floor
   end
 end

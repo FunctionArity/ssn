@@ -33,6 +33,9 @@
               </td>
             <% end %>
           </thead>
+          <% month_start = Date.today.beginning_of_month %>
+          <% old_month_start = 40.days.ago.to_date.beginning_of_month %>
+          <% days_in_month = month_start.end_of_month.day %>
           <tbody>
             <% t(".week_names").each_with_index do |week_name, week_idx| %>
               <tr class="even:bg-gray-50">
@@ -41,10 +44,16 @@
                 </td>
                 <% (0..6).each do |day_idx| %>
                   <% slot = @day_slots.find { |s| s[:week_number] == week_idx + 1 && s[:day_of_week] == day_idx } %>
-                  <td class="relative align-top h-16 w-36 min-w-36 max-w-36 rounded-lg border-2 border-dashed border-gray-200 bg-white p-2 transition-colors"
+                  <% date_num = week_idx * 7 + day_idx - month_start.wday + 1 %>
+                  <% date_in_month = date_num.between?(1, days_in_month) ? date_num : nil %>
+                  <% is_today = date_in_month == Date.today.day %>
+                  <td class="relative align-top h-16 w-36 min-w-36 max-w-36 rounded-lg p-2 transition-colors <%= is_today ? 'border-2 border-purple-400 bg-purple-50' : 'border-2 border-dashed border-gray-200 bg-white' %>"
                       data-week-number="<%= week_idx + 1 %>"
                       data-day-of-week="<%= day_idx %>"
                       data-action="dragover->priest-assign#dragOver dragleave->priest-assign#dragLeave drop->priest-assign#drop">
+                    <% if date_in_month %>
+                      <span class="block text-xs leading-none mb-1 <%= is_today ? 'font-bold text-purple-600' : 'text-gray-400' %>"><%= date_in_month %></span>
+                    <% end %>
                     <% if slot[:assignment] %>
                       <div class="rounded bg-purple-100 px-2 py-1 flex items-center justify-between gap-1 cursor-grab select-none"
                            draggable="true"

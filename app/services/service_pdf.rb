@@ -77,10 +77,10 @@ class ServicePdf
     y -= LINE_HEIGHT
 
     # Row 2: Hospital + Piso
-    piso_w = 180
+    piso_w = 220
     hosp_w = w - piso_w - 10
     field(pdf, 0,          y, hosp_w, "Hospital:", @service.health_facility&.name)
-    field(pdf, hosp_w + 10, y, piso_w, "Piso:",    @service.health_facility_place)
+    field(pdf, hosp_w + 10, y, piso_w, "Piso / Habitación / Cama / Lugar:",    @service.health_facility_place)
 
     y -= LINE_HEIGHT
 
