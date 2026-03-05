@@ -42,6 +42,6 @@ class User < ApplicationRecord
 
   def self.week_of_month(date)
     first_monday = date.beginning_of_month.beginning_of_week
-    ((date - first_monday) / 7).floor
+    ((date - first_monday) / 7).floor + 1
   end
 end

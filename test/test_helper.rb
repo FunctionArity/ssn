@@ -4,6 +4,9 @@ SimpleCov.start "rails" do
   add_filter "/mailers/"
 end
 
+require "minitest/reporters"
+Minitest::Reporters.use! Minitest::Reporters::ProgressReporter.new
+
 ENV["RAILS_ENV"] ||= "test"
 require_relative "../config/environment"
 require "rails/test_help"
