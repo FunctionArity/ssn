@@ -176,7 +176,7 @@
       <i class="ph ph-pencil-simple"></i> <%= t("services.show.edit") %>
     <% end %>
     <%= link_to pdf_service_path(service), target: "_blank", class: "flex items-center gap-1.5 rounded-md bg-white border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50" do %>
-      <i class="ph ph-printer text-red-500"></i> Imprimir
+      <i class="ph ph-printer text-red-500"></i> <%= t("services.show.print_pdf") %>
     <% end %>
     <% if service.pending? %>
       <%= button_to complete_service_path(service), class: "cursor-pointer flex items-center gap-1.5 rounded-md bg-green-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500" do %>

@@ -167,6 +167,7 @@ es:
       destroy_confirm: "¿Estás seguro de que querés eliminar esta guardia?"
       close_guard: Finalizar guardia
       close_confirm: "¿Estás seguro de que querés finalizar esta guardia?"
+      print_pdf: Imprimir
     new:
       title: Nueva guardia
       back: Volver a guardias
@@ -373,6 +374,7 @@ es:
       destroy_confirm: "¿Estás seguro de que querés eliminar este servicio?"
       complete: Completar
       complete_confirm: "¿Estás seguro de que querés marcar este servicio como completado?"
+      print_pdf: Imprimir
     new:
       title: Nuevo servicio
       back: Volver a servicios

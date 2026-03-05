@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   resources :guards do
     member do
       post :close
+      get  :pdf
     end
   end
   resources :guard_setups
