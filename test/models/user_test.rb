@@ -59,6 +59,29 @@ class UserTest < ActiveSupport::TestCase
     assert user.priest?
   end
 
+  # Church association
+  test "priest can belong to a church" do
+    priest = users(:priest_one)
+    church = churches(:one)
+    priest.update!(church: church)
+    assert_equal church, priest.reload.church
+  end
+
+  test "church is optional for priest" do
+    priest = users(:priest_one)
+    priest.church = nil
+    assert priest.valid?
+  end
+
+  test "church_id is cleared when role is not priest" do
+    priest = users(:priest_one)
+    priest.update!(church: churches(:one))
+
+    # Simulate controller behavior: church_id is cleared when role != priest
+    priest.update!(role: :guardian, church: nil)
+    assert_nil priest.reload.church_id
+  end
+
   # Scopes
   test "guardians scope returns only guardians" do
     assert User.guardians.all?(&:guardian?)

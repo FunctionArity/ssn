@@ -11,7 +11,7 @@ const ALL_RING = ["ring-green-600/20", "ring-red-600/10", "ring-purple-700/10"]
 const ALL_TEXT = ["text-green-700", "text-red-700", "text-purple-700"]
 
 export default class extends Controller {
-  static targets = ["pill", "label"]
+  static targets = ["pill", "label", "priestSection"]
 
   connect() {
     const checked = this.element.querySelector("input:checked")
@@ -39,5 +39,16 @@ export default class extends Controller {
 
     this.labelTargets.forEach(l => l.classList.remove(...ALL_TEXT))
     label.classList.add(styles.text)
+
+    if (this.hasPriestSectionTarget) {
+      this.priestSectionTarget.classList.toggle("hidden", role !== "priest")
+
+      if (role === "priest") {
+        const churchMap = this.application.getControllerForElementAndIdentifier(
+          this.priestSectionTarget, "church-map"
+        )
+        churchMap?.show()
+      }
+    }
   }
 }

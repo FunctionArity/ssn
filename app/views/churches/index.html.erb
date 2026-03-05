@@ -1,0 +1,40 @@
+<div>
+  <%= render "shared/page_header",
+        title: t(".title"),
+        icon: "ph-church",
+        icon_class: "bg-purple-100 text-purple-700",
+        action_label: t(".new_church"),
+        action_path: new_church_path %>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+    <% @churches.each do |church| %>
+      <%= link_to church, class: "group bg-white border border-gray-200 rounded-2xl shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-0.5 overflow-hidden flex flex-col" do %>
+        <div class="px-5 py-4 flex items-center gap-3 bg-gradient-to-r from-purple-50 to-white border-b border-gray-100">
+          <div class="flex items-center justify-center w-10 h-10 rounded-xl bg-purple-100 text-purple-700 shrink-0 group-hover:bg-purple-200 transition-colors">
+            <i class="ph ph-church text-lg"></i>
+          </div>
+          <p class="font-semibold text-gray-900 truncate leading-tight"><%= church.name %></p>
+        </div>
+        <div class="px-5 py-3 flex-1 flex flex-col gap-1.5">
+          <% if church.address.present? %>
+            <div class="flex items-start gap-2 min-w-0">
+              <i class="ph ph-map-pin text-purple-400 shrink-0 mt-0.5 text-sm"></i>
+              <p class="text-sm text-gray-500 truncate"><%= church.address %></p>
+            </div>
+          <% end %>
+          <% if church.phone.present? %>
+            <div class="flex items-center gap-2">
+              <i class="ph ph-phone text-purple-400 shrink-0 text-sm"></i>
+              <p class="text-sm text-gray-500"><%= church.phone %></p>
+            </div>
+          <% end %>
+          <div class="mt-auto pt-2 flex justify-end">
+            <span class="flex items-center gap-1 text-xs font-medium text-purple-600 group-hover:text-purple-800 transition-colors">
+              <%= t(".show") %> <i class="ph ph-arrow-right"></i>
+            </span>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+</div>

@@ -83,4 +83,40 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
     assert_redirected_to users_url
   end
+
+  test "should assign church when creating a priest" do
+    church = churches(:one)
+    assert_difference("User.count") do
+      post users_url, params: {
+        user: {
+          email: "newpriest@test.com",
+          first_name: "New",
+          last_name: "Priest",
+          phone: "1234567899",
+          role: "priest",
+          church_id: church.id
+        }
+      }
+    end
+
+    assert_equal church, User.last.church
+  end
+
+  test "should not assign church when role is not priest" do
+    church = churches(:one)
+    assert_difference("User.count") do
+      post users_url, params: {
+        user: {
+          email: "newguardian@test.com",
+          first_name: "New",
+          last_name: "Guardian",
+          phone: "1234567898",
+          role: "guardian",
+          church_id: church.id
+        }
+      }
+    end
+
+    assert_nil User.last.church_id
+  end
 end

@@ -13,6 +13,8 @@ class User < ApplicationRecord
   scope :priests, -> { where(role: :priest) }
   scope :priests_without_setup, -> { priests.where.not(id: PriestSetup.select(:priest_id)) }
 
+  belongs_to :church, optional: true
+
   has_many :guard_guardians, dependent: :destroy
   has_many :guards, through: :guard_guardians
 
