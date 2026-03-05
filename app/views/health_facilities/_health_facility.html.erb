@@ -10,24 +10,20 @@
     </div>
   </div>
 
-  <div class="flex flex-col lg:flex-row">
-    <div class="px-6 py-4 flex items-start gap-4 border-b border-gray-100 lg:border-b-0 lg:border-r lg:w-80 lg:shrink-0">
-      <div class="flex items-center justify-center w-8 h-8 rounded-full bg-gray-100 text-gray-500 shrink-0 mt-0.5">
-        <i class="ph ph-map-pin text-sm"></i>
-      </div>
-      <div>
-        <p class="text-xs font-medium text-gray-400 uppercase tracking-wide"><%= HealthFacility.human_attribute_name(:address) %></p>
-        <p class="text-sm text-gray-900 mt-0.5"><%= health_facility.address %></p>
-      </div>
+  <div class="px-6 py-4 flex items-start gap-4 border-b border-gray-100">
+    <div class="flex items-center justify-center w-8 h-8 rounded-full bg-gray-100 text-gray-500 shrink-0 mt-0.5">
+      <i class="ph ph-map-pin text-sm"></i>
     </div>
-
-    <% if health_facility.address.present? %>
-      <div class="grow" data-controller="address-map"
-           data-address-map-initial-address-value="<%= health_facility.address %>">
-        <div data-address-map-target="map"
-             class="w-full h-64 lg:h-full"
-             style="min-height: 300px;"></div>
-      </div>
-    <% end %>
+    <div>
+      <p class="text-xs font-medium text-gray-400 uppercase tracking-wide"><%= HealthFacility.human_attribute_name(:address) %></p>
+      <p class="text-sm text-gray-900 mt-0.5"><%= health_facility.address %></p>
+    </div>
   </div>
+
+  <% if health_facility.address.present? %>
+    <div data-controller="address-map"
+         data-address-map-initial-address-value="<%= health_facility.address %>">
+      <div data-address-map-target="map" class="w-full h-72"></div>
+    </div>
+  <% end %>
 </div>
