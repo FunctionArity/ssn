@@ -409,10 +409,10 @@ es:
       title: Sacerdotes
       priests: Sacerdotes
       week_names:
-        - Primero
-        - Segundo
+        - Primera
+        - Segunda
         - Tercero
-        - Cuarto
+        - Cuarta
         - Quinta
         - Sexta
   edit: Editar
