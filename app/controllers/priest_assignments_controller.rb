@@ -9,8 +9,8 @@ class PriestAssignmentsController < ApplicationController
 
   def build_day_slots
     assignments = PriestSetup.includes(:priest).index_by { |ps| [ ps.week_number, ps.day_of_week ] }
-    @day_slots = (1..5).flat_map do |week|
-      (0..6).map do |day|
+    @day_slots = (1..6).flat_map do |week|
+      (1..7).map do |day|
         { week_number: week, day_of_week: day, assignment: assignments[[ week, day ]] }
       end
     end

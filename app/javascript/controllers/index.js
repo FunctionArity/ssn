@@ -29,3 +29,9 @@ application.register("role-selector", RoleSelectorController)
 
 import ChurchMapController from "./church_map_controller"
 application.register("church-map", ChurchMapController)
+
+import GuardDateReloadController from "./guard_date_reload_controller"
+application.register("guard-date-reload", GuardDateReloadController)
+
+import ClipboardController from "./clipboard_controller"
+application.register("clipboard", ClipboardController)

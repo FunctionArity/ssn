@@ -1,0 +1,93 @@
+tipo,nombre,dirección,departamento
+Hospital,Hospital Central,Salta y Alem,Capital
+Hospital,Hospital Luis Lagomaggiore,Timoteo Gordillo s/n,Capital
+Hospital,Hospital Carlos Pereyra,Ituzaingo 2835,Capital
+Hospital,Hospital Universitario,Paso de los Andes 3051,Capital
+Centro de Salud,Centro de Salud Nº 001 Bº San Martín,Cordon del Plata Sur s/n,Capital
+Centro de Salud,Centro de Salud Nº 002 Bº San Antonio,Videla Castillo 2944,Capital
+Centro de Salud,Centro de Salud Nº 300 Dr. Arturo Oñativia,Camino Acc. a Papagallos,Capital
+Centro de Salud,Centro de Salud Nº 302 Padre Llorens,Bº San Martin MTL13 y 14,Capital
+Centro de Salud,Centro de Salud Nº 367 Barrio Andino,Acceso Nro. 1 entre Independencia y 1ro. de Mayo,Capital
+Hospital,Hospital José Nestor Lencinas,Talcahuano s/n,Godoy Cruz
+Hospital,Micro Hospital Monseñor Miguel De Andrea,Armani 1800,Godoy Cruz
+Centro de Salud,Centro de Salud Nº 004 Los Glaciares,Pablo Iglesias 3440,Godoy Cruz
+Centro de Salud,Centro de Salud Nº 008 Huarpes,Calle 9 Sur Bº Huarpes II,Godoy Cruz
+Centro de Salud,Centro de Salud Nº 027 San Francisco del Monte,Independencia 3,Godoy Cruz
+Centro de Salud,Centro de Salud Nº 028 Dr. Juan Maurín Navarro,Cervantes 2686,Godoy Cruz
+Centro de Salud,Centro de Salud Nº 029 Villa Jovita,Renato Della Santa 1910,Godoy Cruz
+Centro de Salud,Centro de Salud Nº 030 Dr. Aldo Dapás,Colón 339,Godoy Cruz
+Centro de Salud,Centro de Salud Nº 134 Padre Jorge Contreras,Las Orquídeas 906,Godoy Cruz
+Centro de Salud,Centro de Salud Nº 149 Dr. Ramón Carrillo,Plumerillo 2420,Godoy Cruz
+Centro de Salud,Centro de Salud Nº 150 Dr. Daniel Rebollo,Lat. Acc. Sur Ruta 40 Bº La Gloria,Godoy Cruz
+Centro de Salud,Centro de Salud Nº 168 Néstor Kirchner,Entre Ríos s/n,Godoy Cruz
+Centro de Salud,Centro de Salud Nº 172 Alicia Moreau de Justo,Calle Cabo San Pío MJ C22,Godoy Cruz
+Centro de Salud,Centro de Salud Nº 204 Bº Sarmiento,Salvador Arias y Mar del Plata,Godoy Cruz
+Centro de Salud,Centro de Salud Nº 304 Bº Fuchs,Laguna de la Niña Encantada,Godoy Cruz
+Centro de Salud,Centro de Salud Nº 305 Bº F.O.E.C.Y.T.,Las Chimbas s/n y Salvador Civit,Godoy Cruz
+Hospital,Hospital Luis Chrabalowski,Tupungato y Aconcagua,Las Heras
+Hospital,Hospital Hector Gailhac,Aristóbulo del Valle 1359,Las Heras
+Hospital,Hospital Dr. Ramón Carrillo,Martín Fierro y Condarco,Las Heras
+Centro de Salud,Centro de Salud Nº 017 Carlos Evans,Cornelio Moyano y Catamarca,Las Heras
+Centro de Salud,Centro de Salud Nº 018 General Espejo,Sucre 2704,Las Heras
+Centro de Salud,Centro de Salud Nº 020 Bº 26 de Enero,Entre Calles 13 y 14 Bº 26 de Enero,Las Heras
+Centro de Salud,Centro de Salud Nº 021 El Borbollón,San Ramón s/n,Las Heras
+Centro de Salud,Centro de Salud Nº 022 Nazareno Domizzi,Calle El Pastal s/n,Las Heras
+Centro de Salud,Centro de Salud Nº 025 Monteavaro,A. Argentina 1700 Bº CIRSUBDOS,Las Heras
+Centro de Salud,Centro de Salud Nº 136 Juan Minetti,Brasil y Madame Curie Bº Mathiu,Las Heras
+Centro de Salud,Centro de Salud Nº 139 Barrio Municipal,Calle Bariloche Mza 35 C 27,Las Heras
+Centro de Salud,Centro de Salud Nº 333 René Favaloro,Chiclana y Sarmiento,Las Heras
+Centro de Salud,Centro de Salud Nº 353 Poli Dr. Ortiz Guevara,Chile y Aguado,Las Heras
+Centro de Salud,Centro de Salud Nº 355 La Riojita,Amigorena 574,Las Heras
+Centro de Salud,Centro de Salud Nº 362 Antonio Huesped,Sgto. Cabral 1742,Las Heras
+Hospital,Hospital Diego Paroissien,Godoy Cruz 551,Maipú
+Hospital,Hospital Alfredo Metraux,Av. España 162,Maipú
+Centro de Salud,Centro de Salud Nº 051 Coquimbito,Bra. Nacional 98 y 25 de Mayo,Maipú
+Centro de Salud,Centro de Salud Nº 052 General Ortega,Julio A. Roca 3910,Maipú
+Centro de Salud,Centro de Salud Nº 053 Cruz de Piedra,Videla Aranda 469,Maipú
+Centro de Salud,Centro de Salud Nº 054 Lunlunta,Maza 8035 Bajo Lunlunta,Maipú
+Centro de Salud,Centro de Salud Nº 055 Barrancas,El Alto 6996,Maipú
+Centro de Salud,Centro de Salud Nº 056 Rodeo del Medio,Carril Nacional 4786,Maipú
+Centro de Salud,Centro de Salud Nº 057 San Roque,Lamadrid 489,Maipú
+Centro de Salud,Centro de Salud Nº 058 Santa Blanca,Santa María 1263,Maipú
+Centro de Salud,Centro de Salud Nº 059 Isla Grande,La Isla 3215,Maipú
+Centro de Salud,Centro de Salud Nº 060 General Gutiérrez,Maza 36 Norte,Maipú
+Centro de Salud,Centro de Salud Nº 186 Villa Hortensia,Los Chingolos 203 y Caseros,Maipú
+Centro de Salud,Centro de Salud Nº 237 José Pilo Repetto,Mitre 342,Maipú
+Centro de Salud,Centro de Salud Nº 310 Los Álamos,Ruta 20 y San Martín,Maipú
+Centro de Salud,Centro de Salud Nº 311 Isla Chica,Isla Chica 2835,Maipú
+Centro de Salud,Centro de Salud Nº 319 Jume,Carril Barrancas s/n,Maipú
+Centro de Salud,Centro de Salud Nº 321 Bº Mauyeri,Gral. Paz y Correa,Maipú
+Centro de Salud,Centro de Salud Nº 322 Recoaro,Bº Recoaro Manz. A Casa 13,Maipú
+Centro de Salud,Centro de Salud Nº 323 Villa Seca,Bº Jesús de Nazareth Manz. A Casa 5,Maipú
+Centro de Salud,Centro de Salud Nº 326 Russell,Simón Bolívar 957,Maipú
+Centro de Salud,Centro de Salud Nº 332 Malcayaes,Juan C. Videla 475,Maipú
+Centro de Salud,Centro de Salud Nº 335 Ruta 20,2 de Abril s/n,Maipú
+Centro de Salud,Centro de Salud Nº 342 Colonia Bombal,Belgrano 3660,Maipú
+Centro de Salud,Centro de Salud Nº 352 Bº Cóndor y Andes,Los Artesanos 1115,Maipú
+Centro de Salud,Centro de Salud Nº 356 Piccione,Bº Piccione Manz. C Casa 7,Maipú
+Centro de Salud,Centro de Salud Nº 357 Titarelli,Pacífico Tittarelli 6480,Maipú
+Centro de Salud,Centro de Salud Nº 364 San Roque,Las Margaritas s/n,Maipú
+Centro de Salud,Centro de Salud Nº 365 Plazoleta Rutini,Cavagnaro 108,Maipú
+Hospital,Hospital Infantil Humberto Notti,Bandera de los Andes 2600,Guaymallén
+Hospital,Hospital El Sauce,Alfonso XIII s/n,Guaymallén
+Hospital,Microhospital Puente de Hierro,Severo del Castillo y Carlos Gardel,Guaymallén
+Centro de Salud,Centro de Salud Nº 005 Pascual Laurenti,Bandera de los Andes 6280,Guaymallén
+Centro de Salud,Centro de Salud Nº 006 Bº Patrón Santiago,Pedro Del Castillo 5832,Guaymallén
+Centro de Salud,Centro de Salud Nº 007 Andrés Bacigalupo,Santiago Ropolo 6430,Guaymallén
+Centro de Salud,Centro de Salud Nº 009 Los Corralitos,25 de Mayo s/n,Guaymallén
+Centro de Salud,Centro de Salud Nº 010 Nueva Ciudad,Pringles 2153,Guaymallén
+Centro de Salud,Centro de Salud Nº 011 Santa Elvira,Juan D. de Solis 565,Guaymallén
+Centro de Salud,Centro de Salud Nº 012 Bermejo,Mathus Hoyos 2980,Guaymallén
+Centro de Salud,Centro de Salud Nº 013 Colonia Segovia,Carril Lavalle s/n,Guaymallén
+Centro de Salud,Centro de Salud Nº 014 Pedro Molina,Granaderos de S.M. y Bolivia,Guaymallén
+Centro de Salud,Centro de Salud Nº 015 Ejército de los Andes,Cipolletti 750,Guaymallén
+Centro de Salud,Centro de Salud Nº 016 Villa Nueva,Alpatacal y Chile,Guaymallén
+Centro de Salud,Centro de Salud Nº 179 Prof. E. Carbonari,Río Salado y Ascasubi,Guaymallén
+Centro de Salud,Centro de Salud Nº 185 Juan Foucault,Godofredo Paladini 3130,Guaymallén
+Centro de Salud,Centro de Salud Nº 196 Josefina Oros,Pedro Molina y Araujo,Guaymallén
+Centro de Salud,Centro de Salud Nº 210 Bº Escorihuela,Canadá y EE.UU.,Guaymallén
+Centro de Salud,Centro de Salud Nº 211 Jesús Nazareno,Pedro Goyena s/n,Guaymallén
+Centro de Salud,Centro de Salud Nº 212 Bº Ntra. Sra. del Milagro,Loteo Nebot MB lote 2 Ruta Prov. 24 Km. 16,Guaymallén
+Centro de Salud,Centro de Salud Nº 214 Bº Lihué,Pedro Molina y Colón,Guaymallén
+Centro de Salud,Centro de Salud Nº 219 San Cayetano,Tabanera 8621,Guaymallén
+Centro de Salud,Centro de Salud Nº 222 René Favaloro,Matienzo 2073,Guaymallén

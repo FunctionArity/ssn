@@ -24,7 +24,8 @@ class GuardsController < ApplicationController
   end
 
   def new
-    @guard = CreateGuardFromSetupService.new(params[:guard_setup_id]).call
+    due_date = params[:due_date].present? ? Date.parse(params[:due_date]) : Date.current
+    @guard = CreateGuardFromSetupService.new(params[:guard_setup_id], due_date).call
   end
 
   def edit

@@ -1,27 +1,25 @@
 class CreateGuardFromSetupService
-  def initialize(guard_setup_id)
+  def initialize(guard_setup_id, due_date = Date.current)
+    @due_date = due_date
     @guard_setup = if guard_setup_id.present?
                      GuardSetup.find(guard_setup_id)
     else
-                     GuardSetup.find_by(day_number: Date.current.day)
+                     GuardSetup.find_by(day_number: @due_date.day)
     end
   end
 
   def call
-    return Guard.new(due_date: Date.current) if @guard_setup.nil?
+    priest = User.current_priest(@due_date)
+    return Guard.new(due_date: @due_date, priest: priest) if @guard_setup.nil?
 
-    ActiveRecord::Base.transaction do
-      guard = Guard.new(
-        day_number: @guard_setup.day_number,
-        due_date: Date.current,
-        notes: @guard_setup.notes,
-        vocal: @guard_setup.vocal,
-        priest: User.current_priest,
-        guardian_ids: @guard_setup.guardian_ids,
-        guard_setup_id: @guard_setup.id
-      )
-
-      guard
-    end
+    Guard.new(
+      day_number: @guard_setup.day_number,
+      due_date: @due_date,
+      notes: @guard_setup.notes,
+      vocal: @guard_setup.vocal,
+      priest: priest,
+      guardian_ids: @guard_setup.guardian_ids,
+      guard_setup_id: @guard_setup.id
+    )
   end
 end

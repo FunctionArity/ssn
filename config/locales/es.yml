@@ -375,6 +375,7 @@ es:
       complete: Completar
       complete_confirm: "¿Estás seguro de que querés marcar este servicio como completado?"
       print_pdf: Imprimir
+      copy: Copiar
     new:
       title: Nuevo servicio
       back: Volver a servicios
@@ -413,6 +414,7 @@ es:
         - Tercero
         - Cuarto
         - Quinta
+        - Sexta
   edit: Editar
   delete: Eliminar
   destroy: Eliminar
