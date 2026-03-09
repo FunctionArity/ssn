@@ -1,4 +1,4 @@
-<%= form_with(model: guard, class: "space-y-6") do |form| %>
+<%= form_with(model: guard, class: "space-y-6", data: { turbo_frame: "_top" }) do |form| %>
   <% if guard.errors.any? %>
     <div class="bg-red-50 border border-red-300 text-red-800 rounded-lg p-4">
       <h2 class="font-semibold mb-2"><%= t("guards.form.errors.title", count: guard.errors.count) %></h2>
@@ -49,7 +49,7 @@
     <div class="relative">
       <input type="text"
              data-guardian-search-target="input"
-             data-action="input->guardian-search#filter"
+             data-action="input->guardian-search#filter keydown->guardian-search#navigate"
              placeholder="<%= t('guards.form.search_guardians', default: 'Search guardians...') %>"
              autocomplete="off"
              class="w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500">

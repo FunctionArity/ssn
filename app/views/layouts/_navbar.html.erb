@@ -2,14 +2,15 @@
   <div class="w-full px-4 sm:px-6 lg:px-8">
     <div class="flex justify-between h-14 items-center">
       <div class="flex items-center gap-6">
-        <%= image_tag "icon.svg", class: "h-8 w-8" %>
+        <%= link_to root_path do %>
+          <%= image_tag "icon.svg", class: "h-8 w-8" %>
+        <% end %>
       </div>
       <div class="flex items-center gap-4 text-sm">
         <% if user_signed_in? %>
           <span class="text-gray-600"><%= current_user.full_name %></span>
           <%= button_to destroy_user_session_path, method: :delete, class: "flex items-center gap-1 text-blue-600 hover:text-blue-800 font-medium cursor-pointer" do %>
             <i class="ph ph-sign-out"></i>
-            <span class="sidebar-label"><%= t("devise.sessions.sign_out") %></span>
           <% end %>
         <% else %>
           <%= link_to t("devise.sessions.sign_in"), new_user_session_path, class: "text-blue-600 hover:text-blue-800 font-medium" %>
