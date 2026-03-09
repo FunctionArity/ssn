@@ -4,8 +4,8 @@ class PriestSetup < ApplicationRecord
 
   belongs_to :priest, class_name: "User"
 
-  validates :week_number, presence: true, inclusion: { in: 1..6 }
-  validates :day_of_week, presence: true, inclusion: { in: 1..7 }
+  validates :week_number, presence: true, inclusion: { in: 1..5 }
+  validates :day_of_week, presence: true, inclusion: { in: 0..6 }
   validates :week_number, uniqueness: { scope: :day_of_week }
 
   def self.find_priest_by_week_and_day(day_of_week, week_number)
