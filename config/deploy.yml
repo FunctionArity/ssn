@@ -18,6 +18,10 @@ servers:
 proxy:
   ssl: true
   host: serviciosacerdotalnocturno.org
+  healthcheck:
+    path: /up
+    interval: 3
+    timeout: 10
 
 # Credentials for your image host.
 registry:
