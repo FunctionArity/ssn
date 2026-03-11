@@ -33,7 +33,7 @@ class PriestSetup < ApplicationRecord
   end
 
   def week_and_day_of_month
-    return [week_number, day_of_week] unless day_of_month.present?
+    return [ week_number, day_of_week ] unless day_of_month.present?
 
     day_info = week_and_day_info(date)
 
@@ -65,5 +65,4 @@ class PriestSetup < ApplicationRecord
   def description
     "#{WEEK_NAMES[week_number - 1]} #{DAY_NAMES[day_of_week]}"
   end
-
 end
