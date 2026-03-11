@@ -79,4 +79,5 @@ group :test do
   gem "selenium-webdriver"
   gem "faker"
   gem "simplecov", require: false
+  gem "minitest-reporters"
 end

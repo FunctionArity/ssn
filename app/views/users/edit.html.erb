@@ -1,3 +1,5 @@
+<% role_gradient = { "guardian" => "from-green-100", "vocal" => "from-red-100", "priest" => "from-purple-100" } %>
+<% role_icon_bg   = { "guardian" => "bg-green-200 text-green-700", "vocal" => "bg-red-200 text-red-700", "priest" => "bg-purple-200 text-purple-700" } %>
 <div class="py-8">
   <div class="flex items-center gap-2 mb-6">
     <%= link_to @user, class: "flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700" do %>
@@ -5,9 +7,10 @@
     <% end %>
   </div>
 
-  <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
-    <div class="px-6 py-5 flex items-center gap-4 bg-gradient-to-r from-blue-100 to-white border-b border-gray-100">
-      <div class="flex items-center justify-center w-11 h-11 rounded-xl bg-blue-200 text-blue-700">
+  <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden" data-controller="role-selector">
+    <div class="px-6 py-5 flex items-center gap-4 bg-gradient-to-r <%= role_gradient[@user.role] %> to-white border-b border-gray-100"
+         data-role-selector-target="header">
+      <div class="flex items-center justify-center w-11 h-11 rounded-xl <%= role_icon_bg[@user.role] %>" data-role-selector-target="icon">
         <i class="ph ph-user-gear text-xl"></i>
       </div>
       <h1 class="text-xl font-bold text-gray-900"><%= t(".title") %></h1>

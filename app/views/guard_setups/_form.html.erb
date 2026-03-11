@@ -28,7 +28,7 @@
     <div class="relative">
       <input type="text"
              data-guardian-setup-search-target="input"
-             data-action="input->guardian-setup-search#filter"
+             data-action="input->guardian-setup-search#filter keydown->guardian-setup-search#navigate"
              placeholder="<%= t('guard_setups.form.search_guardians', default: 'Search guardians...') %>"
              autocomplete="off"
              class="w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500">

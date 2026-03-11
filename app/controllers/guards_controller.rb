@@ -1,5 +1,5 @@
 class GuardsController < ApplicationController
-  before_action :set_guard, only: %i[ show edit update destroy close ]
+  before_action :set_guard, only: %i[ show edit update destroy close pdf ]
   before_action :set_services_count, only: %i[ show ]
 
   def index
@@ -15,8 +15,17 @@ class GuardsController < ApplicationController
     redirect_to @guard, notice: t("guards.notices.closed")
   end
 
+  def pdf
+    pdf_data = GuardPdf.new(@guard).render
+    send_data pdf_data,
+      filename: "guardia_#{@guard.id}.pdf",
+      type: "application/pdf",
+      disposition: "inline"
+  end
+
   def new
-    @guard = CreateGuardFromSetupService.new(params[:guard_setup_id]).call
+    due_date = params[:due_date].present? ? Date.parse(params[:due_date]) : Date.current
+    @guard = CreateGuardFromSetupService.new(params[:guard_setup_id], due_date).call
   end
 
   def edit

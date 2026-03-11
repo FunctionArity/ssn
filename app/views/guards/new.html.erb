@@ -14,7 +14,9 @@
     </div>
 
     <div class="px-6 py-6">
-      <%= render "form", guard: @guard %>
+      <%= turbo_frame_tag(:guard_form) do %>
+        <%= render "form", guard: @guard %>
+      <% end %>
     </div>
   </div>
 </div>

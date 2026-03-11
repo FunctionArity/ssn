@@ -110,6 +110,7 @@ en:
       back: Back to guards
       destroy: Destroy this guard
       destroy_confirm: "Are you sure you want to delete this guard?"
+      print_pdf: Print
     new:
       title: New guard
       back: Back to guards
@@ -201,6 +202,8 @@ en:
       destroy: Destroy this service
       destroy_confirm: "Are you sure you want to delete this service?"
       complete: Mark as completed
+      print_pdf: Print
+      copy: Copy
     new:
       title: New service
       back: Back to services
@@ -239,6 +242,7 @@ en:
         - Third
         - Fourth
         - Fifth
+        - Sixth
   edit: Edit
   destroy: Delete
   devise_views:

@@ -3,8 +3,8 @@ require "prawn-svg"
 
 class ServicePdf
   MARGIN      = [ 18, 25, 18, 25 ].freeze
-  LABEL_SIZE  = 9
-  VALUE_SIZE  = 9
+  LABEL_SIZE  = 10
+  VALUE_SIZE  = 11
   LINE_HEIGHT = 26
   LOGO_SIZE   = 45
   HEADER_H    = LOGO_SIZE + 6   # header block height
@@ -45,12 +45,14 @@ class ServicePdf
       pdf.svg(File.read(svg_path), at: [ 0, top ], width: LOGO_SIZE, height: LOGO_SIZE)
     end
 
-    # Center: TOMA DE LLAMADO / SERVICIO SACERDOTAL NOCTURNO
+    # Center: SERVICIO SACERDOTAL NOCTURNO + service number
     cx = LOGO_SIZE + 8
     cw = w - cx - 145
     pdf.bounding_box([ cx, top ], width: cw, height: LOGO_SIZE) do
       pdf.move_down 4
       pdf.text "SERVICIO SACERDOTAL NOCTURNO", size: 11, style: :bold, align: :center
+      pdf.move_down 4
+      pdf.text "Servicio ##{@service.id}", size: 9, align: :center, color: "555555"
     end
 
     # Right: FECHA DE GUARDIA + date value
@@ -77,10 +79,10 @@ class ServicePdf
     y -= LINE_HEIGHT
 
     # Row 2: Hospital + Piso
-    piso_w = 180
+    piso_w = 220
     hosp_w = w - piso_w - 10
     field(pdf, 0,          y, hosp_w, "Hospital:", @service.health_facility&.name)
-    field(pdf, hosp_w + 10, y, piso_w, "Piso:",    @service.health_facility_place)
+    field(pdf, hosp_w + 10, y, piso_w, "Piso / Habitación / Cama / Lugar:",    @service.health_facility_place)
 
     y -= LINE_HEIGHT
 

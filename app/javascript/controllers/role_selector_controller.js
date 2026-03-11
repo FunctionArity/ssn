@@ -1,17 +1,20 @@
 import { Controller } from "@hotwired/stimulus"
 
 const ROLE_STYLES = {
-  guardian: { bg: "bg-green-50",  ring: "ring-green-600/20",  text: "text-green-700"  },
-  vocal:    { bg: "bg-red-50",    ring: "ring-red-600/10",    text: "text-red-700"    },
-  priest:   { bg: "bg-purple-50", ring: "ring-purple-700/10", text: "text-purple-700" }
+  guardian: { bg: "bg-green-50",  ring: "ring-green-600/20",  text: "text-green-700",  gradient: "from-green-100",  iconBg: "bg-green-200",  iconText: "text-green-700"  },
+  vocal:    { bg: "bg-red-50",    ring: "ring-red-600/10",    text: "text-red-700",    gradient: "from-red-100",    iconBg: "bg-red-200",    iconText: "text-red-700"    },
+  priest:   { bg: "bg-purple-50", ring: "ring-purple-700/10", text: "text-purple-700", gradient: "from-purple-100", iconBg: "bg-purple-200", iconText: "text-purple-700" }
 }
 
-const ALL_BG   = ["bg-green-50",  "bg-red-50",    "bg-purple-50"]
-const ALL_RING = ["ring-green-600/20", "ring-red-600/10", "ring-purple-700/10"]
-const ALL_TEXT = ["text-green-700", "text-red-700", "text-purple-700"]
+const ALL_BG       = ["bg-green-50",  "bg-red-50",    "bg-purple-50"]
+const ALL_RING     = ["ring-green-600/20", "ring-red-600/10", "ring-purple-700/10"]
+const ALL_TEXT     = ["text-green-700", "text-red-700", "text-purple-700"]
+const ALL_GRADIENT = ["from-green-100", "from-red-100", "from-purple-100"]
+const ALL_ICON_BG  = ["bg-green-200", "bg-red-200", "bg-purple-200"]
+const ALL_ICON_TEXT = ["text-green-700", "text-red-700", "text-purple-700"]
 
 export default class extends Controller {
-  static targets = ["pill", "label", "priestSection"]
+  static targets = ["pill", "label", "priestSection", "header", "icon"]
 
   connect() {
     const checked = this.element.querySelector("input:checked")
@@ -39,6 +42,16 @@ export default class extends Controller {
 
     this.labelTargets.forEach(l => l.classList.remove(...ALL_TEXT))
     label.classList.add(styles.text)
+
+    if (this.hasHeaderTarget) {
+      this.headerTarget.classList.remove(...ALL_GRADIENT)
+      this.headerTarget.classList.add(styles.gradient)
+    }
+
+    if (this.hasIconTarget) {
+      this.iconTarget.classList.remove(...ALL_ICON_BG, ...ALL_ICON_TEXT)
+      this.iconTarget.classList.add(styles.iconBg, styles.iconText)
+    }
 
     if (this.hasPriestSectionTarget) {
       this.priestSectionTarget.classList.toggle("hidden", role !== "priest")

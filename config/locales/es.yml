@@ -90,6 +90,26 @@ es:
           priest: Sacerdotes
     errors:
       models:
+        service:
+          attributes:
+            guard:
+              required: "debe seleccionar una guardia"
+        priest_setup:
+          attributes:
+            day_of_week:
+              inclusion: "no es un día de la semana válido"
+            week_number:
+              inclusion: "no es un número de semana válido"
+        guard:
+          attributes:
+            vocal:
+              required: "debe seleccionar un vocal"
+            priest:
+              required: "debe seleccionar un sacerdote"
+            guard_setup:
+              required: "debe seleccionar una configuración de guardia"
+            guardians:
+              blank: "no pueden estar en blanco"
         user:
           attributes:
             first_name:
@@ -167,6 +187,7 @@ es:
       destroy_confirm: "¿Estás seguro de que querés eliminar esta guardia?"
       close_guard: Finalizar guardia
       close_confirm: "¿Estás seguro de que querés finalizar esta guardia?"
+      print_pdf: Imprimir
     new:
       title: Nueva guardia
       back: Volver a guardias
@@ -373,6 +394,8 @@ es:
       destroy_confirm: "¿Estás seguro de que querés eliminar este servicio?"
       complete: Completar
       complete_confirm: "¿Estás seguro de que querés marcar este servicio como completado?"
+      print_pdf: Imprimir
+      copy: Copiar
     new:
       title: Nuevo servicio
       back: Volver a servicios
@@ -406,11 +429,12 @@ es:
       title: Sacerdotes
       priests: Sacerdotes
       week_names:
-        - Primero
-        - Segundo
+        - Primera
+        - Segunda
         - Tercero
-        - Cuarto
+        - Cuarta
         - Quinta
+        - Sexta
   edit: Editar
   delete: Eliminar
   destroy: Eliminar
