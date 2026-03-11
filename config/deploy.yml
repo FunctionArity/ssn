@@ -102,6 +102,6 @@ accessories:
         POSTGRES_USER: ssn
         POSTGRES_DB: ssn_production
       secret:
-        - SSN_DATABASE_PASSWORD
+        - POSTGRES_PASSWORD
     directories:
       - data:/var/lib/postgresql/data
