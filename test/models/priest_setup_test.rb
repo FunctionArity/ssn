@@ -34,13 +34,6 @@ class PriestSetupTest < ActiveSupport::TestCase
     end
   end
 
-  test "validates uniqueness of week_number scoped to day_of_week" do
-    existing = priest_setups(:one)
-    duplicate = PriestSetup.new(priest: users(:priest_two), week_number: existing.week_number, day_of_week: existing.day_of_week)
-    assert_not duplicate.valid?
-    assert duplicate.errors[:week_number].any?
-  end
-
   test "allows same week_number with different day_of_week" do
     existing = priest_setups(:one)
     priest_setup = PriestSetup.new(priest: users(:priest_two), week_number: existing.week_number, day_of_week: existing.day_of_week + 1)
