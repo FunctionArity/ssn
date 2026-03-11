@@ -90,6 +90,26 @@ es:
           priest: Sacerdotes
     errors:
       models:
+        service:
+          attributes:
+            guard:
+              required: "debe seleccionar una guardia"
+        priest_setup:
+          attributes:
+            day_of_week:
+              inclusion: "no es un día de la semana válido"
+            week_number:
+              inclusion: "no es un número de semana válido"
+        guard:
+          attributes:
+            vocal:
+              required: "debe seleccionar un vocal"
+            priest:
+              required: "debe seleccionar un sacerdote"
+            guard_setup:
+              required: "debe seleccionar una configuración de guardia"
+            guardians:
+              blank: "no pueden estar en blanco"
         user:
           attributes:
             first_name:

@@ -10,10 +10,10 @@ class CreateGuardFromSetupService
 
   def call
     priest = User.current_priest(@due_date)
-    return Guard.new(due_date: @due_date, priest: priest) if @guard_setup.nil?
+    return Guard.new(due_date: @due_date, priest: priest, day_number: @due_date.day) if @guard_setup.nil?
 
     Guard.new(
-      day_number: @guard_setup.day_number,
+      day_number: @due_date.day,
       due_date: @due_date,
       notes: @guard_setup.notes,
       vocal: @guard_setup.vocal,
