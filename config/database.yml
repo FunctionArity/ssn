@@ -79,7 +79,7 @@ production:
     <<: *default
     database: ssn_production
     username: ssn
-    password: <%= ENV["POSTGRES_PASSWORD"] %>
+    password: <%= ENV["SSN_DATABASE_PASSWORD"] %>
   cache:
     <<: *primary_production
     database: ssn_production_cache
