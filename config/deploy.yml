@@ -15,13 +15,14 @@ servers:
 
 # Enable SSL auto certification via Let's Encrypt and allow for multiple apps on a single web server.
 # Note: If using Cloudflare, set encryption mode in SSL/TLS setting to "Full" to enable CF-to-app encryption.
+deploy_timeout: 60
 proxy:
   ssl: true
   host: serviciosacerdotalnocturno.org
   healthcheck:
     path: /up
     interval: 3
-    timeout: 10
+    timeout: 60
 
 # Credentials for your image host.
 registry:
