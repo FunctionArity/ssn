@@ -18,7 +18,6 @@ servers:
 proxy:
   ssl: true
   host: serviciosacerdotalnocturno.org
-  deploy_timeout: 60
   healthcheck:
     path: /up
     interval: 3
