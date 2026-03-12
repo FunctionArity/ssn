@@ -130,4 +130,5 @@ jobs:
           RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
           SSN_DATABASE_PASSWORD: ${{ secrets.SSN_DATABASE_PASSWORD }}
           POSTGRES_PASSWORD: ${{ secrets.SSN_DATABASE_PASSWORD }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
         run: bin/kamal deploy
