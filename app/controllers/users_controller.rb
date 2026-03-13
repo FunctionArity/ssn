@@ -90,6 +90,8 @@ class UsersController < ApplicationController
     end
 
     def update_user_params
-      user_params.reject { |_, v| v.blank? }
+      base = user_params.reject { |_, v| v.blank? }
+      avatar = params.dig(:user, :avatar)
+      avatar.present? ? base.merge(avatar: avatar) : base
     end
 end

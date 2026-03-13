@@ -12,9 +12,14 @@
 
     <%# Header %>
     <div class="px-6 py-5 flex items-center gap-4 bg-gradient-to-r <%= role_gradient[@user.role] %> to-white border-b border-gray-100">
-      <div class="flex items-center justify-center w-11 h-11 rounded-xl <%= role_icon_bg[@user.role] %>">
-        <i class="ph ph-user text-xl"></i>
-      </div>
+      <% if @user.avatar.attached? %>
+        <img src="<%= url_for(@user.avatar) %>"
+             class="w-11 h-11 rounded-xl object-cover border border-gray-200 shadow-sm shrink-0">
+      <% else %>
+        <div class="flex items-center justify-center w-11 h-11 rounded-xl <%= role_icon_bg[@user.role] %>">
+          <i class="ph ph-user text-xl"></i>
+        </div>
+      <% end %>
       <h1 class="text-xl font-bold text-gray-900"><%= @user.full_name %></h1>
     </div>
 

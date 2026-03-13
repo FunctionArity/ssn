@@ -167,6 +167,12 @@ es:
       back: Volver a usuarios
     form:
       select_church: Seleccionar una parroquia
+      avatar: Foto de perfil
+      change_avatar: Cambiar foto
+      avatar_hint: JPG, PNG o GIF. Máximo 5 MB.
+      crop_title: Recortar foto
+      crop_cancel: Cancelar
+      crop_apply: Aplicar
       errors:
         title:
           one: "%{count} error impidió que este usuario fuera guardado:"
