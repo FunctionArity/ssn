@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: %i[ show edit update destroy ]
+  before_action :set_user, only: %i[ show edit update destroy lock unlock ]
 
   # GET /users or /users.json
   def index
@@ -50,6 +50,16 @@ class UsersController < ApplicationController
         format.json { render json: @user.errors, status: :unprocessable_entity }
       end
     end
+  end
+
+  def lock
+    @user.lock_access!
+    redirect_to @user, notice: t("users.notices.locked")
+  end
+
+  def unlock
+    @user.unlock_access!
+    redirect_to @user, notice: t("users.notices.unlocked")
   end
 
   # DELETE /users/1 or /users/1.json

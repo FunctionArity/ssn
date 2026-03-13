@@ -1,6 +1,11 @@
 Rails.application.routes.draw do
   devise_for :users, path: "auth"
-  resources :users
+  resources :users do
+    member do
+      patch :lock
+      patch :unlock
+    end
+  end
   resources :guards do
     member do
       post :close

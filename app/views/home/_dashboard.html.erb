@@ -3,7 +3,7 @@
   <div class="flex items-start justify-center gap-3 mb-6">
 
     <%# Previous guard %>
-    <div class="w-[30%] shrink-0">
+    <div class="hidden sm:block sm:w-[30%] shrink-0">
       <% if @previous_guard %>
         <%= link_to @previous_guard, class: "group bg-white border border-gray-200 rounded-md shadow-sm hover:shadow-md transition-all duration-200 overflow-hidden flex flex-col opacity-60 hover:opacity-80" do %>
           <div class="px-4 py-3 flex items-center justify-between bg-gradient-to-r from-gray-50 to-white border-b border-gray-100">
@@ -33,7 +33,7 @@
     </div>
 
     <%# Current guard %>
-    <div class="w-[40%] shrink-0">
+    <div class="w-full sm:w-[40%] shrink-0">
       <% if @current_guard %>
         <%= link_to @current_guard, class: "block h-full bg-white border-2 border-indigo-200 rounded-md shadow-sm hover:shadow-md transition-all duration-200 overflow-hidden flex flex-col" do %>
           <div class="px-5 py-4 flex items-center justify-between bg-gradient-to-r from-indigo-50 to-white border-b border-indigo-100">
@@ -99,7 +99,7 @@
     </div>
 
     <%# Next guard %>
-    <div class="w-[30%] shrink-0">
+    <div class="hidden sm:block sm:w-[30%] shrink-0">
       <% if @next_guard %>
         <%= link_to @next_guard, class: "group bg-white border border-gray-200 rounded-md shadow-sm hover:shadow-md transition-all duration-200 overflow-hidden flex flex-col opacity-60 hover:opacity-80" do %>
           <div class="px-4 py-3 flex items-center justify-between bg-gradient-to-r from-indigo-50/50 to-white border-b border-gray-100">

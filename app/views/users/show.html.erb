@@ -55,13 +55,31 @@
       </div>
     </div>
 
-    <div class="px-6 py-4 border-t border-gray-100 flex items-center justify-end gap-3">
-      <%= link_to edit_user_path(@user), class: "flex items-center gap-1.5 rounded-md bg-white border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50" do %>
-        <i class="ph ph-pencil-simple"></i> <%= t("edit") %>
-      <% end %>
-      <%= button_to @user, method: :delete, form: { data: { turbo_confirm: t(".destroy_confirm") } }, class: "cursor-pointer flex items-center gap-1.5 rounded-md bg-red-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500" do %>
-        <i class="ph ph-trash"></i> <%= t("destroy") %>
-      <% end %>
+    <div class="px-6 py-4 border-t border-gray-100 flex items-center justify-between gap-3">
+      <div>
+        <% if @user.access_locked? %>
+          <span class="inline-flex items-center gap-1.5 text-xs font-medium text-red-600 bg-red-50 border border-red-200 rounded-md px-3 py-1.5">
+            <i class="ph ph-lock-simple"></i> <%= t(".locked") %>
+          </span>
+        <% end %>
+      </div>
+      <div class="flex items-center gap-3">
+        <% if @user.access_locked? %>
+          <%= button_to unlock_user_path(@user), method: :patch, class: "cursor-pointer flex items-center gap-1.5 rounded-md bg-green-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500" do %>
+            <i class="ph ph-lock-simple-open"></i> <%= t(".unlock") %>
+          <% end %>
+        <% else %>
+          <%= button_to lock_user_path(@user), method: :patch, form: { data: { turbo_confirm: t(".lock_confirm") } }, class: "cursor-pointer flex items-center gap-1.5 rounded-md bg-amber-500 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-amber-400" do %>
+            <i class="ph ph-lock-simple"></i> <%= t(".lock") %>
+          <% end %>
+        <% end %>
+        <%= link_to edit_user_path(@user), class: "flex items-center gap-1.5 rounded-md bg-white border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50" do %>
+          <i class="ph ph-pencil-simple"></i> <%= t("edit") %>
+        <% end %>
+        <%= button_to @user, method: :delete, form: { data: { turbo_confirm: t(".destroy_confirm") } }, class: "cursor-pointer flex items-center gap-1.5 rounded-md bg-red-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500" do %>
+          <i class="ph ph-trash"></i> <%= t("destroy") %>
+        <% end %>
+      </div>
     </div>
   </div>
 </div>

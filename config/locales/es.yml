@@ -152,6 +152,10 @@ es:
       back: Volver a usuarios
       destroy: Eliminar este usuario
       destroy_confirm: "¿Estás seguro de que querés eliminar este usuario?"
+      lock: Bloquear
+      lock_confirm: "¿Estás seguro de que querés bloquear este usuario?"
+      unlock: Desbloquear
+      locked: Bloqueado
     new:
       title: Nuevo usuario
       back: Volver a usuarios
@@ -169,6 +173,8 @@ es:
       created: El usuario fue creado exitosamente.
       updated: El usuario fue actualizado exitosamente.
       destroyed: El usuario fue eliminado exitosamente.
+      locked: El usuario fue bloqueado.
+      unlocked: El usuario fue desbloqueado.
   guards:
     index:
       title: Guardias
@@ -266,6 +272,14 @@ es:
         cancel_prompt: "¿No estás contento?"
         cancel_button: "Cancelar mi cuenta"
         back: "Volver"
+    confirmations:
+      new:
+        title: "Reenviar instrucciones de confirmación"
+        submit: "Reenviar instrucciones de confirmación"
+    unlocks:
+      new:
+        title: "¿Tu cuenta está bloqueada?"
+        submit: "Reenviar instrucciones de desbloqueo"
     passwords:
       new:
         title: "¿Olvidaste tu contraseña?"

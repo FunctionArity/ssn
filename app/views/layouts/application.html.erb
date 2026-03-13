@@ -28,7 +28,7 @@
   <body class="min-h-screen bg-gray-50">
     <%# Custom confirm dialog %>
     <%= render "layouts/confirm_dialog" %>
-    <% no_chrome = !user_signed_in? && controller_name.in?(%w[home sessions registrations passwords]) %>
+    <% no_chrome = !user_signed_in? && controller_name.in?(%w[home sessions registrations passwords confirmations unlocks]) %>
     <% unless no_chrome %>
       <%= render "layouts/navbar" %>
     <% end %>
