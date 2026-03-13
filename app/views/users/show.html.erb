@@ -15,7 +15,14 @@
       <div class="flex items-center justify-center w-11 h-11 rounded-xl <%= role_icon_bg[@user.role] %>">
         <i class="ph ph-user text-xl"></i>
       </div>
-      <h1 class="text-xl font-bold text-gray-900"><%= @user.full_name %></h1>
+      <div class="flex items-center gap-2">
+        <h1 class="text-xl font-bold text-gray-900"><%= @user.full_name %></h1>
+        <% unless @user.confirmed? %>
+          <span title="<%= t('.email_unconfirmed') %>" class="inline-flex items-center justify-center w-5 h-5 rounded-full bg-amber-100 text-amber-600">
+            <i class="ph ph-warning text-xs"></i>
+          </span>
+        <% end %>
+      </div>
     </div>
 
     <%# Details %>

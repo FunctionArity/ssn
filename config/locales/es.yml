@@ -158,6 +158,7 @@ es:
       locked: Bloqueado
       status: Estado
       active: Activo
+      email_unconfirmed: Correo electrónico no confirmado
       invitation_pending: Invitación pendiente
       resend_invitation: Reenviar invitación
     new:
