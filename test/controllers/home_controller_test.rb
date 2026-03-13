@@ -14,16 +14,14 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test "shows register and login buttons when not signed in" do
+  test "shows login button when not signed in" do
     get root_url
-    assert_select "a[href=?]", new_user_registration_path, text: "Registrarse"
     assert_select "a[href=?]", new_user_session_path, text: "Iniciar sesión"
   end
 
-  test "hides register and login buttons when signed in" do
+  test "hides login button when signed in" do
     sign_in users(:one)
     get root_url
-    assert_select "a[href=?]", new_user_registration_path, count: 0
     assert_select "a[href=?]", new_user_session_path, count: 0
   end
 
