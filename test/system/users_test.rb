@@ -27,7 +27,7 @@ class UsersTest < ApplicationSystemTestCase
     fill_in User.human_attribute_name(:phone), with: "1234567899"
     click_on I18n.t("helpers.submit.create", model: User.model_name.human)
 
-    assert_text I18n.t("users.notices.created")
+    assert_text I18n.t("users.notices.invited")
     click_on I18n.t("users.show.back")
   end
 

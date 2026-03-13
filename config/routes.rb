@@ -1,9 +1,10 @@
 Rails.application.routes.draw do
-  devise_for :users, path: "auth"
+  devise_for :users, path: "auth", skip: [ :registrations ]
   resources :users do
     member do
       patch :lock
       patch :unlock
+      post :resend_invitation
     end
   end
   resources :guards do

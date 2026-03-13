@@ -156,6 +156,10 @@ es:
       lock_confirm: "¿Estás seguro de que querés bloquear este usuario?"
       unlock: Desbloquear
       locked: Bloqueado
+      status: Estado
+      active: Activo
+      invitation_pending: Invitación pendiente
+      resend_invitation: Reenviar invitación
     new:
       title: Nuevo usuario
       back: Volver a usuarios
@@ -171,6 +175,8 @@ es:
           other: "%{count} errores impidieron que este usuario fuera guardado:"
     notices:
       created: El usuario fue creado exitosamente.
+      invited: El usuario fue invitado exitosamente.
+      invitation_resent: La invitación fue reenviada exitosamente.
       updated: El usuario fue actualizado exitosamente.
       destroyed: El usuario fue eliminado exitosamente.
       locked: El usuario fue bloqueado.
@@ -272,6 +278,10 @@ es:
         cancel_prompt: "¿No estás contento?"
         cancel_button: "Cancelar mi cuenta"
         back: "Volver"
+    invitations:
+      edit:
+        title: "Aceptar invitación"
+        submit: "Establecer contraseña"
     confirmations:
       new:
         title: "Reenviar instrucciones de confirmación"
@@ -317,6 +327,19 @@ es:
         instruction: "Haz clic en el siguiente enlace para desbloquear tu cuenta:"
         action: "Desbloquear mi cuenta"
   devise:
+    invitations:
+      send_instructions: "Se ha enviado una invitación a %{email}."
+      invitation_token_invalid: "El token de invitación no es válido."
+      updated: "Tu contraseña fue establecida exitosamente. Has iniciado sesión."
+      updated_not_active: "Tu contraseña fue establecida exitosamente."
+      no_invitations_remaining: "No quedan invitaciones disponibles."
+      invitation_removed: "Tu invitación fue eliminada."
+      new:
+        header: "Enviar invitación"
+        submit: "Enviar una invitación"
+      edit:
+        header: "Establecer tu contraseña"
+        submit: "Establecer mi contraseña"
     confirmations:
       confirmed: "Tu dirección de correo electrónico ha sido confirmada exitosamente."
       send_instructions: "Recibirás un correo electrónico con instrucciones sobre cómo confirmar tu cuenta en unos minutos."

@@ -18,20 +18,13 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test "should create user" do
-    assert_difference("User.count") do
-      post users_url, params: { user: { email: Faker::Internet.email, first_name: @user.first_name, last_name: @user.last_name, phone: @user.phone } }
+  test "should create user and send invitation email" do
+    assert_difference([ "User.count", "ActionMailer::Base.deliveries.size" ]) do
+      post users_url, params: { user: { email: Faker::Internet.email, first_name: "New", last_name: "User", phone: "1111111111" } }
     end
 
     assert_redirected_to user_url(User.last)
-  end
-
-  test "should create user without password using auto-generated one" do
-    assert_difference("User.count") do
-      post users_url, params: { user: { email: Faker::Internet.email, first_name: "Auto", last_name: "Pass", phone: "1111111111", password: "" } }
-    end
-
-    assert_redirected_to user_url(User.last)
+    assert_nil User.last.invitation_accepted_at
   end
 
   test "should not create user with missing required fields" do
@@ -52,6 +45,38 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
   test "should show user" do
     get user_url(@user)
+    assert_response :success
+  end
+
+  test "show displays active status when invitation accepted" do
+    get user_url(@user)
+    assert_select "span", text: /Activo/
+  end
+
+  test "show displays invitation pending badge when not yet accepted" do
+    pending_user = User.invite!({ email: "pending@test.com", first_name: "Pending", last_name: "User" }, @user)
+    get user_url(pending_user)
+    assert_select "span", text: /Invitación pendiente/
+  end
+
+  test "should resend invitation email" do
+    pending_user = User.invite!({ email: "pending2@test.com", first_name: "Pending", last_name: "User" }, @user)
+    assert_difference("ActionMailer::Base.deliveries.size") do
+      post resend_invitation_user_url(pending_user)
+    end
+    assert_redirected_to user_url(pending_user)
+  end
+
+  test "registration route is not accessible" do
+    sign_out @user
+    get "/auth/sign_up"
+    assert_response :not_found
+  end
+
+  test "invitation accept route is accessible when not signed in" do
+    pending_user = User.invite!({ email: "pending3@test.com", first_name: "Pending", last_name: "User" }, @user)
+    sign_out @user
+    get accept_user_invitation_url(invitation_token: pending_user.raw_invitation_token)
     assert_response :success
   end
 

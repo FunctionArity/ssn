@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: %i[ show edit update destroy lock unlock ]
+  before_action :set_user, only: %i[ show edit update destroy lock unlock resend_invitation ]
 
   # GET /users or /users.json
   def index
@@ -23,12 +23,11 @@ class UsersController < ApplicationController
 
   # POST /users or /users.json
   def create
-    @user = User.new(user_params)
-    @user.password = SecureRandom.hex(12) if user_params[:password].blank?
+    @user = User.invite!(user_params.merge(skip_invitation: false), current_user)
 
     respond_to do |format|
-      if @user.save
-        format.html { redirect_to @user, notice: t("users.notices.created") }
+      if @user.errors.empty?
+        format.html { redirect_to @user, notice: t("users.notices.invited") }
         format.json { render :show, status: :created, location: @user }
       else
         @churches = Church.all
@@ -36,6 +35,11 @@ class UsersController < ApplicationController
         format.json { render json: @user.errors, status: :unprocessable_entity }
       end
     end
+  end
+
+  def resend_invitation
+    @user.invite!(current_user)
+    redirect_to @user, notice: t("users.notices.invitation_resent")
   end
 
   # PATCH/PUT /users/1 or /users/1.json
