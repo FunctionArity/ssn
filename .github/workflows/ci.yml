@@ -122,7 +122,7 @@ jobs:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@v4
 
       - name: Write Rails master key
         run: echo "${{ secrets.RAILS_MASTER_KEY }}" > config/master.key
