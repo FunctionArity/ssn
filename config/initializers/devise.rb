@@ -209,7 +209,7 @@ Devise.setup do |config|
   # Also, when used in conjunction with `send_email_changed_notification`,
   # the notification is sent to the original email when the change is requested,
   # not when the unconfirmed email is confirmed.
-  config.reconfirmable = true
+  # config.reconfirmable = true
 
   # Defines which key will be used when confirming an account
   # config.confirmation_keys = [:email]

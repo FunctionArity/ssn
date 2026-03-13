@@ -280,7 +280,6 @@ en:
       log_in: "Log in"
       sign_up: "Sign up"
       forgot_password: "Forgot your password?"
-      confirmation_instructions: "Didn't receive confirmation instructions?"
       unlock_instructions: "Didn't receive unlock instructions?"
     mailer:
       greeting: "Hello %{email}!"
@@ -290,9 +289,6 @@ en:
         action: "Change my password"
         ignore: "If you didn't request this, please ignore this email."
         no_change: "Your password won't change until you access the link above and create a new one."
-      confirmation:
-        intro: "You can confirm your account email through the link below:"
-        action: "Confirm my account"
       email_changed:
         changing: "We're contacting you to notify you that your email is being changed to %{email}."
         changed: "We're contacting you to notify you that your email has been changed to %{email}."

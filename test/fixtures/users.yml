@@ -6,7 +6,6 @@ one:
   email: pablo@rodriguez.com
   phone: "1234567890"
   encrypted_password: <%= Devise::Encryptor.digest(User, 'password123') %>
-  confirmed_at: <%= Time.current %>
   invitation_accepted_at: <%= Time.current %>
 
 two:
@@ -15,7 +14,6 @@ two:
   email: luis@rodriguez.com
   phone: "1234567891"
   encrypted_password: <%= Devise::Encryptor.digest(User, 'password123') %>
-  confirmed_at: <%= Time.current %>
   invitation_accepted_at: <%= Time.current %>
 
 agustin:
@@ -24,7 +22,6 @@ agustin:
   email: agustin@rodriguez.com
   phone: "1234567892"
   encrypted_password: <%= Devise::Encryptor.digest(User, 'password123') %>
-  confirmed_at: <%= Time.current %>
   invitation_accepted_at: <%= Time.current %>
 
 priest_one:
@@ -34,7 +31,6 @@ priest_one:
   phone: "1234567893"
   role: 2
   encrypted_password: <%= Devise::Encryptor.digest(User, 'password123') %>
-  confirmed_at: <%= Time.current %>
   invitation_accepted_at: <%= Time.current %>
 
 priest_two:
@@ -44,5 +40,4 @@ priest_two:
   phone: "1234567894"
   role: 2
   encrypted_password: <%= Devise::Encryptor.digest(User, 'password123') %>
-  confirmed_at: <%= Time.current %>
   invitation_accepted_at: <%= Time.current %>
