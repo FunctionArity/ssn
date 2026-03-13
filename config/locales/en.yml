@@ -86,6 +86,12 @@ en:
       show: Show this user
       back: Back to users
     form:
+      avatar: Profile picture
+      change_avatar: Change photo
+      avatar_hint: JPG, PNG or GIF. Max 5 MB.
+      crop_title: Crop photo
+      crop_cancel: Cancel
+      crop_apply: Apply
       errors:
         title:
           one: "%{count} error prohibited this user from being saved:"

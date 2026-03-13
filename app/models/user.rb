@@ -4,6 +4,8 @@ class User < ApplicationRecord
   devise :invitable, :database_authenticatable,
          :recoverable, :rememberable, :validatable, :lockable
 
+  has_one_attached :avatar
+
   enum :role, { guardian: 0, vocal: 1, priest: 2 }, default: :guardian
 
   validates :first_name, :last_name, presence: true

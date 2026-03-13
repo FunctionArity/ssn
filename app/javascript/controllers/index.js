@@ -35,3 +35,6 @@ application.register("guard-date-reload", GuardDateReloadController)
 
 import ClipboardController from "./clipboard_controller"
 application.register("clipboard", ClipboardController)
+
+import AvatarCropController from "./avatar_crop_controller"
+application.register("avatar-crop", AvatarCropController)
