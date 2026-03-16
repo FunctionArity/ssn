@@ -27,7 +27,9 @@
             </div>
             <div class="min-w-0">
               <p class="text-xs text-gray-400"><%= GuardSetup.human_attribute_name(:vocal) %></p>
-              <p class="text-sm font-medium text-gray-900 truncate"><%= guard_setup.vocal.full_name %></p>
+              <p class="text-sm font-medium text-gray-900 truncate">
+                <%= link_to guard_setup.vocal.full_name, user_path(guard_setup.vocal) %>
+              </p>
             </div>
           </div>
 
@@ -39,7 +41,9 @@
               <p class="text-xs text-gray-400"><%= t(".guardians_count", count: guard_setup.guardians.size) %></p>
               <div class="flex flex-wrap gap-1 mt-1">
                 <% guard_setup.guardians.order(:last_name, :first_name).each do |guardian| %>
-                  <span class="badge_green"><%= guardian.full_name %></span>
+                  <span class="badge_green hover:opacity-80">
+                    <%= link_to guardian.full_name, user_path(guardian) %>
+                  </span>
                 <% end %>
               </div>
             </div>
