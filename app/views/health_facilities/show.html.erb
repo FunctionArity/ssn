@@ -27,9 +27,19 @@
     </div>
 
     <% if @health_facility.address.present? %>
-      <div data-controller="address-map"
-           data-address-map-initial-address-value="<%= @health_facility.address %>">
-        <div data-address-map-target="map" class="w-full h-72"></div>
+      <div class="border-t border-gray-100">
+        <div class="flex items-center justify-between px-6 py-3">
+          <p class="text-xs font-semibold text-gray-400 uppercase tracking-wide flex items-center gap-1.5">
+            <i class="ph ph-map-trifold"></i> <%= t(".map") %>
+          </p>
+          <%= link_to "https://maps.google.com/?q=#{URI.encode_uri_component(@health_facility.address)}", target: "_blank", rel: "noopener", class: "text-xs text-teal-600 hover:underline flex items-center gap-1" do %>
+            <i class="ph ph-arrow-square-out"></i> <%= t(".open_in_maps") %>
+          <% end %>
+        </div>
+        <div data-controller="address-map"
+             data-address-map-initial-address-value="<%= @health_facility.address %>">
+          <div data-address-map-target="map" class="w-full h-80"></div>
+        </div>
       </div>
     <% end %>
 
