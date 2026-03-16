@@ -158,6 +158,9 @@ es:
       active: Activo
       invitation_pending: Invitación pendiente
       resend_invitation: Reenviar invitación
+      guard_setups: Guardias
+      vocal_guard_setups: Guardias (vocal)
+      guard_day: "Guardia #%{number}"
     new:
       title: Nuevo usuario
       back: Volver a usuarios

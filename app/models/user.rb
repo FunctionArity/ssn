@@ -20,6 +20,8 @@ class User < ApplicationRecord
   has_many :guard_guardians, dependent: :destroy
   has_many :guards, through: :guard_guardians
 
+  has_many :vocal_guard_setups, class_name: "GuardSetup", foreign_key: :vocal_id, dependent: :nullify, inverse_of: :vocal
+
   has_many :guard_setup_guardians, dependent: :destroy
   has_many :guard_setups, through: :guard_setup_guardians
 

@@ -78,6 +78,9 @@ en:
       back: Back to users
       destroy: Destroy this user
       destroy_confirm: "Are you sure you want to delete this user?"
+      guard_setups: Guards
+      vocal_guard_setups: Guards (vocal)
+      guard_day: "Guard #%{number}"
     new:
       title: New user
       back: Back to users
