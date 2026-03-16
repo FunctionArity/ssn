@@ -78,6 +78,7 @@ en:
       back: Back to users
       destroy: Destroy this user
       destroy_confirm: "Are you sure you want to delete this user?"
+      church: Church
       guard_setups: Guards
       vocal_guard_setups: Guards (vocal)
       guard_day: "Guard #%{number}"
@@ -184,6 +185,8 @@ en:
       edit: Edit this health facility
       back: Back to health facilities
       destroy: Destroy this health facility
+      map: Map
+      open_in_maps: Open in Google Maps
     new:
       title: New health facility
       back: Back to health facilities
@@ -213,6 +216,8 @@ en:
       complete: Mark as completed
       print_pdf: Print
       copy: Copy
+      map: Map
+      open_in_maps: Open in Google Maps
     new:
       title: New service
       back: Back to services
@@ -252,6 +257,11 @@ en:
         - Fourth
         - Fifth
         - Sixth
+  churches:
+    show:
+      priest: Priest
+      map: Map
+      open_in_maps: Open in Google Maps
   edit: Edit
   destroy: Delete
   devise_views:
