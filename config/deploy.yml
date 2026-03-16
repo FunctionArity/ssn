@@ -107,3 +107,19 @@ accessories:
         - POSTGRES_PASSWORD
     directories:
       - data:/var/lib/postgresql/data
+  backup:
+    image: pablomdz/ssn-backup:latest
+    host: 5.161.206.62
+    env:
+      clear:
+        SCHEDULE: "@daily"
+        S3_REGION: us-east-1
+        S3_BUCKET: ssn-db-backups
+        S3_PREFIX: backups
+        POSTGRES_HOST: ssn-db
+        POSTGRES_DATABASE: ssn_production
+        POSTGRES_USER: ssn
+      secret:
+        - POSTGRES_PASSWORD
+        - S3_ACCESS_KEY_ID
+        - S3_SECRET_ACCESS_KEY
