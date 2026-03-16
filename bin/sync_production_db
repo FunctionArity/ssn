@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+set -e
+
+echo "==> Triggering production backup..."
+bin/trigger_backup
+
+echo "==> Downloading latest backup..."
+bin/download_backup ./tmp
+
+echo "==> Restoring to local development database..."
+LATEST=$(ls -t ./tmp/*.sql.gz | head -1)
+bin/restore_backup "$LATEST"

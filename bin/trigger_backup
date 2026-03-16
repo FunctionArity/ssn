@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+set -e
+
+bin/kamal accessory exec backup --reuse "sh /backup.sh"
