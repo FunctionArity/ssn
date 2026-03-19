@@ -144,4 +144,60 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
     assert_nil User.last.church_id
   end
+
+  # ---------------------------------------------------------------------------
+  # Impersonation
+  # ---------------------------------------------------------------------------
+
+  test "super_admin can impersonate another user" do
+    sign_in users(:super_admin)
+    post impersonate_user_path(users(:one))
+    assert_redirected_to root_path
+    assert_match users(:one).full_name, flash[:notice]
+  end
+
+  test "impersonation sets current session to the target user" do
+    sign_in users(:super_admin)
+    post impersonate_user_path(users(:two))
+    follow_redirect!
+    # Confirm the session is still alive as the impersonated user
+    get user_url(users(:two))
+    assert_response :success
+  end
+
+  test "regular user cannot impersonate" do
+    post impersonate_user_path(users(:two))
+    assert_redirected_to user_path(users(:two))
+    assert_equal I18n.t("pundit.not_authorized"), flash[:alert]
+  end
+
+  test "admin (non-super-admin) cannot impersonate" do
+    sign_in users(:admin_user)
+    post impersonate_user_path(users(:one))
+    assert_redirected_to user_path(users(:one))
+    assert_equal I18n.t("pundit.not_authorized"), flash[:alert]
+  end
+
+  test "stop_impersonating ends the session and redirects to root" do
+    sign_in users(:super_admin)
+    post impersonate_user_path(users(:one))
+    post stop_impersonating_path
+    assert_redirected_to root_path
+    assert_equal I18n.t("users.notices.stopped_impersonating"), flash[:notice]
+  end
+
+  test "after stop_impersonating the original user session is restored" do
+    sign_in users(:super_admin)
+    post impersonate_user_path(users(:one))
+    post stop_impersonating_path
+    # super_admin is back — can still access protected pages
+    get users_url
+    assert_response :success
+  end
+
+  test "stop_impersonating without active impersonation still redirects to root" do
+    sign_in users(:super_admin)
+    post stop_impersonating_path
+    assert_redirected_to root_path
+  end
 end

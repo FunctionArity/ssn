@@ -5,8 +5,10 @@ Rails.application.routes.draw do
       patch :lock
       patch :unlock
       post :resend_invitation
+      post :impersonate
     end
   end
+  post "stop_impersonating", to: "users#stop_impersonating", as: :stop_impersonating
   resources :guards do
     member do
       post :close

@@ -114,6 +114,11 @@
 
     <%# Actions %>
     <div class="px-6 py-4 border-t border-gray-100 flex flex-col sm:flex-row sm:items-center sm:justify-end gap-2">
+      <% if true_user.super_admin? && current_user != @user %>
+        <%= button_to impersonate_user_path(@user), method: :post, form: { class: "w-full sm:w-auto" }, class: "w-full cursor-pointer flex items-center justify-center gap-1.5 rounded-md bg-violet-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-violet-500" do %>
+          <i class="ph ph-detective"></i> <%= t(".impersonate") %>
+        <% end %>
+      <% end %>
       <% if @user.access_locked? %>
         <%= button_to unlock_user_path(@user), method: :patch, form: { class: "w-full sm:w-auto" }, class: "w-full cursor-pointer flex items-center justify-center gap-1.5 rounded-md bg-green-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500" do %>
           <i class="ph ph-lock-simple-open"></i> <%= t(".unlock") %>

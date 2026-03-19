@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: %i[ show edit update destroy lock unlock resend_invitation ]
+  before_action :set_user, only: %i[ show edit update destroy lock unlock resend_invitation impersonate ]
 
   # GET /users or /users.json
   def index
@@ -64,6 +64,19 @@ class UsersController < ApplicationController
   def unlock
     @user.unlock_access!
     redirect_to @user, notice: t("users.notices.unlocked")
+  end
+
+  def impersonate
+    unless true_user.super_admin?
+      redirect_to @user, alert: t("pundit.not_authorized") and return
+    end
+    impersonate_user(@user)
+    redirect_to root_path, notice: t("users.notices.impersonating", name: @user.full_name)
+  end
+
+  def stop_impersonating
+    stop_impersonating_user
+    redirect_to root_path, notice: t("users.notices.stopped_impersonating")
   end
 
   # DELETE /users/1 or /users/1.json
