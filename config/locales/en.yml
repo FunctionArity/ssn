@@ -106,8 +106,12 @@ en:
       stop: Stop impersonating
     notices:
       created: User was successfully created.
+      invited: User was successfully invited.
+      invitation_resent: Invitation was successfully resent.
       updated: User was successfully updated.
       destroyed: User was successfully destroyed.
+      locked: User was locked.
+      unlocked: User was unlocked.
       impersonating: "You are now impersonating %{name}."
       stopped_impersonating: You have stopped impersonating.
   guards:
