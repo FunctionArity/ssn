@@ -5,6 +5,25 @@ one:
   last_name: Rodriguez
   email: pablo@rodriguez.com
   phone: "1234567890"
+  role: 1
+  encrypted_password: <%= Devise::Encryptor.digest(User, 'password123') %>
+  invitation_accepted_at: <%= Time.current %>
+
+vocal_guardian:
+  first_name: Maria
+  last_name: Garcia
+  email: maria@garcia.com
+  phone: "1234567895"
+  role: 1
+  encrypted_password: <%= Devise::Encryptor.digest(User, 'password123') %>
+  invitation_accepted_at: <%= Time.current %>
+
+unrelated_vocal:
+  first_name: Pedro
+  last_name: Lopez
+  email: pedro@lopez.com
+  phone: "1234567896"
+  role: 1
   encrypted_password: <%= Devise::Encryptor.digest(User, 'password123') %>
   invitation_accepted_at: <%= Time.current %>
 

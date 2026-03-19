@@ -473,6 +473,8 @@ es:
         - Cuarta
         - Quinta
         - Sexta
+  pundit:
+    not_authorized: No tenés permiso para realizar esta acción.
   edit: Editar
   delete: Eliminar
   destroy: Eliminar

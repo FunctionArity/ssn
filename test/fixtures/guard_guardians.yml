@@ -3,3 +3,7 @@
 one:
   guard: one
   user: one
+
+vocal_guardian_on_guard_one:
+  guard: one
+  user: vocal_guardian
