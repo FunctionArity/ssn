@@ -82,6 +82,7 @@ en:
       guard_setups: Guards
       vocal_guard_setups: Guards (vocal)
       guard_day: "Guard #%{number}"
+      impersonate: Impersonate
     new:
       title: New user
       back: Back to users
@@ -100,10 +101,19 @@ en:
         title:
           one: "%{count} error prohibited this user from being saved:"
           other: "%{count} errors prohibited this user from being saved:"
+    impersonation:
+      banner: "Impersonating %{name}."
+      stop: Stop impersonating
     notices:
       created: User was successfully created.
+      invited: User was successfully invited.
+      invitation_resent: Invitation was successfully resent.
       updated: User was successfully updated.
       destroyed: User was successfully destroyed.
+      locked: User was locked.
+      unlocked: User was unlocked.
+      impersonating: "You are now impersonating %{name}."
+      stopped_impersonating: You have stopped impersonating.
   guards:
     index:
       title: Guards

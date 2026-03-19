@@ -1,4 +1,6 @@
 class ApplicationController < ActionController::Base
+  impersonates :user, with: ->(id) { User.find_by(id: id) }
+
   # Only allow modern browsers supporting webp images, web push, badges, import maps, CSS nesting, and CSS :has.
   allow_browser versions: :modern
   before_action :authenticate_user!

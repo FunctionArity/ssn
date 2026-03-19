@@ -7,6 +7,7 @@ class User < ApplicationRecord
   has_one_attached :avatar
 
   enum :role, { guardian: 0, vocal: 1, priest: 2 }, default: :guardian
+  enum :user_type, { regular: 0, admin: 1, super_admin: 2 }, default: :regular
 
   validates :first_name, :last_name, presence: true
 

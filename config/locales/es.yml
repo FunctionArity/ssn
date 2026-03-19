@@ -162,6 +162,7 @@ es:
       guard_setups: Guardias
       vocal_guard_setups: Guardias (vocal)
       guard_day: "Guardia #%{number}"
+      impersonate: Suplantar
     new:
       title: Nuevo usuario
       back: Volver a usuarios
@@ -189,6 +190,11 @@ es:
       destroyed: El usuario fue eliminado exitosamente.
       locked: El usuario fue bloqueado.
       unlocked: El usuario fue desbloqueado.
+      impersonating: "Ahora estás suplantando a %{name}."
+      stopped_impersonating: Dejaste de suplantar al usuario.
+    impersonation:
+      banner: "Suplantando a %{name}."
+      stop: Dejar de suplantar
   guards:
     index:
       title: Guardias
