@@ -100,7 +100,7 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test "role_badge_class returns badge_green for guardian" do
-    assert_equal "badge_green", users(:one).role_badge_class
+    assert_equal "badge_green", users(:two).role_badge_class
   end
 
   test "role_badge_class returns badge_red for vocal" do
