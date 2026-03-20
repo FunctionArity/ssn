@@ -35,5 +35,4 @@ class ServicePolicy < ApplicationPolicy
 
     guard.vocal == user || guard.guardians.include?(user)
   end
-
 end

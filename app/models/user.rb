@@ -43,7 +43,7 @@ class User < ApplicationRecord
   end
 
   def day_numbers
-    (vocal_guard_setups + guard_setups).map(&:day_number).join(' ')
+    (vocal_guard_setups + guard_setups).map(&:day_number).join(" ")
   end
 
   def self.current_priest(date = Date.current)
