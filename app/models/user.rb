@@ -35,7 +35,15 @@ class User < ApplicationRecord
   end
 
   def full_name
-    "#{first_name} #{last_name}"
+    "#{last_name} #{first_name}"
+  end
+
+  def initials
+    "#{last_name[0]}#{first_name[0]}"
+  end
+
+  def day_numbers
+    (vocal_guard_setups + guard_setups).map(&:day_number).join(' ')
   end
 
   def self.current_priest(date = Date.current)

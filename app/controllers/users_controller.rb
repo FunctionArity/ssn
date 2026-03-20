@@ -13,16 +13,19 @@ class UsersController < ApplicationController
   # GET /users/new
   def new
     @user = User.new
+    authorize @user
     @churches = Church.all
   end
 
   # GET /users/1/edit
   def edit
+    authorize @user
     @churches = Church.all
   end
 
   # POST /users or /users.json
   def create
+    authorize User.new
     @user = User.invite!(user_params.merge(skip_invitation: false), current_user)
 
     respond_to do |format|
@@ -38,12 +41,14 @@ class UsersController < ApplicationController
   end
 
   def resend_invitation
+    authorize @user
     @user.invite!(current_user)
     redirect_to @user, notice: t("users.notices.invitation_resent")
   end
 
   # PATCH/PUT /users/1 or /users/1.json
   def update
+    authorize @user
     respond_to do |format|
       if @user.update(update_user_params)
         format.html { redirect_to @user, notice: t("users.notices.updated"), status: :see_other }
@@ -57,19 +62,19 @@ class UsersController < ApplicationController
   end
 
   def lock
+    authorize @user
     @user.lock_access!
     redirect_to @user, notice: t("users.notices.locked")
   end
 
   def unlock
+    authorize @user
     @user.unlock_access!
     redirect_to @user, notice: t("users.notices.unlocked")
   end
 
   def impersonate
-    unless true_user.super_admin?
-      redirect_to @user, alert: t("pundit.not_authorized") and return
-    end
+    authorize @user
     impersonate_user(@user)
     redirect_to root_path, notice: t("users.notices.impersonating", name: @user.full_name)
   end
@@ -81,6 +86,7 @@ class UsersController < ApplicationController
 
   # DELETE /users/1 or /users/1.json
   def destroy
+    authorize @user
     @user.destroy!
 
     respond_to do |format|

@@ -32,16 +32,18 @@ class ServicesController < ApplicationController
     else
       GuardService.current&.id
     end
+
+    authorize @service
   end
 
-
-
   def edit
+    authorize @service
   end
 
   def create
     @service = Service.new(service_params)
     @service.created_by = current_user
+    authorize @service
 
     respond_to do |format|
       if @service.save
@@ -55,6 +57,7 @@ class ServicesController < ApplicationController
   end
 
   def update
+    authorize @service
     respond_to do |format|
       if @service.update(service_params)
         format.html { redirect_to @service, notice: t("services.notices.updated"), status: :see_other }
@@ -67,6 +70,7 @@ class ServicesController < ApplicationController
   end
 
   def destroy
+    authorize @service
     @service.destroy!
 
     respond_to do |format|

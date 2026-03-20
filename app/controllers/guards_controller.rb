@@ -11,6 +11,7 @@ class GuardsController < ApplicationController
   end
 
   def close
+    authorize @guard
     @guard.closed!
     redirect_to @guard, notice: t("guards.notices.closed")
   end

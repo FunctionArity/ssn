@@ -10,13 +10,16 @@ class GuardSetupsController < ApplicationController
 
   def new
     @guard_setup = GuardSetup.new
+    authorize @guard_setup
   end
 
   def edit
+    authorize @guard_setup
   end
 
   def create
     @guard_setup = GuardSetup.new(guard_setup_params)
+    authorize @guard_setup
 
     respond_to do |format|
       if @guard_setup.save
@@ -30,6 +33,7 @@ class GuardSetupsController < ApplicationController
   end
 
   def update
+    authorize @guard_setup
     respond_to do |format|
       if @guard_setup.update(guard_setup_params)
         format.html { redirect_to @guard_setup, notice: t("guard_setups.notices.updated"), status: :see_other }
@@ -42,6 +46,7 @@ class GuardSetupsController < ApplicationController
   end
 
   def destroy
+    authorize @guard_setup
     @guard_setup.destroy!
 
     respond_to do |format|

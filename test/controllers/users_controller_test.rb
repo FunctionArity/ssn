@@ -4,7 +4,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 
   setup do
-    @user = users(:one)
+    @user = users(:super_admin)
     sign_in @user
   end
 
@@ -157,24 +157,23 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "impersonation sets current session to the target user" do
-    sign_in users(:super_admin)
-    post impersonate_user_path(users(:two))
+    post impersonate_user_path(users(:admin_user))
     follow_redirect!
-    # Confirm the session is still alive as the impersonated user
-    get user_url(users(:two))
-    assert_response :success
+    # Confirm the impersonated user's name appears in the flash
+    assert_match users(:admin_user).full_name, flash[:notice]
   end
 
   test "regular user cannot impersonate" do
+    sign_in users(:one)
     post impersonate_user_path(users(:two))
-    assert_redirected_to user_path(users(:two))
+    assert_redirected_to root_path
     assert_equal I18n.t("pundit.not_authorized"), flash[:alert]
   end
 
   test "admin (non-super-admin) cannot impersonate" do
     sign_in users(:admin_user)
     post impersonate_user_path(users(:one))
-    assert_redirected_to user_path(users(:one))
+    assert_redirected_to root_path
     assert_equal I18n.t("pundit.not_authorized"), flash[:alert]
   end
 

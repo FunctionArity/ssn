@@ -4,7 +4,7 @@ class GuardSetupsControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 
   setup do
-    @user = users(:one)
+    @user = users(:admin_user)
     @guard_setup = guard_setups(:one)
     sign_in @user
   end
