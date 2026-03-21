@@ -160,7 +160,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_18_222155) do
     t.integer "role", default: 0, null: false
     t.string "unlock_token"
     t.datetime "updated_at", null: false
-    t.integer "user_type", default: 0, null: false
     t.index ["church_id"], name: "index_users_on_church_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["invitation_token"], name: "index_users_on_invitation_token", unique: true
