@@ -47,7 +47,7 @@ super_admin:
   last_name: Admin
   email: superadmin@test.com
   phone: "1234567895"
-  #user_type: 2
+  user_type: 2
   encrypted_password: <%= Devise::Encryptor.digest(User, 'password123') %>
   invitation_accepted_at: <%= Time.current %>
 
@@ -56,6 +56,6 @@ admin_user:
   last_name: Admin
   email: admin@test.com
   phone: "1234567896"
-  #user_type: 1
+  user_type: 1
   encrypted_password: <%= Devise::Encryptor.digest(User, 'password123') %>
   invitation_accepted_at: <%= Time.current %>
