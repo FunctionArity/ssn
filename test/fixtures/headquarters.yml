@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: Sede Central
+  president_id: <%= ActiveRecord::FixtureSet.identify(:one) %>
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>
+
+two:
+  name: Sede Norte
+  president_id: <%= ActiveRecord::FixtureSet.identify(:vocal_guardian) %>
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_03_25_130051) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_25_211205) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -92,6 +92,14 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_25_130051) do
     t.index ["guard_setup_id"], name: "index_guards_on_guard_setup_id"
     t.index ["priest_id"], name: "index_guards_on_priest_id"
     t.index ["vocal_id"], name: "index_guards_on_vocal_id"
+  end
+
+  create_table "headquarters", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "name"
+    t.bigint "president_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["president_id"], name: "index_headquarters_on_president_id"
   end
 
   create_table "health_facilities", force: :cascade do |t|
@@ -186,6 +194,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_25_130051) do
   add_foreign_key "guards", "guard_setups"
   add_foreign_key "guards", "users", column: "priest_id"
   add_foreign_key "guards", "users", column: "vocal_id"
+  add_foreign_key "headquarters", "users", column: "president_id"
   add_foreign_key "priest_setups", "users", column: "priest_id"
   add_foreign_key "services", "guards"
   add_foreign_key "services", "health_facilities"

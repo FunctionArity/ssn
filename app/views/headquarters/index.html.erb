@@ -1,0 +1,30 @@
+<div>
+  <%= render "shared/page_header",
+        title: t(".title"),
+        icon: "ph-buildings",
+        icon_class: "bg-amber-100 text-amber-700",
+        action_label: t(".new_headquarters"),
+        action_path: new_headquarter_path %>
+
+  <div id="headquarters" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+    <% @headquarters.each do |hq| %>
+      <div class="bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-0.5 overflow-hidden">
+        <div class="px-5 py-4 flex items-center gap-3 border-b border-gray-100 bg-gradient-to-r from-amber-50 to-white">
+          <div class="flex items-center justify-center w-9 h-9 rounded-full bg-amber-100 text-amber-700 shrink-0">
+            <i class="ph ph-buildings text-base"></i>
+          </div>
+          <p class="font-semibold text-gray-900 truncate"><%= hq.name %></p>
+        </div>
+        <div class="px-5 py-3 flex items-center justify-between gap-3">
+          <div class="flex items-center gap-2 min-w-0">
+            <i class="ph ph-user text-gray-400 shrink-0"></i>
+            <p class="text-sm text-gray-500 truncate"><%= hq.president.full_name %></p>
+          </div>
+          <%= link_to headquarter_path(hq), class: "flex items-center gap-1 text-sm font-medium text-blue-600 hover:text-blue-800 shrink-0" do %>
+            <i class="ph ph-arrow-right"></i> <%= t(".show") %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

@@ -1,0 +1,40 @@
+<div class="py-8">
+  <div class="flex items-center gap-2 mb-6">
+    <%= link_to headquarters_path, class: "flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700" do %>
+      <i class="ph ph-caret-left"></i> <%= t(".back") %>
+    <% end %>
+  </div>
+
+  <div id="<%= dom_id @headquarter %>" class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
+    <div class="px-6 py-5 flex items-center gap-4 bg-gradient-to-r from-amber-50 to-white border-b border-gray-100">
+      <div class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-100 text-amber-700 shrink-0">
+        <i class="ph ph-buildings text-xl"></i>
+      </div>
+      <div>
+        <p class="text-xs font-medium text-amber-500 uppercase tracking-wide"><%= Headquarter.human_attribute_name(:name) %></p>
+        <h2 class="text-xl font-bold text-gray-900 mt-0.5"><%= @headquarter.name %></h2>
+      </div>
+    </div>
+
+    <div class="px-6 py-4 flex items-start gap-4 border-b border-gray-100">
+      <div class="flex items-center justify-center w-8 h-8 rounded-full bg-amber-100 text-amber-700 shrink-0 mt-0.5">
+        <i class="ph ph-user text-sm"></i>
+      </div>
+      <div>
+        <p class="text-xs font-medium text-gray-400 uppercase tracking-wide"><%= Headquarter.human_attribute_name(:president) %></p>
+        <p class="text-sm font-semibold text-gray-900 mt-0.5">
+          <%= link_to @headquarter.president.full_name, user_path(@headquarter.president), class: "text-amber-700 hover:underline" %>
+        </p>
+      </div>
+    </div>
+
+    <div class="px-6 py-4 border-t border-gray-100 flex items-center justify-end gap-3">
+      <%= link_to edit_headquarter_path(@headquarter), class: "flex items-center gap-1.5 rounded-md bg-white border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50" do %>
+        <i class="ph ph-pencil-simple"></i> <%= t("edit") %>
+      <% end %>
+      <%= button_to @headquarter, method: :delete, form: { data: { turbo_confirm: t(".destroy_confirm") } }, class: "cursor-pointer flex items-center gap-1.5 rounded-md bg-red-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500" do %>
+        <i class="ph ph-trash"></i> <%= t("destroy") %>
+      <% end %>
+    </div>
+  </div>
+</div>

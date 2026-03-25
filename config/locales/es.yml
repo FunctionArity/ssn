@@ -33,6 +33,9 @@ es:
       church:
         one: Parroquia
         other: Parroquias
+      headquarters:
+        one: Sede
+        other: Sedes
     attributes:
       guard:
         day_number: Número de día
@@ -67,6 +70,9 @@ es:
         caller_phone: Teléfono
         caller_relationship: Parentesco
         comments: Comentarios
+      headquarters:
+        name: Nombre
+        president: Presidente
       church:
         name: Nombre
         phone: Teléfono
@@ -487,6 +493,29 @@ es:
   destroy: Eliminar
   view: Ver
   back: Volver
+  headquarters:
+    index:
+      title: Sedes
+      new_headquarters: Nueva sede
+      show: Ver
+    show:
+      back: Volver a sedes
+      destroy_confirm: "¿Estás seguro de que querés eliminar esta sede?"
+    new:
+      title: Nueva sede
+      back: Volver a sedes
+    edit:
+      title: Editando sede
+      back: Volver a sede
+    form:
+      errors:
+        title:
+          one: "%{count} error impidió que esta sede fuera guardada:"
+          other: "%{count} errores impidieron que esta sede fuera guardada:"
+    notices:
+      created: La sede fue creada exitosamente.
+      updated: La sede fue actualizada exitosamente.
+      destroyed: La sede fue eliminada exitosamente.
   churches:
     index:
       title: Parroquias

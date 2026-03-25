@@ -16,6 +16,9 @@ en:
       health_facility:
         one: Health Facility
         other: Health Facilities
+      headquarters:
+        one: Headquarters
+        other: Headquarters
     attributes:
       user:
         first_name: First name
@@ -71,6 +74,9 @@ en:
         caller_phone: Caller phone
         caller_relationship: Caller relationship
         comments: Comments
+      headquarters:
+        name: Name
+        president: President
   sidebar:
     setup: Setup
   users:
@@ -274,6 +280,29 @@ en:
         - Fourth
         - Fifth
         - Sixth
+  headquarters:
+    index:
+      title: Headquarters
+      new_headquarters: New headquarters
+      show: View
+    show:
+      back: Back to headquarters
+      destroy_confirm: "Are you sure you want to delete this headquarters?"
+    new:
+      title: New headquarters
+      back: Back to headquarters
+    edit:
+      title: Editing headquarters
+      back: Back to headquarters
+    form:
+      errors:
+        title:
+          one: "%{count} error prevented this headquarters from being saved:"
+          other: "%{count} errors prevented this headquarters from being saved:"
+    notices:
+      created: Headquarters was successfully created.
+      updated: Headquarters was successfully updated.
+      destroyed: Headquarters was successfully destroyed.
   churches:
     show:
       priest: Priest
