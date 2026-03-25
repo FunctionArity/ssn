@@ -21,6 +21,11 @@ en:
         first_name: First name
         last_name: Last name
         email: Email
+        date_of_birth: Date of birth
+        dni: DNI
+        address: Address
+        city: City
+        start_day: Start date
         password: Password
         password_confirmation: Password confirmation
         phone: Phone
@@ -91,6 +96,7 @@ en:
       show: Show this user
       back: Back to users
     form:
+      additional_info: Additional information
       avatar: Profile picture
       change_avatar: Change photo
       avatar_hint: JPG, PNG or GIF. Max 5 MB.

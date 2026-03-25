@@ -57,6 +57,30 @@
             <p class="mt-1 text-sm text-gray-900"><i class="ph ph-phone text-gray-400"></i> <%= @user.phone %></p>
           </div>
         <% end %>
+        <% if @user.dni.present? %>
+          <div>
+            <p class="text-xs font-medium text-gray-400 uppercase tracking-wide"><%= User.human_attribute_name(:dni) %></p>
+            <p class="mt-1 text-sm text-gray-900"><%= @user.dni %></p>
+          </div>
+        <% end %>
+        <% if @user.date_of_birth.present? %>
+          <div>
+            <p class="text-xs font-medium text-gray-400 uppercase tracking-wide"><%= User.human_attribute_name(:date_of_birth) %></p>
+            <p class="mt-1 text-sm text-gray-900"><i class="ph ph-cake text-gray-400"></i> <%= l(@user.date_of_birth, format: :long) %></p>
+          </div>
+        <% end %>
+        <% if @user.start_day.present? %>
+          <div>
+            <p class="text-xs font-medium text-gray-400 uppercase tracking-wide"><%= User.human_attribute_name(:start_day) %></p>
+            <p class="mt-1 text-sm text-gray-900"><i class="ph ph-calendar text-gray-400"></i> <%= l(@user.start_day, format: :long) %></p>
+          </div>
+        <% end %>
+        <% if @user.address.present? || @user.city.present? %>
+          <div class="sm:col-span-2">
+            <p class="text-xs font-medium text-gray-400 uppercase tracking-wide"><%= User.human_attribute_name(:address) %></p>
+            <p class="mt-1 text-sm text-gray-900"><i class="ph ph-map-pin text-gray-400"></i> <%= [ @user.address, @user.city ].compact_blank.join(", ") %></p>
+          </div>
+        <% end %>
       </div>
     </div>
 

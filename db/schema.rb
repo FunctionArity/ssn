@@ -137,8 +137,12 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_21_172827) do
   end
 
   create_table "users", force: :cascade do |t|
+    t.string "address"
     t.bigint "church_id"
+    t.string "city"
     t.datetime "created_at", null: false
+    t.date "date_of_birth"
+    t.integer "dni"
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.integer "failed_attempts", default: 0, null: false
@@ -158,6 +162,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_21_172827) do
     t.datetime "reset_password_sent_at"
     t.string "reset_password_token"
     t.integer "role", default: 0, null: false
+    t.date "start_day"
     t.string "unlock_token"
     t.datetime "updated_at", null: false
     t.integer "user_type", default: 0, null: false
