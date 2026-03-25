@@ -3,11 +3,20 @@ require "test_helper"
 class GuardsControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 
+  # users(:one)       — vocal, vocal of guard_setup(:one) and guard(:one), guardian of guard(:one)
+  # users(:vocal_guardian) — vocal role, guardian of guard(:one) but NOT its vocal
+  # users(:unrelated_vocal) — vocal role, no relationship to guard(:one)
+  # users(:two)       — guardian role (0), used as priest in guard(:one)
+
   setup do
-    @user = users(:one)
+    @user  = users(:one)
     @guard = guards(:one)
     sign_in @user
   end
+
+  # ---------------------------------------------------------------------------
+  # Read actions (no authorization enforced)
+  # ---------------------------------------------------------------------------
 
   test "should get index" do
     get guards_url
@@ -19,27 +28,42 @@ class GuardsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test "should get edit" do
-    get edit_guard_url(@guard)
-    assert_response :success
-  end
+  # ---------------------------------------------------------------------------
+  # new
+  # ---------------------------------------------------------------------------
 
-  test "should get new without guard_setup_id" do
-    get new_guard_url
-    assert_response :success
-  end
-
-  test "should get new with guard_setup_id and render the form" do
+  test "should get new with guard_setup_id when user is vocal of that setup" do
     get new_guard_url, params: { guard_setup_id: guard_setups(:one).id }
     assert_response :success
   end
 
-  test "should return not found when guard_setup_id does not exist" do
+  test "new without guard_setup_id is forbidden because no guard_setup means policy denies" do
+    get new_guard_url
+    assert_redirected_to root_path
+  end
+
+  test "new returns not found when guard_setup_id does not exist" do
     get new_guard_url, params: { guard_setup_id: -1 }
     assert_response :not_found
   end
 
-  test "should create guard with valid parameters" do
+  test "new forbidden for vocal user who is not vocal of the guard_setup" do
+    sign_in users(:unrelated_vocal)
+    get new_guard_url, params: { guard_setup_id: guard_setups(:one).id }
+    assert_redirected_to root_path
+  end
+
+  test "new forbidden for non-vocal user" do
+    sign_in users(:two)
+    get new_guard_url, params: { guard_setup_id: guard_setups(:one).id }
+    assert_redirected_to root_path
+  end
+
+  # ---------------------------------------------------------------------------
+  # create
+  # ---------------------------------------------------------------------------
+
+  test "should create guard when user is vocal of the guard_setup" do
     assert_difference("Guard.count") do
       post guards_url, params: {
         guard: {
@@ -74,7 +98,74 @@ class GuardsControllerTest < ActionDispatch::IntegrationTest
     assert_response :unprocessable_entity
   end
 
-  test "should update guard with valid parameters" do
+  test "create forbidden for vocal user who is not vocal of the guard_setup" do
+    sign_in users(:unrelated_vocal)
+    assert_no_difference("Guard.count") do
+      post guards_url, params: {
+        guard: {
+          day_number: 5,
+          due_date: Date.today,
+          vocal_id: users(:unrelated_vocal).id,
+          priest_id: users(:two).id,
+          guard_setup_id: guard_setups(:one).id,
+          guardian_ids: [ users(:unrelated_vocal).id ]
+        }
+      }
+    end
+
+    assert_redirected_to root_path
+  end
+
+  test "create forbidden for non-vocal user" do
+    sign_in users(:two)
+    assert_no_difference("Guard.count") do
+      post guards_url, params: {
+        guard: {
+          day_number: 5,
+          due_date: Date.today,
+          vocal_id: users(:two).id,
+          priest_id: users(:two).id,
+          guard_setup_id: guard_setups(:one).id,
+          guardian_ids: [ users(:two).id ]
+        }
+      }
+    end
+
+    assert_redirected_to root_path
+  end
+
+  # ---------------------------------------------------------------------------
+  # edit
+  # ---------------------------------------------------------------------------
+
+  test "should get edit when user is the vocal of the guard" do
+    get edit_guard_url(@guard)
+    assert_response :success
+  end
+
+  test "edit allowed for vocal user who is a guardian of the guard" do
+    sign_in users(:vocal_guardian)
+    get edit_guard_url(@guard)
+    assert_response :success
+  end
+
+  test "edit forbidden for vocal user with no relationship to the guard" do
+    sign_in users(:unrelated_vocal)
+    get edit_guard_url(@guard)
+    assert_redirected_to root_path
+  end
+
+  test "edit forbidden for non-vocal user" do
+    sign_in users(:two)
+    get edit_guard_url(@guard)
+    assert_redirected_to root_path
+  end
+
+  # ---------------------------------------------------------------------------
+  # update
+  # ---------------------------------------------------------------------------
+
+  test "should update guard when user is the vocal of the guard" do
     new_notes = "Updated notes"
     patch guard_url(@guard), params: {
       guard: {
@@ -87,8 +178,7 @@ class GuardsControllerTest < ActionDispatch::IntegrationTest
     }
 
     assert_redirected_to guard_url(@guard)
-    @guard.reload
-    assert_equal new_notes, @guard.notes
+    assert_equal new_notes, @guard.reload.notes
   end
 
   test "should not update guard with invalid params" do
@@ -105,7 +195,64 @@ class GuardsControllerTest < ActionDispatch::IntegrationTest
     assert_equal 1, @guard.reload.day_number
   end
 
-  test "should destroy guard and its services" do
+  test "update allowed for vocal user who is a guardian of the guard" do
+    sign_in users(:vocal_guardian)
+    patch guard_url(@guard), params: {
+      guard: {
+        day_number: @guard.day_number,
+        notes: "Updated by guardian vocal",
+        vocal_id: @guard.vocal_id,
+        priest_id: @guard.priest_id,
+        guardian_ids: [ users(:one).id, users(:vocal_guardian).id ]
+      }
+    }
+
+    assert_redirected_to guard_url(@guard)
+  end
+
+  test "update forbidden for vocal user with no relationship to the guard" do
+    sign_in users(:unrelated_vocal)
+    patch guard_url(@guard), params: {
+      guard: {
+        day_number: @guard.day_number,
+        notes: "Should not update",
+        vocal_id: @guard.vocal_id,
+        priest_id: @guard.priest_id,
+        guardian_ids: [ users(:one).id ]
+      }
+    }
+
+    assert_redirected_to root_path
+  end
+
+  test "update forbidden for non-vocal user" do
+    sign_in users(:two)
+    patch guard_url(@guard), params: {
+      guard: {
+        day_number: @guard.day_number,
+        notes: "Should not update",
+        vocal_id: @guard.vocal_id,
+        priest_id: @guard.priest_id,
+        guardian_ids: [ users(:one).id ]
+      }
+    }
+
+    assert_redirected_to root_path
+  end
+
+  # ---------------------------------------------------------------------------
+  # destroy
+  # ---------------------------------------------------------------------------
+
+  test "should destroy guard when user is the vocal of the guard" do
+    assert_difference("Guard.count", -1) do
+      delete guard_url(@guard)
+    end
+
+    assert_redirected_to guards_url
+  end
+
+  test "should destroy guard along with its services" do
     @guard.services.create!(full_name: "Test", due_date: Date.today, created_by: @user)
     services_count = @guard.services.count
 
@@ -118,13 +265,36 @@ class GuardsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to guards_url
   end
 
-  test "should destroy guard" do
-    assert_difference("Guard.count", -1) do
+  test "destroy forbidden for vocal user who is a guardian but not the vocal of the guard" do
+    sign_in users(:vocal_guardian)
+    assert_no_difference("Guard.count") do
       delete guard_url(@guard)
     end
 
-    assert_redirected_to guards_url
+    assert_redirected_to root_path
   end
+
+  test "destroy forbidden for vocal user with no relationship to the guard" do
+    sign_in users(:unrelated_vocal)
+    assert_no_difference("Guard.count") do
+      delete guard_url(@guard)
+    end
+
+    assert_redirected_to root_path
+  end
+
+  test "destroy forbidden for non-vocal user" do
+    sign_in users(:two)
+    assert_no_difference("Guard.count") do
+      delete guard_url(@guard)
+    end
+
+    assert_redirected_to root_path
+  end
+
+  # ---------------------------------------------------------------------------
+  # Other actions (close, pdf — no authorization enforced)
+  # ---------------------------------------------------------------------------
 
   test "should close an open guard" do
     assert @guard.open?

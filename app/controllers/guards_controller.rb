@@ -11,6 +11,7 @@ class GuardsController < ApplicationController
   end
 
   def close
+    authorize @guard
     @guard.closed!
     redirect_to @guard, notice: t("guards.notices.closed")
   end
@@ -26,13 +27,16 @@ class GuardsController < ApplicationController
   def new
     due_date = params[:due_date].present? ? Date.parse(params[:due_date]) : Date.current
     @guard = CreateGuardFromSetupService.new(params[:guard_setup_id], due_date).call
+    authorize @guard
   end
 
   def edit
+    authorize @guard
   end
 
   def create
     @guard = Guard.new(guard_params)
+    authorize @guard
 
     respond_to do |format|
       if @guard.save
@@ -46,6 +50,7 @@ class GuardsController < ApplicationController
   end
 
   def update
+    authorize @guard
     respond_to do |format|
       if @guard.update(guard_params)
         format.html { redirect_to @guard, notice: t("guards.notices.updated"), status: :see_other }
@@ -58,6 +63,7 @@ class GuardsController < ApplicationController
   end
 
   def destroy
+    authorize @guard
     @guard.destroy!
 
     respond_to do |format|

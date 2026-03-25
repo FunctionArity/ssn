@@ -272,6 +272,8 @@ en:
       priest: Priest
       map: Map
       open_in_maps: Open in Google Maps
+  pundit:
+    not_authorized: You are not authorized to perform this action.
   edit: Edit
   destroy: Delete
   devise_views:

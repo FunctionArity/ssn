@@ -15,7 +15,9 @@
         <% end %>
 
         <% if user_signed_in? %>
-          <span class="text-gray-600"><%= current_user.full_name %></span>
+          <%= user_crown_icon %>
+          <span class="text-gray-600"><%= link_to (current_user.full_name + " " + current_user.day_numbers), user_path(current_user) %></span>
+
           <%= button_to destroy_user_session_path, method: :delete, class: "flex items-center gap-1 text-blue-600 hover:text-blue-800 font-medium cursor-pointer" do %>
             <i class="ph ph-sign-out"></i>
           <% end %>

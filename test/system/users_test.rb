@@ -4,7 +4,7 @@ class UsersTest < ApplicationSystemTestCase
   include Warden::Test::Helpers
 
   setup do
-    @user = users(:one)
+    @user = users(:super_admin)
     login_as(@user, scope: :user)
   end
 

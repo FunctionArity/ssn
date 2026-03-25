@@ -7,3 +7,4 @@ one:
   vocal: one
   priest: two
   guard_setup: one
+  guardians: one, vocal_guardian

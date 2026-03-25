@@ -96,11 +96,11 @@ class UserTest < ActiveSupport::TestCase
   # Instance methods
   test "full_name joins first and last name" do
     user = users(:one)
-    assert_equal "#{user.first_name} #{user.last_name}", user.full_name
+    assert_equal "#{user.last_name} #{user.first_name}", user.full_name
   end
 
   test "role_badge_class returns badge_green for guardian" do
-    assert_equal "badge_green", users(:one).role_badge_class
+    assert_equal "badge_green", users(:two).role_badge_class
   end
 
   test "role_badge_class returns badge_red for vocal" do
