@@ -75,4 +75,20 @@ class GuardPdfTest < ActiveSupport::TestCase
 
     assert_nothing_raised { GuardPdf.new(@guard).render }
   end
+
+  test "renders NRO label when service has nro assigned" do
+    services(:one).update!(nro: 7)
+
+    result = GuardPdf.new(@guard).render
+
+    assert result.start_with?("%PDF")
+    assert_nothing_raised { GuardPdf.new(@guard).render }
+  end
+
+  test "renders without error when some services have nro and some do not" do
+    services(:one).update!(nro: 3)
+    @guard.services.create!(full_name: "No Nro Service", due_date: Date.today, created_by: users(:one))
+
+    assert_nothing_raised { GuardPdf.new(@guard).render }
+  end
 end

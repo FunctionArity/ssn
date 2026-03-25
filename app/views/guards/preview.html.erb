@@ -1,0 +1,124 @@
+<% content_for :title, "Vista previa – Guardia ##{@guard.day_number}" %>
+
+<%# Controls bar — hidden when printing %>
+<div class="print:hidden bg-white border-b border-gray-200 sticky top-0 z-10 px-6 py-3 flex flex-wrap items-center gap-4 shadow-sm">
+  <span class="text-sm font-semibold text-gray-700">Vista previa · Guardia #<%= @guard.day_number %></span>
+
+  <%= form_with url: preview_guard_path(@guard), method: :get, class: "flex items-center gap-2" do |f| %>
+    <%= f.label :first_nro, "Primer NRO:", class: "text-sm text-gray-600 whitespace-nowrap" %>
+    <%= f.number_field :first_nro, value: @first_nro, min: 1, class: "w-24 rounded border border-gray-300 px-2 py-1 text-sm" %>
+    <%= f.submit "Actualizar vista previa", class: "cursor-pointer rounded bg-gray-100 border border-gray-300 px-3 py-1 text-sm font-medium text-gray-700 hover:bg-gray-200" %>
+  <% end %>
+
+  <%= form_with url: confirm_pdf_guard_path(@guard), method: :post, data: { turbo: false }, target: "_blank", class: "ml-auto flex items-center gap-2" do |f| %>
+    <%= f.hidden_field :first_nro, value: @first_nro %>
+    <%= link_to @guard, class: "rounded border border-gray-300 px-3 py-1 text-sm font-medium text-gray-700 hover:bg-gray-50" do %>
+      Cancelar
+    <% end %>
+    <%= f.submit "Confirmar y generar PDF", onclick: "event.preventDefault(); Turbo.config.forms.confirm('¿Confirmar los NRO asignados y generar el PDF?').then(ok => { if (ok) this.form.submit() })", class: "cursor-pointer rounded bg-red-600 px-4 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-red-500" %>
+  <% end %>
+</div>
+
+<%# Print preview area %>
+<div class="max-w-[794px] mx-auto my-8 print:my-0 print:max-w-none font-sans text-[11px] text-black bg-white shadow-lg print:shadow-none">
+  <% services_groups = @services.each_slice(3).to_a %>
+
+  <% if services_groups.empty? %>
+    <div class="px-10 py-8">
+      <%= render "preview_page_header" %>
+      <p class="text-center text-gray-400 mt-8">No hay servicios registrados para esta guardia.</p>
+    </div>
+  <% else %>
+    <% services_groups.each_with_index do |group, page_index| %>
+      <div class="px-10 pt-8 pb-6 <%= 'page-break-before' if page_index > 0 %> print:break-before-page">
+        <%# Page header %>
+        <div class="flex items-center gap-3 mb-1">
+          <%= image_tag "icon.svg", class: "w-10 h-10 shrink-0", alt: "" rescue nil %>
+          <div class="flex-1 text-center">
+            <p class="text-[11px] font-bold uppercase tracking-wide">SERVICIO SACERDOTAL NOCTURNO</p>
+            <p class="text-[9px] text-gray-500 mt-0.5">Guardia #<%= @guard.day_number %></p>
+          </div>
+          <div class="text-center min-w-[120px] border border-gray-300 rounded px-3 py-1">
+            <p class="text-[8px] font-bold uppercase tracking-wide">Fecha de guardia</p>
+            <p class="text-[10px] mt-0.5"><%= l(@guard.due_date, format: :default) %></p>
+          </div>
+        </div>
+        <hr class="border-black mt-2 mb-5">
+
+        <%# Services %>
+        <% group.each_with_index do |service, idx| %>
+          <div class="<%= idx > 0 ? 'mt-5 pt-4 border-t border-gray-300' : '' %>">
+            <p class="text-[7px] font-bold text-indigo-500 uppercase mb-1.5">NRO <%= service.nro %></p>
+
+            <%# Row 1: Nombre + Edad %>
+            <div class="flex gap-3 mb-1.5">
+              <div class="flex-1">
+                <p class="text-[9px] font-bold">Nombre y Apellido: <span class="font-normal"><%= service.full_name %></span></p>
+                <div class="border-b border-dashed border-gray-400 mt-1"></div>
+              </div>
+              <div class="w-16">
+                <p class="text-[9px] font-bold">Edad: <span class="font-normal"><%= service.age %></span></p>
+                <div class="border-b border-dashed border-gray-400 mt-1"></div>
+              </div>
+            </div>
+
+            <%# Row 2: Hospital + Piso %>
+            <div class="flex gap-3 mb-1.5">
+              <div class="flex-1">
+                <p class="text-[9px] font-bold">Hospital: <span class="font-normal"><%= service.health_facility&.name %></span></p>
+                <div class="border-b border-dashed border-gray-400 mt-1"></div>
+              </div>
+              <div class="w-52">
+                <p class="text-[9px] font-bold">Piso / Hab. / Cama: <span class="font-normal"><%= service.health_facility_place %></span></p>
+                <div class="border-b border-dashed border-gray-400 mt-1"></div>
+              </div>
+            </div>
+
+            <%# Row 3: Domicilio %>
+            <div class="mb-1.5">
+              <p class="text-[9px] font-bold">Domicilio: <span class="font-normal"><%= service.address %></span></p>
+              <div class="border-b border-dashed border-gray-400 mt-1"></div>
+            </div>
+
+            <%# Row 4: Patología + Estado %>
+            <div class="flex gap-3 mb-1.5">
+              <div class="flex-1">
+                <p class="text-[9px] font-bold">Patología: <span class="font-normal"><%= service.pathology %></span></p>
+                <div class="border-b border-dashed border-gray-400 mt-1"></div>
+              </div>
+              <div class="flex-1">
+                <p class="text-[9px] font-bold">Estado: <span class="font-normal"><%= service.health_status %></span></p>
+                <div class="border-b border-dashed border-gray-400 mt-1"></div>
+              </div>
+            </div>
+
+            <%# Row 5: Sacramento %>
+            <div class="mb-1.5">
+              <p class="text-[9px] font-bold">Sacramento: <span class="font-normal"><%= service.sacraments %></span></p>
+              <div class="border-b border-dashed border-gray-400 mt-1"></div>
+            </div>
+
+            <%# Row 6: Solicitó + Tel + Parentesco %>
+            <div class="flex gap-3">
+              <div class="flex-1">
+                <p class="text-[9px] font-bold">Solicitó: <span class="font-normal"><%= service.caller_full_name %></span></p>
+                <div class="border-b border-dashed border-gray-400 mt-1"></div>
+              </div>
+              <div class="w-28">
+                <p class="text-[9px] font-bold">Tel: <span class="font-normal"><%= service.caller_phone %></span></p>
+                <div class="border-b border-dashed border-gray-400 mt-1"></div>
+              </div>
+              <div class="w-24">
+                <p class="text-[9px] font-bold">Parentesco: <span class="font-normal"><%= service.caller_relationship %></span></p>
+                <div class="border-b border-dashed border-gray-400 mt-1"></div>
+              </div>
+            </div>
+          </div>
+        <% end %>
+
+        <%# Page number %>
+        <p class="text-right text-[8px] text-gray-400 mt-6">Pág. <%= page_index + 1 %> / <%= services_groups.size %></p>
+      </div>
+    <% end %>
+  <% end %>
+</div>

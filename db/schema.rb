@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_03_21_172827) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_25_130051) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -127,6 +127,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_21_172827) do
     t.bigint "health_facility_id"
     t.string "health_facility_place"
     t.string "health_status"
+    t.bigint "nro"
     t.string "pathology"
     t.string "sacraments"
     t.integer "status", default: 0, null: false
