@@ -352,4 +352,99 @@ class GuardsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert response.body.start_with?("%PDF")
   end
+
+  test "pdf action redirects to stored blob when pdf_file is attached" do
+    @guard.pdf_file.attach(
+      io: StringIO.new("%PDF-fake"),
+      filename: "guardia_#{@guard.id}.pdf",
+      content_type: "application/pdf"
+    )
+
+    get pdf_guard_url(@guard)
+
+    assert_response :redirect
+  end
+
+  # ---------------------------------------------------------------------------
+  # preview
+  # ---------------------------------------------------------------------------
+
+  test "should get preview" do
+    get preview_guard_url(@guard)
+
+    assert_response :success
+  end
+
+  test "preview defaults first_nro to 1 when no services have nro assigned" do
+    Service.update_all(nro: nil)
+
+    get preview_guard_url(@guard)
+
+    assert_match "Primer NRO:", response.body
+    assert_match 'value="1"', response.body
+  end
+
+  test "preview defaults first_nro to last nro plus one" do
+    services(:one).update!(nro: 10)
+
+    get preview_guard_url(@guard)
+
+    assert_match 'value="11"', response.body
+  end
+
+  test "preview uses provided first_nro param" do
+    get preview_guard_url(@guard), params: { first_nro: 5 }
+
+    assert_match 'value="5"', response.body
+  end
+
+  test "preview assigns sequential nro values to services starting from first_nro" do
+    get preview_guard_url(@guard), params: { first_nro: 3 }
+
+    assert_match "NRO 3", response.body
+    assert_match "NRO 4", response.body
+  end
+
+  test "preview does not persist nro values to database" do
+    get preview_guard_url(@guard), params: { first_nro: 99 }
+
+    assert_nil services(:one).reload.nro
+  end
+
+  # ---------------------------------------------------------------------------
+  # confirm_pdf
+  # ---------------------------------------------------------------------------
+
+  test "confirm_pdf saves nro values to services in order" do
+    @guard.services.destroy_all
+    service1 = @guard.services.create!(full_name: "A", due_date: Date.today - 1, created_by: @user)
+    service2 = @guard.services.create!(full_name: "B", due_date: Date.today,     created_by: @user)
+
+    post confirm_pdf_guard_url(@guard), params: { first_nro: 5 }
+
+    assert_equal 5, service1.reload.nro
+    assert_equal 6, service2.reload.nro
+  end
+
+  test "confirm_pdf attaches pdf_file to guard" do
+    assert_not @guard.pdf_file.attached?
+
+    post confirm_pdf_guard_url(@guard), params: { first_nro: 1 }
+
+    assert @guard.reload.pdf_file.attached?
+  end
+
+  test "confirm_pdf closes the guard" do
+    assert @guard.open?
+
+    post confirm_pdf_guard_url(@guard), params: { first_nro: 1 }
+
+    assert @guard.reload.closed?
+  end
+
+  test "confirm_pdf redirects to pdf action" do
+    post confirm_pdf_guard_url(@guard), params: { first_nro: 1 }
+
+    assert_redirected_to pdf_guard_url(@guard)
+  end
 end
