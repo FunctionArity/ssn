@@ -104,9 +104,9 @@ class GuardPdf
     y = start_y
 
     # Service title row
+    service_label = service.nro.present? ? "NRO #{service.nro}" : "SERVICIO ##{service.id}"
     pdf.bounding_box([ 0, y ], width: w, height: 14) do
-      pdf.text "SERVICIO ##{service.id}",
-               size: 7, style: :bold, color: "6666aa"
+      pdf.text service_label, size: 7, style: :bold, color: "6666aa"
     end
     y -= 14
 

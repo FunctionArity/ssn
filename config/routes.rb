@@ -13,6 +13,8 @@ Rails.application.routes.draw do
     member do
       post :close
       get  :pdf
+      get  :preview
+      post :confirm_pdf
     end
   end
   resources :guard_setups
