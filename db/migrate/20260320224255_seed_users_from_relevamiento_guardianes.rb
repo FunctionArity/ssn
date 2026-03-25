@@ -13,15 +13,16 @@ class SeedUsersFromRelevamientoGuardianes < ActiveRecord::Migration[8.1]
     execute "DELETE FROM priest_setups"
     execute "DELETE FROM active_storage_attachments"
     execute "DELETE FROM active_storage_blobs"
-    execute "DELETE FROM users"
+    execute "DELETE FROM users WHERE role != 2"
 
     # Import users from CSV
-    CSV.foreach(CSV_PATH, headers: true, encoding: "ISO-8859-1:UTF-8") do |row|
-      first_name = row["first_name"]&.strip
-      last_name  = row["last_name"]&.strip
+    CSV.foreach(CSV_PATH, headers: true, encoding: "UTF-8") do |row|
+      first_name = row["first_name"]&.strip&.split&.map(&:capitalize)&.join(" ")
+      last_name  = row["last_name"]&.strip&.split&.map(&:capitalize)&.join(" ")
       next if first_name.blank? || last_name.blank?
 
-      email = row["email"]&.strip.presence || "#{row['dni']&.strip}@placeholder.local"
+      raw_email = row["email"]&.strip
+      email = (raw_email&.include?("@") ? raw_email : nil) || "#{row['dni']&.strip&.gsub(/\D/, "")}@placeholder.local"
       dni   = row["dni"]&.strip&.gsub(/\D/, "").presence&.to_i
 
       execute <<~SQL
@@ -36,7 +37,7 @@ class SeedUsersFromRelevamientoGuardianes < ActiveRecord::Migration[8.1]
           #{quote(row["phone"]&.strip)},
           #{quote_or_null(dni)},
           #{quote(row["address"]&.strip)},
-          #{quote(row["city"]&.strip)},
+          #{quote(row["departamento"]&.strip)},
           #{quote_or_null(parse_date(row["date_of_birth"]))},
           #{quote_or_null(parse_date(row["start_day"]))},
           0,
@@ -44,10 +45,12 @@ class SeedUsersFromRelevamientoGuardianes < ActiveRecord::Migration[8.1]
           #{quote(placeholder_password)},
           NOW(), NOW()
         )
+        ON CONFLICT (email) DO NOTHING
       SQL
     end
 
     say "Imported #{count_users} users from #{CSV_PATH.basename}"
+    User.find_by(email: 'pablorodriguez.ar@gmail.com').update(user_type: :super_admin)
   end
 
   def down
@@ -72,7 +75,7 @@ class SeedUsersFromRelevamientoGuardianes < ActiveRecord::Migration[8.1]
   end
 
   def placeholder_password
-    ::BCrypt::Password.create(SecureRandom.hex(16))
+    ::BCrypt::Password.create('password123')
   end
 
   def count_users
