@@ -80,6 +80,11 @@ es:
         phone: Teléfono
         role: Rol
         church: Parroquia
+        date_of_birth: Fecha de nacimiento
+        dni: DNI
+        address: Dirección
+        city: Ciudad
+        start_day: Fecha de inicio
         roles:
           guardian: Guardian
           vocal: Vocal
@@ -171,6 +176,7 @@ es:
       show: Ver este usuario
       back: Volver a usuarios
     form:
+      additional_info: Información adicional
       select_church: Seleccionar una parroquia
       avatar: Foto de perfil
       change_avatar: Cambiar foto
