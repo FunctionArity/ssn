@@ -16,7 +16,7 @@ en:
       health_facility:
         one: Health Facility
         other: Health Facilities
-      headquarters:
+      headquarter:
         one: Headquarters
         other: Headquarters
     attributes:
@@ -74,7 +74,7 @@ en:
         caller_phone: Caller phone
         caller_relationship: Caller relationship
         comments: Comments
-      headquarters:
+      headquarter:
         name: Name
         president: President
   sidebar:
@@ -94,6 +94,8 @@ en:
       vocal_guard_setups: Guards (vocal)
       guard_day: "Guard #%{number}"
       impersonate: Impersonate
+      map: Map
+      open_in_maps: Open in Google Maps
     new:
       title: New user
       back: Back to users

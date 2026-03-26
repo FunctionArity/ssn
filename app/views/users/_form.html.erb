@@ -40,19 +40,19 @@
       <%# Crop modal %>
       <div data-avatar-crop-target="modal"
            class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
-        <div class="bg-white rounded-2xl shadow-xl w-full max-w-lg overflow-hidden">
-          <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
-            <h3 class="text-base font-semibold text-gray-900"><%= t("users.form.crop_title") %></h3>
+        <div class="bg-white rounded-2xl shadow-xl w-full max-w-xs overflow-hidden">
+          <div class="px-4 py-3 border-b border-gray-100 flex items-center justify-between">
+            <h3 class="text-sm font-semibold text-gray-900"><%= t("users.form.crop_title") %></h3>
             <button type="button"
                     data-action="click->avatar-crop#cancel"
                     class="cursor-pointer text-gray-400 hover:text-gray-600 transition-colors">
-              <i class="ph ph-x text-xl"></i>
+              <i class="ph ph-x text-base"></i>
             </button>
           </div>
-          <div class="p-4 bg-gray-50 max-h-[60vh] overflow-hidden">
+          <div class="p-3 bg-gray-50 max-h-[40vh] overflow-hidden">
             <img data-avatar-crop-target="cropImage" src="" class="max-w-full block">
           </div>
-          <div class="px-6 py-4 border-t border-gray-100 flex justify-end gap-2">
+          <div class="px-4 py-3 border-t border-gray-100 flex justify-end gap-2">
             <button type="button"
                     data-action="click->avatar-crop#cancel"
                     class="cursor-pointer rounded-md bg-white border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors">
@@ -143,6 +143,7 @@
         <%= form.text_field :city, class: "w-full rounded-md border border-gray-300 px-3 py-2.5 text-sm shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500" %>
       </div>
     </div>
+
   </div>
 
   <div class="border-t border-gray-100"></div>

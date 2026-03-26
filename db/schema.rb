@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_03_25_211205) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_26_114203) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -45,9 +45,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_25_211205) do
   create_table "churches", force: :cascade do |t|
     t.string "address"
     t.datetime "created_at", null: false
+    t.bigint "headquarter_id", null: false
     t.string "name"
     t.string "phone"
     t.datetime "updated_at", null: false
+    t.index ["headquarter_id"], name: "index_churches_on_headquarter_id"
   end
 
   create_table "guard_guardians", force: :cascade do |t|
@@ -105,8 +107,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_25_211205) do
   create_table "health_facilities", force: :cascade do |t|
     t.string "address", null: false
     t.datetime "created_at", null: false
+    t.bigint "headquarter_id", null: false
     t.string "name", null: false
     t.datetime "updated_at", null: false
+    t.index ["headquarter_id"], name: "index_health_facilities_on_headquarter_id"
   end
 
   create_table "priest_setups", force: :cascade do |t|
@@ -156,6 +160,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_25_211205) do
     t.string "encrypted_password", default: "", null: false
     t.integer "failed_attempts", default: 0, null: false
     t.string "first_name"
+    t.bigint "headquarter_id", null: false
     t.datetime "invitation_accepted_at"
     t.datetime "invitation_created_at"
     t.integer "invitation_limit"
@@ -177,6 +182,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_25_211205) do
     t.integer "user_type", default: 0, null: false
     t.index ["church_id"], name: "index_users_on_church_id"
     t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["headquarter_id"], name: "index_users_on_headquarter_id"
     t.index ["invitation_token"], name: "index_users_on_invitation_token", unique: true
     t.index ["invited_by_id"], name: "index_users_on_invited_by_id"
     t.index ["invited_by_type", "invited_by_id"], name: "index_users_on_invited_by"
@@ -186,6 +192,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_25_211205) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "churches", "headquarters"
   add_foreign_key "guard_guardians", "guards"
   add_foreign_key "guard_guardians", "users"
   add_foreign_key "guard_setup_guardians", "guard_setups"
@@ -195,9 +202,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_25_211205) do
   add_foreign_key "guards", "users", column: "priest_id"
   add_foreign_key "guards", "users", column: "vocal_id"
   add_foreign_key "headquarters", "users", column: "president_id"
+  add_foreign_key "health_facilities", "headquarters"
   add_foreign_key "priest_setups", "users", column: "priest_id"
   add_foreign_key "services", "guards"
   add_foreign_key "services", "health_facilities"
   add_foreign_key "services", "users", column: "created_by_id"
   add_foreign_key "users", "churches"
+  add_foreign_key "users", "headquarters"
 end

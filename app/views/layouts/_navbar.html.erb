@@ -5,6 +5,9 @@
         <%= link_to root_path do %>
           <%= image_tag "icon.svg", class: "h-8 w-8" %>
         <% end %>
+        <% if user_signed_in? && current_user.headquarter %>
+          <span class="text-sm font-medium text-gray-700"><%= current_user.headquarter.name %></span>
+        <% end %>
       </div>
       <div class="flex items-center gap-4 text-sm">
         <% if user_signed_in? && current_user != true_user %>

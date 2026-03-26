@@ -20,7 +20,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
   test "should create user and send invitation email" do
     assert_difference([ "User.count", "ActionMailer::Base.deliveries.size" ]) do
-      post users_url, params: { user: { email: Faker::Internet.email, first_name: "New", last_name: "User", phone: "1111111111" } }
+      post users_url, params: { user: { email: Faker::Internet.email, first_name: "New", last_name: "User", phone: "1111111111", headquarter_id: headquarters(:one).id } }
     end
 
     assert_redirected_to user_url(User.last)
@@ -54,13 +54,13 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "show displays invitation pending badge when not yet accepted" do
-    pending_user = User.invite!({ email: "pending@test.com", first_name: "Pending", last_name: "User" }, @user)
+    pending_user = User.invite!({ email: "pending@test.com", first_name: "Pending", last_name: "User", headquarter_id: headquarters(:one).id }, @user)
     get user_url(pending_user)
     assert_select "span", text: /Invitación pendiente/
   end
 
   test "should resend invitation email" do
-    pending_user = User.invite!({ email: "pending2@test.com", first_name: "Pending", last_name: "User" }, @user)
+    pending_user = User.invite!({ email: "pending2@test.com", first_name: "Pending", last_name: "User", headquarter_id: headquarters(:one).id }, @user)
     assert_difference("ActionMailer::Base.deliveries.size") do
       post resend_invitation_user_url(pending_user)
     end
@@ -74,7 +74,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "invitation accept route is accessible when not signed in" do
-    pending_user = User.invite!({ email: "pending3@test.com", first_name: "Pending", last_name: "User" }, @user)
+    pending_user = User.invite!({ email: "pending3@test.com", first_name: "Pending", last_name: "User", headquarter_id: headquarters(:one).id }, @user)
     sign_out @user
     get accept_user_invitation_url(invitation_token: pending_user.raw_invitation_token)
     assert_response :success
@@ -119,7 +119,8 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
           last_name: "Priest",
           phone: "1234567899",
           role: "priest",
-          church_id: church.id
+          church_id: church.id,
+          headquarter_id: headquarters(:one).id
         }
       }
     end
@@ -137,7 +138,8 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
           last_name: "Guardian",
           phone: "1234567898",
           role: "guardian",
-          church_id: church.id
+          church_id: church.id,
+          headquarter_id: headquarters(:one).id
         }
       }
     end

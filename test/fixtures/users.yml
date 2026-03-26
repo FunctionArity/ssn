@@ -6,6 +6,7 @@ one:
   email: pablo@rodriguez.com
   phone: "1234567890"
   role: 1
+  headquarter_id: <%= ActiveRecord::FixtureSet.identify(:one) %>
   encrypted_password: <%= Devise::Encryptor.digest(User, 'password123') %>
   invitation_accepted_at: <%= Time.current %>
 
@@ -15,6 +16,7 @@ vocal_guardian:
   email: maria@garcia.com
   phone: "1234567895"
   role: 1
+  headquarter_id: <%= ActiveRecord::FixtureSet.identify(:one) %>
   encrypted_password: <%= Devise::Encryptor.digest(User, 'password123') %>
   invitation_accepted_at: <%= Time.current %>
 
@@ -24,6 +26,7 @@ unrelated_vocal:
   email: pedro@lopez.com
   phone: "1234567896"
   role: 1
+  headquarter_id: <%= ActiveRecord::FixtureSet.identify(:one) %>
   encrypted_password: <%= Devise::Encryptor.digest(User, 'password123') %>
   invitation_accepted_at: <%= Time.current %>
 
@@ -32,6 +35,7 @@ two:
   last_name: Rodriguez
   email: luis@rodriguez.com
   phone: "1234567891"
+  headquarter_id: <%= ActiveRecord::FixtureSet.identify(:one) %>
   encrypted_password: <%= Devise::Encryptor.digest(User, 'password123') %>
   invitation_accepted_at: <%= Time.current %>
 
@@ -40,6 +44,7 @@ agustin:
   last_name: Rodriguez
   email: agustin@rodriguez.com
   phone: "1234567892"
+  headquarter_id: <%= ActiveRecord::FixtureSet.identify(:one) %>
   encrypted_password: <%= Devise::Encryptor.digest(User, 'password123') %>
   invitation_accepted_at: <%= Time.current %>
 
@@ -49,6 +54,7 @@ priest_one:
   email: carlos@mendez.com
   phone: "1234567893"
   role: 2
+  headquarter_id: <%= ActiveRecord::FixtureSet.identify(:one) %>
   encrypted_password: <%= Devise::Encryptor.digest(User, 'password123') %>
   invitation_accepted_at: <%= Time.current %>
 
@@ -58,6 +64,7 @@ priest_two:
   email: jorge@perez.com
   phone: "1234567894"
   role: 2
+  headquarter_id: <%= ActiveRecord::FixtureSet.identify(:one) %>
   encrypted_password: <%= Devise::Encryptor.digest(User, 'password123') %>
   invitation_accepted_at: <%= Time.current %>
 
@@ -67,6 +74,7 @@ super_admin:
   email: superadmin@test.com
   phone: "1234567895"
   user_type: 2
+  headquarter_id: <%= ActiveRecord::FixtureSet.identify(:one) %>
   encrypted_password: <%= Devise::Encryptor.digest(User, 'password123') %>
   invitation_accepted_at: <%= Time.current %>
 
@@ -76,5 +84,6 @@ admin_user:
   email: admin@test.com
   phone: "1234567896"
   user_type: 1
+  headquarter_id: <%= ActiveRecord::FixtureSet.identify(:one) %>
   encrypted_password: <%= Devise::Encryptor.digest(User, 'password123') %>
   invitation_accepted_at: <%= Time.current %>

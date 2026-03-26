@@ -103,7 +103,7 @@ class UsersController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def user_params
-      permitted = params.expect(user: [ :first_name, :last_name, :email, :phone, :role, :password, :password_confirmation, :church_id, :date_of_birth, :dni, :address, :city, :start_day ])
+      permitted = params.expect(user: [ :first_name, :last_name, :email, :phone, :role, :password, :password_confirmation, :church_id, :date_of_birth, :dni, :address, :city, :start_day, :headquarter_id ])
       permitted[:church_id] = nil unless permitted[:role] == "priest"
       permitted
     end

@@ -3,7 +3,7 @@ require "test_helper"
 class UserTest < ActiveSupport::TestCase
   # Validations
   test "is valid with all required fields" do
-    user = User.new(first_name: "Ana", last_name: "García", email: "ana@garcia.com", phone: "1234567890", password: "password123")
+    user = User.new(first_name: "Ana", last_name: "García", email: "ana@garcia.com", phone: "1234567890", password: "password123", headquarter: headquarters(:one))
     assert user.valid?
   end
 
