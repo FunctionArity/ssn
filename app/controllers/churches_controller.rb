@@ -16,7 +16,7 @@ class ChurchesController < ApplicationController
   end
 
   def create
-    @church = Church.new(church_params)
+    @church = Church.new(church_params.merge(headquarter: current_user.headquarter))
 
     respond_to do |format|
       if @church.save

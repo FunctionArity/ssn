@@ -2,23 +2,23 @@ require "test_helper"
 
 class ChurchTest < ActiveSupport::TestCase
   test "is valid with name only" do
-    church = Church.new(name: "Parroquia Test")
+    church = Church.new(name: "Parroquia Test", headquarter: headquarters(:one))
     assert church.valid?
   end
 
   test "is valid with all fields" do
-    church = Church.new(name: "Parroquia Test", phone: "4912149", address: "San Martin 100, Mendoza")
+    church = Church.new(name: "Parroquia Test", phone: "4912149", address: "San Martin 100, Mendoza", headquarter: headquarters(:one))
     assert church.valid?
   end
 
   test "is invalid without name" do
-    church = Church.new(name: nil, address: "San Martin 100")
+    church = Church.new(name: nil, address: "San Martin 100", headquarter: headquarters(:one))
     assert_not church.valid?
     assert church.errors[:name].any?
   end
 
   test "phone and address are optional" do
-    church = Church.new(name: "Parroquia Test", phone: nil, address: nil)
+    church = Church.new(name: "Parroquia Test", phone: nil, address: nil, headquarter: headquarters(:one))
     assert church.valid?
   end
 

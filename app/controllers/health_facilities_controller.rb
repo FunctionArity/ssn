@@ -16,7 +16,7 @@ class HealthFacilitiesController < ApplicationController
   end
 
   def create
-    @health_facility = HealthFacility.new(health_facility_params)
+    @health_facility = HealthFacility.new(health_facility_params.merge(headquarter: current_user.headquarter))
 
     respond_to do |format|
       if @health_facility.save

@@ -20,7 +20,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
   test "should create user and send invitation email" do
     assert_difference([ "User.count", "ActionMailer::Base.deliveries.size" ]) do
-      post users_url, params: { user: { email: Faker::Internet.email, first_name: "New", last_name: "User", phone: "1111111111", headquarter_id: headquarters(:one).id } }
+      post users_url, params: { user: { email: Faker::Internet.email, first_name: "New", last_name: "User", phone: "1111111111" } }
     end
 
     assert_redirected_to user_url(User.last)
@@ -119,8 +119,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
           last_name: "Priest",
           phone: "1234567899",
           role: "priest",
-          church_id: church.id,
-          headquarter_id: headquarters(:one).id
+          church_id: church.id
         }
       }
     end
@@ -138,8 +137,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
           last_name: "Guardian",
           phone: "1234567898",
           role: "guardian",
-          church_id: church.id,
-          headquarter_id: headquarters(:one).id
+          church_id: church.id
         }
       }
     end

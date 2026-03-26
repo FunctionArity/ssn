@@ -26,7 +26,7 @@ class UsersController < ApplicationController
   # POST /users or /users.json
   def create
     authorize User.new
-    @user = User.invite!(user_params.merge(skip_invitation: false), current_user)
+    @user = User.invite!(user_params.merge(skip_invitation: false, headquarter_id: current_user.headquarter_id), current_user)
 
     respond_to do |format|
       if @user.errors.empty?
@@ -103,7 +103,7 @@ class UsersController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def user_params
-      permitted = params.expect(user: [ :first_name, :last_name, :email, :phone, :role, :password, :password_confirmation, :church_id, :date_of_birth, :dni, :address, :city, :start_day, :headquarter_id ])
+      permitted = params.expect(user: [ :first_name, :last_name, :email, :phone, :role, :password, :password_confirmation, :church_id, :date_of_birth, :dni, :address, :city, :start_day ])
       permitted[:church_id] = nil unless permitted[:role] == "priest"
       permitted
     end

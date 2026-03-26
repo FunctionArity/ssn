@@ -2,7 +2,7 @@ require "test_helper"
 
 class HealthFacilityTest < ActiveSupport::TestCase
   test "is valid with name and address" do
-    facility = HealthFacility.new(name: "Hospital Central", address: "Alem y Salta, Mendoza")
+    facility = HealthFacility.new(name: "Hospital Central", address: "Alem y Salta, Mendoza", headquarter: headquarters(:one))
     assert facility.valid?
   end
 
