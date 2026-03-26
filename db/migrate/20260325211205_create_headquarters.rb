@@ -9,7 +9,7 @@ class CreateHeadquarters < ActiveRecord::Migration[8.1]
 
     reversible do |dir|
       dir.up do
-        Headquarter.new({name: 'Mendoza', president: User.admin.first}).save
+        Headquarter.new({ name: 'Mendoza', president: User.admin.first }).save
       end
     end
   end
