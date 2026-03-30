@@ -8,15 +8,15 @@
           <% if user.avatar.attached? %>
             <img data-avatar-crop-target="preview"
                  src="<%= url_for(user.avatar) %>"
-                 class="w-20 h-20 rounded-full object-cover border-2 border-gray-200 shadow-sm">
+                 class="w-14 h-14 rounded-full object-cover border-2 border-gray-200 shadow-sm">
           <% else %>
             <div data-avatar-crop-target="placeholder"
-                 class="w-20 h-20 rounded-full flex items-center justify-center bg-gray-100 text-gray-500 text-2xl font-bold border-2 border-gray-200 shadow-sm">
+                 class="w-14 h-14 rounded-full flex items-center justify-center bg-gray-100 text-gray-500 text-xl font-bold border-2 border-gray-200 shadow-sm">
               <%= user.first_name[0] %><%= user.last_name[0] %>
             </div>
             <img data-avatar-crop-target="preview"
                  src=""
-                 class="w-20 h-20 rounded-full object-cover border-2 border-gray-200 shadow-sm hidden">
+                 class="w-14 h-14 rounded-full object-cover border-2 border-gray-200 shadow-sm hidden">
           <% end %>
         </div>
         <div class="flex flex-col items-center gap-1.5">
@@ -39,7 +39,7 @@
 
       <%# Crop modal %>
       <div data-avatar-crop-target="modal"
-           class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
+           class="hidden fixed inset-0 z-50 flex items-start justify-center bg-black/60 p-4 pt-8">
         <div class="bg-white rounded-2xl shadow-xl w-full max-w-lg overflow-hidden">
           <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
             <h3 class="text-base font-semibold text-gray-900"><%= t("users.form.crop_title") %></h3>
@@ -49,7 +49,7 @@
               <i class="ph ph-x text-xl"></i>
             </button>
           </div>
-          <div class="p-4 bg-gray-50 max-h-[60vh] overflow-hidden">
+          <div class="p-4 bg-gray-50 max-h-[38vh] overflow-auto">
             <img data-avatar-crop-target="cropImage" src="" class="max-w-full block">
           </div>
           <div class="px-6 py-4 border-t border-gray-100 flex justify-end gap-2">

@@ -52,6 +52,13 @@ class ApplicationPolicy
     super_admin? || admin?
   end
 
+  def is_vocal?
+    user.vocal? && record.vocal == user
+  end
+
+  def is_guardian?
+    user.guardian? && record.guardians.include?(user)
+  end
   class Scope
     def initialize(user, scope)
       @user = user

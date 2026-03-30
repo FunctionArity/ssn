@@ -3,8 +3,8 @@
         title: t(".title"),
         icon: "ph-shield",
         icon_class: "bg-blue-100 text-blue-700",
-        action_label: t(".new_guard_setup"),
-        action_path: new_guard_setup_path %>
+        action_label: policy(GuardSetup).new? ? t(".new_guard_setup") : nil,
+        action_path: policy(GuardSetup).new? ? new_guard_setup_path : nil %>
 
   <div id="guard_setups" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
     <% @guard_setups.each do |guard_setup| %>

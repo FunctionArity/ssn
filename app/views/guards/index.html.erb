@@ -3,8 +3,8 @@
         title: t(".title"),
         icon: "ph-calendar-check",
         icon_class: "bg-indigo-100 text-indigo-700",
-        action_label: t(".new_guard"),
-        action_path: new_guard_path %>
+        action_label: policy(Guard).new? ? t(".new_guard") : nil,
+        action_path: policy(Guard).new? ? new_guard_path : nil %>
 
   <div id="guards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
     <% @guards.each do |guard| %>

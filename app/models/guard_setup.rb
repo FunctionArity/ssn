@@ -8,6 +8,10 @@ class GuardSetup < ApplicationRecord
   validates :day_number, presence: true
   validate :at_least_one_guardian
 
+  def due_date
+    Date.current.change(day: day_number)
+  end
+
   private
 
   def at_least_one_guardian

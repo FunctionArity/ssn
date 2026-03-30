@@ -1,6 +1,6 @@
 class CreateGuardFromSetupService
-  def initialize(guard_setup_id, due_date = Date.current)
-    @due_date = due_date
+  def initialize(guard_setup_id)
+    @due_date = Date.current
     @guard_setup = if guard_setup_id.present?
                      GuardSetup.find(guard_setup_id)
     else
@@ -8,16 +8,16 @@ class CreateGuardFromSetupService
     end
   end
 
-  def call
-    priest = User.current_priest(@due_date)
-    return Guard.new(due_date: @due_date, priest: priest, day_number: @due_date.day) if @guard_setup.nil?
+  def guard_setup?
+    @guard_setup.present?
+  end
 
+  def call
     Guard.new(
-      day_number: @due_date.day,
-      due_date: @due_date,
+      day_number: @guard_setup.day_number,
+      due_date: @guard_setup.due_date,
       notes: @guard_setup.notes,
       vocal: @guard_setup.vocal,
-      priest: priest,
       guardian_ids: @guard_setup.guardian_ids,
       guard_setup_id: @guard_setup.id
     )

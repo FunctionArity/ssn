@@ -55,8 +55,9 @@ class GuardsController < ApplicationController
   end
 
   def new
-    due_date = params[:due_date].present? ? Date.parse(params[:due_date]) : Date.current
-    @guard = CreateGuardFromSetupService.new(params[:guard_setup_id], due_date).call
+    service = CreateGuardFromSetupService.new(params[:guard_setup_id])
+    return redirect_to guards_path, alert: t("guards.errors.no_guard_setup") unless service.guard_setup?
+    @guard = service.call
     authorize @guard
   end
 

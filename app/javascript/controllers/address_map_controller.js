@@ -94,24 +94,40 @@ export default class extends Controller {
     })
   }
 
+  /**
+   * Dynamically loads the Google Maps API as a singleton Promise.
+   *
+   * Why do we load the Google Map API this way?
+   * - The Google Maps script must only be loaded once; loading it multiple times can cause errors or conflicts.
+   * - Scripts added after page load don't block rendering and load asynchronously, reducing initial page load time.
+   * - This pattern ensures the script is loaded before running any code that depends on Google Maps, and prevents redundant loads, by duplicating the request if a second load comes before the first finishes.
+   * - Using a global promise allows any part of the app that calls `loadScript` to receive the same resolved promise, eliminating race conditions.
+   */
   loadScript(apiKey) {
-    if (window.google?.maps) return Promise.resolve()
-    if (window.__googleMapsPromise) return window.__googleMapsPromise
+    // Return immediately if already loaded
+    if (window.google?.maps) return Promise.resolve();
 
+    // If already loading, return the same promise to avoid duplicate requests
+    if (window.__googleMapsPromise) return window.__googleMapsPromise;
+
+    // Create and store a singleton Promise for script loading
     window.__googleMapsPromise = new Promise((resolve, reject) => {
+      // Global callback for Google Maps API ready event
       window.__googleMapsReady = () => {
-        delete window.__googleMapsReady
-        resolve()
-      }
-      const script = document.createElement("script")
-      script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&callback=__googleMapsReady&loading=async`
-      script.onerror = () => {
-        delete window.__googleMapsPromise
-        reject(new Error("Failed to load Google Maps API"))
-      }
-      document.head.appendChild(script)
-    })
+        delete window.__googleMapsReady;
+        resolve();
+      };
 
-    return window.__googleMapsPromise
+      const script = document.createElement("script");
+      script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&callback=__googleMapsReady&loading=async`;
+      script.onerror = () => {
+        // Clean up so future calls can retry
+        delete window.__googleMapsPromise;
+        reject(new Error("Failed to load Google Maps API"));
+      };
+      document.head.appendChild(script);
+    });
+
+    return window.__googleMapsPromise;
   }
 }

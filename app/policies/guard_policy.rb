@@ -7,34 +7,28 @@ class GuardPolicy < ApplicationPolicy
   end
 
   def new?
-    create?
+    is_admin? || is_vocal?
   end
 
   def update?
-    is_admin? || (user.vocal? && (record.vocal == user || record.guardians.include?(user)))
+    is_admin? || is_vocal?
   end
 
   def edit?
-    update?
+    is_admin? || is_vocal?
   end
 
   def close?
-    update?
+    is_admin? || is_vocal?
   end
 
   def destroy?
-    is_admin? || (user.vocal? && record.vocal == user)
+    is_admin? || is_vocal?
   end
 
   class Scope < ApplicationPolicy::Scope
     def resolve
       scope.all
     end
-  end
-
-  private
-
-  def is_admin?
-    super_admin? || admin?
   end
 end

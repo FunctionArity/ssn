@@ -98,7 +98,7 @@ es:
         service:
           attributes:
             guard:
-              required: "debe seleccionar una guardia"
+              required: "debe ser seleccionada"
         priest_setup:
           attributes:
             day_of_week:
@@ -244,6 +244,8 @@ es:
       updated: La guardia fue actualizada exitosamente.
       destroyed: La guardia fue eliminada exitosamente.
       closed: La guardia fue finalizada exitosamente.
+    errors:
+      no_guard_setup: No se encontró una configuración de guardia para el día de hoy.
   guard_setups:
     index:
       menu_title: Guardias

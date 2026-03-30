@@ -85,3 +85,5 @@ group :test do
   gem "simplecov", require: false
   gem "minitest-reporters"
 end
+
+gem "honeybadger", "~> 6.5"
