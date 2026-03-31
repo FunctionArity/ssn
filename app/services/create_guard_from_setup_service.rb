@@ -1,5 +1,5 @@
 class CreateGuardFromSetupService
-  def initialize(guard_setup_id)
+  def initialize(guard_setup_id = nil)
     @due_date = Date.current
     @guard_setup = if guard_setup_id.present?
                      GuardSetup.find(guard_setup_id)

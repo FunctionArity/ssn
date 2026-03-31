@@ -3,13 +3,73 @@
         title: t(".title"),
         icon: "ph-calendar-check",
         icon_class: "bg-indigo-100 text-indigo-700",
-        action_label: policy(Guard).new? ? t(".new_guard") : nil,
-        action_path: policy(Guard).new? ? new_guard_path : nil %>
+        action_label: @new_guard && policy(@new_guard).new? ? t(".new_guard") : nil,
+        action_path: @new_guard && policy(@new_guard).new? ? new_guard_path(guard_setup_id: @new_guard.guard_setup_id) : nil %>
+
+  <% if @today_guard_setup %>
+    <div class="flex justify-center mb-6">
+      <div class="w-full max-w-sm bg-white border border-gray-200 rounded-xl shadow-md shadow-blue-200 hover:shadow-lg hover:shadow-blue-500 transition-all duration-200 hover:-translate-y-0.5 overflow-hidden flex flex-col">
+
+        <div class="px-5 py-4 flex items-center justify-between bg-gradient-to-r from-blue-50 to-white border-b border-gray-100">
+          <div>
+            <p class="text-xs font-medium text-blue-400 uppercase tracking-wide"><%= t(".today_setup") %></p>
+            <p class="text-2xl font-bold text-gray-900"># <%= @today_guard_setup.day_number %></p>
+          </div>
+          <div class="flex items-center justify-center w-10 h-10 rounded-full bg-blue-100 text-blue-700">
+            <i class="ph ph-shield text-lg"></i>
+          </div>
+        </div>
+
+        <div class="px-5 py-4 flex flex-col gap-3 grow">
+          <div class="flex items-center gap-2">
+            <div class="flex items-center justify-center w-7 h-7 rounded-full bg-red-100 text-red-600 shrink-0">
+              <i class="ph ph-user text-xs"></i>
+            </div>
+            <div class="min-w-0">
+              <p class="text-xs text-gray-400"><%= GuardSetup.human_attribute_name(:vocal) %></p>
+              <p class="text-sm font-medium text-gray-900 truncate">
+                <%= link_to @today_guard_setup.vocal.full_name, user_path(@today_guard_setup.vocal) %>
+              </p>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-2">
+            <div class="flex items-center justify-center w-7 h-7 rounded-full bg-green-100 text-green-600 shrink-0 mt-0.5">
+              <i class="ph ph-users text-xs"></i>
+            </div>
+            <div class="min-w-0">
+              <p class="text-xs text-gray-400"><%= t("guard_setups.index.guardians_count", count: @today_guard_setup.guardians.size) %></p>
+              <div class="flex flex-wrap gap-1 mt-1">
+                <% @today_guard_setup.guardians.order(:last_name, :first_name).each do |guardian| %>
+                  <span class="badge_green hover:opacity-80">
+                    <%= link_to guardian.full_name, user_path(guardian) %>
+                  </span>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="px-5 py-3 border-t border-gray-100 flex items-center justify-between gap-2">
+          <% if @new_guard && policy(@new_guard).new? %>
+            <%= link_to new_guard_path(guard_setup_id: @today_guard_setup.id), class: "flex items-center gap-1 text-sm font-medium text-green-600 hover:text-green-800" do %>
+              <i class="ph ph-plus-circle"></i> <%= t(".create_guard") %>
+            <% end %>
+          <% end %>
+          <%= link_to @today_guard_setup, class: "flex items-center gap-1 text-sm font-medium text-blue-600 hover:text-blue-800" do %>
+            <i class="ph ph-arrow-right"></i> <%= t("guard_setups.index.show") %>
+          <% end %>
+        </div>
+
+      </div>
+    </div>
+  <% end %>
 
   <div id="guards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
     <% @guards.each do |guard| %>
       <% header_bg = guard.open? ? "bg-gradient-to-r from-indigo-50 to-white" : "bg-gradient-to-r from-gray-100 to-white" %>
-      <div class="<%= guard.open? ? 'bg-white border-gray-200' : 'bg-gray-50 border-gray-200' %> border rounded-xl shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-0.5 overflow-hidden flex flex-col">
+      <% is_today = guard.due_date == Date.today %>
+      <div class="<%= guard.open? ? 'bg-white border-gray-200' : 'bg-gray-50 border-gray-200' %> <%= 'ring-2 ring-blue-400' if is_today %> border rounded-xl shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-0.5 overflow-hidden flex flex-col">
 
         <div class="px-5 py-4 flex items-center justify-between <%= header_bg %> border-b border-gray-100">
           <div>
@@ -17,6 +77,9 @@
             <p class="text-2xl font-bold text-gray-900"># <%= guard.day_number %><%= " #{content_tag(:i, '', class: 'ph ph-lock-simple text-lg text-gray-400 align-middle')}".html_safe if guard.closed? %></p>
           </div>
           <div class="flex flex-col items-end gap-1.5">
+            <% if is_today %>
+              <span class="text-xs font-bold text-white bg-blue-500 px-3 py-1 rounded-full shadow-sm uppercase tracking-wide"><%= t(".today") %></span>
+            <% end %>
             <div class="flex items-center justify-center w-10 h-10 rounded-full <%= guard.open? ? 'bg-indigo-100 text-indigo-700' : 'bg-gray-200 text-gray-400' %>">
               <i class="ph ph-calendar-check text-lg"></i>
             </div>
@@ -72,3 +135,4 @@
     <% end %>
   </div>
 </div>
+

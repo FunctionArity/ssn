@@ -7,7 +7,8 @@ class GuardPolicy < ApplicationPolicy
   end
 
   def new?
-    is_admin? || is_vocal?
+    return is_admin? || is_vocal?
+    create?
   end
 
   def update?

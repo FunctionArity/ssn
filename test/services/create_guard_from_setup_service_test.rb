@@ -8,7 +8,7 @@ class CreateGuardFromSetupServiceTest < ActiveSupport::TestCase
   test "builds a guard with attributes from the guard setup" do
     guard = CreateGuardFromSetupService.new(@guard_setup.id).call
 
-    assert_equal Date.current.day, guard.day_number
+    assert_equal @guard_setup.day_number, guard.day_number
     assert_equal @guard_setup.notes, guard.notes
     assert_equal @guard_setup.vocal, guard.vocal
   end

@@ -9,7 +9,7 @@ class Guard < ApplicationRecord
 
   enum :status, { open: 0, closed: 1 }, default: :open
 
-  after_initialize :set_defaults_from_setup, if: ->{ :new_record? && guard_setup.present? }
+  after_initialize :set_defaults_from_setup, if: -> { new_record? && guard_setup.present? }
 
   validates :day_number, presence: true
   validates :due_date, presence: true
@@ -19,7 +19,7 @@ class Guard < ApplicationRecord
   private
 
   def set_defaults_from_setup
-    self.priest = User.current_priest(guard_setup.due_date)
+    self.priest ||= User.current_priest(guard_setup.due_date)
   end
 
   def at_least_one_guardian

@@ -206,6 +206,9 @@ es:
       title: Guardias
       new_guard: Nueva guardia
       show: Ver
+      today_setup: Guardia de hoy (sin crear)
+      today: Hoy
+      create_guard: Crear guardia
       services_count:
         one: servicio
         other: servicios
@@ -432,6 +435,8 @@ es:
       title: Servicios
       new_service: Nuevo servicio
       show: Ver
+      current_guard: Guardia activa hoy
+      view_guard: Ver guardia
     show:
       edit: Editar
       back: Volver a servicios

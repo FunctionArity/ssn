@@ -16,6 +16,10 @@ class PriestSetup < ApplicationRecord
     find_by(week_number: week_number, day_of_week: day_of_week)&.priest
   end
 
+  def self.find_priest_by_day_of_month(date = Date.current)
+    PriestSetup.where(day_of_month: date.day).first&.priest
+  end
+
   def set_day_of_month
     day = day_of_current_month
     return if day.nil? || day <= 28
