@@ -6,6 +6,46 @@
         action_label: t(".new_service"),
         action_path: new_service_path %>
 
+  <% if @current_guard %>
+    <div class="mb-6 bg-gradient-to-r from-indigo-50 to-white border border-indigo-100 rounded-xl overflow-hidden">
+      <div class="px-4 py-3 border-b border-indigo-100 flex items-center gap-2">
+        <div class="flex items-center justify-center w-7 h-7 rounded-full bg-indigo-100 text-indigo-700">
+          <i class="ph ph-calendar-check text-sm"></i>
+        </div>
+        <span class="text-xs font-semibold text-indigo-600 uppercase tracking-wide"><%= t(".current_guard") %>: <%= l(@current_guard.due_date, format: :long) %></span>
+        <span class="ml-auto text-xs font-bold text-indigo-400"># <%= @current_guard.day_number %></span>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 divide-y sm:divide-y-0 sm:divide-x divide-indigo-100">
+        <div class="px-4 py-3 flex items-center gap-3">
+          <div class="flex items-center justify-center w-7 h-7 rounded-full bg-purple-100 text-purple-600 shrink-0">
+            <i class="ph ph-cross text-xs"></i>
+          </div>
+          <div>
+            <p class="text-xs text-gray-400"><%= Guard.human_attribute_name(:priest) %></p>
+            <p class="text-sm font-semibold text-gray-800"><%= @current_guard.priest.full_name %></p>
+          </div>
+        </div>
+        <div class="px-4 py-3 flex items-center gap-3">
+          <div class="flex items-center justify-center w-7 h-7 rounded-full bg-red-100 text-red-600 shrink-0">
+            <i class="ph ph-user text-xs"></i>
+          </div>
+          <div>
+            <p class="text-xs text-gray-400"><%= Guard.human_attribute_name(:vocal) %></p>
+            <p class="text-sm font-semibold text-gray-800"><%= @current_guard.vocal.full_name %></p>
+          </div>
+        </div>
+      </div>
+      <div class="px-4 py-3 border-t border-indigo-100 flex items-center justify-between">
+        <%= link_to new_service_path(guard_id: @current_guard.id), class: "flex items-center gap-1 text-sm font-medium text-green-600 hover:text-green-800" do %>
+          <i class="ph ph-plus-circle"></i> <%= t(".new_service") %>
+        <% end %>
+        <%= link_to @current_guard, class: "flex items-center gap-1 text-sm font-medium text-blue-600 hover:text-blue-800" do %>
+          <i class="ph ph-arrow-right"></i> <%= t(".view_guard") %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+
   <div id="services" class="space-y-6">
     <% @services.group_by { |s| s.due_date.to_date }.sort.reverse.each do |date, services| %>
       <div>

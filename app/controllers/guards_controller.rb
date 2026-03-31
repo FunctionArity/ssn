@@ -3,8 +3,14 @@ class GuardsController < ApplicationController
   before_action :set_services_count, only: %i[ show ]
 
   def index
+    service = CreateGuardFromSetupService.new
+    @new_guard = service.call if service.guard_setup?
     @guards = Guard.includes(:vocal, :priest, :guardians).order("due_date DESC")
     @services_count_by_guard = Service.group(:guard_id).count
+
+    unless @guards.any? { |g| g.due_date == Date.current }
+      @today_guard_setup = GuardSetup.includes(:vocal, :guardians).find_by(day_number: Date.current.day)
+    end
   end
 
   def show
@@ -55,8 +61,9 @@ class GuardsController < ApplicationController
   end
 
   def new
-    due_date = params[:due_date].present? ? Date.parse(params[:due_date]) : Date.current
-    @guard = CreateGuardFromSetupService.new(params[:guard_setup_id], due_date).call
+    service = CreateGuardFromSetupService.new(params[:guard_setup_id])
+    return redirect_to guards_path, alert: t("guards.errors.no_guard_setup") unless service.guard_setup?
+    @guard = service.call
     authorize @guard
   end
 

@@ -37,9 +37,9 @@ class GuardsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test "new without guard_setup_id is forbidden because no guard_setup means policy denies" do
+  test "new without guard_setup_id redirects to guards with alert" do
     get new_guard_url
-    assert_redirected_to root_path
+    assert_redirected_to guards_path
   end
 
   test "new returns not found when guard_setup_id does not exist" do
@@ -143,10 +143,10 @@ class GuardsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test "edit allowed for vocal user who is a guardian of the guard" do
+  test "edit forbidden for vocal user who is a guardian but not the vocal of the guard" do
     sign_in users(:vocal_guardian)
     get edit_guard_url(@guard)
-    assert_response :success
+    assert_redirected_to root_path
   end
 
   test "edit forbidden for vocal user with no relationship to the guard" do
@@ -195,7 +195,7 @@ class GuardsControllerTest < ActionDispatch::IntegrationTest
     assert_equal 1, @guard.reload.day_number
   end
 
-  test "update allowed for vocal user who is a guardian of the guard" do
+  test "update forbidden for vocal user who is a guardian but not the vocal of the guard" do
     sign_in users(:vocal_guardian)
     patch guard_url(@guard), params: {
       guard: {
@@ -207,7 +207,7 @@ class GuardsControllerTest < ActionDispatch::IntegrationTest
       }
     }
 
-    assert_redirected_to guard_url(@guard)
+    assert_redirected_to root_path
   end
 
   test "update forbidden for vocal user with no relationship to the guard" do

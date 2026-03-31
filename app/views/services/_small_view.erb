@@ -26,7 +26,7 @@
         <div class="min-w-0">
           <p class="text-xs text-gray-400"><%= Service.human_attribute_name(:guard) %></p>
           <p class="text-sm font-medium text-gray-900">
-            <%= link_to "Guardia ##{service.guard.day_number}", service.guard, class: "text-indigo-600 hover:underline" %>
+            <%= link_to "Guardia ##{service.guard.day_number}", service.guard, class: "text-indigo-600 hover:underline", data: { turbo_frame: "_top" } %>
           </p>
         </div>
       </div>
@@ -38,7 +38,18 @@
           </div>
           <div class="min-w-0">
             <p class="text-xs text-gray-400"><%= Service.human_attribute_name(:health_facility) %></p>
-            <p class="text-sm font-medium text-gray-900 truncate"><%= service.health_facility.name %></p>
+            <% hf_address = service.health_facility.address.presence || service.health_facility.name %>
+            <%= link_to service.health_facility.name, "https://maps.google.com/?q=#{URI.encode_uri_component(hf_address)}", target: "_blank", rel: "noopener", class: "text-sm font-medium text-indigo-600 hover:underline truncate block" %>
+          </div>
+        </div>
+      <% elsif service.address.present? %>
+        <div class="flex items-center gap-2">
+          <div class="flex items-center justify-center w-7 h-7 rounded-full bg-gray-100 text-gray-500 shrink-0">
+            <i class="ph ph-map-pin text-xs"></i>
+          </div>
+          <div class="min-w-0">
+            <p class="text-xs text-gray-400"><%= Service.human_attribute_name(:address) %></p>
+            <%= link_to service.address, "https://maps.google.com/?q=#{URI.encode_uri_component(service.address)}", target: "_blank", rel: "noopener", class: "text-sm font-medium text-indigo-600 hover:underline truncate block" %>
           </div>
         </div>
       <% end %>

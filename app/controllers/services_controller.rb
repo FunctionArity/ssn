@@ -3,6 +3,7 @@ class ServicesController < ApplicationController
 
   def index
     @services = Service.includes(:guard, :created_by).order(due_date: :desc)
+    @current_guard = Guard.includes(:vocal, :priest, :guardians).find_by(status: :open, due_date: Date.current)
   end
 
   def show

@@ -11,30 +11,30 @@
       <span class="sidebar-label"><%= t("services.index.title") %></span>
     <% end %>
     <% setup_active = request.path.start_with?('/guard_setups') || request.path.start_with?('/priest_assignments') || request.path.start_with?('/users') || request.path.start_with?('/health_facilities') || request.path.start_with?('/churches') %>
-    <details class="group" data-controller="disclosure" <%= 'open' if setup_active %>>
-      <summary data-action="click->disclosure#toggle" class="sidebar-link flex items-center gap-2 rounded-r-md px-3 py-2 text-sm font-medium border-l-2 border-transparent text-gray-600 hover:bg-gray-50 hover:text-gray-900 cursor-pointer list-none select-none">
+    <details class="group mx-2 rounded-lg border border-gray-100 bg-gray-50 overflow-hidden" data-controller="disclosure" <%= 'open' if setup_active %>>
+      <summary data-action="click->disclosure#toggle" class="sidebar-link flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 cursor-pointer list-none select-none">
         <i class="ph ph-sliders text-lg"></i>
         <span class="sidebar-label"><%= t("sidebar.setup") %></span>
         <i class="ph ph-caret-right text-xs ml-auto transition-transform duration-300 group-open:rotate-90"></i>
       </summary>
-      <div data-disclosure-target="content" class="pl-4 mt-1 space-y-1 overflow-hidden">
-        <%= link_to users_path, class: "sidebar-link flex items-center gap-2 rounded-r-md px-3 py-2 text-sm font-medium border-l-2 #{request.path.start_with?('/users') ? 'bg-blue-50 text-blue-700 border-blue-600' : 'text-gray-600 border-transparent hover:bg-gray-50 hover:text-gray-900'}" do %>
+      <div data-disclosure-target="content" class="overflow-hidden border-t border-gray-100 divide-y divide-gray-100">
+        <%= link_to users_path, class: "sidebar-link flex items-center gap-2 px-3 py-2 text-sm font-medium border-l-2 border-b-0 #{request.path.start_with?('/users') ? 'text-blue-700 border-blue-600 border-t-transparent' : 'text-gray-600 border-transparent hover:bg-gray-100 hover:text-gray-900'}" do %>
           <i class="ph ph-users text-lg"></i>
           <span class="sidebar-label"><%= t("users.index.title") %></span>
         <% end %>
-        <%= link_to guard_setups_path, class: "sidebar-link flex items-center gap-2 rounded-r-md px-3 py-2 text-sm font-medium border-l-2 #{request.path.start_with?('/guard_setups') ? 'bg-blue-50 text-blue-700 border-blue-600' : 'text-gray-600 border-transparent hover:bg-gray-50 hover:text-gray-900'}" do %>
+        <%= link_to guard_setups_path, class: "sidebar-link flex items-center gap-2 px-3 py-2 text-sm font-medium border-l-2 border-b-0 #{request.path.start_with?('/guard_setups') ? 'text-blue-700 border-blue-600 border-t-transparent' : 'text-gray-600 border-transparent hover:bg-gray-100 hover:text-gray-900'}" do %>
           <i class="ph ph-gear text-lg"></i>
           <span class="sidebar-label"><%= t("guard_setups.index.menu_title") %></span>
         <% end %>
-        <%= link_to priest_assignments_path, class: "sidebar-link flex items-center gap-2 rounded-r-md px-3 py-2 text-sm font-medium border-l-2 #{request.path.start_with?('/priest_assignments') ? 'bg-blue-50 text-blue-700 border-blue-600' : 'text-gray-600 border-transparent hover:bg-gray-50 hover:text-gray-900'}" do %>
+        <%= link_to priest_assignments_path, class: "sidebar-link flex items-center gap-2 px-3 py-2 text-sm font-medium border-l-2 border-b-0 #{request.path.start_with?('/priest_assignments') ? 'text-blue-700 border-blue-600 border-t-transparent' : 'text-gray-600 border-transparent hover:bg-gray-100 hover:text-gray-900'}" do %>
           <i class="ph ph-calendar text-lg"></i>
           <span class="sidebar-label"><%= t("priest_assignments.index.title") %></span>
         <% end %>
-        <%= link_to health_facilities_path, class: "sidebar-link flex items-center gap-2 rounded-r-md px-3 py-2 text-sm font-medium border-l-2 #{request.path.start_with?('/health_facilities') ? 'bg-blue-50 text-blue-700 border-blue-600' : 'text-gray-600 border-transparent hover:bg-gray-50 hover:text-gray-900'}" do %>
+        <%= link_to health_facilities_path, class: "sidebar-link flex items-center gap-2 px-3 py-2 text-sm font-medium border-l-2 border-b-0 #{request.path.start_with?('/health_facilities') ? 'text-blue-700 border-blue-600 border-t-transparent' : 'text-gray-600 border-transparent hover:bg-gray-100 hover:text-gray-900'}" do %>
           <i class="ph ph-hospital text-lg"></i>
           <span class="sidebar-label"><%= t("health_facilities.index.title") %></span>
         <% end %>
-        <%= link_to churches_path, class: "sidebar-link flex items-center gap-2 rounded-r-md px-3 py-2 text-sm font-medium border-l-2 #{request.path.start_with?('/churches') ? 'bg-blue-50 text-blue-700 border-blue-600' : 'text-gray-600 border-transparent hover:bg-gray-50 hover:text-gray-900'}" do %>
+        <%= link_to churches_path, class: "sidebar-link flex items-center gap-2 px-3 py-2 text-sm font-medium border-l-2 border-b-0 #{request.path.start_with?('/churches') ? 'text-blue-700 border-blue-600 border-t-transparent' : 'text-gray-600 border-transparent hover:bg-gray-100 hover:text-gray-900'}" do %>
           <i class="ph ph-church text-lg"></i>
           <span class="sidebar-label"><%= t("churches.index.title") %></span>
         <% end %>
