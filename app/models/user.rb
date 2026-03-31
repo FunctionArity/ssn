@@ -47,7 +47,6 @@ class User < ApplicationRecord
   end
 
   def self.current_priest(date = Date.current)
-
     if date.day >= 28
       PriestSetup.where(day_of_month: date.day).first&.priest
     else
@@ -55,7 +54,6 @@ class User < ApplicationRecord
       week_month = week_of_month(date)
       PriestSetup.find_priest_by_week_and_day(week_day, week_month)
     end
-
   end
 
   def self.week_of_month(date)
