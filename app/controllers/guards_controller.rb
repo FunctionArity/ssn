@@ -41,13 +41,13 @@ class GuardsController < ApplicationController
       last_nro = Service.where.not(nro: nil).maximum(:nro)
       @first_nro = last_nro ? last_nro + 1 : 1
     end
-    @services = @guard.services.includes(:health_facility).order(due_date: :asc)
+    @services = @guard.services.completed.includes(:health_facility).order(due_date: :asc)
     @services.each_with_index { |s, i| s.nro = @first_nro + i }
   end
 
   def confirm_pdf
     first_nro = params[:first_nro].to_i
-    @guard.services.order(due_date: :asc).each_with_index do |service, idx|
+    @guard.services.completed.order(due_date: :asc).each_with_index do |service, idx|
       service.update_column(:nro, first_nro + idx)
     end
     pdf_data = GuardPdf.new(@guard.reload).render

@@ -4,7 +4,7 @@ class User < ApplicationRecord
   devise :invitable, :database_authenticatable,
          :recoverable, :rememberable, :validatable, :lockable
 
-  has_one_attached :avatar
+  has_one_attached :avatar, service: :amazon_avatar
 
   enum :role, { guardian: 0, vocal: 1, priest: 2 }, default: :guardian
   enum :user_type, { regular: 0, admin: 1, super_admin: 2 }, default: :regular

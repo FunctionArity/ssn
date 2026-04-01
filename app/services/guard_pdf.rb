@@ -105,9 +105,8 @@ class GuardPdf
 
     # Service title row
     service_label = service.nro.present? ? "NRO #{service.nro}" : "SERVICIO ##{service.id}"
-    pdf.bounding_box([ 0, y ], width: w, height: 14) do
-      pdf.text service_label, size: 7, style: :bold, color: "6666aa"
-    end
+    pdf.text_box service_label, at: [ 0, y ], width: w, height: 14,
+                 size: 7, style: :bold, color: "6666aa", overflow: :truncate
     y -= 14
 
     # Row 1: Nombre y Apellido + Edad
@@ -153,11 +152,9 @@ class GuardPdf
   def field(pdf, x, y, width, label, value)
     value_str = value.present? ? value.to_s : ""
 
-    pdf.bounding_box([ x, y ], width: width, height: 14) do
-      parts = [ { text: label, styles: [ :bold ], size: LABEL_SIZE } ]
-      parts << { text: " #{value_str}", size: VALUE_SIZE } unless value_str.empty?
-      pdf.formatted_text(parts)
-    end
+    parts = [ { text: label, styles: [ :bold ], size: LABEL_SIZE } ]
+    parts << { text: " #{value_str}", size: VALUE_SIZE } unless value_str.empty?
+    pdf.formatted_text_box(parts, at: [ x, y ], width: width, height: 14, overflow: :truncate)
 
     pdf.save_graphics_state do
       pdf.stroke_color "aaaaaa"

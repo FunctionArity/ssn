@@ -38,3 +38,6 @@ application.register("clipboard", ClipboardController)
 
 import AvatarCropController from "./avatar_crop_controller"
 application.register("avatar-crop", AvatarCropController)
+
+import GuardSelectController from "./guard_select_controller"
+application.register("guard-select", GuardSelectController)

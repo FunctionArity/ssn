@@ -39,6 +39,7 @@ class ServicesController < ApplicationController
 
   def edit
     authorize @service
+    @guards = Guard.order(due_date: :desc)
   end
 
   def create
