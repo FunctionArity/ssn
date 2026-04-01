@@ -38,8 +38,10 @@ class GuardsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "new without guard_setup_id redirects to guards with alert" do
-    get new_guard_url
-    assert_redirected_to guards_path
+    travel_to(Time.current.change(day: 15)) do
+      get new_guard_url
+      assert_redirected_to guards_path
+    end
   end
 
   test "new returns not found when guard_setup_id does not exist" do
