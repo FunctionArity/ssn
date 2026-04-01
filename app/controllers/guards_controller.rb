@@ -56,7 +56,7 @@ class GuardsController < ApplicationController
       filename: "guardia_#{@guard.id}.pdf",
       content_type: "application/pdf"
     )
-    # @guard.closed!
+    @guard.closed!
     redirect_to pdf_guard_path(@guard)
   end
 
