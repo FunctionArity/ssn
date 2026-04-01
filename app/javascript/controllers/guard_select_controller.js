@@ -5,6 +5,7 @@ export default class extends Controller {
 
   change(event) {
     event.preventDefault()
+    document.removeEventListener("click", this._outsideHandler) // clear any stale handler
     this.labelTarget.classList.add("hidden")
     this.selectTarget.classList.remove("hidden")
     this.selectTarget.querySelector("select").focus()
