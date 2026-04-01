@@ -399,6 +399,7 @@ class GuardsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "preview assigns sequential nro values to services starting from first_nro" do
+    @guard.services.create!(full_name: "Extra", due_date: Date.today + 1, status: :completed, created_by: @user)
     get preview_guard_url(@guard), params: { first_nro: 3 }
 
     assert_match "NRO 3", response.body
@@ -417,8 +418,8 @@ class GuardsControllerTest < ActionDispatch::IntegrationTest
 
   test "confirm_pdf saves nro values to services in order" do
     @guard.services.destroy_all
-    service1 = @guard.services.create!(full_name: "A", due_date: Date.today - 1, created_by: @user)
-    service2 = @guard.services.create!(full_name: "B", due_date: Date.today,     created_by: @user)
+    service1 = @guard.services.create!(full_name: "A", due_date: Date.today - 1, status: :completed, created_by: @user)
+    service2 = @guard.services.create!(full_name: "B", due_date: Date.today,     status: :completed, created_by: @user)
 
     post confirm_pdf_guard_url(@guard), params: { first_nro: 5 }
 
