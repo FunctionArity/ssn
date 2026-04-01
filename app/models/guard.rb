@@ -5,7 +5,7 @@ class Guard < ApplicationRecord
   has_many :guard_guardians, dependent: :destroy
   has_many :guardians, through: :guard_guardians, source: :user
   has_many :services, dependent: :destroy
-  has_one_attached :pdf_file
+  has_one_attached :pdf_file, service: :amazon_pdf_file
 
   enum :status, { open: 0, closed: 1 }, default: :open
 

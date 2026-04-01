@@ -10,21 +10,38 @@
     </div>
   <% end %>
 
-  <%= form.hidden_field :guard_id %>
-
   <% if service.guard_id.blank? %>
+    <%= form.hidden_field :guard_id %>
     <div class="flex items-center gap-3 bg-red-50 border border-red-200 text-red-700 rounded-xl p-4 text-sm">
       <i class="ph ph-warning text-lg shrink-0"></i>
       <%= t("services.form.no_guard_warning") %>
     </div>
   <% else %>
     <% guard = service.guard %>
-    <div class="bg-gradient-to-r from-indigo-50 to-white border border-indigo-100 rounded-xl overflow-hidden">
+    <div class="bg-gradient-to-r from-indigo-50 to-white border border-indigo-100 rounded-xl overflow-hidden"
+         <%= "data-controller=guard-select".html_safe if @guards %>>
       <div class="px-4 py-3 border-b border-indigo-100 flex items-center gap-2">
         <div class="flex items-center justify-center w-7 h-7 rounded-full bg-indigo-100 text-indigo-700">
           <i class="ph ph-calendar-check text-sm"></i>
         </div>
-        <span class="text-xs font-semibold text-indigo-600 uppercase tracking-wide"><%= Guard.human_attribute_name(:due_date) %>: <%= l(guard.due_date, format: :long) %></span>
+        <% if @guards %>
+          <span data-guard-select-target="label" class="flex-1">
+            <% if current_user.admin? || current_user.super_admin? %>
+              <button data-action="guard-select#change" class="text-xs font-semibold text-indigo-600 uppercase tracking-wide hover:text-indigo-800 hover:underline underline-offset-2 transition-colors"><%= Guard.human_attribute_name(:due_date) %>: <%= l(guard.due_date, format: :long) %></button>
+            <% else %>
+              <span class="text-xs font-semibold text-indigo-600 uppercase tracking-wide"><%= Guard.human_attribute_name(:due_date) %>: <%= l(guard.due_date, format: :long) %></span>
+            <% end %>
+          </span>
+          <span data-guard-select-target="select" class="hidden flex-1">
+            <%= form.select :guard_id,
+                  @guards.map { |g| ["##{g.day_number} – #{l(g.due_date, format: :long)}", g.id] },
+                  {},
+                  { class: "w-full rounded border border-indigo-300 px-2 py-1 text-xs text-indigo-700 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500" } %>
+          </span>
+        <% else %>
+          <%= form.hidden_field :guard_id %>
+          <span class="text-xs font-semibold text-indigo-600 uppercase tracking-wide"><%= Guard.human_attribute_name(:due_date) %>: <%= l(guard.due_date, format: :long) %></span>
+        <% end %>
         <span class="ml-auto text-xs font-bold text-indigo-400"># <%= guard.day_number %></span>
       </div>
       <div class="grid grid-cols-1 sm:grid-cols-2 divide-y sm:divide-y-0 sm:divide-x divide-indigo-100">

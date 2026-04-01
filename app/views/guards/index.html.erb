@@ -52,8 +52,8 @@
 
         <div class="px-5 py-3 border-t border-gray-100 flex items-center justify-between gap-2">
           <% if @new_guard && policy(@new_guard).new? %>
-            <%= link_to new_guard_path(guard_setup_id: @today_guard_setup.id), class: "flex items-center gap-1 text-sm font-medium text-green-600 hover:text-green-800" do %>
-              <i class="ph ph-plus-circle"></i> <%= t(".create_guard") %>
+            <%= link_to new_guard_path(guard_setup_id: @today_guard_setup.id), class: "flex items-center gap-1.5 rounded-md bg-green-600 px-3 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-green-500 active:scale-95 transition-all" do %>
+              <i class="ph ph-shield-plus"></i> <%= t(".create_guard") %>
             <% end %>
           <% end %>
           <%= link_to @today_guard_setup, class: "flex items-center gap-1 text-sm font-medium text-blue-600 hover:text-blue-800" do %>
