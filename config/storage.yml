@@ -12,7 +12,7 @@ amazon:
   access_key_id: <%= Rails.application.credentials.dig(:aws, :access_key_id) %>
   secret_access_key: <%= Rails.application.credentials.dig(:aws, :secret_access_key) %>
   region: <%= Rails.application.credentials.dig(:aws, :region) || "us-east-1" %>
-  bucket: <%= Rails.application.credentials.dig(:aws, :bucket) %>
+  bucket: <%= Rails.application.credentials.dig(:aws, :bucket) || "placeholder" %>
 
 <% if Rails.env.test? %>
 amazon_avatar:
@@ -28,7 +28,7 @@ amazon_avatar:
   access_key_id: <%= Rails.application.credentials.dig(:aws, :access_key_id) %>
   secret_access_key: <%= Rails.application.credentials.dig(:aws, :secret_access_key) %>
   region: <%= Rails.application.credentials.dig(:aws, :region) || "us-east-1" %>
-  bucket: <%= Rails.application.credentials.dig(:aws, :bucket) %>
+  bucket: <%= Rails.application.credentials.dig(:aws, :bucket) || "placeholder" %>
   prefix: avatar
 
 amazon_pdf_file:
@@ -36,7 +36,7 @@ amazon_pdf_file:
   access_key_id: <%= Rails.application.credentials.dig(:aws, :access_key_id) %>
   secret_access_key: <%= Rails.application.credentials.dig(:aws, :secret_access_key) %>
   region: <%= Rails.application.credentials.dig(:aws, :region) || "us-east-1" %>
-  bucket: <%= Rails.application.credentials.dig(:aws, :bucket) %>
+  bucket: <%= Rails.application.credentials.dig(:aws, :bucket) || "placeholder" %>
   prefix: pdf_file
 <% end %>
 
