@@ -18,8 +18,8 @@ Rails.application.routes.draw do
     end
   end
   resources :guard_setups
-  resources :priest_setups, only: %i[create destroy]
-  resources :priest_assignments, only: %i[index]
+  resources :priest_setups
+
   resources :services do
     member do
       get  :pdf

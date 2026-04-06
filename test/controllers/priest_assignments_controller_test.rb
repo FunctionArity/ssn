@@ -9,13 +9,13 @@ class PriestAssignmentsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should get index" do
-    get priest_assignments_url
+    get priest_setups_url
     assert_response :success
   end
 
   test "should require authentication" do
     sign_out @user
-    get priest_assignments_url
+    get priest_setups_url
     assert_response :redirect
   end
 end
