@@ -34,9 +34,9 @@ class PriestSetup < ApplicationRecord
 
     target = if last_week?
                last_occurrence_in_month(first_occurrence, reference)
-             else
+    else
                first_occurrence + ((week_number - 1) * 7)
-             end
+    end
 
     target.day if target.month == reference.month
   end
