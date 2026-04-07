@@ -156,13 +156,17 @@ class PriestSetupTest < ActiveSupport::TestCase
   # March 2026 eom = March 31 (Tuesday, cwday=2)
 
   test "day_of_current_month week 5 returns last Tuesday in March which is eom" do
-    setup = PriestSetup.new(week_number: 5, day_of_week: 2)
-    assert_equal 31, setup.day_of_current_month(Date.new(2026, 3, 1))
+    travel_to Time.zone.parse("2026-03-01") do
+      setup = PriestSetup.new(week_number: 5, day_of_week: 2)
+      assert_equal 31, setup.day_of_current_month
+    end
   end
 
   test "day_of_current_month week 5 returns last Monday in March" do
-    setup = PriestSetup.new(week_number: 5, day_of_week: 1)
-    assert_equal 30, setup.day_of_current_month(Date.new(2026, 3, 1))
+    travel_to Time.zone.parse("2026-03-01") do
+      setup = PriestSetup.new(week_number: 5, day_of_week: 1)
+      assert_equal 30, setup.day_of_current_month
+    end
   end
 
   test "day_of_current_month week 5 returns last Wednesday in March" do
