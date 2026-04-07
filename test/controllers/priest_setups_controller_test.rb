@@ -20,7 +20,7 @@ class PriestSetupsControllerTest < ActionDispatch::IntegrationTest
       }
     end
 
-    assert_redirected_to priest_assignments_url
+    assert_redirected_to new_priest_setup_url
   end
 
   test "should replace existing assignment when creating for same slot" do
@@ -34,7 +34,7 @@ class PriestSetupsControllerTest < ActionDispatch::IntegrationTest
       }
     end
 
-    assert_redirected_to priest_assignments_url
+    assert_redirected_to new_priest_setup_url
     assert_equal users(:priest_two).id, PriestSetup.find_by(week_number: @priest_setup.week_number, day_of_week: @priest_setup.day_of_week).priest_id
   end
 
@@ -49,7 +49,7 @@ class PriestSetupsControllerTest < ActionDispatch::IntegrationTest
       }
     end
 
-    assert_redirected_to priest_assignments_url
+    assert_redirected_to new_priest_setup_url
   end
 
   test "should destroy priest setup" do
@@ -57,6 +57,6 @@ class PriestSetupsControllerTest < ActionDispatch::IntegrationTest
       delete priest_setup_url(@priest_setup)
     end
 
-    assert_redirected_to priest_assignments_url
+    assert_redirected_to new_priest_setup_url
   end
 end

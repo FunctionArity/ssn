@@ -119,7 +119,7 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test "week_of_month returns 2 for the second week" do
-    date = Date.new(2026, 3, 2) # Monday, start of second week
+    date = Date.new(2026, 3, 9) # Monday, second Monday of March 2026
     assert_equal 2, User.week_of_month(date)
   end
 end

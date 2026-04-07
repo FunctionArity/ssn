@@ -476,17 +476,22 @@ es:
     notices:
       created: Sacerdote asignado exitosamente.
       destroyed: Asignación eliminada exitosamente.
-  priest_assignments:
-    index:
-      title: Sacerdotes
-      priests: Sacerdotes
-      week_names:
-        - Primera
-        - Segunda
-        - Tercero
-        - Cuarta
-        - Quinta
-        - Sexta
+    title: Sacerdotes
+    priests: Sacerdotes
+    new_priest_setup: Nueva Configuración
+    week_names:
+      - Primera
+      - Segunda
+      - Tercero
+      - Cuarta
+      - Quinta
+    new:
+      title: Asignar Sacerdote
+      priests: Sacerdotes sin asignar
+      select_priest_hint: Seleccioná un sacerdote y luego hacé clic en el casillero para asignarlo.
+      no_priests: Todos los sacerdotes ya tienen una asignación.
+      week: Semana
+
   pundit:
     not_authorized: No tenés permiso para realizar esta acción.
   edit: Editar

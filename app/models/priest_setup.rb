@@ -24,16 +24,28 @@ class PriestSetup < ApplicationRecord
     day = day_of_current_month
     return if day.nil? || day <= 28
 
-    self.day_of_week = nil
-    self.week_number = nil
     self.day_of_month = day
   end
 
-  def day_of_current_month
-    first_day = Date.today.beginning_of_month
-    first_occurrence = first_day + ((day_of_week - first_day.cwday) % 7)
-    target = first_occurrence + ((week_number - 2) * 7)
-    target.day if target.month == first_day.month
+  def day_of_current_month(reference = Date.today)
+    bom = reference.beginning_of_month
+    days_until_target = (day_of_week - bom.cwday) % 7
+    first_occurrence = bom + days_until_target
+
+    target = if last_week?
+               last_occurrence_in_month(first_occurrence, reference)
+    else
+               first_occurrence + ((week_number - 1) * 7)
+    end
+
+    target.day if target.month == reference.month
+  end
+
+  def current_date(reference = Date.today)
+    day = day_of_current_month(reference)
+    return nil if day.nil?
+
+    reference.change(day: day)
   end
 
   def week_and_day_of_month
@@ -49,18 +61,15 @@ class PriestSetup < ApplicationRecord
   end
 
   def week_and_day_info(date = Date.today)
-    day_of_week = date.cwday # 1 = Monday, 7 = Sunday (ISO 8601)
-
-    first_day_of_month = Date.new(date.year, date.month, 1)
-    first_day_cwday = first_day_of_month.cwday # weekday of the 1st
-
-    week_of_month = ((date.day + first_day_cwday - 2) / 7) + 1
+    bom = date.beginning_of_month
+    first_occurrence = bom + ((date.cwday - bom.cwday) % 7)
+    week_of_month = ((date - first_occurrence) / 7).floor + 1
 
     {
       date: date,
       day_of_month: date.day,
       week_of_month: week_of_month,
-      day_of_week: day_of_week,
+      day_of_week: date.cwday,
       day_name: date.strftime("%A"),
       week_label: "Week #{week_of_month} of #{date.strftime('%B')}"
     }
@@ -68,5 +77,16 @@ class PriestSetup < ApplicationRecord
 
   def description
     "#{WEEK_NAMES[week_number - 1]} #{DAY_NAMES[day_of_week]}"
+  end
+
+  private
+
+  def last_occurrence_in_month(first_occurrence, reference)
+    eom = reference.end_of_month
+    eom - ((eom.cwday - day_of_week) % 7)
+  end
+
+  def last_week?
+    week_number > 4
   end
 end
