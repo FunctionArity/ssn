@@ -4,392 +4,234 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Servicio Sacerdotal Nocturno</title>
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    :root {
-      --gold: #c8a030;
-      --gold-light: #e8d97a;
-      --dark: #1a1610;
-      --text: #2a2218;
-      --muted: #6b6050;
-      --border: #e0d4b0;
-      --bg: #faf8f2;
-      --card-bg: #ffffff;
-      --purple: #7c3aed;
-      --purple-light: #ede9fe;
-      --green: #15803d;
-      --green-light: #dcfce7;
-      --red: #b91c1c;
-      --red-light: #fee2e2;
-    }
-
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.6;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #1e1b4b 0%, #312e81 40%, #1e3a5f 100%);
+      display: flex;
+      flex-direction: column;
+      color: #fff;
     }
 
-    /* Hero */
-    .hero {
-      background: linear-gradient(160deg, #1a1610 0%, #2d2418 60%, #3d3020 100%);
-      color: #f5edb0;
-      text-align: center;
-      padding: 5rem 1.5rem 4rem;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .hero::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(ellipse at 50% 0%, rgba(200,160,48,0.15) 0%, transparent 70%);
-      pointer-events: none;
-    }
-
-    .hero-icon {
-      width: 90px;
-      height: 90px;
-      margin: 0 auto 1.5rem;
-      filter: drop-shadow(0 4px 12px rgba(200,160,48,0.4));
-    }
-
-    .hero h1 {
-      font-size: clamp(1.75rem, 4vw, 2.75rem);
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      color: #f0d878;
-      margin-bottom: 0.75rem;
-    }
-
-    .hero p {
-      font-size: 1.1rem;
-      color: #c8b88a;
-      max-width: 560px;
-      margin: 0 auto 2rem;
-    }
-
-    .hero-badge {
-      display: inline-flex;
+    /* Main content */
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
       align-items: center;
-      gap: 0.4rem;
-      background: rgba(200,160,48,0.15);
-      border: 1px solid rgba(200,160,48,0.35);
-      color: #e8d97a;
-      padding: 0.3rem 0.85rem;
-      border-radius: 999px;
-      font-size: 0.8rem;
-      font-weight: 500;
-      letter-spacing: 0.04em;
-    }
-
-    /* Features */
-    .section {
-      max-width: 1000px;
-      margin: 0 auto;
+      justify-content: center;
+      text-align: center;
       padding: 4rem 1.5rem;
     }
 
-    .section-label {
+    /* Icon circle */
+    .icon-wrap {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 8rem;
+      height: 8rem;
+      border-radius: 9999px;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      margin-bottom: 2rem;
+    }
+
+    .icon-wrap svg {
+      width: 4rem;
+      height: 4rem;
+    }
+
+    /* Badge */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 9999px;
+      padding: 0.375rem 1rem;
       font-size: 0.75rem;
-      font-weight: 600;
+      font-weight: 500;
+      color: #c7d2fe;
       letter-spacing: 0.1em;
       text-transform: uppercase;
-      color: var(--gold);
-      margin-bottom: 0.5rem;
+      margin-bottom: 1.5rem;
     }
 
-    .section-title {
-      font-size: clamp(1.4rem, 3vw, 2rem);
+    .badge-dot {
+      width: 0.375rem;
+      height: 0.375rem;
+      border-radius: 9999px;
+      background: #a5b4fc;
+      animation: pulse 2s cubic-bezier(0.4,0,0.6,1) infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    /* Heading */
+    h1 {
+      font-size: clamp(2rem, 5vw, 3.75rem);
       font-weight: 700;
-      color: var(--dark);
-      margin-bottom: 0.75rem;
-      letter-spacing: -0.02em;
+      line-height: 1.15;
+      max-width: 48rem;
+      margin-bottom: 1.5rem;
+      color: #fff;
     }
 
-    .section-desc {
-      color: var(--muted);
-      font-size: 1rem;
-      max-width: 580px;
+    h1 span {
+      color: #a5b4fc;
+    }
+
+    /* Description */
+    .desc {
+      max-width: 36rem;
+      color: #c7d2fe;
+      font-size: clamp(0.9rem, 2vw, 1.125rem);
+      line-height: 1.7;
       margin-bottom: 2.5rem;
     }
 
-    .features-grid {
+    /* Bottom stats bar */
+    .stats {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 1.25rem;
+      grid-template-columns: repeat(3, 1fr);
+      border-top: 1px solid rgba(255,255,255,0.1);
+      width: 100%;
     }
 
-    .feature-card {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 1.5rem;
-      transition: box-shadow 0.2s;
+    .stat {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 2rem;
+      text-align: center;
+      border-right: 1px solid rgba(255,255,255,0.1);
     }
 
-    .feature-card:hover {
-      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    .stat:last-child {
+      border-right: none;
     }
 
-    .feature-icon {
-      width: 40px;
-      height: 40px;
-      border-radius: 10px;
+    .stat-icon {
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.2rem;
-      margin-bottom: 1rem;
+      width: 2.5rem;
+      height: 2.5rem;
+      border-radius: 9999px;
+      background: rgba(67,56,202,0.6);
+      color: #c7d2fe;
+      font-size: 1.25rem;
+      margin-bottom: 0.25rem;
     }
 
-    .icon-purple { background: var(--purple-light); }
-    .icon-gold   { background: #fef9c3; }
-    .icon-green  { background: var(--green-light); }
-    .icon-red    { background: var(--red-light); }
-    .icon-blue   { background: #dbeafe; }
-    .icon-gray   { background: #f1f5f9; }
-
-    .feature-card h3 {
-      font-size: 0.95rem;
-      font-weight: 600;
-      color: var(--dark);
-      margin-bottom: 0.4rem;
-    }
-
-    .feature-card p {
+    .stat-title {
       font-size: 0.875rem;
-      color: var(--muted);
-      line-height: 1.5;
-    }
-
-    /* Roles */
-    .roles-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-      gap: 1rem;
-    }
-
-    .role-card {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 1.25rem 1.5rem;
-    }
-
-    .role-badge {
-      display: inline-block;
-      font-size: 0.72rem;
       font-weight: 600;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      padding: 0.2rem 0.6rem;
-      border-radius: 999px;
-      margin-bottom: 0.75rem;
+      color: #fff;
     }
 
-    .badge-guardian { background: var(--green-light); color: var(--green); }
-    .badge-vocal    { background: var(--red-light);   color: var(--red); }
-    .badge-priest   { background: var(--purple-light); color: var(--purple); }
-
-    .role-card h3 {
-      font-size: 0.95rem;
-      font-weight: 600;
-      color: var(--dark);
-      margin-bottom: 0.4rem;
-    }
-
-    .role-card p {
-      font-size: 0.85rem;
-      color: var(--muted);
+    .stat-desc {
+      font-size: 0.75rem;
+      color: #a5b4fc;
       line-height: 1.5;
-    }
-
-    /* Stack */
-    .stack-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.6rem;
-    }
-
-    .stack-tag {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 0.35rem 0.75rem;
-      font-size: 0.82rem;
-      font-weight: 500;
-      color: var(--text);
-    }
-
-    /* Divider */
-    .divider {
-      border: none;
-      border-top: 1px solid var(--border);
-      margin: 0;
-    }
-
-    /* Footer */
-    footer {
-      text-align: center;
-      padding: 2.5rem 1.5rem;
-      color: var(--muted);
-      font-size: 0.85rem;
-      background: var(--card-bg);
-      border-top: 1px solid var(--border);
     }
 
     @media (max-width: 480px) {
-      .features-grid { grid-template-columns: 1fr; }
-      .roles-grid    { grid-template-columns: 1fr; }
+      .stats {
+        grid-template-columns: 1fr;
+      }
+      .stat {
+        border-right: none;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+      }
+      .stat:last-child {
+        border-bottom: none;
+      }
     }
   </style>
 </head>
 <body>
 
-  <!-- Hero -->
-  <section class="hero">
-    <svg class="hero-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
-      <defs>
-        <radialGradient id="eg" cx="42%" cy="38%" r="58%">
-          <stop offset="0%"   stop-color="#f5edb0"/>
-          <stop offset="55%"  stop-color="#e8d97a"/>
-          <stop offset="85%"  stop-color="#d4c05a"/>
-          <stop offset="100%" stop-color="#b8a040"/>
-        </radialGradient>
-        <radialGradient id="rg" cx="40%" cy="35%" r="60%">
-          <stop offset="0%"   stop-color="#e8c96a"/>
-          <stop offset="40%"  stop-color="#c8a030"/>
-          <stop offset="75%"  stop-color="#a07820"/>
-          <stop offset="100%" stop-color="#7a5810"/>
-        </radialGradient>
-        <filter id="sh">
-          <feDropShadow dx="2" dy="3" stdDeviation="4" flood-color="#00000055"/>
-        </filter>
-      </defs>
-      <circle cx="100" cy="100" r="96" fill="url(#rg)" filter="url(#sh)"/>
-      <circle cx="100" cy="100" r="92" fill="none" stroke="#f0d060" stroke-width="1.5" opacity="0.5"/>
-      <circle cx="100" cy="100" r="88" fill="url(#eg)"/>
-      <ellipse cx="82" cy="72" rx="28" ry="18" fill="white" opacity="0.18"/>
-      <g fill="#2a2218" opacity="0.88">
-        <rect x="91" y="56" width="18" height="52" rx="3" ry="3"/>
-        <rect x="78" y="70" width="44" height="18" rx="3" ry="3"/>
-      </g>
-      <circle cx="100" cy="100" r="88" fill="none" stroke="#8a6a10" stroke-width="3" opacity="0.25"/>
-    </svg>
-
-    <div class="hero-badge">Sistema de Gestión Pastoral</div>
-    <h1>Servicio Sacerdotal Nocturno</h1>
-    <p>
-      Sistema de asignación y seguimiento de guardias nocturnas para el servicio sacerdotal,
-      asegurando cobertura continua y organizada.
-    </p>
-  </section>
-
-  <!-- Features -->
-  <section class="section">
-    <div class="section-label">Funcionalidades</div>
-    <h2 class="section-title">Todo lo necesario para la gestión de guardias</h2>
-    <p class="section-desc">
-      Una plataforma centralizada para coordinar sacerdotes, vocales y guardianes
-      durante los turnos nocturnos de servicio pastoral.
-    </p>
-
-    <div class="features-grid">
-      <div class="feature-card">
-        <div class="feature-icon icon-purple">🌙</div>
-        <h3>Guardias Nocturnas</h3>
-        <p>Creación y seguimiento de turnos. Las guardias se generan a partir de plantillas o manualmente, con estado abierto o cerrado.</p>
-      </div>
-
-      <div class="feature-card">
-        <div class="feature-icon icon-gold">📅</div>
-        <h3>Planificación de Plantillas</h3>
-        <p>Configuración de guardias recurrentes por día del mes. Los sacerdotes se asignan por semana y día con cálculo automático de fechas.</p>
-      </div>
-
-      <div class="feature-card">
-        <div class="feature-icon icon-green">✝️</div>
-        <h3>Registro de Servicios</h3>
-        <p>Documentación de cada servicio pastoral: datos del paciente, domicilio, patología, sacramentos administrados y centro de salud.</p>
-      </div>
-
-      <div class="feature-card">
-        <div class="feature-icon icon-red">📄</div>
-        <h3>Exportación a PDF</h3>
-        <p>Generación de actas en PDF al cerrar una guardia, con previsualización, confirmación de numeración y descarga final.</p>
-      </div>
-
-      <div class="feature-card">
-        <div class="feature-icon icon-blue">👥</div>
-        <h3>Gestión de Usuarios</h3>
-        <p>Registro por invitación con tres roles. Soporte para bloqueo, impersonación de cuentas y avatares en la nube.</p>
-      </div>
-
-      <div class="feature-card">
-        <div class="feature-icon icon-gray">📆</div>
-        <h3>Calendario de Sacerdotes</h3>
-        <p>Vista mensual interactiva que muestra las asignaciones de sacerdotes por día, con navegación entre meses.</p>
-      </div>
+  <div class="main">
+    <!-- Icon -->
+    <div class="icon-wrap">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+        <defs>
+          <radialGradient id="eg" cx="42%" cy="38%" r="58%">
+            <stop offset="0%"   stop-color="#f5edb0"/>
+            <stop offset="55%"  stop-color="#e8d97a"/>
+            <stop offset="85%"  stop-color="#d4c05a"/>
+            <stop offset="100%" stop-color="#b8a040"/>
+          </radialGradient>
+          <radialGradient id="rg" cx="40%" cy="35%" r="60%">
+            <stop offset="0%"   stop-color="#e8c96a"/>
+            <stop offset="40%"  stop-color="#c8a030"/>
+            <stop offset="75%"  stop-color="#a07820"/>
+            <stop offset="100%" stop-color="#7a5810"/>
+          </radialGradient>
+          <filter id="sh">
+            <feDropShadow dx="2" dy="3" stdDeviation="4" flood-color="#00000055"/>
+          </filter>
+        </defs>
+        <circle cx="100" cy="100" r="96" fill="url(#rg)" filter="url(#sh)"/>
+        <circle cx="100" cy="100" r="92" fill="none" stroke="#f0d060" stroke-width="1.5" opacity="0.5"/>
+        <circle cx="100" cy="100" r="88" fill="url(#eg)"/>
+        <ellipse cx="82" cy="72" rx="28" ry="18" fill="white" opacity="0.18"/>
+        <g fill="#2a2218" opacity="0.88">
+          <rect x="91" y="56" width="18" height="52" rx="3" ry="3"/>
+          <rect x="78" y="70" width="44" height="18" rx="3" ry="3"/>
+        </g>
+        <circle cx="100" cy="100" r="88" fill="none" stroke="#8a6a10" stroke-width="3" opacity="0.25"/>
+      </svg>
     </div>
-  </section>
 
-  <hr class="divider">
-
-  <!-- Roles -->
-  <section class="section">
-    <div class="section-label">Roles</div>
-    <h2 class="section-title">Tres perfiles de usuario</h2>
-    <p class="section-desc">
-      El sistema define roles claros para estructurar la responsabilidad dentro de cada guardia.
-    </p>
-
-    <div class="roles-grid">
-      <div class="role-card">
-        <span class="role-badge badge-guardian">Guardián</span>
-        <h3>Guardián</h3>
-        <p>Miembro asignado a la guardia. Participa activamente durante el turno nocturno.</p>
-      </div>
-
-      <div class="role-card">
-        <span class="role-badge badge-vocal">Vocal</span>
-        <h3>Vocal</h3>
-        <p>Coordina y supervisa la guardia. Responsable de registrar los servicios realizados.</p>
-      </div>
-
-      <div class="role-card">
-        <span class="role-badge badge-priest">Sacerdote</span>
-        <h3>Sacerdote</h3>
-        <p>Administra los sacramentos durante la guardia. Asignado según calendario mensual.</p>
-      </div>
+    <!-- Badge -->
+    <div class="badge">
+      <span class="badge-dot"></span>
+      Servicio Sacerdotal de Urgencias y Nocturnos
     </div>
-  </section>
 
-  <hr class="divider">
+    <!-- Heading -->
+    <h1>
+      Coordinación de guardias<br>
+      <span>sacerdotales nocturnas</span>
+    </h1>
 
-  <!-- Stack -->
-  <section class="section">
-    <div class="section-label">Tecnología</div>
-    <h2 class="section-title">Stack técnico</h2>
-    <p class="section-desc" style="margin-bottom: 1.5rem;">
-      Construido sobre tecnologías modernas para un rendimiento fiable y mantenimiento sencillo.
+    <!-- Description -->
+    <p class="desc">
+      Sistema de gestión para la asignación y seguimiento de guardias y turnos nocturnos
+      del servicio sacerdotal, asegurando una cobertura continua y organizada.
     </p>
+  </div>
 
-    <div class="stack-list">
-      <span class="stack-tag">Ruby on Rails 8</span>
-      <span class="stack-tag">PostgreSQL</span>
-      <span class="stack-tag">Hotwire (Turbo + Stimulus)</span>
-      <span class="stack-tag">Tailwind CSS</span>
-      <span class="stack-tag">AWS S3</span>
-      <span class="stack-tag">Phosphor Icons</span>
+  <!-- Stats bar -->
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-icon"><i class="ph ph-calendar-check"></i></div>
+      <p class="stat-title">Guardias</p>
+      <p class="stat-desc">Organización y seguimiento de turnos nocturnos</p>
     </div>
-  </section>
-
-  <footer>
-    Servicio Sacerdotal Nocturno &mdash; Sistema de gestión pastoral
-  </footer>
+    <div class="stat">
+      <div class="stat-icon"><i class="ph ph-cross"></i></div>
+      <p class="stat-title">Sacerdotes</p>
+      <p class="stat-desc">Coordinación de disponibilidad y asignaciones</p>
+    </div>
+    <div class="stat">
+      <div class="stat-icon"><i class="ph ph-hospital"></i></div>
+      <p class="stat-title">Servicios</p>
+      <p class="stat-desc">Gestión de servicios realizados</p>
+    </div>
+  </div>
 
 </body>
 </html>
