@@ -149,6 +149,7 @@ es:
     index:
       title: Usuarios
       new_user: Nuevo usuario
+      recent_logins: Últimos accesos
       show: Ver
     show:
       edit: Editar este usuario
