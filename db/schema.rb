@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_03_25_130051) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_09_160810) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -142,6 +142,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_25_130051) do
     t.bigint "church_id"
     t.string "city"
     t.datetime "created_at", null: false
+    t.datetime "current_sign_in_at"
+    t.string "current_sign_in_ip"
     t.date "date_of_birth"
     t.integer "dni"
     t.string "email", default: "", null: false
@@ -157,12 +159,15 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_25_130051) do
     t.bigint "invited_by_id"
     t.string "invited_by_type"
     t.string "last_name"
+    t.datetime "last_sign_in_at"
+    t.string "last_sign_in_ip"
     t.datetime "locked_at"
     t.string "phone"
     t.datetime "remember_created_at"
     t.datetime "reset_password_sent_at"
     t.string "reset_password_token"
     t.integer "role", default: 0, null: false
+    t.integer "sign_in_count", default: 0, null: false
     t.date "start_day"
     t.string "unlock_token"
     t.datetime "updated_at", null: false

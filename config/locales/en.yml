@@ -77,6 +77,7 @@ en:
     index:
       title: Users
       new_user: New user
+      recent_logins: Recent logins
       show: Show
     show:
       edit: Edit this user

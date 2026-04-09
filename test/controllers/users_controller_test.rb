@@ -199,4 +199,57 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     post stop_impersonating_path
     assert_redirected_to root_path
   end
+
+  # ---------------------------------------------------------------------------
+  # Recent logins
+  # ---------------------------------------------------------------------------
+
+  test "super_admin sees recent logins section on index" do
+    users(:one).update!(last_sign_in_at: 1.hour.ago)
+    sign_in users(:super_admin)
+    get users_url
+    assert_select "h2", text: /ltimos accesos|Recent logins/
+  end
+
+  test "non-super-admin does not see recent logins section on index" do
+    users(:one).update!(last_sign_in_at: 1.hour.ago)
+    sign_in users(:admin_user)
+    get users_url
+    assert_select "h2", text: /ltimos accesos|Recent logins/, count: 0
+  end
+
+  test "regular user does not see recent logins section on index" do
+    users(:one).update!(last_sign_in_at: 1.hour.ago)
+    sign_in users(:one)
+    get users_url
+    assert_select "h2", text: /ltimos accesos|Recent logins/, count: 0
+  end
+
+  test "recent_logins section shows for super_admin after sign in" do
+    sign_in users(:super_admin)
+    get users_url
+    assert_match(/ltimos accesos|Recent logins/, response.body)
+  end
+
+  test "recent_logins are ordered by last_sign_in_at descending" do
+    users(:one).update!(last_sign_in_at: 3.hours.ago)
+    users(:two).update!(last_sign_in_at: 2.hours.ago)
+    sign_in users(:super_admin)
+    get users_url
+    pos_two = response.body.index(users(:two).email)
+    pos_one = response.body.index(users(:one).email)
+    assert pos_two < pos_one, "More recently signed-in user should appear first"
+  end
+
+  test "recent_logins shows timestamp for users who have signed in" do
+    sign_in users(:super_admin)
+    users(:one).update!(last_sign_in_at: 30.minutes.ago)
+    get users_url
+    assert_select "i.ph-clock"
+  end
+
+  test "recent_logins query returns at most 20 records" do
+    recent = User.where.not(last_sign_in_at: nil).order(last_sign_in_at: :desc).limit(20)
+    assert recent.size <= 20
+  end
 end
