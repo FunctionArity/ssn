@@ -3,8 +3,8 @@ class UsersController < ApplicationController
 
   # GET /users or /users.json
   def index
-    @users_by_role = User.order(:last_name, :first_name).group_by(&:role)
-    @recent_logins = User.where.not(last_sign_in_at: nil).order(last_sign_in_at: :desc).limit(20) if current_user.super_admin?
+    @users_by_role = User.grouped_by_role
+    @recent_logins = User.recent_logins if current_user.super_admin?
   end
 
   # GET /users/1 or /users/1.json

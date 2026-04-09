@@ -249,7 +249,6 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "recent_logins query returns at most 20 records" do
-    recent = User.where.not(last_sign_in_at: nil).order(last_sign_in_at: :desc).limit(20)
-    assert recent.size <= 20
+    assert User.recent_logins.size <= 20
   end
 end

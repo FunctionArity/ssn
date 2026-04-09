@@ -15,6 +15,8 @@ class User < ApplicationRecord
   scope :vocals, -> { where(role: :vocal) }
   scope :priests, -> { where(role: :priest) }
   scope :priests_without_setup, -> { priests.where.not(id: PriestSetup.select(:priest_id)) }
+  scope :grouped_by_role, -> { order(:last_name, :first_name).group_by(&:role) }
+  scope :recent_logins, -> { where.not(last_sign_in_at: nil).order(last_sign_in_at: :desc).limit(20) }
 
   belongs_to :church, optional: true
 
