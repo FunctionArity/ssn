@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mi cuenta — Servicio Sacerdotal Nocturno</title>
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+  <link rel="stylesheet" href="../assets/docs.css">
+  <style>
+    /* ── Step list ── */
+    .steps {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .step {
+      display: flex;
+      gap: 1.25rem;
+      align-items: flex-start;
+    }
+
+    .step-number {
+      flex-shrink: 0;
+      width: 2rem;
+      height: 2rem;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.8125rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 0.1rem;
+    }
+
+    .step-body h4 {
+      font-size: 0.9375rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.25rem;
+    }
+
+    .step-body p {
+      font-size: 0.875rem;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    /* ── Screenshot mockup ── */
+    .screen-mock {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 0.75rem;
+      overflow: hidden;
+    }
+
+    .screen-mock-bar {
+      background: #f3f4f6;
+      border-bottom: 1px solid var(--border);
+      padding: 0.6rem 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .screen-mock-bar span {
+      width: 0.65rem;
+      height: 0.65rem;
+      border-radius: 50%;
+    }
+
+    .screen-mock-bar span:nth-child(1) { background: #f87171; }
+    .screen-mock-bar span:nth-child(2) { background: #fbbf24; }
+    .screen-mock-bar span:nth-child(3) { background: #34d399; }
+
+    .screen-mock-body {
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.75rem;
+      background: #f8f9fc;
+    }
+
+    .mock-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 0.625rem;
+      padding: 1.75rem;
+      width: 100%;
+      max-width: 360px;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .mock-card-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text);
+      text-align: center;
+    }
+
+    .mock-field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+
+    .mock-field label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .mock-field .mock-input {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 0.375rem;
+      padding: 0.5rem 0.75rem;
+      font-size: 0.875rem;
+      color: var(--muted);
+    }
+
+    .mock-btn {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 0.5rem;
+      padding: 0.625rem 1rem;
+      font-size: 0.875rem;
+      font-weight: 600;
+      text-align: center;
+      cursor: default;
+    }
+
+    /* ── Callout variants ── */
+    .callout-warning {
+      display: flex;
+      gap: 0.75rem;
+      background: #fffbeb;
+      border: 1px solid #fcd34d;
+      border-radius: 0.625rem;
+      padding: 1rem 1.25rem;
+      font-size: 0.875rem;
+      color: #92400e;
+      line-height: 1.6;
+    }
+
+    .callout-warning i { font-size: 1.1rem; flex-shrink: 0; margin-top: 0.05rem; }
+
+    .callout-success {
+      display: flex;
+      gap: 0.75rem;
+      background: #f0fdf4;
+      border: 1px solid #86efac;
+      border-radius: 0.625rem;
+      padding: 1rem 1.25rem;
+      font-size: 0.875rem;
+      color: #166534;
+      line-height: 1.6;
+    }
+
+    .callout-success i { font-size: 1.1rem; flex-shrink: 0; margin-top: 0.05rem; }
+  </style>
+</head>
+<body>
+
+  <!-- Top header -->
+  <header class="topbar">
+    <a class="topbar-logo" href="../index.html">
+      <span class="logo-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100%" height="100%"><defs><radialGradient id="eg" cx="42%" cy="38%" r="58%"><stop offset="0%" stop-color="#f5edb0"/><stop offset="55%" stop-color="#e8d97a"/><stop offset="85%" stop-color="#d4c05a"/><stop offset="100%" stop-color="#b8a040"/></radialGradient><radialGradient id="rg" cx="40%" cy="35%" r="60%"><stop offset="0%" stop-color="#e8c96a"/><stop offset="40%" stop-color="#c8a030"/><stop offset="75%" stop-color="#a07820"/><stop offset="100%" stop-color="#7a5810"/></radialGradient><filter id="sh"><feDropShadow dx="2" dy="3" stdDeviation="4" flood-color="#00000055"/></filter></defs><circle cx="100" cy="100" r="96" fill="url(#rg)" filter="url(#sh)"/><circle cx="100" cy="100" r="92" fill="none" stroke="#f0d060" stroke-width="1.5" opacity="0.5"/><circle cx="100" cy="100" r="88" fill="url(#eg)"/><ellipse cx="82" cy="72" rx="28" ry="18" fill="white" opacity="0.18"/><g fill="#2a2218" opacity="0.88"><rect x="91" y="56" width="18" height="52" rx="3" ry="3"/><rect x="78" y="70" width="44" height="18" rx="3" ry="3"/></g><circle cx="100" cy="100" r="88" fill="none" stroke="#8a6a10" stroke-width="3" opacity="0.25"/></svg></span>
+      SSN
+    </a>
+    <span class="topbar-sep">/</span>
+    <span class="topbar-label">Documentación</span>
+  </header>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-section">
+      <p class="sidebar-label">General</p>
+      <ul class="sidebar-nav">
+        <li><a href="../index.html"><i class="ph ph-house"></i> Inicio</a></li>
+      </ul>
+    </div>
+    <div class="sidebar-section">
+      <p class="sidebar-label">Módulos</p>
+      <ul class="sidebar-nav">
+        <li><a href="index.html" class="active"><i class="ph ph-user-circle"></i> Mi cuenta</a></li>
+        <li><a href="../guards/index.html"><i class="ph ph-calendar-check"></i> Guardias</a></li>
+        <li><a href="../services/index.html"><i class="ph ph-hospital"></i> Servicios</a></li>
+      </ul>
+    </div>
+  </aside>
+
+  <!-- Main layout -->
+  <div class="layout">
+    <main class="page">
+
+      <p class="page-eyebrow">Mi cuenta</p>
+      <h1>Acceso y contraseña</h1>
+      <p class="page-lead">
+        El acceso al sistema se realiza mediante una invitación enviada por el administrador.
+        Aquí encontrarás cómo iniciar sesión por primera vez, establecer tu contraseña y recuperarla si la olvidas.
+      </p>
+
+      <hr class="divider">
+
+      <!-- LOGIN -->
+      <p class="section-title"><i class="ph ph-sign-in"></i> Iniciar sesión</p>
+      <div class="prose" style="margin-bottom: 1.5rem;">
+        <p>Para entrar al sistema necesitas tu dirección de correo electrónico y la contraseña que estableciste al aceptar la invitación.</p>
+      </div>
+
+      <div class="screen-mock" style="margin-bottom: 1.5rem;">
+        <div class="screen-mock-bar">
+          <span></span><span></span><span></span>
+        </div>
+        <div class="screen-mock-body">
+          <div class="mock-card">
+            <p class="mock-card-title">Iniciar sesión</p>
+            <div class="mock-field">
+              <label>Correo electrónico</label>
+              <div class="mock-input">tu@correo.com</div>
+            </div>
+            <div class="mock-field">
+              <label>Contraseña</label>
+              <div class="mock-input">••••••••</div>
+            </div>
+            <div class="mock-btn">Entrar</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-number">1</div>
+          <div class="step-body">
+            <h4>Abre la dirección del sistema</h4>
+            <p>Accede a la URL que te facilitó el administrador desde cualquier navegador moderno.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <div class="step-body">
+            <h4>Introduce tu correo y contraseña</h4>
+            <p>Escribe el correo electrónico con el que fuiste invitado y la contraseña que elegiste al aceptar la invitación.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <div class="step-body">
+            <h4>Pulsa «Entrar»</h4>
+            <p>Si los datos son correctos accederás directamente al panel principal.</p>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- SET PASSWORD (invitation) -->
+      <p class="section-title"><i class="ph ph-envelope-open"></i> Establecer contraseña (primera vez)</p>
+      <div class="prose" style="margin-bottom: 1.5rem;">
+        <p>Cuando el administrador crea tu cuenta recibirás un correo de invitación. Sigue estos pasos para activarla:</p>
+      </div>
+
+      <div class="steps" style="margin-bottom: 1.5rem;">
+        <div class="step">
+          <div class="step-number">1</div>
+          <div class="step-body">
+            <h4>Abre el correo de invitación</h4>
+            <p>Busca en tu bandeja de entrada un mensaje de <strong>Servicio Sacerdotal Nocturno</strong> con el asunto «Has sido invitado».</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <div class="step-body">
+            <h4>Haz clic en «Aceptar invitación»</h4>
+            <p>El enlace es válido durante <strong>48 horas</strong>. Si ha caducado, pide al administrador que reenvíe la invitación.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <div class="step-body">
+            <h4>Elige tu contraseña</h4>
+            <p>Introduce una contraseña segura (mínimo 8 caracteres) y confírmala. A continuación pulsa «Establecer contraseña».</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-number">4</div>
+          <div class="step-body">
+            <h4>Listo — ya puedes iniciar sesión</h4>
+            <p>Tu cuenta queda activada. Usa tu correo y la contraseña elegida para entrar cuando lo necesites.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout-warning">
+        <i class="ph ph-clock-countdown"></i>
+        <span>El enlace de invitación caduca a las <strong>48 horas</strong>. Si ha expirado, contacta con el administrador para que reenvíe la invitación desde la ficha de tu usuario.</span>
+      </div>
+
+      <hr class="divider">
+
+      <!-- RESET PASSWORD -->
+      <p class="section-title"><i class="ph ph-key"></i> Recuperar contraseña olvidada</p>
+      <div class="prose" style="margin-bottom: 1.5rem;">
+        <p>Si no recuerdas tu contraseña puedes solicitar un enlace de restablecimiento sin necesidad de contactar al administrador.</p>
+      </div>
+
+      <div class="steps" style="margin-bottom: 1.5rem;">
+        <div class="step">
+          <div class="step-number">1</div>
+          <div class="step-body">
+            <h4>Ve a la pantalla de inicio de sesión</h4>
+            <p>Accede a la URL del sistema. Debajo del formulario encontrarás el enlace <strong>«¿Olvidaste tu contraseña?»</strong>.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <div class="step-body">
+            <h4>Introduce tu correo electrónico</h4>
+            <p>Escribe la dirección con la que fuiste invitado y pulsa «Enviar instrucciones».</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <div class="step-body">
+            <h4>Revisa tu correo</h4>
+            <p>Recibirás un mensaje con un enlace para restablecer la contraseña. El enlace es válido durante <strong>6 horas</strong>.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-number">4</div>
+          <div class="step-body">
+            <h4>Elige una nueva contraseña</h4>
+            <p>Introduce y confirma la nueva contraseña y pulsa «Cambiar contraseña». Serás redirigido al panel principal.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout-success">
+        <i class="ph ph-check-circle"></i>
+        <span>Si no ves el correo en unos minutos, revisa la carpeta de <strong>spam o correo no deseado</strong>.</span>
+      </div>
+
+    </main>
+  </div>
+
+</body>
+</html>
