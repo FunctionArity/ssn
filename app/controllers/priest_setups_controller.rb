@@ -10,14 +10,14 @@ class PriestSetupsController < ApplicationController
   end
 
   def new
-    @priests = User.priests_without_setup.order(:first_name, :last_name)
+    @priests = User.priests_without_setup.order(:last_name, :first_name)
   end
   def create
     @priest_setup = PriestSetup.new(priest_setup_params)
 
     respond_to do |format|
       if @priest_setup.save
-        @priests = User.priests_without_setup.order(:first_name, :last_name)
+        @priests = User.priests_without_setup.order(:last_name, :first_name)
         format.turbo_stream
         format.html { redirect_to new_priest_setup_path, notice: t("priest_setups.notices.created") }
         format.json { render json: @priest_setup, status: :created }
@@ -34,7 +34,7 @@ class PriestSetupsController < ApplicationController
     @priest_setup.destroy!
 
     respond_to do |format|
-      @priests = User.priests_without_setup.order(:first_name, :last_name)
+      @priests = User.priests_without_setup.order(:last_name, :first_name)
       format.turbo_stream
       format.html { redirect_to new_priest_setup_path, notice: t("priest_setups.notices.destroyed"), status: :see_other }
       format.json { head :no_content }
