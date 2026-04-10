@@ -1,0 +1,7 @@
+<%= turbo_stream.replace "priest_setup_cell_#{@week_number}_#{@day_of_week}" do %>
+  <%= render "cell", slot: nil, week_number: @week_number, day_of_week: @day_of_week %>
+<% end %>
+
+<%= turbo_stream.update "priests-panel" do %>
+  <%= render "priests_panel", priests: @priests %>
+<% end %>

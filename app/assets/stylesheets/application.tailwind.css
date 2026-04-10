@@ -55,6 +55,26 @@
   }
 }
 
+@keyframes cell-remove {
+  0%   { opacity: 1; transform: scale(1);    filter: blur(0px); }
+  100% { opacity: 0; transform: scale(0.72); filter: blur(4px); }
+}
+
+.cell-removing {
+  animation: cell-remove 0.35s cubic-bezier(0.4, 0, 1, 1) forwards;
+  pointer-events: none;
+}
+
+@keyframes cell-assigned {
+  0%   { background-color: rgb(168 85 247); box-shadow: 0 0 0 6px rgb(168 85 247 / 0.35); transform: scale(1.06); }
+  60%  { background-color: rgb(233 213 255); box-shadow: 0 0 0 2px rgb(168 85 247 / 0.15); transform: scale(1.01); }
+  100% { background-color: rgb(243 232 255); box-shadow: none; transform: scale(1); }
+}
+
+.cell-assigned {
+  animation: cell-assigned 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+
 @keyframes page-enter {
   from {
     opacity: 0;

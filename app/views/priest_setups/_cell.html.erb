@@ -1,0 +1,25 @@
+<% is_weekend = day_of_week >= 6 %>
+<% has_assignment = slot&.dig(:assignment).present? %>
+<td id="priest_setup_cell_<%= week_number %>_<%= day_of_week %>"
+    class="relative align-top h-20 w-36 min-w-36 p-2 transition-colors border-r border-gray-100 last:border-r-0
+           <%= is_weekend ? 'bg-gray-50' : 'bg-white hover:bg-purple-50 cursor-pointer' %>"
+    data-week-number="<%= week_number %>"
+    data-day-of-week="<%= day_of_week %>"
+    data-has-assignment="<%= has_assignment %>"
+    data-action="click->priest-assign-new#assignCell dragover->priest-assign-new#dragOver dragleave->priest-assign-new#dragLeave drop->priest-assign-new#drop">
+  <% if has_assignment %>
+    <div class="rounded-md bg-purple-100 border border-purple-200 px-2 py-1 flex items-center justify-between gap-1 cursor-grab select-none hover:bg-purple-200 transition-colors <%= local_assigns[:highlight] ? 'cell-assigned' : '' %>"
+         draggable="true"
+         data-priest-id="<%= slot[:assignment].priest_id %>"
+         data-source-setup-id="<%= slot[:assignment].id %>"
+         data-action="dragstart->priest-assign-new#dragStart dragend->priest-assign-new#dragEnd">
+      <p class="text-xs font-medium text-purple-800 leading-tight truncate"><%= slot[:assignment].priest.full_name %></p>
+      <%= button_to priest_setup_path(slot[:assignment]),
+            method: :delete,
+            class: "text-purple-300 hover:text-red-400 leading-none shrink-0 transition-colors",
+            data: { turbo_confirm: t("priest_setups.confirm.destroy") } do %>
+        <i class="ph ph-trash text-xs"></i>
+      <% end %>
+    </div>
+  <% end %>
+</td>

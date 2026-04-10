@@ -4,6 +4,12 @@ export default class extends Controller {
   connect() {
     this.selectedPriestId = null
     this.sourceSetupId = null
+    this.boundBeforeStreamRender = this.#handleBeforeStreamRender.bind(this)
+    document.addEventListener("turbo:before-stream-render", this.boundBeforeStreamRender)
+  }
+
+  disconnect() {
+    document.removeEventListener("turbo:before-stream-render", this.boundBeforeStreamRender)
   }
 
   // ── Click-based assignment ────────────────────────────────────────────────
@@ -76,11 +82,29 @@ export default class extends Controller {
 
   // ── Private ───────────────────────────────────────────────────────────────
 
+  #handleBeforeStreamRender(event) {
+    const defaultRender = event.detail.render
+
+    event.detail.render = (streamElement) => {
+      const target = streamElement.getAttribute("target")
+      if (streamElement.action === "replace" && target?.startsWith("priest_setup_cell_")) {
+        const chip = document.getElementById(target)?.querySelector("[data-source-setup-id]")
+        if (chip) {
+          chip.classList.add("cell-removing")
+          setTimeout(() => defaultRender(streamElement), 350)
+          return
+        }
+      }
+      defaultRender(streamElement)
+    }
+  }
+
   #submit(priestId, weekNumber, dayOfWeek, sourceSetupId) {
     document.getElementById("new-form-priest-id").value = priestId
     document.getElementById("new-form-week-number").value = weekNumber
     document.getElementById("new-form-day-of-week").value = dayOfWeek
     document.getElementById("new-form-source-setup-id").value = sourceSetupId || ""
-    document.getElementById("priest-assign-new-form").submit()
+    document.getElementById("priest-assign-new-form").requestSubmit()
+    this.clearSelection()
   }
 }

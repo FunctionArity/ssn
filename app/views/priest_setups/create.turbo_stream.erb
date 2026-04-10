@@ -1,0 +1,13 @@
+<%= turbo_stream.replace "priest_setup_cell_#{@priest_setup.week_number}_#{@priest_setup.day_of_week}" do %>
+  <%= render "cell", slot: { assignment: @priest_setup }, week_number: @priest_setup.week_number, day_of_week: @priest_setup.day_of_week, highlight: true %>
+<% end %>
+
+<% if @source_week_number %>
+  <%= turbo_stream.replace "priest_setup_cell_#{@source_week_number}_#{@source_day_of_week}" do %>
+    <%= render "cell", slot: nil, week_number: @source_week_number, day_of_week: @source_day_of_week %>
+  <% end %>
+<% end %>
+
+<%= turbo_stream.update "priests-panel" do %>
+  <%= render "priests_panel", priests: @priests %>
+<% end %>

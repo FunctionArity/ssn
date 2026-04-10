@@ -5,27 +5,9 @@
         icon_class: "bg-purple-100 text-purple-700" %>
 
   <%# Unassigned priests panel %>
-  <% if @priests.any? %>
-    <div class="mb-6 rounded-xl border border-gray-200 bg-white p-5 shadow-sm">
-      <h2 class="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-3"><%= t(".priests") %></h2>
-      <p class="text-xs text-gray-400 mb-3"><%= t(".select_priest_hint") %></p>
-      <div class="flex flex-wrap gap-2">
-        <% @priests.each do |priest| %>
-          <div class="cursor-grab rounded-lg border border-purple-200 bg-purple-50 px-3 py-2 shadow-sm select-none hover:bg-purple-100 hover:border-purple-300 transition-colors"
-               draggable="true"
-               data-priest-chip
-               data-priest-id="<%= priest.id %>"
-               data-action="click->priest-assign-new#selectPriest dragstart->priest-assign-new#dragStart dragend->priest-assign-new#dragEnd">
-            <p class="text-sm font-medium text-purple-800"><%= priest.full_name %></p>
-          </div>
-        <% end %>
-      </div>
-    </div>
-  <% else %>
-    <div class="mb-6 rounded-xl border border-gray-200 bg-white p-5 shadow-sm">
-      <p class="text-sm text-gray-400"><%= t(".no_priests") %></p>
-    </div>
-  <% end %>
+  <div id="priests-panel">
+    <%= render "priests_panel", priests: @priests %>
+  </div>
 
   <%# Assignment grid (weeks 1–4, up to day 28) %>
   <div class="overflow-x-auto rounded-xl border border-gray-200 bg-white shadow-sm">
@@ -49,31 +31,7 @@
             <% days = week_idx > 4 ? (1..4) : (1..7) %>
             <% days.each do |day_idx| %>
               <% slot = @day_slots.find { |s| s[:week_number] == week_idx && s[:day_of_week] == day_idx } %>
-              <% has_assignment = slot && slot[:assignment].present? %>
-              <% is_weekend = day_idx >= 6 %>
-              <td class="relative align-top h-20 w-36 min-w-36 p-2 transition-colors border-r border-gray-100 last:border-r-0
-                         <%= is_weekend ? 'bg-gray-50' : 'bg-white hover:bg-purple-50 cursor-pointer' %>"
-                  data-week-number="<%= week_idx %>"
-                  data-day-of-week="<%= day_idx %>"
-                  data-has-assignment="<%= has_assignment %>"
-                  data-action="click->priest-assign-new#assignCell dragover->priest-assign-new#dragOver dragleave->priest-assign-new#dragLeave drop->priest-assign-new#drop">
-                <% "#{day_idx} #{week_idx}"  %>
-                <% if slot && slot[:assignment] %>
-                  <div class="rounded-md bg-purple-100 border border-purple-200 px-2 py-1 flex items-center justify-between gap-1 cursor-grab select-none hover:bg-purple-200 transition-colors"
-                       draggable="true"
-                       data-priest-id="<%= slot[:assignment].priest_id %>"
-                       data-source-setup-id="<%= slot[:assignment].id %>"
-                       data-action="dragstart->priest-assign-new#dragStart dragend->priest-assign-new#dragEnd">
-                    <p class="text-xs font-medium text-purple-800 leading-tight truncate"><%= slot[:assignment].priest.full_name %></p>
-                    <%= button_to priest_setup_path(slot[:assignment]),
-                          method: :delete,
-                          class: "text-purple-300 hover:text-red-400 leading-none shrink-0 transition-colors",
-                          data: { turbo_confirm: t("priest_setups.confirm.destroy") } do %>
-                      <i class="ph ph-trash text-xs"></i>
-                    <% end %>
-                  </div>
-                <% end %>
-              </td>
+              <%= render "cell", slot: slot, week_number: week_idx, day_of_week: day_idx %>
             <% end %>
           </tr>
         <% end %>
@@ -82,7 +40,7 @@
   </div>
 
   <%# Hidden form for assignment (click and drag & drop) %>
-  <%= form_with model: PriestSetup.new, url: priest_setups_path, id: "priest-assign-new-form", data: { turbo: false } do |f| %>
+  <%= form_with model: PriestSetup.new, url: priest_setups_path, id: "priest-assign-new-form" do |f| %>
     <%= f.hidden_field :priest_id, id: "new-form-priest-id" %>
     <%= f.hidden_field :week_number, id: "new-form-week-number" %>
     <%= f.hidden_field :day_of_week, id: "new-form-day-of-week" %>
