@@ -46,6 +46,8 @@
     </div>
   <% end %>
 
+  <%= turbo_stream_from "services" %>
+
   <div id="services" class="space-y-6">
     <% @services.group_by { |s| s.due_date.to_date }.sort.reverse.each do |date, services| %>
       <div>
