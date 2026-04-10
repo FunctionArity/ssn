@@ -13,12 +13,12 @@
       <tr class="border-b border-gray-100">
         <th class="px-4 py-3" colspan="7">
           <div class="flex items-center gap-3">
-            <%= link_to priest_setups_path(m: @start_date.prev_month.month),
+            <%= link_to priest_setups_path(m: @start_date.prev_month.to_s),
                   class: "rounded-lg p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors" do %>
               <i class="ph ph-caret-left text-base leading-none"></i>
             <% end %>
             <span class="text-sm font-semibold text-gray-700"><%= l(@start_date, format: "%B %Y") %></span>
-            <%= link_to priest_setups_path(m: @start_date.next_month.month),
+            <%= link_to priest_setups_path(m: @start_date.next_month.to_s),
                   class: "rounded-lg p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors" do %>
               <i class="ph ph-caret-right text-base leading-none"></i>
             <% end %>

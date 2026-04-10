@@ -81,6 +81,7 @@ export default class extends Controller {
     document.getElementById("new-form-week-number").value = weekNumber
     document.getElementById("new-form-day-of-week").value = dayOfWeek
     document.getElementById("new-form-source-setup-id").value = sourceSetupId || ""
-    document.getElementById("priest-assign-new-form").submit()
+    document.getElementById("priest-assign-new-form").requestSubmit()
+    this.clearSelection()
   }
 }

@@ -4,7 +4,7 @@ class PriestSetupsController < ApplicationController
   before_action :build_assignment_slots, only: :new
   def index
     @start_date = Date.today.beginning_of_month
-    @start_date.change(month: params[:m].to_i) if params[:m].present?
+    @start_date = @start_date.change(month: params[:m].to_i) if params[:m].present?
 
     @assignments = build_monthly_assignments(@start_date)
   end
@@ -17,6 +17,8 @@ class PriestSetupsController < ApplicationController
 
     respond_to do |format|
       if @priest_setup.save
+        @priests = User.priests_without_setup.order(:first_name, :last_name)
+        format.turbo_stream
         format.html { redirect_to new_priest_setup_path, notice: t("priest_setups.notices.created") }
         format.json { render json: @priest_setup, status: :created }
       else
@@ -27,9 +29,13 @@ class PriestSetupsController < ApplicationController
   end
 
   def destroy
+    @week_number = @priest_setup.week_number
+    @day_of_week = @priest_setup.day_of_week
     @priest_setup.destroy!
 
     respond_to do |format|
+      @priests = User.priests_without_setup.order(:first_name, :last_name)
+      format.turbo_stream
       format.html { redirect_to new_priest_setup_path, notice: t("priest_setups.notices.destroyed"), status: :see_other }
       format.json { head :no_content }
     end
@@ -51,7 +57,14 @@ class PriestSetupsController < ApplicationController
       day_of_week: priest_setup_params[:day_of_week]
     )&.destroy
 
-    PriestSetup.find_by(id: params[:source_setup_id])&.destroy if params[:source_setup_id].present?
+    if params[:source_setup_id].present?
+      source = PriestSetup.find_by(id: params[:source_setup_id])
+      if source
+        @source_week_number = source.week_number
+        @source_day_of_week = source.day_of_week
+        source.destroy
+      end
+    end
   end
 
   def build_assignment_slots

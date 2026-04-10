@@ -1,0 +1,21 @@
+<% if priests.any? %>
+  <div class="mb-6 rounded-xl border border-gray-200 bg-white p-5 shadow-sm">
+    <h2 class="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-3"><%= t("priest_setups.new.priests") %></h2>
+    <p class="text-xs text-gray-400 mb-3"><%= t("priest_setups.new.select_priest_hint") %></p>
+    <div class="flex flex-wrap gap-2">
+      <% priests.each do |priest| %>
+        <div class="cursor-grab rounded-lg border border-purple-200 bg-purple-50 px-3 py-2 shadow-sm select-none hover:bg-purple-100 hover:border-purple-300 transition-colors"
+             draggable="true"
+             data-priest-chip
+             data-priest-id="<%= priest.id %>"
+             data-action="click->priest-assign-new#selectPriest dragstart->priest-assign-new#dragStart dragend->priest-assign-new#dragEnd">
+          <p class="text-sm font-medium text-purple-800"><%= priest.full_name %></p>
+        </div>
+      <% end %>
+    </div>
+  </div>
+<% else %>
+  <div class="mb-6 rounded-xl border border-gray-200 bg-white p-5 shadow-sm">
+    <p class="text-sm text-gray-400"><%= t("priest_setups.new.no_priests") %></p>
+  </div>
+<% end %>
