@@ -2,7 +2,9 @@
   <%= render "shared/page_header",
         title: t(".title"),
         icon: "ph-calendar-plus",
-        icon_class: "bg-purple-100 text-purple-700" %>
+        icon_class: "bg-purple-100 text-purple-700",
+        action_label: t("priest_setups.priest_setup"),
+        action_path: priest_setups_path%>
 
   <%# Unassigned priests panel %>
   <div id="priests-panel">
@@ -26,9 +28,9 @@
         <% t("priest_setups.week_names").each.with_index(1) do |week_name, week_idx| %>
           <tr class="group">
             <td class="px-4 py-2 text-xs font-semibold text-gray-400 uppercase tracking-widest align-middle whitespace-nowrap border-r border-gray-100">
-              <%= week_name %>
+              <%= week_name != 'Quinta' ? week_name : 'Dias' %>
             </td>
-            <% days = week_idx > 4 ? (1..4) : (1..7) %>
+            <% days = week_idx > 4 ? (1..3) : (1..7) %>
             <% days.each do |day_idx| %>
               <% slot = @day_slots.find { |s| s[:week_number] == week_idx && s[:day_of_week] == day_idx } %>
               <%= render "cell", slot: slot, week_number: week_idx, day_of_week: day_idx %>

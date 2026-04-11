@@ -52,6 +52,25 @@ class PriestSetupsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to new_priest_setup_url
   end
 
+  test "should get index" do
+    get priest_setups_url
+    assert_response :success
+  end
+
+  test "should get index for a specific month using m parameter" do
+    get priest_setups_url, params: { m: 3 }
+    assert_response :success
+    expected_month = I18n.l(Date.today.change(month: 3), format: "%B %Y")
+    assert_match expected_month, response.body
+  end
+
+  test "should use current month when m parameter is absent" do
+    get priest_setups_url
+    assert_response :success
+    expected_month = I18n.l(Date.today, format: "%B %Y")
+    assert_match expected_month, response.body
+  end
+
   test "should destroy priest setup" do
     assert_difference("PriestSetup.count", -1) do
       delete priest_setup_url(@priest_setup)

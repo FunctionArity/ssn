@@ -480,7 +480,8 @@ es:
       destroyed: Asignación eliminada exitosamente.
     title: Sacerdotes
     priests: Sacerdotes
-    new_priest_setup: Nueva Configuración
+    new_priest_setup: Configurar
+    priest_setup: Ver Configuración
     week_names:
       - Primera
       - Segunda

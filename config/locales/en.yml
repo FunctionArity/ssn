@@ -267,7 +267,8 @@ en:
       destroyed: Assignment was successfully removed.
     title: Priests
     priests: Priests
-    new_priest_setup: New Priest Setup
+    new_priest_setup: Setup
+    priest_setup: View Setup
     week_names:
       - First
       - Second
