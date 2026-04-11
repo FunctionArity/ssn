@@ -4,8 +4,6 @@ class PriestSetup < ApplicationRecord
 
   belongs_to :priest, class_name: "User"
 
-  before_validation :set_day_of_month, if: -> { day_of_month.nil? && day_of_week.present? && week_number.present? }
-
   validates :week_number, inclusion: { in: 1..6 }, allow_nil: true
   validates :day_of_week, inclusion: { in: 1..7 }, allow_nil: true
   validates :week_number, presence: true, unless: -> { day_of_month.present? }
@@ -32,13 +30,14 @@ class PriestSetup < ApplicationRecord
     days_until_target = (day_of_week - bom.cwday) % 7
     first_occurrence = bom + days_until_target
 
-    target = if last_week?
-               last_occurrence_in_month(first_occurrence, reference)
-    else
-               first_occurrence + ((week_number - 1) * 7)
-    end
+    target = last_week? ? bom + 27.days + day_of_week : first_occurrence + ((week_number - 1) * 7)
 
-    target.day if target.month == reference.month
+    return target.day if target.month == reference.month
+
+    fallback_day = { 1 => 29, 2 => 30, 3 => 31 }[day_of_week]
+    return nil if day_of_week > 3 || fallback_day > reference.end_of_month.day
+
+    fallback_day
   end
 
   def current_date(reference = Date.today)
@@ -48,42 +47,12 @@ class PriestSetup < ApplicationRecord
     reference.change(day: day)
   end
 
-  def week_and_day_of_month
-    return [ week_number, day_of_week ] unless day_of_month.present?
-
-    day_info = week_and_day_info(date)
-
-    [ day_info[:week_of_month], day_info[:day_of_week] ]
-  end
-
   def date
     Date.today.beginning_of_month + (day_of_month - 1)
   end
 
-  def week_and_day_info(date = Date.today)
-    bom = date.beginning_of_month
-    first_occurrence = bom + ((date.cwday - bom.cwday) % 7)
-    week_of_month = ((date - first_occurrence) / 7).floor + 1
-
-    {
-      date: date,
-      day_of_month: date.day,
-      week_of_month: week_of_month,
-      day_of_week: date.cwday,
-      day_name: date.strftime("%A"),
-      week_label: "Week #{week_of_month} of #{date.strftime('%B')}"
-    }
-  end
-
   def description
     "#{WEEK_NAMES[week_number - 1]} #{DAY_NAMES[day_of_week]}"
-  end
-
-  private
-
-  def last_occurrence_in_month(first_occurrence, reference)
-    eom = reference.end_of_month
-    eom - ((eom.cwday - day_of_week) % 7)
   end
 
   def last_week?

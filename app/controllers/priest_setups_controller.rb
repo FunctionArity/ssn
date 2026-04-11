@@ -77,9 +77,9 @@ class PriestSetupsController < ApplicationController
     end
   end
 
-  def build_monthly_assignments(month)
+  def build_monthly_assignments(start_date)
     PriestSetup.includes(:priest).each_with_object({}) do |ps, hash|
-      hash[ps.current_date(month)] = ps
+      hash[ps.current_date(start_date)] = ps
     end
   end
 end

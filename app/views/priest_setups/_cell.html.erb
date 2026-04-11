@@ -7,6 +7,8 @@
     data-day-of-week="<%= day_of_week %>"
     data-has-assignment="<%= has_assignment %>"
     data-action="click->priest-assign-new#assignCell dragover->priest-assign-new#dragOver dragleave->priest-assign-new#dragLeave drop->priest-assign-new#drop">
+  <% "#{week_number}-#{day_of_week} " %>
+  <%= week_number == 5 ? (28 + day_of_week) : '' %>
   <% if has_assignment %>
     <div class="rounded-md bg-purple-100 border border-purple-200 px-2 py-1 flex items-center justify-between gap-1 cursor-grab select-none hover:bg-purple-200 transition-colors <%= local_assigns[:highlight] ? 'cell-assigned' : '' %>"
          draggable="true"

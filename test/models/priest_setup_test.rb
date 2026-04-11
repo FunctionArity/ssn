@@ -131,25 +131,25 @@ class PriestSetupTest < ActiveSupport::TestCase
 
   test "day_of_current_month week 5 returns last Monday in April" do
     setup = PriestSetup.new(week_number: 5, day_of_week: 1)
-    assert_equal 27, setup.day_of_current_month(Date.new(2026, 4, 1))
+    assert_equal 29, setup.day_of_current_month(Date.new(2026, 4, 1))
   end
 
   test "day_of_current_month week 5 returns last Wednesday in April" do
     travel_to Time.zone.parse("2026-04-01") do
       setup = PriestSetup.new(week_number: 5, day_of_week: 3)
-      assert_equal 29, setup.day_of_current_month
+      assert_nil setup.day_of_current_month
     end
   end
 
   test "day_of_current_month week 5 returns last Thursday in April which is eom" do
     setup = PriestSetup.new(week_number: 5, day_of_week: 4)
-    assert_equal 30, setup.day_of_current_month(Date.new(2026, 4, 1))
+    assert_nil setup.day_of_current_month(Date.new(2026, 4, 1))
   end
 
   test "day_of_current_month week 5 returns last Friday in April" do
     travel_to Time.zone.parse("2026-04-01") do
       setup = PriestSetup.new(week_number: 5, day_of_week: 5)
-      assert_equal 24, setup.day_of_current_month
+      assert_nil setup.day_of_current_month
     end
   end
 
@@ -158,20 +158,20 @@ class PriestSetupTest < ActiveSupport::TestCase
   test "day_of_current_month week 5 returns last Tuesday in March which is eom" do
     travel_to Time.zone.parse("2026-03-01") do
       setup = PriestSetup.new(week_number: 5, day_of_week: 2)
-      assert_equal 31, setup.day_of_current_month
+      assert_equal 30, setup.day_of_current_month
     end
   end
 
   test "day_of_current_month week 5 returns last Monday in March" do
     travel_to Time.zone.parse("2026-03-01") do
       setup = PriestSetup.new(week_number: 5, day_of_week: 1)
-      assert_equal 30, setup.day_of_current_month
+      assert_equal 29, setup.day_of_current_month
     end
   end
 
   test "day_of_current_month week 5 returns last Wednesday in March" do
     setup = PriestSetup.new(week_number: 5, day_of_week: 3)
-    assert_equal 25, setup.day_of_current_month(Date.new(2026, 3, 1))
+    assert_equal 31, setup.day_of_current_month(Date.new(2026, 3, 1))
   end
 
   # Reference parameter — same setup, different months
@@ -213,54 +213,5 @@ class PriestSetupTest < ActiveSupport::TestCase
     assert_not priest_setup.valid?
     assert priest_setup.errors[:week_number].any?
     assert priest_setup.errors[:day_of_week].any?
-  end
-
-  # Tests for week_and_day_of_month
-  # March 2026: starts on Sunday (wday=0)
-
-  test "week_and_day_of_month returns week and day from day_of_month" do
-    travel_to Date.new(2026, 3, 10) do
-      # March 15 is the 3rd Sunday (wday=0)
-      setup = PriestSetup.new(day_of_month: 15)
-      assert_equal [ 3, 7 ], setup.week_and_day_of_month
-    end
-  end
-
-  test "week_and_day_of_month returns correct values for first day of month" do
-    travel_to Date.new(2026, 3, 10) do
-      # March 1 is the 1st Sunday (wday=0)
-      setup = PriestSetup.new(day_of_month: 1)
-      assert_equal [ 1, 7 ], setup.week_and_day_of_month
-    end
-  end
-
-  test "week_and_day_of_month returns correct values for last day of month" do
-    travel_to Date.new(2026, 3, 10) do
-      # March 31 is the 5th Tuesday (cwday=2): first Tuesday = March 3, +28 days = March 31
-      setup = PriestSetup.new(day_of_month: 31)
-      assert_equal [ 5, 2 ], setup.week_and_day_of_month
-    end
-  end
-
-  test "week_and_day_of_month returns correct values for 29th day of month" do
-    travel_to Date.new(2026, 3, 10) do
-      # March 31 is the 5th Tuesday (wday=2)
-      setup = PriestSetup.new(day_of_month: 29)
-      assert_equal [ 5, 7 ], setup.week_and_day_of_month
-    end
-  end
-
-
-  test "week_and_day_of_month returns week_number and day_of_week when day_of_month is absent" do
-    setup = PriestSetup.new(week_number: 2, day_of_week: 4)
-    assert_equal [ 2, 4 ], setup.week_and_day_of_month
-  end
-
-  test "week_and_day_of_month returns correct values for 31th day of month" do
-    travel_to Date.new(2026, 3, 10) do
-      # March 31 is the 5th Tuesday (wday=2)
-      setup = PriestSetup.new(day_of_month: 29)
-      assert_equal [ 5, 7 ], setup.week_and_day_of_month
-    end
   end
 end
