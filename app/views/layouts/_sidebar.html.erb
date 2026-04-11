@@ -39,5 +39,10 @@
         <% end %>
       </div>
     </details>
+    <%= link_to "https://info.serviciosacerdotalnocturno.org", target: "_blank", rel: "noopener noreferrer", class: "sidebar-link flex items-center gap-2 rounded-r-md px-3 py-2 text-sm font-medium border-l-2 text-gray-600 border-transparent hover:bg-gray-50 hover:text-gray-900" do %>
+      <i class="ph ph-info text-lg"></i>
+      <span class="sidebar-label"><%= t("sidebar.documentation") %></span>
+      <i class="ph ph-arrow-square-out text-xs ml-auto text-gray-400"></i>
+    <% end %>
   </nav>
 </aside>

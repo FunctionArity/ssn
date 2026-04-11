@@ -23,9 +23,12 @@
         Sistema de gestión para la asignación y seguimiento de guardias y turnos nocturnos del servicio sacerdotal, asegurando una cobertura continua y organizada.
       </p>
 
-      <div class="flex flex-col sm:flex-row gap-3">
+      <div class="flex flex-col items-center gap-3">
         <%= link_to new_user_session_path, class: "flex items-center justify-center gap-2 px-8 py-3 bg-white text-indigo-900 text-sm font-semibold rounded-md hover:bg-indigo-50 shadow-lg transition-colors" do %>
           <i class="ph ph-sign-in"></i> Iniciar sesión
+        <% end %>
+        <%= link_to "https://info.serviciosacerdotalnocturno.org", target: "_blank", rel: "noopener noreferrer", class: "flex items-center gap-1 text-xs text-indigo-300 hover:text-white transition-colors" do %>
+          <i class="ph ph-info"></i> Documentación
         <% end %>
       </div>
     </div>

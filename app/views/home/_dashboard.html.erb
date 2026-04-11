@@ -133,7 +133,7 @@
   <%# Quick links %>
   <div class="mt-auto">
   <p class="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-3">Acceso rápido</p>
-  <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+  <div class="grid grid-cols-1 sm:grid-cols-4 gap-4">
     <%= link_to guards_path, class: "group bg-white border border-gray-200 rounded-md shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 overflow-hidden flex flex-col" do %>
       <div class="px-5 py-4 flex items-center gap-4 bg-gradient-to-r from-indigo-50 to-white border-b border-gray-100">
         <div class="flex items-center justify-center w-10 h-10 rounded-full bg-indigo-100 text-indigo-700 shrink-0">
@@ -181,6 +181,22 @@
       <div class="px-5 py-3 border-t border-gray-100 flex items-center justify-end">
         <span class="flex items-center gap-1 text-sm font-medium text-gray-600 group-hover:text-gray-800">
           <i class="ph ph-arrow-right"></i> Ver configuración
+        </span>
+      </div>
+    <% end %>
+    <%= link_to "https://info.serviciosacerdotalnocturno.org", target: "_blank", rel: "noopener noreferrer", class: "group bg-white border border-gray-200 rounded-md shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 overflow-hidden flex flex-col" do %>
+      <div class="px-5 py-4 flex items-center gap-4 bg-gradient-to-r from-amber-50 to-white border-b border-gray-100">
+        <div class="flex items-center justify-center w-10 h-10 rounded-full bg-amber-100 text-amber-700 shrink-0">
+          <i class="ph ph-info text-xl"></i>
+        </div>
+        <p class="text-base font-semibold text-gray-900">Documentación</p>
+      </div>
+      <div class="px-5 py-4 grow">
+        <p class="text-sm text-gray-500 leading-relaxed">Guías y manuales de uso del sistema</p>
+      </div>
+      <div class="px-5 py-3 border-t border-gray-100 flex items-center justify-end">
+        <span class="flex items-center gap-1 text-sm font-medium text-amber-600 group-hover:text-amber-800">
+          <i class="ph ph-arrow-square-out"></i> Ver documentación
         </span>
       </div>
     <% end %>

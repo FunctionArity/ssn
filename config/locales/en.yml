@@ -73,6 +73,7 @@ en:
         comments: Comments
   sidebar:
     setup: Setup
+    documentation: Documentation
   users:
     index:
       title: Users

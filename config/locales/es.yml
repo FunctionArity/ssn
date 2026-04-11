@@ -145,6 +145,7 @@ es:
         other: "%{count} errores impidieron guardar este %{resource}:"
   sidebar:
     setup: Configuración
+    documentation: Documentación
   users:
     index:
       title: Usuarios
