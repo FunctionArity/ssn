@@ -41,3 +41,6 @@ application.register("avatar-crop", AvatarCropController)
 
 import GuardSelectController from "./guard_select_controller"
 application.register("guard-select", GuardSelectController)
+
+import MobileNavController from "./mobile_nav_controller"
+application.register("mobile-nav", MobileNavController)

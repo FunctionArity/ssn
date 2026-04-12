@@ -26,9 +26,52 @@
   inline-flex items-center rounded-md bg-purple-50 px-2 py-1 text-xs font-medium text-blue-700 inset-ring inset-ring-blue-700/10
 }
 .sidebar {
-  width: 4rem;
-  padding-left: 0.5rem;
-  padding-right: 0.5rem;
+  display: none;
+}
+
+@keyframes sidebar-slide-in {
+  from { transform: translateX(-100%); }
+  to   { transform: translateX(0); }
+}
+
+@keyframes sidebar-slide-out {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-100%); }
+}
+
+@media (max-width: 767px) {
+  body.mobile-nav-open .sidebar {
+    display: block;
+    position: fixed;
+    top: 3.5rem;
+    left: 0;
+    bottom: 0;
+    z-index: 50;
+    width: 16rem;
+    overflow-y: auto;
+    box-shadow: 4px 0 24px 0 rgb(0 0 0 / 0.12);
+    animation: sidebar-slide-in 0.22s ease-out forwards;
+  }
+
+  body.mobile-nav-open .sidebar .sidebar-label {
+    display: inline;
+  }
+
+  body.mobile-nav-open .sidebar .sidebar-link {
+    justify-content: flex-start;
+  }
+
+  body.mobile-nav-open .mobile-nav-backdrop {
+    display: block;
+  }
+}
+
+.mobile-nav-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  background: rgb(0 0 0 / 0.3);
 }
 
 .sidebar-label {
@@ -41,6 +84,7 @@
 
 @media (min-width: 768px) {
   .sidebar {
+    display: block;
     width: 20%;
     padding-left: 1rem;
     padding-right: 1rem;
