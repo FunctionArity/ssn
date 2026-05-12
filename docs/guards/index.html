@@ -11,6 +11,7 @@
     /* Guard-specific badge colours */
     .badge-open   { background: #d1fae5; color: #065f46; }
     .badge-closed { background: #fee2e2; color: #991b1b; }
+    .video-player { width: 100%; border-radius: 0.5rem; }
   </style>
 </head>
 <body>
@@ -148,10 +149,11 @@
       <!-- Video -->
       <p class="section-title"><i class="ph ph-video"></i> Vídeo explicativo</p>
       <div class="video-section">
-        <div class="video-placeholder">
-          <i class="ph ph-play-circle"></i>
-          <p>Vídeo próximamente disponible</p>
-        </div>
+        <video class="video-player" controls>
+          <source src="https://ssn-docs.s3.sa-east-1.amazonaws.com/abrir_guardia.mp4" type="video/mp4">
+          Tu navegador no soporta reproducción de vídeo.
+          <a href="https://ssn-docs.s3.sa-east-1.amazonaws.com/abrir_guardia.mp4">Descargar vídeo</a>.
+        </video>
         <div class="video-info">
           <h4>Cómo gestionar una guardia</h4>
           <p>Aprende a crear una guardia, asignar sacerdote, vocal y guardianes,

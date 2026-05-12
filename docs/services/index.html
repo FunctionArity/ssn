@@ -11,6 +11,7 @@
     /* Service-specific badge colours */
     .badge-pending   { background: #fef9c3; color: #854d0e; }
     .badge-completed { background: #d1fae5; color: #065f46; }
+    .video-player { width: 100%; border-radius: 0.5rem; }
   </style>
 </head>
 <body>
@@ -144,10 +145,11 @@
       <!-- Video -->
       <p class="section-title"><i class="ph ph-video"></i> Vídeo explicativo</p>
       <div class="video-section">
-        <div class="video-placeholder">
-          <i class="ph ph-play-circle"></i>
-          <p>Vídeo próximamente disponible</p>
-        </div>
+        <video class="video-player" controls>
+          <source src="https://ssn-docs.s3.sa-east-1.amazonaws.com/registracion_servicios.mp4" type="video/mp4">
+          Tu navegador no soporta reproducción de vídeo.
+          <a href="https://ssn-docs.s3.sa-east-1.amazonaws.com/registracion_servicios.mp4">Descargar vídeo</a>.
+        </video>
         <div class="video-info">
           <h4>Cómo registrar un servicio</h4>
           <p>Aprende a registrar una atención durante una guardia activa: introducir los datos del fiel,
