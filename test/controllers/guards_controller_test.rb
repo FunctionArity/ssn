@@ -49,10 +49,10 @@ class GuardsControllerTest < ActionDispatch::IntegrationTest
     assert_response :not_found
   end
 
-  test "new forbidden for vocal user who is not vocal of the guard_setup" do
+  test "new allowed for any vocal user regardless of guard_setup" do
     sign_in users(:unrelated_vocal)
     get new_guard_url, params: { guard_setup_id: guard_setups(:one).id }
-    assert_redirected_to root_path
+    assert_response :success
   end
 
   test "new forbidden for non-vocal user" do
@@ -100,9 +100,9 @@ class GuardsControllerTest < ActionDispatch::IntegrationTest
     assert_response :unprocessable_entity
   end
 
-  test "create forbidden for vocal user who is not vocal of the guard_setup" do
+  test "create allowed for any vocal user regardless of guard_setup" do
     sign_in users(:unrelated_vocal)
-    assert_no_difference("Guard.count") do
+    assert_difference("Guard.count") do
       post guards_url, params: {
         guard: {
           day_number: 5,
@@ -115,7 +115,7 @@ class GuardsControllerTest < ActionDispatch::IntegrationTest
       }
     end
 
-    assert_redirected_to root_path
+    assert_redirected_to guard_url(Guard.last)
   end
 
   test "create forbidden for non-vocal user" do
@@ -145,16 +145,16 @@ class GuardsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test "edit forbidden for vocal user who is a guardian but not the vocal of the guard" do
+  test "edit allowed for vocal user who is a guardian but not the vocal of the guard" do
     sign_in users(:vocal_guardian)
     get edit_guard_url(@guard)
-    assert_redirected_to root_path
+    assert_response :success
   end
 
-  test "edit forbidden for vocal user with no relationship to the guard" do
+  test "edit allowed for any vocal user" do
     sign_in users(:unrelated_vocal)
     get edit_guard_url(@guard)
-    assert_redirected_to root_path
+    assert_response :success
   end
 
   test "edit forbidden for non-vocal user" do
@@ -197,7 +197,7 @@ class GuardsControllerTest < ActionDispatch::IntegrationTest
     assert_equal 1, @guard.reload.day_number
   end
 
-  test "update forbidden for vocal user who is a guardian but not the vocal of the guard" do
+  test "update allowed for vocal user who is a guardian but not the vocal of the guard" do
     sign_in users(:vocal_guardian)
     patch guard_url(@guard), params: {
       guard: {
@@ -209,22 +209,22 @@ class GuardsControllerTest < ActionDispatch::IntegrationTest
       }
     }
 
-    assert_redirected_to root_path
+    assert_redirected_to guard_url(@guard)
   end
 
-  test "update forbidden for vocal user with no relationship to the guard" do
+  test "update allowed for any vocal user" do
     sign_in users(:unrelated_vocal)
     patch guard_url(@guard), params: {
       guard: {
         day_number: @guard.day_number,
-        notes: "Should not update",
+        notes: "Updated by unrelated vocal",
         vocal_id: @guard.vocal_id,
         priest_id: @guard.priest_id,
         guardian_ids: [ users(:one).id ]
       }
     }
 
-    assert_redirected_to root_path
+    assert_redirected_to guard_url(@guard)
   end
 
   test "update forbidden for non-vocal user" do
@@ -267,22 +267,22 @@ class GuardsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to guards_url
   end
 
-  test "destroy forbidden for vocal user who is a guardian but not the vocal of the guard" do
+  test "destroy allowed for vocal user who is a guardian but not the vocal of the guard" do
     sign_in users(:vocal_guardian)
-    assert_no_difference("Guard.count") do
+    assert_difference("Guard.count", -1) do
       delete guard_url(@guard)
     end
 
-    assert_redirected_to root_path
+    assert_redirected_to guards_url
   end
 
-  test "destroy forbidden for vocal user with no relationship to the guard" do
+  test "destroy allowed for any vocal user" do
     sign_in users(:unrelated_vocal)
-    assert_no_difference("Guard.count") do
+    assert_difference("Guard.count", -1) do
       delete guard_url(@guard)
     end
 
-    assert_redirected_to root_path
+    assert_redirected_to guards_url
   end
 
   test "destroy forbidden for non-vocal user" do

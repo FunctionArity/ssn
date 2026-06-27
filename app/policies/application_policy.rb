@@ -53,7 +53,7 @@ class ApplicationPolicy
   end
 
   def is_vocal?
-    user.vocal? && record.vocal == user
+    user.vocal?
   end
 
   def is_guardian?

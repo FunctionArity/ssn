@@ -36,13 +36,13 @@ PGPASSWORD="$DB_PASS" dropdb -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USER" --if-exis
 PGPASSWORD="$DB_PASS" createdb -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USER" "$DB_NAME"
 
 echo "  Restoring data..."
-# Create the production role locally so ownership statements don't error
+# Pre-create the production role so ownership statements don't error
 PGPASSWORD="$DB_PASS" psql -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USER" "$DB_NAME" \
   -c "DO \$\$ BEGIN CREATE ROLE ssn; EXCEPTION WHEN duplicate_object THEN NULL; END \$\$;" \
-  > /dev/null 2>&1
+  > /dev/null 2>&1 || true
 
 gunzip -c "$BACKUP_FILE" \
-  | PGPASSWORD="$DB_PASS" psql -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USER" "$DB_NAME" \
+  | docker exec -i ssn-db-1 psql -U "$DB_USER" "$DB_NAME" \
   > /dev/null
 
 echo "Done. ${DB_NAME} restored from ${BACKUP_FILE}."

@@ -20,9 +20,9 @@ class ServicesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test "new without guard_id is forbidden because no guard means policy denies" do
+  test "new without guard_id is allowed for vocal user" do
     get new_service_url
-    assert_redirected_to root_path
+    assert_response :success
   end
 
   test "should get new with guard_id param" do
@@ -141,10 +141,10 @@ class ServicesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test "new forbidden for vocal user unrelated to the guard" do
+  test "new allowed for any vocal user" do
     sign_in users(:unrelated_vocal)
     get new_service_url, params: { guard_id: guards(:one).id }
-    assert_redirected_to root_path
+    assert_response :success
   end
 
   test "new forbidden for non-vocal user unrelated to the guard" do
@@ -177,14 +177,14 @@ class ServicesControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to service_url(Service.last)
   end
 
-  test "create forbidden for vocal user unrelated to the guard" do
+  test "create allowed for any vocal user" do
     sign_in users(:unrelated_vocal)
-    assert_no_difference("Service.count") do
+    assert_difference("Service.count") do
       post services_url, params: {
         service: { full_name: "Test User", due_date: Date.today, guard_id: guards(:one).id }
       }
     end
-    assert_redirected_to root_path
+    assert_redirected_to service_url(Service.unscoped.last)
   end
 
   test "create forbidden for non-vocal user unrelated to the guard" do
@@ -218,10 +218,10 @@ class ServicesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test "edit forbidden for vocal user unrelated to the guard" do
+  test "edit allowed for any vocal user" do
     sign_in users(:unrelated_vocal)
     get edit_service_url(@service)
-    assert_redirected_to root_path
+    assert_response :success
   end
 
   test "edit forbidden for non-vocal user unrelated to the guard" do
@@ -251,10 +251,10 @@ class ServicesControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to service_url(@service)
   end
 
-  test "update forbidden for vocal user unrelated to the guard" do
+  test "update allowed for any vocal user" do
     sign_in users(:unrelated_vocal)
     patch service_url(@service), params: { service: { full_name: "Updated" } }
-    assert_redirected_to root_path
+    assert_redirected_to service_url(@service)
   end
 
   test "update forbidden for non-vocal user unrelated to the guard" do
@@ -290,12 +290,12 @@ class ServicesControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to services_url
   end
 
-  test "destroy forbidden for vocal user unrelated to the guard" do
+  test "destroy allowed for any vocal user" do
     sign_in users(:unrelated_vocal)
-    assert_no_difference("Service.count") do
+    assert_difference("Service.count", -1) do
       delete service_url(@service)
     end
-    assert_redirected_to root_path
+    assert_redirected_to services_url
   end
 
   test "destroy forbidden for non-vocal user unrelated to the guard" do

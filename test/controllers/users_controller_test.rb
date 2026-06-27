@@ -124,7 +124,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
       }
     end
 
-    assert_equal church, User.last.church
+    assert_equal church, User.find_by!(email: "newpriest@test.com").church
   end
 
   test "should not assign church when role is not priest" do
