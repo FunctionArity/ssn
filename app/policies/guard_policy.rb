@@ -1,14 +1,14 @@
+
 # frozen_string_literal: true
 
 class GuardPolicy < ApplicationPolicy
   # create? checks that the current user is the vocal of the guard_setup this guard belongs to
   def create?
-    is_admin? || (user.vocal? && record.guard_setup&.vocal == user)
+    is_admin? || is_vocal?
   end
 
   def new?
-    return is_admin? || is_vocal?
-    create?
+    is_admin? || is_vocal?
   end
 
   def update?

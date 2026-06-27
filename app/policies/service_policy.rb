@@ -2,7 +2,7 @@
 
 class ServicePolicy < ApplicationPolicy
   def create?
-    super_admin? || member_of_guard?
+    super_admin? || member_of_guard? || is_vocal?
   end
 
   def update?
