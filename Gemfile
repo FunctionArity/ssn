@@ -86,4 +86,4 @@ group :test do
   gem "minitest-reporters"
 end
 
-gem "honeybadger", "~> 6.5"
+gem "honeybadger", "~> 6.6"
