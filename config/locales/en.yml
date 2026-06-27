@@ -290,6 +290,8 @@ en:
     not_authorized: You are not authorized to perform this action.
   edit: Edit
   destroy: Delete
+  previous: Previous
+  next: Next
   devise_views:
     sessions:
       title: "Log in"

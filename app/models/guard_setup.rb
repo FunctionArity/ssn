@@ -5,6 +5,9 @@ class GuardSetup < ApplicationRecord
   has_many :guardians, through: :guard_setup_guardians, source: :user
   has_many :guards, dependent: :destroy
 
+  scope :before_day, ->(day) { where("day_number < ?", day).order(day_number: :desc) }
+  scope :after_day, ->(day) { where("day_number > ?", day).order(:day_number) }
+
   validates :day_number, presence: true
   validate :at_least_one_guardian
 

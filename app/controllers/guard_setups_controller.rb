@@ -6,6 +6,9 @@ class GuardSetupsController < ApplicationController
   end
 
   def show
+    @prev_guard_setup = GuardSetup.before_day(@guard_setup.day_number).first
+    @next_guard_setup = GuardSetup.after_day(@guard_setup.day_number).first
+    @all_guard_setups = GuardSetup.order(:day_number).pluck(:id, :day_number)
   end
 
   def new

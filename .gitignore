@@ -40,4 +40,5 @@
 
 /coverage
 
-/.idea/workspace.xml
+.idea/*
+

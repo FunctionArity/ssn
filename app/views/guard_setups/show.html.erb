@@ -1,8 +1,37 @@
 <div>
-  <div class="flex items-center gap-2 mb-6">
+  <div class="flex items-center justify-between mb-6">
     <%= link_to guard_setups_path, class: "flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700" do %>
       <i class="ph ph-caret-left"></i> <%= t(".back") %>
     <% end %>
+    <div class="flex items-center gap-2">
+      <% nav_base_class = "flex items-center gap-1 rounded-md border px-3 py-1.5 text-sm font-medium shadow-sm" %>
+      <% if @prev_guard_setup %>
+        <%= link_to guard_setup_path(@prev_guard_setup), class: "#{nav_base_class} border-gray-300 bg-white text-gray-700 hover:bg-gray-50" do %>
+          <i class="ph ph-caret-left"></i> <%= t("previous") %>
+        <% end %>
+      <% else %>
+        <span class="<%= nav_base_class %> border-gray-200 bg-gray-50 text-gray-300 cursor-not-allowed">
+          <i class="ph ph-caret-left"></i> <%= t("previous") %>
+        </span>
+      <% end %>
+      <select onchange="Turbo.visit(this.value)"
+              class="rounded-md border border-gray-300 bg-white px-2 py-1.5 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50">
+        <% @all_guard_setups.each do |id, day_number| %>
+          <option value="<%= guard_setup_path(id) %>" <%= "selected" if id == @guard_setup.id %>>
+            <%= day_number %>
+          </option>
+        <% end %>
+      </select>
+      <% if @next_guard_setup %>
+        <%= link_to guard_setup_path(@next_guard_setup), class: "#{nav_base_class} border-gray-300 bg-white text-gray-700 hover:bg-gray-50" do %>
+          <%= t("next") %> <i class="ph ph-caret-right"></i>
+        <% end %>
+      <% else %>
+        <span class="<%= nav_base_class %> border-gray-200 bg-gray-50 text-gray-300 cursor-not-allowed">
+          <%= t("next") %> <i class="ph ph-caret-right"></i>
+        </span>
+      <% end %>
+    </div>
   </div>
 
   <div id="<%= dom_id @guard_setup %>" class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
