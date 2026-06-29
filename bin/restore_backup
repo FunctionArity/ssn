@@ -13,11 +13,16 @@ DB_PASS=$(echo $DB_CONFIG | awk '{print $5}')
 
 BACKUP_FILE="${1:-}"
 
-# If no file given, download the latest from S3
+# If no file given, use the latest local backup or download from S3
 if [ -z "$BACKUP_FILE" ]; then
-  echo "No backup file specified — downloading latest from S3..."
-  bin/download_backup ./tmp
   BACKUP_FILE=$(ls -t ./tmp/*.sql.gz 2>/dev/null | head -1)
+  if [ -n "$BACKUP_FILE" ]; then
+    echo "Found local backup: ${BACKUP_FILE}"
+  else
+    echo "No local backup found — downloading latest from S3..."
+    bin/download_backup ./tmp
+    BACKUP_FILE=$(ls -t ./tmp/*.sql.gz 2>/dev/null | head -1)
+  fi
 fi
 
 if [ -z "$BACKUP_FILE" ] || [ ! -f "$BACKUP_FILE" ]; then

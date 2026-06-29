@@ -86,7 +86,7 @@ class GuardPdf
       pdf.move_down 4
       pdf.text "SERVICIO SACERDOTAL NOCTURNO", size: 11, style: :bold, align: :center
       pdf.move_down 4
-      pdf.text "Guardia ##{@guard.day_number}", size: 9, align: :center, color: "555555"
+      pdf.text "Guardia ##{@guard.number}", size: 9, align: :center, color: "555555"
     end
 
     pdf.bounding_box([ w - 130, top ], width: 130, height: LOGO_SIZE) do

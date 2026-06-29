@@ -2,10 +2,10 @@
 
 <%# Controls bar — hidden when printing %>
 <div class="print:hidden bg-white border-b border-gray-200 sticky top-0 z-10 px-6 py-3 flex flex-wrap items-center gap-4 shadow-sm">
-  <span class="text-sm font-semibold text-gray-700">Vista previa · Guardia #<%= @guard.day_number %></span>
+  <span class="text-sm font-semibold text-gray-700">Guardía: <%= l(@guard.due_date, format: :long) %> · # <%= @guard.number %></span>
 
   <%= form_with url: preview_guard_path(@guard), method: :get, class: "flex items-center gap-2" do |f| %>
-    <%= f.label :first_nro, "Primer NRO:", class: "text-sm text-gray-600 whitespace-nowrap" %>
+    <%= f.label :first_nro, "Primer Servicio NRO:", class: "text-sm text-gray-600 whitespace-nowrap" %>
     <%= f.number_field :first_nro, value: @first_nro, min: 1, class: "w-24 rounded border border-gray-300 px-2 py-1 text-sm" %>
     <%= f.submit "Actualizar vista previa", class: "cursor-pointer rounded bg-gray-100 border border-gray-300 px-3 py-1 text-sm font-medium text-gray-700 hover:bg-gray-200" %>
   <% end %>
@@ -35,7 +35,7 @@
           <%= image_tag "icon.svg", class: "w-10 h-10 shrink-0", alt: "" rescue nil %>
           <div class="flex-1 text-center">
             <p class="text-[11px] font-bold uppercase tracking-wide">SERVICIO SACERDOTAL NOCTURNO</p>
-            <p class="text-[9px] text-gray-500 mt-0.5">Guardia #<%= @guard.day_number %></p>
+            <p class="text-[9px] text-gray-500 mt-0.5">Guardia #<%= @guard.number %></p>
           </div>
           <div class="text-center min-w-[120px] border border-gray-300 rounded px-3 py-1">
             <p class="text-[8px] font-bold uppercase tracking-wide">Fecha de guardia</p>

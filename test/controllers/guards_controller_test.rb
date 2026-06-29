@@ -382,7 +382,7 @@ class GuardsControllerTest < ActionDispatch::IntegrationTest
 
     get preview_guard_url(@guard)
 
-    assert_match "Primer NRO:", response.body
+    assert_match "Primer Servicio NRO:", response.body
     assert_match 'value="1"', response.body
   end
 

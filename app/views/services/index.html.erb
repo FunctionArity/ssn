@@ -62,4 +62,18 @@
       </div>
     <% end %>
   </div>
+
+  <% if @pending_other_services.any? %>
+    <div class="mt-10">
+      <h2 class="text-sm font-semibold text-amber-600 uppercase tracking-wide mb-3 flex items-center gap-1.5">
+        <i class="ph ph-warning"></i>
+        <%= t(".pending_from_other_guards") %>
+      </h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <% @pending_other_services.each do |service| %>
+          <%= render partial: "small_view", locals: { service: service } %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
 </div>

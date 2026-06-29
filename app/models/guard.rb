@@ -16,6 +16,10 @@ class Guard < ApplicationRecord
   validate :at_least_one_guardian
 
 
+  def number
+    (due_date - Date.new(2026, 1, 1)).to_i + GuardSetup::GUARD_NUMBER
+  end
+
   private
 
   def set_defaults_from_setup

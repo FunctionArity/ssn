@@ -1,4 +1,5 @@
 class GuardSetup < ApplicationRecord
+  GUARD_NUMBER = 26073
   belongs_to :vocal, class_name: "User"
 
   has_many :guard_setup_guardians, dependent: :destroy

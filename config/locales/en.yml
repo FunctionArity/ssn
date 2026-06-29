@@ -227,6 +227,7 @@ en:
       title: Services
       new_service: New service
       show: Show
+      pending_from_other_guards: Pending from other guards
     show:
       edit: Edit this service
       back: Back to services
