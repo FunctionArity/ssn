@@ -4,7 +4,7 @@ class UsersController < ApplicationController
   # GET /users or /users.json
   def index
     @users_by_role = User.grouped_by_role
-    @recent_logins = User.recent_logins if current_user.super_admin?
+    @recent_logins = User.unscoped.recent_logins if current_user.super_admin?
   end
 
   # GET /users/1 or /users/1.json
