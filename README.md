@@ -37,3 +37,9 @@ bin/dev
 bundle exec rails test
 bundle exec rails test:system
 ```
+
+## Import sample data
+```
+DAY=15 bundle exec rails runner db/seeds/services.rb
+```
+
