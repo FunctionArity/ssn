@@ -4,6 +4,10 @@ class ServicesController < ApplicationController
   def index
     @current_guard = Guard.includes(:vocal, :priest, :guardians).find_by(status: :open, due_date: Date.current)
     @services = @current_guard ? @current_guard.services.includes(:created_by).order(created_at: :desc) : Service.none
+    @pending_other_services = Service.pending
+                                     .includes(:guard, :created_by)
+                                     .where.not(guard: @current_guard)
+                                     .order(due_date: :desc, created_at: :desc)
   end
 
   def show

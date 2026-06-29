@@ -439,6 +439,7 @@ es:
       show: Ver
       current_guard: Guardia activa hoy
       view_guard: Ver guardia
+      pending_from_other_guards: Pendientes de otras guardias
     show:
       edit: Editar
       back: Volver a servicios

@@ -75,7 +75,7 @@ GODOY_CRUZ_ADDRESSES = [
   "Mitre 945, Godoy Cruz, Mendoza",
   "Paso de los Andes 1680, Godoy Cruz, Mendoza",
   "Rondeau 530, Godoy Cruz, Mendoza",
-  "Calle Rivadavia 2100, Godoy Cruz, Mendoza",
+  "Calle Rivadavia 2100, Godoy Cruz, Mendoza"
 ].freeze
 
 COMMENTS = [
@@ -94,7 +94,7 @@ services_data = [
   { status: :completed, has_facility: false },
   { status: :pending,   has_facility: false },
   { status: :completed, has_facility: true  },
-  { status: :pending,   has_facility: false },
+  { status: :pending,   has_facility: false }
 ]
 
 created = 0
