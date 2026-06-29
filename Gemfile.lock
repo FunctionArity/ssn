@@ -104,7 +104,7 @@ GEM
     bcrypt_pbkdf (1.1.2)
     bigdecimal (3.3.1)
     bindex (0.8.1)
-    bootsnap (1.24.4)
+    bootsnap (1.24.6)
       msgpack (~> 1.2)
     brakeman (8.0.5)
       racc
@@ -224,7 +224,7 @@ GEM
       builder
       minitest (>= 5.0, < 7)
       ruby-progressbar
-    msgpack (1.8.0)
+    msgpack (1.8.3)
     net-imap (0.6.4)
       date
       net-protocol
