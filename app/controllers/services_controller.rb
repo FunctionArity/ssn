@@ -2,8 +2,8 @@ class ServicesController < ApplicationController
   before_action :set_service, only: %i[ show edit update destroy pdf complete ]
 
   def index
-    @services = Service.includes(:guard, :created_by).order(due_date: :desc)
     @current_guard = Guard.includes(:vocal, :priest, :guardians).find_by(status: :open, due_date: Date.current)
+    @services = @current_guard ? @current_guard.services.includes(:created_by).order(created_at: :desc) : Service.none
   end
 
   def show
