@@ -1,0 +1,15 @@
+one:
+  country: Argentina
+  state: Mendoza
+  city: Mendoza
+  address: San Martín 1234
+  phone: "261 555 1234"
+  email: ssu.mendoza@example.com
+  whatsapp: "261 555 1234"
+
+two:
+  country: Ecuador
+  state: Pichincha
+  city: Quito
+  address: Caldas, entre Av. Pichincha y Ríos
+  email: ssu.quito@example.com

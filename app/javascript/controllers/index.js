@@ -44,3 +44,6 @@ application.register("guard-select", GuardSelectController)
 
 import MobileNavController from "./mobile_nav_controller"
 application.register("mobile-nav", MobileNavController)
+
+import HeadquartersFilterController from "./headquarters_filter_controller"
+application.register("headquarters-filter", HeadquartersFilterController)

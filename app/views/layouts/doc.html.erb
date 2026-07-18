@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= content_for(:title) || "Ssn" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
+  </head>
+
+  <body class="min-h-screen bg-gray-50">
+    <nav class="bg-white border-b border-gray-200">
+      <div class="w-full px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-14 items-center">
+          <%= image_tag "icon.svg", class: "h-8 w-8" %>
+          <%= link_to "https://info.serviciosacerdotalnocturno.org", target: "_blank", rel: "noopener noreferrer", class: "flex items-center gap-1.5 text-sm text-blue-600 hover:text-blue-800 font-medium" do %>
+            <i class="ph ph-info"></i> <%= t("sidebar.documentation") %>
+          <% end %>
+        </div>
+      </div>
+    </nav>
+
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <%= yield %>
+    </main>
+  </body>
+</html>
