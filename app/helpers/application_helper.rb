@@ -7,7 +7,7 @@ module ApplicationHelper
   end
 
   def setup_active?
-    setup_paths = %w[/guard_setups /priest_setups /users /health_facilities /churches]
+    setup_paths = %w[/guard_setups /priest_setups /users /health_facilities /churches /headquarters]
     setup_paths.any? { |path| request.path.start_with?(path) }
   end
 end

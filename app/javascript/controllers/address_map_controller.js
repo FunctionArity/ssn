@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
   static targets = ["map", "input"]
-  static values = { initialAddress: String }
+  static values = { initialAddress: String, restrictCountry: { type: Boolean, default: true } }
 
   connect() {
     this.initMap()
@@ -64,8 +64,10 @@ export default class extends Controller {
   }
 
   geocode(address) {
+    const query = this.restrictCountryValue ? `${address}, Argentina` : address
+    const options = this.restrictCountryValue ? { componentRestrictions: { country: "ar" } } : {}
     this.geocoder.geocode(
-      { address: `${address}, Argentina`, componentRestrictions: { country: "ar" } },
+      { address: query, ...options },
       (results, status) => {
         if (status === "OK" && results[0]) {
           const location = results[0].geometry.location

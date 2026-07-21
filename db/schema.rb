@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_09_160810) do
+ActiveRecord::Schema[8.1].define(version: 2026_07_17_214349) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -92,6 +92,21 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_09_160810) do
     t.index ["guard_setup_id"], name: "index_guards_on_guard_setup_id"
     t.index ["priest_id"], name: "index_guards_on_priest_id"
     t.index ["vocal_id"], name: "index_guards_on_vocal_id"
+  end
+
+  create_table "headquarters", force: :cascade do |t|
+    t.string "address", null: false
+    t.string "city", null: false
+    t.string "country", null: false
+    t.datetime "created_at", null: false
+    t.string "email"
+    t.string "facebook"
+    t.string "instagram"
+    t.string "phone"
+    t.string "state", null: false
+    t.datetime "updated_at", null: false
+    t.string "web_address"
+    t.string "whatsapp"
   end
 
   create_table "health_facilities", force: :cascade do |t|

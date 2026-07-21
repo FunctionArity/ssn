@@ -37,6 +37,10 @@
           <i class="ph ph-church text-lg"></i>
           <span class="sidebar-label"><%= t("churches.index.title") %></span>
         <% end %>
+        <%= link_to headquarters_path, class: "sidebar-link flex items-center gap-2 px-3 py-2 text-sm font-medium border-l-2 border-b-0 #{request.path.start_with?('/headquarters') ? 'text-blue-700 border-blue-600 border-t-transparent' : 'text-gray-600 border-transparent hover:bg-gray-100 hover:text-gray-900'}" do %>
+          <i class="ph ph-buildings text-lg"></i>
+          <span class="sidebar-label"><%= t("headquarters.index.title") %></span>
+        <% end %>
       </div>
     </details>
     <%= link_to "https://info.serviciosacerdotalnocturno.org", target: "_blank", rel: "noopener noreferrer", class: "sidebar-link flex items-center gap-2 rounded-r-md px-3 py-2 text-sm font-medium border-l-2 text-gray-600 border-transparent hover:bg-gray-50 hover:text-gray-900" do %>

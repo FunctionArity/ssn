@@ -1,0 +1,63 @@
+<div class="py-8">
+  <div class="flex items-center gap-2 mb-6">
+    <%= link_to headquarters_path, class: "flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700" do %>
+      <i class="ph ph-caret-left"></i> <%= t(".back") %>
+    <% end %>
+  </div>
+
+  <div id="<%= dom_id @headquarter %>" class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
+    <div class="px-6 py-5 flex items-center justify-between bg-gradient-to-r from-amber-50 to-white border-b border-gray-100">
+      <div>
+        <p class="text-xs font-medium text-amber-500 uppercase tracking-wide"><%= @headquarter.state %>, <%= @headquarter.country %></p>
+        <h2 class="text-xl font-bold text-gray-900 mt-0.5"><%= @headquarter.city %></h2>
+      </div>
+      <div class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-100 text-amber-700 shrink-0">
+        <i class="ph ph-buildings text-xl"></i>
+      </div>
+    </div>
+
+    <div class="px-6 py-4 flex items-start gap-4 border-b border-gray-100">
+      <div class="flex items-center justify-center w-8 h-8 rounded-full bg-gray-100 text-gray-500 shrink-0 mt-0.5">
+        <i class="ph ph-map-pin text-sm"></i>
+      </div>
+      <div>
+        <p class="text-xs font-medium text-gray-400 uppercase tracking-wide"><%= Headquarter.human_attribute_name(:address) %></p>
+        <p class="text-sm text-gray-900 mt-0.5"><%= @headquarter.address %></p>
+      </div>
+    </div>
+
+    <% contact_rows = [
+         [ :phone, "ph-phone", @headquarter.phone ],
+         [ :whatsapp, "ph-whatsapp-logo", @headquarter.whatsapp ],
+         [ :email, "ph-envelope-simple", @headquarter.email ],
+         [ :web_address, "ph-globe", @headquarter.web_address ],
+         [ :facebook, "ph-facebook-logo", @headquarter.facebook ],
+         [ :instagram, "ph-instagram-logo", @headquarter.instagram ]
+       ] %>
+    <% contact_rows.each do |attribute, icon, value| %>
+      <% next if value.blank? %>
+      <div class="px-6 py-4 flex items-start gap-4 border-b border-gray-100">
+        <div class="flex items-center justify-center w-8 h-8 rounded-full bg-gray-100 text-gray-500 shrink-0 mt-0.5">
+          <i class="ph <%= icon %> text-sm"></i>
+        </div>
+        <div class="min-w-0">
+          <p class="text-xs font-medium text-gray-400 uppercase tracking-wide"><%= Headquarter.human_attribute_name(attribute) %></p>
+          <% if value.start_with?("http") %>
+            <%= link_to value, value, target: "_blank", rel: "noopener", class: "text-sm text-blue-600 hover:underline mt-0.5 block truncate" %>
+          <% else %>
+            <p class="text-sm text-gray-900 mt-0.5 break-words"><%= value %></p>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+
+    <div class="px-6 py-4 flex items-center justify-end gap-3">
+      <%= link_to edit_headquarter_path(@headquarter), class: "flex items-center gap-1.5 rounded-md bg-white border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50" do %>
+        <i class="ph ph-pencil-simple"></i> <%= t("edit") %>
+      <% end %>
+      <%= button_to @headquarter, method: :delete, form: { data: { turbo_confirm: t(".destroy_confirm") } }, class: "cursor-pointer flex items-center gap-1.5 rounded-md bg-red-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500" do %>
+        <i class="ph ph-trash"></i> <%= t("destroy") %>
+      <% end %>
+    </div>
+  </div>
+</div>

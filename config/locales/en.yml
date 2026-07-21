@@ -16,6 +16,9 @@ en:
       health_facility:
         one: Health Facility
         other: Health Facilities
+      headquarter:
+        one: Headquarter
+        other: Headquarters
     attributes:
       user:
         first_name: First name
@@ -71,6 +74,23 @@ en:
         caller_phone: Caller phone
         caller_relationship: Caller relationship
         comments: Comments
+      headquarter:
+        country: Country
+        state: State
+        city: City
+        address: Address
+        phone: Phone
+        email: Email
+        whatsapp: WhatsApp
+        web_address: Website
+        facebook: Facebook
+        instagram: Instagram
+    errors:
+      models:
+        headquarter:
+          attributes:
+            base:
+              missing_contact: "must have at least one contact method (phone, email or WhatsApp)"
   sidebar:
     setup: Setup
     documentation: Documentation
@@ -222,6 +242,46 @@ en:
       created: Health facility was successfully created.
       updated: Health facility was successfully updated.
       destroyed: Health facility was successfully destroyed.
+  doc:
+    headquarters:
+      index:
+        eyebrow: Directory
+        title: Headquarters
+        subtitle: Public directory of Servicio Sacerdotal Nocturno headquarters.
+        clear_filters: Clear filters
+        results_label: headquarters
+        empty: No headquarters match the selected filters.
+        back: Back to headquarters
+        map: Map
+        open_in_maps: Open in Google Maps
+        map_placeholder: Loading map…
+  headquarters:
+    index:
+      title: Headquarters
+      new_headquarter: New headquarter
+      show: Show
+      public_page: Public page
+    show:
+      back: Back to headquarters
+      destroy_confirm: "Are you sure you want to delete this headquarter?"
+    new:
+      title: New headquarter
+      back: Back to headquarters
+    edit:
+      title: Editing headquarter
+      back: Back to headquarter
+    form:
+      contact_title: Contact
+      contact_hint: At least one contact method (phone, email or WhatsApp) is required.
+      social_title: Web and social media
+      errors:
+        title:
+          one: "%{count} error prohibited this headquarter from being saved:"
+          other: "%{count} errors prohibited this headquarter from being saved:"
+    notices:
+      created: Headquarter was successfully created.
+      updated: Headquarter was successfully updated.
+      destroyed: Headquarter was successfully destroyed.
   services:
     index:
       title: Services

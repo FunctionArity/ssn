@@ -33,6 +33,9 @@ es:
       church:
         one: Parroquia
         other: Parroquias
+      headquarter:
+        one: Sede
+        other: Sedes
     attributes:
       guard:
         day_number: Número de día
@@ -71,6 +74,17 @@ es:
         name: Nombre
         phone: Teléfono
         address: Dirección
+      headquarter:
+        country: País
+        state: Provincia
+        city: Ciudad
+        address: Dirección
+        phone: Teléfono
+        email: Correo electrónico
+        whatsapp: WhatsApp
+        web_address: Sitio web
+        facebook: Facebook
+        instagram: Instagram
       user:
         first_name: Nombre
         last_name: Apellido
@@ -95,6 +109,10 @@ es:
           priest: Sacerdotes
     errors:
       models:
+        headquarter:
+          attributes:
+            base:
+              missing_contact: "debe tener al menos un medio de contacto (teléfono, correo electrónico o WhatsApp)"
         service:
           attributes:
             guard:
@@ -432,6 +450,46 @@ es:
       created: El centro de salud fue creado exitosamente.
       updated: El centro de salud fue actualizado exitosamente.
       destroyed: El centro de salud fue eliminado exitosamente.
+  doc:
+    headquarters:
+      index:
+        eyebrow: Directorio
+        title: Sedes
+        subtitle: Directorio público de sedes del Servicio Sacerdotal Nocturno.
+        clear_filters: Limpiar filtros
+        results_label: sedes
+        empty: No hay sedes que coincidan con los filtros seleccionados.
+        back: Volver a sedes
+        map: Mapa
+        open_in_maps: Abrir en Google Maps
+        map_placeholder: Cargando mapa…
+  headquarters:
+    index:
+      title: Sedes
+      new_headquarter: Nueva sede
+      show: Ver
+      public_page: Página pública
+    show:
+      back: Volver a sedes
+      destroy_confirm: "¿Estás seguro de que querés eliminar esta sede?"
+    new:
+      title: Nueva sede
+      back: Volver a sedes
+    edit:
+      title: Editando sede
+      back: Volver a la sede
+    form:
+      contact_title: Contacto
+      contact_hint: Al menos un medio de contacto (teléfono, correo electrónico o WhatsApp) es obligatorio.
+      social_title: Web y redes sociales
+      errors:
+        title:
+          one: "%{count} error impidió que esta sede fuera guardada:"
+          other: "%{count} errores impidieron que esta sede fuera guardada:"
+    notices:
+      created: La sede fue creada exitosamente.
+      updated: La sede fue actualizada exitosamente.
+      destroyed: La sede fue eliminada exitosamente.
   services:
     index:
       title: Servicios
