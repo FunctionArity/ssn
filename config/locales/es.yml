@@ -453,11 +453,16 @@ es:
   doc:
     headquarters:
       index:
+        eyebrow: Directorio
         title: Sedes
         subtitle: Directorio público de sedes del Servicio Sacerdotal Nocturno.
         clear_filters: Limpiar filtros
         results_label: sedes
         empty: No hay sedes que coincidan con los filtros seleccionados.
+        back: Volver a sedes
+        map: Mapa
+        open_in_maps: Abrir en Google Maps
+        map_placeholder: Cargando mapa…
   headquarters:
     index:
       title: Sedes

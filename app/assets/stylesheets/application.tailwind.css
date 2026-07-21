@@ -134,6 +134,35 @@ main {
   animation: page-enter 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
 }
 
+@keyframes card-filter-in {
+  0%   { opacity: 0; transform: translateY(8px) scale(0.96); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes card-filter-out {
+  0%   { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(0.94); }
+}
+
+.card-filter-in {
+  animation: card-filter-in 0.32s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+
+.card-filter-out {
+  animation: card-filter-out 0.18s cubic-bezier(0.4, 0, 1, 1) forwards;
+}
+
+@keyframes count-pulse {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.2); color: var(--color-indigo-600); }
+  100% { transform: scale(1); }
+}
+
+.count-pulse {
+  display: inline-block;
+  animation: count-pulse 0.35s ease-out;
+}
+
 .sidebar-link {
   transition: color 0.35s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.35s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
