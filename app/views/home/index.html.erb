@@ -33,7 +33,7 @@
       </div>
     </div>
 
-    <div class="grid grid-cols-1 sm:grid-cols-3 border-t border-white/10">
+    <div class="grid grid-cols-1 sm:grid-cols-4 border-t border-white/10">
       <div class="flex flex-col items-center gap-2 px-8 py-8 border-b sm:border-b-0 sm:border-r border-white/10 text-center">
         <div class="flex items-center justify-center w-10 h-10 rounded-full bg-indigo-800 text-indigo-200 mb-1">
           <i class="ph ph-calendar-check text-xl"></i>
@@ -48,13 +48,20 @@
         <p class="text-sm font-semibold text-white">Sacerdotes</p>
         <p class="text-xs text-indigo-300 leading-relaxed">Coordinación de disponibilidad y asignaciones</p>
       </div>
-      <div class="flex flex-col items-center gap-2 px-8 py-8 text-center">
+      <div class="flex flex-col items-center gap-2 px-8 py-8 border-b sm:border-b-0 sm:border-r border-white/10 text-center">
         <div class="flex items-center justify-center w-10 h-10 rounded-full bg-indigo-800 text-indigo-200 mb-1">
           <i class="ph ph-hospital text-xl"></i>
         </div>
         <p class="text-sm font-semibold text-white">Servicios</p>
         <p class="text-xs text-indigo-300 leading-relaxed">Gestión de servicios realizados</p>
       </div>
+      <%= link_to sedes_path, class: "flex flex-col items-center gap-2 px-8 py-8 text-center hover:bg-white/5 transition-colors" do %>
+        <div class="flex items-center justify-center w-10 h-10 rounded-full bg-indigo-800 text-indigo-200 mb-1">
+          <i class="ph ph-buildings text-xl"></i>
+        </div>
+        <p class="text-sm font-semibold text-white">Sedes</p>
+        <p class="text-xs text-indigo-300 leading-relaxed">Listado de sedes disponibles</p>
+      <% end %>
     </div>
 
   </div>
