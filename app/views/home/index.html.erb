@@ -33,42 +33,44 @@
       </div>
     </div>
 
-    <div class="grid grid-cols-1 sm:grid-cols-5 border-t border-white/10">
-      <div class="flex flex-col items-center gap-2 px-8 py-8 border-b sm:border-b-0 sm:border-r border-white/10 text-center">
-        <div class="flex items-center justify-center w-10 h-10 rounded-full bg-indigo-800 text-indigo-200 mb-1">
-          <i class="ph ph-calendar-check text-xl"></i>
+    <div class="border-t border-white/10">
+      <div class="flex flex-wrap items-center justify-center gap-x-10 gap-y-4 px-6 py-6">
+        <div class="flex items-center gap-2 text-indigo-200">
+          <i class="ph ph-calendar-check text-lg text-indigo-400"></i>
+          <span class="text-sm font-medium">Guardias</span>
         </div>
-        <p class="text-sm font-semibold text-white">Guardias</p>
-        <p class="text-xs text-indigo-300 leading-relaxed">Organización y seguimiento de turnos nocturnos</p>
+        <div class="flex items-center gap-2 text-indigo-200">
+          <i class="ph ph-cross text-lg text-indigo-400"></i>
+          <span class="text-sm font-medium">Sacerdotes</span>
+        </div>
+        <div class="flex items-center gap-2 text-indigo-200">
+          <i class="ph ph-hospital text-lg text-indigo-400"></i>
+          <span class="text-sm font-medium">Servicios</span>
+        </div>
       </div>
-      <div class="flex flex-col items-center gap-2 px-8 py-8 border-b sm:border-b-0 sm:border-r border-white/10 text-center">
-        <div class="flex items-center justify-center w-10 h-10 rounded-full bg-indigo-800 text-indigo-200 mb-1">
-          <i class="ph ph-cross text-xl"></i>
-        </div>
-        <p class="text-sm font-semibold text-white">Sacerdotes</p>
-        <p class="text-xs text-indigo-300 leading-relaxed">Coordinación de disponibilidad y asignaciones</p>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 border-t border-white/10">
+        <%= link_to sedes_path, class: "group flex items-center gap-4 px-8 py-8 border-b sm:border-b-0 sm:border-r border-white/10 hover:bg-white/5 transition-colors" do %>
+          <div class="flex items-center justify-center w-12 h-12 rounded-full bg-indigo-800 text-indigo-200 shrink-0">
+            <i class="ph ph-buildings text-2xl"></i>
+          </div>
+          <div class="flex-1 text-center">
+            <p class="text-base font-semibold text-white">Sedes</p>
+            <p class="text-xs text-indigo-300 leading-relaxed">Listado de sedes disponibles</p>
+          </div>
+          <i class="ph ph-arrow-right text-indigo-300 group-hover:translate-x-1 transition-transform"></i>
+        <% end %>
+        <%= link_to federacion_path, class: "group flex items-center gap-4 px-8 py-8 hover:bg-white/5 transition-colors" do %>
+          <div class="flex items-center justify-center w-12 h-12 rounded-full bg-indigo-800 text-indigo-200 shrink-0">
+            <i class="ph ph-users-three text-2xl"></i>
+          </div>
+          <div class="flex-1 text-center">
+            <p class="text-base font-semibold text-white">Federación</p>
+            <p class="text-xs text-indigo-300 leading-relaxed">Federación Argentina del Servicio Sacerdotal</p>
+          </div>
+          <i class="ph ph-arrow-right text-indigo-300 group-hover:translate-x-1 transition-transform"></i>
+        <% end %>
       </div>
-      <div class="flex flex-col items-center gap-2 px-8 py-8 border-b sm:border-b-0 sm:border-r border-white/10 text-center">
-        <div class="flex items-center justify-center w-10 h-10 rounded-full bg-indigo-800 text-indigo-200 mb-1">
-          <i class="ph ph-hospital text-xl"></i>
-        </div>
-        <p class="text-sm font-semibold text-white">Servicios</p>
-        <p class="text-xs text-indigo-300 leading-relaxed">Gestión de servicios realizados</p>
-      </div>
-      <%= link_to sedes_path, class: "flex flex-col items-center gap-2 px-8 py-8 border-b sm:border-b-0 sm:border-r border-white/10 text-center hover:bg-white/5 transition-colors" do %>
-        <div class="flex items-center justify-center w-10 h-10 rounded-full bg-indigo-800 text-indigo-200 mb-1">
-          <i class="ph ph-buildings text-xl"></i>
-        </div>
-        <p class="text-sm font-semibold text-white">Sedes</p>
-        <p class="text-xs text-indigo-300 leading-relaxed">Listado de sedes disponibles</p>
-      <% end %>
-      <%= link_to federacion_path, class: "flex flex-col items-center gap-2 px-8 py-8 text-center hover:bg-white/5 transition-colors" do %>
-        <div class="flex items-center justify-center w-10 h-10 rounded-full bg-indigo-800 text-indigo-200 mb-1">
-          <i class="ph ph-users-three text-xl"></i>
-        </div>
-        <p class="text-sm font-semibold text-white">Federación</p>
-        <p class="text-xs text-indigo-300 leading-relaxed">Federación Argentina del Servicio Sacerdotal</p>
-      <% end %>
     </div>
 
   </div>
