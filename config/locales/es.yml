@@ -463,6 +463,13 @@ es:
         map: Mapa
         open_in_maps: Abrir en Google Maps
         map_placeholder: Cargando mapa…
+    federacion:
+      index:
+        title: 44ª Asamblea Nacional de los Servicios Sacerdotales de Urgencia y Nocturnos de la República Argentina
+        theme: "Lema: “Fieles a nuestra identidad, nos adaptamos a los tiempos actuales”"
+        dates: 28, 29 y 30 de agosto de 2026
+        location: "Casa de Retiro “Ntra. Sra. del Tránsito”, RP 14 3720, M5517 Lunlunta, Mendoza"
+        program: Programa de actividades
   headquarters:
     index:
       title: Sedes

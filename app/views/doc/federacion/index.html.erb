@@ -1,0 +1,44 @@
+<% content_for :title, t(".title") %>
+
+<div>
+  <%= image_tag "fassnu-logo.png", alt: "FASSNU", class: "h-32 sm:h-80 w-auto mb-8 mx-auto" %>
+
+  <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight leading-tight text-gray-900 mb-4"><%= t(".title") %></h1>
+  <p class="text-base sm:text-lg text-gray-500 leading-relaxed max-w-2xl"><%= t(".theme") %></p>
+
+  <div class="mt-6 flex flex-wrap gap-x-6 gap-y-3">
+    <div class="flex items-center gap-2 text-sm text-gray-600">
+      <i class="ph ph-calendar-blank text-indigo-500"></i> <%= t(".dates") %>
+    </div>
+    <div class="flex items-start gap-2 text-sm text-gray-600">
+      <i class="ph ph-map-pin text-indigo-500 mt-0.5"></i> <%= t(".location") %>
+    </div>
+  </div>
+
+  <hr class="border-gray-200 my-8">
+
+  <h2 class="text-xl font-bold text-gray-900 mb-6"><%= t(".program") %></h2>
+
+  <div class="space-y-6">
+    <% @schedule.each do |day| %>
+      <div class="bg-white border border-gray-200 rounded-xl p-5 sm:p-6">
+        <h3 class="flex items-center gap-3 font-bold text-gray-900 mb-4">
+          <span class="flex items-center justify-center w-9 h-9 rounded-lg bg-indigo-50 text-indigo-500 shrink-0">
+            <i class="ph ph-calendar-check text-lg"></i>
+          </span>
+          <%= day[:label] %>
+        </h3>
+        <ul class="space-y-3">
+          <% day[:items].each do |time, activity| %>
+            <li class="flex items-start gap-3">
+              <span class="shrink-0 inline-flex items-center justify-center rounded-full bg-indigo-50 text-indigo-600 text-xs font-semibold px-2.5 py-1 min-w-[4.5rem] text-center">
+                <%= time %>
+              </span>
+              <span class="text-sm text-gray-700 pt-0.5"><%= activity %></span>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+  </div>
+</div>
