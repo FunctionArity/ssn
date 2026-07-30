@@ -58,18 +58,17 @@
            data-country="<%= headquarter.country %>"
            data-state="<%= headquarter.state %>"
            data-city="<%= headquarter.city %>"
-           class="bg-white border border-gray-200 rounded-xl p-5">
+           data-action="click->headquarters-filter#expand"
+           data-headquarters-filter-headquarter-id-param="<%= headquarter.id %>"
+           class="bg-white border border-gray-200 rounded-xl p-5 cursor-pointer transition-shadow hover:shadow-lg">
         <div class="flex items-center gap-3 mb-4">
           <div class="flex items-center justify-center w-10 h-10 rounded-lg bg-indigo-50 text-indigo-500 shrink-0">
             <i class="ph ph-buildings text-xl"></i>
           </div>
           <div class="min-w-0">
-            <button type="button"
-                    data-action="click->headquarters-filter#expand"
-                    data-headquarters-filter-headquarter-id-param="<%= headquarter.id %>"
-                    class="cursor-pointer font-bold text-gray-900 hover:text-indigo-600 truncate block text-left">
+            <p class="font-bold text-gray-900 truncate">
               <%= headquarter.city %>
-            </button>
+            </p>
             <p class="text-xs text-gray-500 truncate"><%= headquarter.state %>, <%= headquarter.country %></p>
           </div>
         </div>
