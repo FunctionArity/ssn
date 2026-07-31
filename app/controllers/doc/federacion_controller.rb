@@ -25,7 +25,7 @@ class Doc::FederacionController < ApplicationController
         [ "13:30 hs", "Descanso" ],
         [ "15:00 hs", "Reanudación asamblea (comisiones de trabajo)" ],
         [ "19:30 hs", "Descanso - Break" ],
-        [ "20:00 hs", "Rezo del Vía Lucis" ],
+        [ "20:00 hs", "Rezo del Vía Crucis" ],
         [ "21:30 hs", "Cena y entrega de recordatorios" ],
         [ "24:00 hs", "Descanso" ]
       ]
