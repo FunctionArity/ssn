@@ -42,7 +42,7 @@ class ServicePdf
   def build_header(pdf, w, top)
     svg_path = Rails.root.join("app/assets/images/icon.svg")
     if File.exist?(svg_path)
-      pdf.svg(File.read(svg_path), at: [ 0, top ], width: LOGO_SIZE, height: LOGO_SIZE)
+      pdf.svg(File.read(svg_path), at: [ 0, top ], width: LOGO_SIZE, height: LOGO_SIZE, enable_web_requests: false)
     end
 
     # Center: SERVICIO SACERDOTAL NOCTURNO + service number
