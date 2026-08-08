@@ -20,7 +20,6 @@ class Doc::FederacionController < ApplicationController
         [ "8:00 hs", "Oración de la mañana" ],
         [ "8:30 hs", "Desayuno" ],
         [ "9:30 hs", "Reanudación asamblea - Formación de comisiones de trabajo" ],
-        [ "12:00 hs", "Descanso - Break" ],
         [ "12:30 hs", "Almuerzo" ],
         [ "13:30 hs", "Descanso" ],
         [ "15:00 hs", "Reanudación asamblea (comisiones de trabajo)" ],
