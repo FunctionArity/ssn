@@ -4,7 +4,7 @@ class ChurchesControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 
   setup do
-    @user = users(:one)
+    @user = users(:admin_user)
     @church = churches(:one)
     sign_in @user
   end
@@ -81,5 +81,64 @@ class ChurchesControllerTest < ActionDispatch::IntegrationTest
     sign_out @user
     get churches_url
     assert_redirected_to new_user_session_path
+  end
+
+  # ---------------------------------------------------------------------------
+  # Authorization — non-admin users
+  # ---------------------------------------------------------------------------
+
+  test "non-admin cannot get index" do
+    sign_in users(:one)
+    get churches_url
+    assert_redirected_to root_path
+    assert_equal I18n.t("pundit.not_authorized"), flash[:alert]
+  end
+
+  test "non-admin cannot get new" do
+    sign_in users(:one)
+    get new_church_url
+    assert_redirected_to root_path
+    assert_equal I18n.t("pundit.not_authorized"), flash[:alert]
+  end
+
+  test "non-admin cannot get show" do
+    sign_in users(:one)
+    get church_url(@church)
+    assert_redirected_to root_path
+    assert_equal I18n.t("pundit.not_authorized"), flash[:alert]
+  end
+
+  test "non-admin cannot get edit" do
+    sign_in users(:one)
+    get edit_church_url(@church)
+    assert_redirected_to root_path
+    assert_equal I18n.t("pundit.not_authorized"), flash[:alert]
+  end
+
+  test "non-admin cannot create church" do
+    sign_in users(:one)
+    assert_no_difference("Church.count") do
+      post churches_url, params: { church: { name: "Nueva Parroquia" } }
+    end
+    assert_redirected_to root_path
+    assert_equal I18n.t("pundit.not_authorized"), flash[:alert]
+  end
+
+  test "non-admin cannot update church" do
+    sign_in users(:one)
+    original_name = @church.name
+    patch church_url(@church), params: { church: { name: "Parroquia Actualizada" } }
+    assert_redirected_to root_path
+    assert_equal I18n.t("pundit.not_authorized"), flash[:alert]
+    assert_equal original_name, @church.reload.name
+  end
+
+  test "non-admin cannot destroy church" do
+    sign_in users(:one)
+    assert_no_difference("Church.count") do
+      delete church_url(@church)
+    end
+    assert_redirected_to root_path
+    assert_equal I18n.t("pundit.not_authorized"), flash[:alert]
   end
 end

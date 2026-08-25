@@ -4,7 +4,7 @@ class HealthFacilitiesControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 
   setup do
-    @user = users(:one)
+    @user = users(:admin_user)
     @health_facility = health_facilities(:one)
     sign_in @user
   end
@@ -87,5 +87,68 @@ class HealthFacilitiesControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_redirected_to health_facilities_url
+  end
+
+  # ---------------------------------------------------------------------------
+  # Authorization — non-admin users
+  # ---------------------------------------------------------------------------
+
+  test "non-admin cannot get index" do
+    sign_in users(:one)
+    get health_facilities_url
+    assert_redirected_to root_path
+    assert_equal I18n.t("pundit.not_authorized"), flash[:alert]
+  end
+
+  test "non-admin cannot get new" do
+    sign_in users(:one)
+    get new_health_facility_url
+    assert_redirected_to root_path
+    assert_equal I18n.t("pundit.not_authorized"), flash[:alert]
+  end
+
+  test "non-admin cannot get show" do
+    sign_in users(:one)
+    get health_facility_url(@health_facility)
+    assert_redirected_to root_path
+    assert_equal I18n.t("pundit.not_authorized"), flash[:alert]
+  end
+
+  test "non-admin cannot get edit" do
+    sign_in users(:one)
+    get edit_health_facility_url(@health_facility)
+    assert_redirected_to root_path
+    assert_equal I18n.t("pundit.not_authorized"), flash[:alert]
+  end
+
+  test "non-admin cannot create health facility" do
+    sign_in users(:one)
+    assert_no_difference("HealthFacility.count") do
+      post health_facilities_url, params: {
+        health_facility: { name: "Nuevo Hospital", address: "San Martín 100, Mendoza" }
+      }
+    end
+    assert_redirected_to root_path
+    assert_equal I18n.t("pundit.not_authorized"), flash[:alert]
+  end
+
+  test "non-admin cannot update health facility" do
+    sign_in users(:one)
+    original_name = @health_facility.name
+    patch health_facility_url(@health_facility), params: {
+      health_facility: { name: "Hospital Actualizado", address: @health_facility.address }
+    }
+    assert_redirected_to root_path
+    assert_equal I18n.t("pundit.not_authorized"), flash[:alert]
+    assert_equal original_name, @health_facility.reload.name
+  end
+
+  test "non-admin cannot destroy health facility" do
+    sign_in users(:one)
+    assert_no_difference("HealthFacility.count") do
+      delete health_facility_url(@health_facility)
+    end
+    assert_redirected_to root_path
+    assert_equal I18n.t("pundit.not_authorized"), flash[:alert]
   end
 end

@@ -1,4 +1,5 @@
 class PriestSetupsController < ApplicationController
+  before_action :authorize_priest_setup_class, only: %i[index new create]
   before_action :set_priest_setup, only: %i[destroy]
   before_action :clear_previous_assignments, only: %i[create]
   before_action :build_assignment_slots, only: :new
@@ -29,6 +30,7 @@ class PriestSetupsController < ApplicationController
   end
 
   def destroy
+    authorize @priest_setup
     @week_number = @priest_setup.week_number
     @day_of_week = @priest_setup.day_of_week
     @priest_setup.destroy!
@@ -42,6 +44,10 @@ class PriestSetupsController < ApplicationController
   end
 
   private
+
+  def authorize_priest_setup_class
+    authorize PriestSetup
+  end
 
   def set_priest_setup
     @priest_setup = PriestSetup.find(params.expect(:id))
