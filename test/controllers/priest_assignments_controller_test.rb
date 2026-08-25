@@ -4,7 +4,7 @@ class PriestAssignmentsControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 
   setup do
-    @user = users(:one)
+    @user = users(:admin_user)
     sign_in @user
   end
 
