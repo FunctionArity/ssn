@@ -2,21 +2,26 @@ class HeadquartersController < ApplicationController
   before_action :set_headquarter, only: %i[ show edit update destroy ]
 
   def index
+    authorize Headquarter
     @headquarters = Headquarter.order(:country, :state, :city)
   end
 
   def show
+    authorize @headquarter
   end
 
   def new
     @headquarter = Headquarter.new
+    authorize @headquarter
   end
 
   def edit
+    authorize @headquarter
   end
 
   def create
     @headquarter = Headquarter.new(headquarter_params)
+    authorize @headquarter
 
     respond_to do |format|
       if @headquarter.save
@@ -30,6 +35,8 @@ class HeadquartersController < ApplicationController
   end
 
   def update
+    authorize @headquarter
+
     respond_to do |format|
       if @headquarter.update(headquarter_params)
         format.html { redirect_to @headquarter, notice: t("headquarters.notices.updated"), status: :see_other }
@@ -42,6 +49,7 @@ class HeadquartersController < ApplicationController
   end
 
   def destroy
+    authorize @headquarter
     @headquarter.destroy!
 
     respond_to do |format|

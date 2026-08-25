@@ -4,7 +4,7 @@ class PriestSetupsControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 
   setup do
-    @user = users(:one)
+    @user = users(:admin_user)
     @priest_setup = priest_setups(:one)
     sign_in @user
   end
@@ -77,5 +77,63 @@ class PriestSetupsControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_redirected_to new_priest_setup_url
+  end
+
+  # ---------------------------------------------------------------------------
+  # Authorization — non-admin users
+  # ---------------------------------------------------------------------------
+
+  test "non-admin cannot get index" do
+    sign_in users(:one)
+    get priest_setups_url
+    assert_redirected_to root_path
+    assert_equal I18n.t("pundit.not_authorized"), flash[:alert]
+  end
+
+  test "non-admin cannot get new" do
+    sign_in users(:one)
+    get new_priest_setup_url
+    assert_redirected_to root_path
+    assert_equal I18n.t("pundit.not_authorized"), flash[:alert]
+  end
+
+  test "non-admin cannot create priest setup" do
+    sign_in users(:one)
+    assert_no_difference("PriestSetup.count") do
+      post priest_setups_url, params: {
+        priest_setup: {
+          priest_id: users(:priest_two).id,
+          week_number: 3,
+          day_of_week: 5
+        }
+      }
+    end
+    assert_redirected_to root_path
+    assert_equal I18n.t("pundit.not_authorized"), flash[:alert]
+  end
+
+  test "non-admin create does not clear conflicting assignment" do
+    sign_in users(:one)
+    assert_no_difference("PriestSetup.count") do
+      post priest_setups_url, params: {
+        priest_setup: {
+          priest_id: users(:priest_two).id,
+          week_number: @priest_setup.week_number,
+          day_of_week: @priest_setup.day_of_week
+        }
+      }
+    end
+    assert_redirected_to root_path
+    assert_equal I18n.t("pundit.not_authorized"), flash[:alert]
+    assert PriestSetup.exists?(@priest_setup.id), "existing assignment should not be cleared by an unauthorized request"
+  end
+
+  test "non-admin cannot destroy priest setup" do
+    sign_in users(:one)
+    assert_no_difference("PriestSetup.count") do
+      delete priest_setup_url(@priest_setup)
+    end
+    assert_redirected_to root_path
+    assert_equal I18n.t("pundit.not_authorized"), flash[:alert]
   end
 end

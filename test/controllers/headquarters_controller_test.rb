@@ -4,7 +4,7 @@ class HeadquartersControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 
   setup do
-    @user = users(:one)
+    @user = users(:admin_user)
     @headquarter = headquarters(:one)
     sign_in @user
   end
@@ -95,5 +95,72 @@ class HeadquartersControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_redirected_to headquarters_url
+  end
+
+  # ---------------------------------------------------------------------------
+  # Authorization — non-admin users
+  # ---------------------------------------------------------------------------
+
+  test "non-admin cannot get index" do
+    sign_in users(:one)
+    get headquarters_url
+    assert_redirected_to root_path
+    assert_equal I18n.t("pundit.not_authorized"), flash[:alert]
+  end
+
+  test "non-admin cannot get new" do
+    sign_in users(:one)
+    get new_headquarter_url
+    assert_redirected_to root_path
+    assert_equal I18n.t("pundit.not_authorized"), flash[:alert]
+  end
+
+  test "non-admin cannot get show" do
+    sign_in users(:one)
+    get headquarter_url(@headquarter)
+    assert_redirected_to root_path
+    assert_equal I18n.t("pundit.not_authorized"), flash[:alert]
+  end
+
+  test "non-admin cannot get edit" do
+    sign_in users(:one)
+    get edit_headquarter_url(@headquarter)
+    assert_redirected_to root_path
+    assert_equal I18n.t("pundit.not_authorized"), flash[:alert]
+  end
+
+  test "non-admin cannot create headquarter" do
+    sign_in users(:one)
+    assert_no_difference("Headquarter.count") do
+      post headquarters_url, params: {
+        headquarter: {
+          country: "Argentina",
+          state: "Córdoba",
+          city: "Córdoba",
+          address: "Av. Colón 1500",
+          phone: "351 555 1234"
+        }
+      }
+    end
+    assert_redirected_to root_path
+    assert_equal I18n.t("pundit.not_authorized"), flash[:alert]
+  end
+
+  test "non-admin cannot update headquarter" do
+    sign_in users(:one)
+    original_city = @headquarter.city
+    patch headquarter_url(@headquarter), params: { headquarter: { city: "San Rafael" } }
+    assert_redirected_to root_path
+    assert_equal I18n.t("pundit.not_authorized"), flash[:alert]
+    assert_equal original_city, @headquarter.reload.city
+  end
+
+  test "non-admin cannot destroy headquarter" do
+    sign_in users(:one)
+    assert_no_difference("Headquarter.count") do
+      delete headquarter_url(@headquarter)
+    end
+    assert_redirected_to root_path
+    assert_equal I18n.t("pundit.not_authorized"), flash[:alert]
   end
 end

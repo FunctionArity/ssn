@@ -2,21 +2,26 @@ class ChurchesController < ApplicationController
   before_action :set_church, only: %i[ show edit update destroy ]
 
   def index
+    authorize Church
     @churches = Church.order(:name)
   end
 
   def show
+    authorize @church
   end
 
   def new
     @church = Church.new
+    authorize @church
   end
 
   def edit
+    authorize @church
   end
 
   def create
     @church = Church.new(church_params)
+    authorize @church
 
     respond_to do |format|
       if @church.save
@@ -30,6 +35,8 @@ class ChurchesController < ApplicationController
   end
 
   def update
+    authorize @church
+
     respond_to do |format|
       if @church.update(church_params)
         format.html { redirect_to @church, notice: t("churches.notices.updated"), status: :see_other }
@@ -42,6 +49,7 @@ class ChurchesController < ApplicationController
   end
 
   def destroy
+    authorize @church
     @church.destroy!
 
     respond_to do |format|

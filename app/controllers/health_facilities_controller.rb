@@ -2,21 +2,26 @@ class HealthFacilitiesController < ApplicationController
   before_action :set_health_facility, only: %i[ show edit update destroy ]
 
   def index
+    authorize HealthFacility
     @health_facilities = HealthFacility.order(:name)
   end
 
   def show
+    authorize @health_facility
   end
 
   def new
     @health_facility = HealthFacility.new
+    authorize @health_facility
   end
 
   def edit
+    authorize @health_facility
   end
 
   def create
     @health_facility = HealthFacility.new(health_facility_params)
+    authorize @health_facility
 
     respond_to do |format|
       if @health_facility.save
@@ -30,6 +35,8 @@ class HealthFacilitiesController < ApplicationController
   end
 
   def update
+    authorize @health_facility
+
     respond_to do |format|
       if @health_facility.update(health_facility_params)
         format.html { redirect_to @health_facility, notice: t("health_facilities.notices.updated"), status: :see_other }
@@ -42,6 +49,7 @@ class HealthFacilitiesController < ApplicationController
   end
 
   def destroy
+    authorize @health_facility
     @health_facility.destroy!
 
     respond_to do |format|
