@@ -15,11 +15,12 @@
               placeholder: t(".search_placeholder"),
               autocomplete: "off",
               data: { user_search_target: "input", action: "input->user-search#search" },
-              class: "w-full rounded-md border border-gray-300 pl-9 pr-3 py-2 shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500" %>
+              class: "w-full rounded-md border border-gray-300 pl-9 pr-9 py-2 shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500" %>
+        <i data-user-search-target="spinner" class="ph ph-spinner absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 animate-spin hidden"></i>
       </div>
     <% end %>
 
-    <%= turbo_frame_tag "users_list", target: "_top", data: { user_search_target: "frame", action: "turbo:frame-load->user-search#expandResults" } do %>
+    <%= turbo_frame_tag "users_list", target: "_top", data: { user_search_target: "frame", action: "turbo:before-fetch-request->user-search#showSpinner turbo:frame-load->user-search#onFrameLoad" } do %>
       <% if current_user.super_admin? && @recent_logins.any? %>
         <%= render "recent_logins", recent_logins: @recent_logins %>
       <% end %>
