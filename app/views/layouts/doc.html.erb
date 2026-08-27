@@ -6,8 +6,8 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
-    <link rel="icon" href="/icon.png" type="image/png">
-    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="icon" href="/icon.png?v=2" type="image/png">
+    <link rel="icon" href="/icon.svg?v=2" type="image/svg+xml">
 
     <% if Rails.application.credentials.google_maps_api_key.present? %>
       <meta name="google-maps-api-key" content="<%= Rails.application.credentials.google_maps_api_key %>">
