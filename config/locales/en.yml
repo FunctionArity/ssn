@@ -102,6 +102,7 @@ en:
       show: Show
       search_placeholder: Search by first or last name...
       no_results: No users found.
+      clear_search: Clear search
     show:
       edit: Edit this user
       back: Back to users
