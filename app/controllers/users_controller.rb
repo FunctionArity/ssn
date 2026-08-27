@@ -3,8 +3,13 @@ class UsersController < ApplicationController
 
   # GET /users or /users.json
   def index
-    @users_by_role = User.grouped_by_role
-    @recent_logins = User.unscoped.recent_logins if current_user.super_admin?
+    @query = params[:q].to_s.strip
+    searching = @query.length >= 3
+    @users_by_role = (searching ? User.search_by_name(@query) : User.all).grouped_by_role
+
+    return unless current_user.super_admin?
+    @recent_logins = User.unscoped.recent_logins
+    @recent_logins = @recent_logins.search_by_name(@query) if searching
   end
 
   # GET /users/1 or /users/1.json

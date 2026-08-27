@@ -4,46 +4,53 @@
 
 import { application } from "./application"
 
-import HelloController from "./hello_controller"
-application.register("hello", HelloController)
-
-import GuardianSearchController from "./guardian_search_controller"
-import GuardianSetupSearchController from "./guardian_setup_search_controller"
-application.register("guardian-search", GuardianSearchController)
-application.register("guardian-setup-search", GuardianSetupSearchController)
-
-import PriestAssignNewController from "./priest_assign_new_controller"
-application.register("priest-assign-new", PriestAssignNewController)
-
-import DisclosureController from "./disclosure_controller"
-application.register("disclosure", DisclosureController)
-
 import AddressMapController from "./address_map_controller"
 application.register("address-map", AddressMapController)
-
-import HealthFacilitySearchController from "./health_facility_search_controller"
-application.register("health-facility-search", HealthFacilitySearchController)
-
-import RoleSelectorController from "./role_selector_controller"
-application.register("role-selector", RoleSelectorController)
-
-import ChurchMapController from "./church_map_controller"
-application.register("church-map", ChurchMapController)
-
-import GuardDateReloadController from "./guard_date_reload_controller"
-application.register("guard-date-reload", GuardDateReloadController)
-
-import ClipboardController from "./clipboard_controller"
-application.register("clipboard", ClipboardController)
 
 import AvatarCropController from "./avatar_crop_controller"
 application.register("avatar-crop", AvatarCropController)
 
+import ChurchMapController from "./church_map_controller"
+application.register("church-map", ChurchMapController)
+
+import ClipboardController from "./clipboard_controller"
+application.register("clipboard", ClipboardController)
+
+import ConfirmDialogController from "./confirm_dialog_controller"
+application.register("confirm-dialog", ConfirmDialogController)
+
+import DisclosureController from "./disclosure_controller"
+application.register("disclosure", DisclosureController)
+
+import GuardDateReloadController from "./guard_date_reload_controller"
+application.register("guard-date-reload", GuardDateReloadController)
+
 import GuardSelectController from "./guard_select_controller"
 application.register("guard-select", GuardSelectController)
+
+import GuardianSearchController from "./guardian_search_controller"
+application.register("guardian-search", GuardianSearchController)
+
+import GuardianSetupSearchController from "./guardian_setup_search_controller"
+application.register("guardian-setup-search", GuardianSetupSearchController)
+
+import HeadquartersFilterController from "./headquarters_filter_controller"
+application.register("headquarters-filter", HeadquartersFilterController)
+
+import HealthFacilitySearchController from "./health_facility_search_controller"
+application.register("health-facility-search", HealthFacilitySearchController)
+
+import HelloController from "./hello_controller"
+application.register("hello", HelloController)
 
 import MobileNavController from "./mobile_nav_controller"
 application.register("mobile-nav", MobileNavController)
 
-import HeadquartersFilterController from "./headquarters_filter_controller"
-application.register("headquarters-filter", HeadquartersFilterController)
+import PriestAssignNewController from "./priest_assign_new_controller"
+application.register("priest-assign-new", PriestAssignNewController)
+
+import RoleSelectorController from "./role_selector_controller"
+application.register("role-selector", RoleSelectorController)
+
+import UserSearchController from "./user_search_controller"
+application.register("user-search", UserSearchController)
