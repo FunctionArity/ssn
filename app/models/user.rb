@@ -19,6 +19,10 @@ class User < ApplicationRecord
   scope :priests_without_setup, -> { priests.where.not(id: PriestSetup.select(:priest_id)) }
   scope :grouped_by_role, -> { order(:last_name, :first_name).group_by(&:role) }
   scope :recent_logins, -> { where.not(last_sign_in_at: nil).order(last_sign_in_at: :desc).limit(20) }
+  scope :search_by_name, ->(query) {
+    sanitized = "%#{sanitize_sql_like(query)}%"
+    where("first_name ILIKE :q OR last_name ILIKE :q", q: sanitized)
+  }
 
   belongs_to :church, optional: true
 

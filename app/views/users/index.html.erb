@@ -6,13 +6,41 @@
         action_label: t(".new_user"),
         action_path: new_user_path %>
 
-  <% if current_user.super_admin? && @recent_logins.any? %>
-    <%= render "recent_logins", recent_logins: @recent_logins %>
-  <% end %>
+  <div data-controller="user-search">
+    <%= form_with url: users_path, method: :get, data: { turbo_frame: "users_list", user_search_target: "form" } do |f| %>
+      <div class="relative mb-4">
+        <i class="ph ph-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+        <%= f.text_field :q,
+              value: @query,
+              placeholder: t(".search_placeholder"),
+              autocomplete: "off",
+              data: { user_search_target: "input", action: "input->user-search#search" },
+              class: "w-full rounded-md border border-gray-300 pl-9 pr-9 py-2 shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500" %>
+        <i data-user-search-target="spinner" class="ph ph-spinner absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 animate-spin hidden"></i>
+        <button type="button"
+                data-user-search-target="clear"
+                data-action="click->user-search#clear"
+                aria-label="<%= t(".clear_search") %>"
+                class="<%= "hidden" if @query.blank? %> absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 cursor-pointer">
+          <i class="ph ph-x"></i>
+        </button>
+      </div>
+    <% end %>
 
-  <% %w[guardian vocal priest].each do |role| %>
-    <% users = @users_by_role[role] %>
-    <% next if users.blank? %>
-    <%= render "role_group", role: role, users: users %>
-  <% end %>
+    <%= turbo_frame_tag "users_list", target: "_top", data: { user_search_target: "frame", action: "turbo:before-fetch-request->user-search#showSpinner turbo:frame-load->user-search#onFrameLoad" } do %>
+      <% if current_user.super_admin? && @recent_logins.any? %>
+        <%= render "recent_logins", recent_logins: @recent_logins %>
+      <% end %>
+
+      <% if @users_by_role.blank? %>
+        <p class="text-center text-sm text-gray-500 py-10"><%= t(".no_results") %></p>
+      <% end %>
+
+      <% %w[guardian vocal priest].each do |role| %>
+        <% users = @users_by_role[role] %>
+        <% next if users.blank? %>
+        <%= render "role_group", role: role, users: users %>
+      <% end %>
+    <% end %>
+  </div>
 </div>

@@ -170,6 +170,9 @@ es:
       new_user: Nuevo usuario
       recent_logins: Últimos accesos
       show: Ver
+      search_placeholder: Buscar por nombre o apellido...
+      no_results: No se encontraron usuarios.
+      clear_search: Limpiar búsqueda
     show:
       edit: Editar este usuario
       back: Volver a usuarios

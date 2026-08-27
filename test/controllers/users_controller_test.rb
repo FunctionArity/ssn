@@ -251,4 +251,38 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
   test "recent_logins query returns at most 20 records" do
     assert User.recent_logins.size <= 20
   end
+
+  # ---------------------------------------------------------------------------
+  # Search
+  # ---------------------------------------------------------------------------
+
+  test "index filters users by first or last name when query has 3+ characters" do
+    get users_url, params: { q: users(:one).first_name[0, 3] }
+    assert_response :success
+    assert_match users(:one).email, response.body
+  end
+
+  test "index does not filter users when query has fewer than 3 characters" do
+    get users_url, params: { q: "ab" }
+    assert_response :success
+    assert_match users(:one).email, response.body
+  end
+
+  test "index excludes users that do not match the search query" do
+    get users_url, params: { q: "zzzzznomatch" }
+    assert_response :success
+    assert_no_match(/#{Regexp.escape(users(:one).email)}/, response.body)
+  end
+
+  test "index filters recent logins by the search query too" do
+    users(:one).update!(last_sign_in_at: 1.hour.ago)
+    users(:two).update!(last_sign_in_at: 2.hours.ago)
+    sign_in users(:super_admin)
+
+    get users_url, params: { q: users(:one).first_name[0, 3] }
+
+    assert_response :success
+    assert_match users(:one).email, response.body
+    assert_no_match(/#{Regexp.escape(users(:two).email)}/, response.body)
+  end
 end
