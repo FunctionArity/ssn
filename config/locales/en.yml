@@ -223,6 +223,9 @@ en:
       title: Health Facilities
       new_health_facility: New health facility
       show: Show
+      search_placeholder: Search by name...
+      no_results: No health facilities found.
+      clear_search: Clear search
     show:
       edit: Edit this health facility
       back: Back to health facilities

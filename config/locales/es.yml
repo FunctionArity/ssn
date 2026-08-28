@@ -430,6 +430,9 @@ es:
       title: Centros de Salud
       new_health_facility: Nuevo centro de salud
       show: Ver
+      search_placeholder: Buscar por nombre...
+      no_results: No se encontraron centros de salud.
+      clear_search: Limpiar búsqueda
     show:
       edit: Editar este centro de salud
       back: Volver a centros de salud

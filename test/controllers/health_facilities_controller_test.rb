@@ -151,4 +151,33 @@ class HealthFacilitiesControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to root_path
     assert_equal I18n.t("pundit.not_authorized"), flash[:alert]
   end
+
+  # ---------------------------------------------------------------------------
+  # Search
+  # ---------------------------------------------------------------------------
+
+  test "index filters health facilities by name when query has 3+ characters" do
+    get health_facilities_url, params: { q: health_facilities(:one).name[0, 4] }
+    assert_response :success
+    assert_match health_facilities(:one).name, response.body
+  end
+
+  test "index does not filter health facilities when query has fewer than 3 characters" do
+    get health_facilities_url, params: { q: "ab" }
+    assert_response :success
+    assert_match health_facilities(:one).name, response.body
+    assert_match health_facilities(:two).name, response.body
+  end
+
+  test "index excludes health facilities that do not match the search query" do
+    get health_facilities_url, params: { q: "zzzzznomatch" }
+    assert_response :success
+    assert_no_match(/#{Regexp.escape(health_facilities(:one).name)}/, response.body)
+  end
+
+  test "index does not filter health facilities by address" do
+    get health_facilities_url, params: { q: health_facilities(:one).address[0, 4] }
+    assert_response :success
+    assert_no_match(/#{Regexp.escape(health_facilities(:one).name)}/, response.body)
+  end
 end
