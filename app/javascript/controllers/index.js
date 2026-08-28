@@ -37,6 +37,9 @@ application.register("guardian-setup-search", GuardianSetupSearchController)
 import HeadquartersFilterController from "./headquarters_filter_controller"
 application.register("headquarters-filter", HeadquartersFilterController)
 
+import HealthFacilitiesSearchController from "./health_facilities_search_controller"
+application.register("health-facilities-search", HealthFacilitiesSearchController)
+
 import HealthFacilitySearchController from "./health_facility_search_controller"
 application.register("health-facility-search", HealthFacilitySearchController)
 

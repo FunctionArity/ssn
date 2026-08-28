@@ -6,24 +6,52 @@
         action_label: t(".new_health_facility"),
         action_path: new_health_facility_path %>
 
-  <div id="health_facilities" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-    <% @health_facilities.each do |health_facility| %>
-      <div class="bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-0.5 overflow-hidden">
-        <div class="px-5 py-4 flex items-center gap-3 border-b border-gray-100 bg-gradient-to-r from-teal-50 to-white">
-          <div class="flex items-center justify-center w-9 h-9 rounded-full bg-teal-100 text-teal-700 shrink-0">
-            <i class="ph ph-hospital text-base"></i>
+  <div data-controller="health-facilities-search">
+    <%= form_with url: health_facilities_path, method: :get, data: { turbo_frame: "health_facilities_list", health_facilities_search_target: "form" } do |f| %>
+      <div class="relative mb-4">
+        <i class="ph ph-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+        <%= f.text_field :q,
+              value: @query,
+              placeholder: t(".search_placeholder"),
+              autocomplete: "off",
+              data: { health_facilities_search_target: "input", action: "input->health-facilities-search#search" },
+              class: "w-full rounded-md border border-gray-300 pl-9 pr-9 py-2 shadow-sm focus:border-teal-500 focus:ring-1 focus:ring-teal-500" %>
+        <i data-health-facilities-search-target="spinner" class="ph ph-spinner absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 animate-spin hidden"></i>
+        <button type="button"
+                data-health-facilities-search-target="clear"
+                data-action="click->health-facilities-search#clear"
+                aria-label="<%= t(".clear_search") %>"
+                class="<%= "hidden" if @query.blank? %> absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 cursor-pointer">
+          <i class="ph ph-x"></i>
+        </button>
+      </div>
+    <% end %>
+
+    <%= turbo_frame_tag "health_facilities_list", target: "_top", data: { health_facilities_search_target: "frame", action: "turbo:before-fetch-request->health-facilities-search#showSpinner turbo:frame-load->health-facilities-search#onFrameLoad" } do %>
+      <% if @health_facilities.blank? %>
+        <p class="text-center text-sm text-gray-500 py-10"><%= t(".no_results") %></p>
+      <% end %>
+
+      <div id="health_facilities" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <% @health_facilities.each do |health_facility| %>
+          <div class="health-facility-card bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-0.5 overflow-hidden">
+            <div class="px-5 py-4 flex items-center gap-3 border-b border-gray-100 bg-gradient-to-r from-teal-50 to-white">
+              <div class="flex items-center justify-center w-9 h-9 rounded-full bg-teal-100 text-teal-700 shrink-0">
+                <i class="ph ph-hospital text-base"></i>
+              </div>
+              <p class="font-semibold text-gray-900 truncate"><%= health_facility.name %></p>
+            </div>
+            <div class="px-5 py-3 flex items-center justify-between gap-3">
+              <div class="flex items-center gap-2 min-w-0">
+                <i class="ph ph-map-pin text-gray-400 shrink-0"></i>
+                <p class="text-sm text-gray-500 truncate"><%= health_facility.address %></p>
+              </div>
+              <%= link_to health_facility, class: "flex items-center gap-1 text-sm font-medium text-blue-600 hover:text-blue-800 shrink-0" do %>
+                <i class="ph ph-arrow-right"></i> <%= t(".show") %>
+              <% end %>
+            </div>
           </div>
-          <p class="font-semibold text-gray-900 truncate"><%= health_facility.name %></p>
-        </div>
-        <div class="px-5 py-3 flex items-center justify-between gap-3">
-          <div class="flex items-center gap-2 min-w-0">
-            <i class="ph ph-map-pin text-gray-400 shrink-0"></i>
-            <p class="text-sm text-gray-500 truncate"><%= health_facility.address %></p>
-          </div>
-          <%= link_to health_facility, class: "flex items-center gap-1 text-sm font-medium text-blue-600 hover:text-blue-800 shrink-0" do %>
-            <i class="ph ph-arrow-right"></i> <%= t(".show") %>
-          <% end %>
-        </div>
+        <% end %>
       </div>
     <% end %>
   </div>

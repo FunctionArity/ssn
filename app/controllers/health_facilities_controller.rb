@@ -3,7 +3,9 @@ class HealthFacilitiesController < ApplicationController
 
   def index
     authorize HealthFacility
-    @health_facilities = HealthFacility.order(:name)
+    @query = params[:q].to_s.strip
+    scope = @query.length >= 3 ? HealthFacility.search_by_name(@query) : HealthFacility.all
+    @health_facilities = scope.order(:name)
   end
 
   def show
