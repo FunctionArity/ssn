@@ -456,6 +456,10 @@ es:
       created: El centro de salud fue creado exitosamente.
       updated: El centro de salud fue actualizado exitosamente.
       destroyed: El centro de salud fue eliminado exitosamente.
+  layouts:
+    doc_navbar:
+      sedes: Sedes
+      federacion: Federación
   doc:
     headquarters:
       index:
@@ -465,10 +469,12 @@ es:
         clear_filters: Limpiar filtros
         results_label: sedes
         empty: No hay sedes que coincidan con los filtros seleccionados.
+      show:
+        title: Sedes
         back: Volver a sedes
         map: Mapa
         open_in_maps: Abrir en Google Maps
-        map_placeholder: Cargando mapa…
+        copy: Copiar
     federacion:
       index:
         title: 44ª Asamblea Nacional de los Servicios Sacerdotales de Urgencia y Nocturnos de la República Argentina

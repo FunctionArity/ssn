@@ -248,6 +248,10 @@ en:
       created: Health facility was successfully created.
       updated: Health facility was successfully updated.
       destroyed: Health facility was successfully destroyed.
+  layouts:
+    doc_navbar:
+      sedes: Headquarters
+      federacion: Federation
   doc:
     headquarters:
       index:
@@ -257,10 +261,12 @@ en:
         clear_filters: Clear filters
         results_label: headquarters
         empty: No headquarters match the selected filters.
+      show:
+        title: Headquarters
         back: Back to headquarters
         map: Map
         open_in_maps: Open in Google Maps
-        map_placeholder: Loading map…
+        copy: Copy
     federacion:
       index:
         title: 44ª Asamblea Nacional de los Servicios Sacerdotales de Urgencia y Nocturnos de la República Argentina
