@@ -10,4 +10,9 @@ class Doc::HeadquartersControllerTest < ActionDispatch::IntegrationTest
     get doc_headquarters_url
     assert_select "[data-headquarters-filter-target=card]", Headquarter.count
   end
+
+  test "should get show without authentication" do
+    get sede_url(headquarters(:one))
+    assert_response :success
+  end
 end

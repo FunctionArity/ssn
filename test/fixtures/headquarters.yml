@@ -6,6 +6,7 @@ one:
   phone: "261 555 1234"
   email: ssu.mendoza@example.com
   whatsapp: "261 555 1234"
+  slug: mendoza-mendoza
 
 two:
   country: Ecuador
@@ -13,3 +14,4 @@ two:
   city: Quito
   address: Caldas, entre Av. Pichincha y Ríos
   email: ssu.quito@example.com
+  slug: quito

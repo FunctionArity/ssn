@@ -31,10 +31,11 @@ Rails.application.routes.draw do
   resources :headquarters
 
   namespace :doc do
-    resources :headquarters, only: %i[ index ]
+    resources :headquarters, only: %i[ index show ]
     resources :federacion, only: %i[ index ]
   end
   get "sedes", to: "doc/headquarters#index", as: :sedes
+  get "sedes/:id", to: "doc/headquarters#show", as: :sede
   get "federacion", to: "doc/federacion#index", as: :federacion
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

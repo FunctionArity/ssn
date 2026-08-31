@@ -1,9 +1,10 @@
 import { Controller } from "@hotwired/stimulus"
+import { Turbo } from "@hotwired/turbo-rails"
 
 const FACETS = ["country", "state", "city"]
 
 export default class extends Controller {
-  static targets = ["card", "panel", "badge", "checkbox", "count", "empty", "filters", "grid", "detail"]
+  static targets = ["card", "panel", "badge", "checkbox", "count", "empty"]
 
   connect() {
     this.outsideClick = (event) => {
@@ -40,45 +41,9 @@ export default class extends Controller {
     this.filter()
   }
 
-  expand(event) {
-    const id = String(event.params.headquarterId)
-    this.closePanels()
-    this.filtersTarget.classList.add("hidden")
-    this.gridTarget.classList.add("hidden")
-    this.emptyTarget.classList.add("hidden")
-
-    this.detailTargets.forEach((detail) => {
-      const match = detail.dataset.headquarterId === id
-      if (!match) {
-        detail.classList.add("hidden")
-        return
-      }
-
-      this.reveal(detail)
-      this.initMap(detail)
-    })
-
-    this.element.scrollIntoView({ behavior: "smooth", block: "start" })
-  }
-
-  collapse() {
-    this.detailTargets.forEach((detail) => detail.classList.add("hidden"))
-    this.filtersTarget.classList.remove("hidden")
-    this.reveal(this.gridTarget)
-    this.filter()
-  }
-
-  initMap(detail) {
-    const holder = detail.querySelector("[data-map-holder]")
-    if (!holder || holder.dataset.mapReady) return
-    holder.dataset.mapReady = "true"
-
-    holder.innerHTML = ""
-    holder.classList.remove("flex", "items-center", "justify-center")
-    holder.setAttribute("data-controller", "address-map")
-    holder.setAttribute("data-address-map-target", "map")
-    holder.setAttribute("data-address-map-initial-address-value", holder.dataset.mapAddress)
-    holder.setAttribute("data-address-map-restrict-country-value", "false")
+  visit(event) {
+    if (event.target.closest("a")) return
+    Turbo.visit(event.params.url)
   }
 
   filter() {

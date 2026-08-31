@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_07_17_214349) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_31_152423) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -103,10 +103,12 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_17_214349) do
     t.string "facebook"
     t.string "instagram"
     t.string "phone"
+    t.string "slug", null: false
     t.string "state", null: false
     t.datetime "updated_at", null: false
     t.string "web_address"
     t.string "whatsapp"
+    t.index ["slug"], name: "index_headquarters_on_slug", unique: true
   end
 
   create_table "health_facilities", force: :cascade do |t|

@@ -61,7 +61,7 @@ class HeadquartersController < ApplicationController
   private
 
   def set_headquarter
-    @headquarter = Headquarter.find(params.expect(:id))
+    @headquarter = Headquarter.friendly.find(params.expect(:id))
   end
 
   def headquarter_params

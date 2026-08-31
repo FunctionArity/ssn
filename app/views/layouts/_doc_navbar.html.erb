@@ -1,0 +1,21 @@
+<nav class="bg-gradient-to-br from-indigo-950 via-indigo-900 to-blue-900 border-b border-white/10">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between h-14 items-center">
+      <%= link_to root_path, class: "flex items-center gap-2 shrink-0" do %>
+        <div class="flex items-center justify-center w-8 h-8 rounded-full bg-white/10 border border-white/20">
+          <%= image_tag "icon.svg", class: "h-5 w-5" %>
+        </div>
+        <span class="hidden sm:inline text-sm font-semibold text-white">Servicio Sacerdotal Nocturno</span>
+      <% end %>
+
+      <div class="flex items-center gap-1 sm:gap-2 text-sm font-medium">
+        <%= link_to t(".sedes"), sedes_path,
+              class: "px-3 py-1.5 rounded-md transition-colors #{controller_path == "doc/headquarters" ? "text-white bg-white/10" : "text-indigo-200 hover:text-white hover:bg-white/5"}" %>
+        <%= link_to t(".federacion"), federacion_path,
+              class: "px-3 py-1.5 rounded-md transition-colors #{controller_path == "doc/federacion" ? "text-white bg-white/10" : "text-indigo-200 hover:text-white hover:bg-white/5"}" %>
+        <%= link_to t("devise.sessions.sign_in"), new_user_session_path,
+              class: "ml-1 flex items-center gap-1.5 rounded-md bg-white px-3 py-1.5 text-indigo-900 font-semibold hover:bg-indigo-50" %>
+      </div>
+    </div>
+  </div>
+</nav>
