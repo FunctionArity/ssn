@@ -42,6 +42,22 @@ class User < ApplicationRecord
     end
   end
 
+  def role_icon_class
+    case role
+    when "guardian" then "ph-user"
+    when "vocal"    then "ph-user-circle"
+    when "priest"   then "ph-cross"
+    end
+  end
+
+  def role_icon_color_class
+    case role
+    when "guardian" then "text-green-600"
+    when "vocal"    then "text-red-600"
+    when "priest"   then "text-purple-600"
+    end
+  end
+
   def full_name
     "#{last_name} #{first_name}"
   end
