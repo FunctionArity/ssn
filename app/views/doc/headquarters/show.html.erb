@@ -3,7 +3,7 @@
 <% full_address = [ @headquarter.address, @headquarter.city, @headquarter.state, @headquarter.country ].compact_blank.join(", ") %>
 <% clipboard_text = [
      "#{Headquarter.model_name.human}: #{@headquarter.city}, #{@headquarter.state}, #{@headquarter.country}",
-     "#{Headquarter.human_attribute_name(:address)}: https://maps.google.com/?q=#{ERB::Util.url_encode(full_address)}",
+     "#{Headquarter.human_attribute_name(:address)}: [#{@headquarter.address}](https://maps.google.com/?q=#{ERB::Util.url_encode(full_address)})",
      ("#{Headquarter.human_attribute_name(:phone)}: #{@headquarter.phone}" if @headquarter.phone.present?),
      ("#{Headquarter.human_attribute_name(:whatsapp)}: #{@headquarter.whatsapp}" if @headquarter.whatsapp.present?),
      ("#{Headquarter.human_attribute_name(:email)}: #{@headquarter.email}" if @headquarter.email.present?),
