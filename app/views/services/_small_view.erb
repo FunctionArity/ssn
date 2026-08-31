@@ -1,5 +1,14 @@
 <%= turbo_frame_tag dom_id(service) do %>
-  <div class="bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-0.5 overflow-hidden flex flex-col">
+  <%= link_to service, data: { turbo_frame: "_top" }, class: "sm:hidden flex items-center gap-3 px-4 py-3 bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-all duration-200" do %>
+    <div class="w-2 h-2 rounded-full shrink-0 <%= service.pending? ? "bg-red-500" : "bg-green-500" %>"></div>
+    <div class="min-w-0 flex-1">
+      <p class="text-sm font-semibold text-gray-900 truncate"><%= service.full_name %></p>
+      <p class="text-xs text-gray-500 truncate"><%= l(service.due_date, format: :long) %></p>
+    </div>
+    <span class="<%= service.pending? ? "badge_red" : "badge_green" %> shrink-0"><%= t("services.status.#{service.status}") %></span>
+  <% end %>
+
+  <div class="hidden sm:flex bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-0.5 overflow-hidden flex-col">
 
     <% header_class = service.pending? ? "bg-gradient-to-r from-red-100 to-white" : "bg-gradient-to-r from-green-100 to-white" %>
     <% date_class   = service.pending? ? "text-red-500" : "text-green-600" %>
