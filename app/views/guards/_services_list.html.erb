@@ -1,0 +1,29 @@
+<% if services.any? %>
+  <div id="guard_<%= guard.id %>_services" data-controller="service-reorder" class="bg-white border border-gray-200 rounded-xl overflow-hidden divide-y divide-gray-100">
+    <% services.each do |service| %>
+      <div id="<%= dom_id(service, :row) %>"
+           data-service-reorder-target="row"
+           data-service-id="<%= service.id %>"
+           draggable="true"
+           data-action="dragstart->service-reorder#dragStart dragend->service-reorder#dragEnd dragover->service-reorder#dragOver dragleave->service-reorder#dragLeave drop->service-reorder#drop"
+           class="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 transition-colors">
+        <i class="ph ph-dots-six-vertical text-gray-300 cursor-grab shrink-0" title="Arrastrar para reordenar"></i>
+        <%= link_to service, class: "flex items-center gap-4 flex-1 min-w-0" do %>
+          <% icon_class = service.pending? ? "bg-red-100 text-red-600" : "bg-green-100 text-green-600" %>
+          <div class="flex items-center justify-center w-8 h-8 rounded-full <%= icon_class %> shrink-0">
+            <i class="ph ph-hand-heart text-sm"></i>
+          </div>
+          <div class="flex-1 min-w-0">
+            <p class="text-sm font-medium text-gray-900 truncate"><%= service.full_name %></p>
+            <p class="text-xs text-gray-400 mt-0.5"><%= l(service.due_date, format: :long) %><%= " · #{service.health_facility.name}" if service.health_facility.present? %></p>
+          </div>
+          <% status_class = service.pending? ? "badge_red" : "badge_green" %>
+          <span class="<%= status_class %> shrink-0"><%= t("services.status.#{service.status}") %></span>
+          <i class="ph ph-caret-right text-gray-400 shrink-0"></i>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+<% else %>
+  <p class="text-sm text-gray-400">No hay servicios registrados para esta guardia.</p>
+<% end %>

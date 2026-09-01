@@ -13,6 +13,10 @@
           <i class="ph ph-calendar-check text-sm"></i>
         </div>
         <span class="text-xs font-semibold text-indigo-600 uppercase tracking-wide"><%= t(".current_guard") %>: <%= l(@current_guard.due_date, format: :long) %></span>
+
+        <span class="flex items-center gap-1 text-xs text-gray-400">
+          <i class="ph ph-hand-heart"></i> <%= @current_guard.services.count %> <%= t("guards.index.services_count", count: @current_guard.services.count) %>
+        </span>
         <span class="ml-auto text-xs font-bold text-indigo-400"># <%= @current_guard.day_number %></span>
       </div>
       <div class="grid grid-cols-1 sm:grid-cols-2 divide-y sm:divide-y-0 sm:divide-x divide-indigo-100">
@@ -48,20 +52,7 @@
 
   <%= turbo_stream_from "services" %>
 
-  <div id="services" class="space-y-6">
-    <% @services.group_by { |s| s.due_date.to_date }.sort.reverse.each do |date, services| %>
-      <div>
-        <h2 class="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3">
-          <%= l(date, format: :long) %>
-        </h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          <% services.each do |service| %>
-            <%= render partial: "small_view", locals: { service: service } %>
-          <% end %>
-        </div>
-      </div>
-    <% end %>
-  </div>
+  <%= render "services_grid", services: @services %>
 
   <% if @pending_other_services.any? %>
     <div class="mt-10">
@@ -71,7 +62,7 @@
       </h2>
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         <% @pending_other_services.each do |service| %>
-          <%= render partial: "small_view", locals: { service: service } %>
+          <%= render partial: "small_view", locals: { service: service, sortable: false } %>
         <% end %>
       </div>
     </div>

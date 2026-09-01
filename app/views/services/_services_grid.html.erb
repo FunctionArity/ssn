@@ -1,0 +1,5 @@
+<div id="services" data-controller="service-reorder" data-service-reorder-context-value="services_index" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+  <% services.each do |service| %>
+    <%= render partial: "services/small_view", locals: { service: service, sortable: true } %>
+  <% end %>
+</div>

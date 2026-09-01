@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+set -e
+
+DAY="${1:-$(date +%-d)}"
+
+DAY="$DAY" bundle exec rails runner db/seeds/services.rb

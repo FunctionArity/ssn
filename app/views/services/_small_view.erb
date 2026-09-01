@@ -1,19 +1,65 @@
-<%= turbo_frame_tag dom_id(service) do %>
-  <div class="bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-0.5 overflow-hidden flex flex-col">
+<% sortable = local_assigns.fetch(:sortable, true) %>
+<% frame_options = sortable ? {
+     draggable: true,
+     data: {
+       service_reorder_target: "row",
+       service_id: service.id,
+       action: "dragstart->service-reorder#dragStart dragend->service-reorder#dragEnd dragover->service-reorder#dragOver dragleave->service-reorder#dragLeave drop->service-reorder#drop"
+     }
+   } : {} %>
+<%= turbo_frame_tag dom_id(service), **frame_options do %>
+  <% card_bg_class = service.pending? ? "bg-red-50" : "bg-green-50" %>
+  <div class="sm:hidden flex items-center gap-3 px-4 py-3 <%= card_bg_class %> border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-all duration-200">
+    <% if sortable %>
+      <i class="ph ph-dots-six-vertical text-gray-400 cursor-grab shrink-0" title="Arrastrar para reordenar"></i>
+    <% end %>
+    <%= link_to service, data: { turbo_frame: "_top" }, class: "flex items-center gap-3 flex-1 min-w-0" do %>
+      <div class="w-2 h-2 rounded-full shrink-0 <%= service.pending? ? "bg-red-500" : "bg-green-500" %>"></div>
+      <div class="min-w-0 flex-1">
+        <p class="text-sm font-semibold text-gray-900 truncate"><%= service.full_name %></p>
+        <p class="text-xs text-gray-500 truncate"><%= l(service.due_date, format: :long) %></p>
+        <% if service.health_facility.present? %>
+          <p class="text-xs text-teal-600 truncate flex items-center gap-1">
+            <i class="ph ph-hospital text-xs shrink-0"></i> <%= service.health_facility.name %>
+          </p>
+        <% elsif service.address.present? %>
+          <p class="text-xs text-gray-500 truncate flex items-center gap-1">
+            <i class="ph ph-map-pin text-xs shrink-0"></i> <%= service.address %>
+          </p>
+        <% end %>
+      </div>
+    <% end %>
+    <% if service.pending? %>
+      <%= button_to complete_service_path(service), method: :post, form: { data: { turbo_confirm: t("services.show.complete_confirm") } }, class: "cursor-pointer badge_red shrink-0" do %>
+        <%= t("services.status.#{service.status}") %>
+      <% end %>
+    <% else %>
+      <span class="badge_green shrink-0"><%= t("services.status.#{service.status}") %></span>
+    <% end %>
+  </div>
+
+  <div class="hidden sm:flex bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-0.5 overflow-hidden flex-col">
 
     <% header_class = service.pending? ? "bg-gradient-to-r from-red-100 to-white" : "bg-gradient-to-r from-green-100 to-white" %>
     <% date_class   = service.pending? ? "text-red-500" : "text-green-600" %>
     <% icon_class   = service.pending? ? "bg-red-200 text-red-700" : "bg-green-200 text-green-700" %>
-    <div class="px-5 py-4 flex items-center justify-between <%= header_class %> border-b border-gray-100">
-      <div class="min-w-0 pr-3">
-        <p class="text-xs font-medium <%= date_class %> uppercase tracking-wide"><%= l(service.due_date, format: :long) %></p>
-        <p class="text-base font-bold text-gray-900 truncate mt-0.5"><%= service.full_name %></p>
-      </div>
-      <div class="flex flex-col items-end gap-2 shrink-0">
-        <% status_class = service.pending? ? "badge_red" : "badge_green" %>
-        <span class="<%= status_class %>"><%= t("services.status.#{service.status}") %></span>
-        <div class="flex items-center justify-center w-8 h-8 rounded-full <%= icon_class %>">
-          <i class="ph ph-hand-heart text-sm"></i>
+    <div class="<%= header_class %> border-b border-gray-100">
+      <% if sortable %>
+        <div class="flex items-center justify-center py-1 text-gray-400 cursor-grab" title="Arrastrar para reordenar">
+          <i class="ph ph-dots-six-vertical text-lg"></i>
+        </div>
+      <% end %>
+      <div class="px-5 <%= sortable ? "pb-4" : "py-4" %> flex items-center justify-between">
+        <div class="min-w-0 pr-3">
+          <p class="text-xs font-medium <%= date_class %> uppercase tracking-wide"><%= l(service.due_date, format: :long) %></p>
+          <p class="text-base font-bold text-gray-900 truncate mt-0.5"><%= service.full_name %></p>
+        </div>
+        <div class="flex flex-col items-end gap-2 shrink-0">
+          <% status_class = service.pending? ? "badge_red" : "badge_green" %>
+          <span class="<%= status_class %>"><%= t("services.status.#{service.status}") %></span>
+          <div class="flex items-center justify-center w-8 h-8 rounded-full <%= icon_class %>">
+            <i class="ph ph-hand-heart text-sm"></i>
+          </div>
         </div>
       </div>
     </div>
@@ -26,7 +72,7 @@
         <div class="min-w-0">
           <p class="text-xs text-gray-400"><%= Service.human_attribute_name(:guard) %></p>
           <p class="text-sm font-medium text-gray-900">
-            <%= link_to "Guardia ##{service.guard.day_number}", service.guard, class: "text-indigo-600 hover:underline", data: { turbo_frame: "_top" } %>
+            <%= link_to l(service.guard.due_date, format: :long), service.guard, class: "text-indigo-600 hover:underline", data: { turbo_frame: "_top" } %>
           </p>
         </div>
       </div>

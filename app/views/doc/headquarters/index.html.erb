@@ -79,33 +79,18 @@
           </div>
           <% [
                [ "ph-phone", headquarter.phone ],
+               [ "ph-globe", headquarter.web_address ],
                [ "ph-whatsapp-logo", headquarter.whatsapp ],
-               [ "ph-envelope-simple", headquarter.email ]
+               [ "ph-facebook-logo", headquarter.facebook ],
+               [ "ph-instagram-logo", headquarter.instagram ]
              ].each do |icon, value| %>
             <% next if value.blank? %>
             <div class="flex items-start gap-2">
               <i class="ph <%= icon %> text-gray-400 shrink-0 mt-0.5"></i>
-              <p class="text-sm text-gray-600 break-words min-w-0"><%= value %></p>
-            </div>
-          <% end %>
-          <% links = [
-               [ "ph-globe", headquarter.web_address ],
-               [ "ph-facebook-logo", headquarter.facebook ],
-               [ "ph-instagram-logo", headquarter.instagram ]
-             ].reject { |_icon, value| value.blank? } %>
-          <% if links.any? %>
-            <div class="flex items-center gap-3 pt-1 border-t border-gray-100">
-              <% links.each do |icon, value| %>
-                <% if value.start_with?("http") %>
-                  <%= link_to value, target: "_blank", rel: "noopener", class: "text-gray-400 hover:text-indigo-600" do %>
-                    <i class="ph <%= icon %> text-lg"></i>
-                  <% end %>
-                <% else %>
-                  <span class="flex items-center gap-1.5 text-sm text-gray-600 min-w-0" title="<%= value %>">
-                    <i class="ph <%= icon %> text-lg text-gray-400 shrink-0"></i>
-                    <span class="truncate"><%= value %></span>
-                  </span>
-                <% end %>
+              <% if value.start_with?("http") %>
+                <%= link_to value, value, target: "_blank", rel: "noopener", class: "text-sm text-blue-600 hover:underline break-words min-w-0" %>
+              <% else %>
+                <p class="text-sm text-gray-600 break-words min-w-0"><%= value %></p>
               <% end %>
             </div>
           <% end %>
