@@ -218,8 +218,8 @@
       <i class="ph ph-printer text-red-500"></i> <%= t("services.show.print_pdf") %>
     <% end %>
     <% if service.pending? %>
-      <%= button_to complete_service_path(service), form: { class: "w-full sm:w-auto" }, class: "w-full cursor-pointer flex items-center justify-center gap-1.5 rounded-md bg-green-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500" do %>
-        <i class="ph ph-check-circle"></i> <%= t("services.show.complete") %>
+      <%= button_to complete_service_path(service), form: { class: "w-full sm:w-auto" }, class: "w-full cursor-pointer flex items-center justify-center gap-1.5 rounded-md bg-red-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500" do %>
+        <%= t("services.show.complete") %>
       <% end %>
     <% end %>
     <%= button_to service, method: :delete, form: { class: "w-full sm:w-auto", data: { turbo_confirm: t("services.show.destroy_confirm") } }, class: "w-full cursor-pointer flex items-center justify-center gap-1.5 rounded-md bg-red-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500" do %>

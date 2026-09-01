@@ -4,7 +4,7 @@
         icon: "ph-hand-heart",
         icon_class: "bg-sky-100 text-sky-700",
         action_label: t(".new_service"),
-        action_path: new_service_path %>
+          action_path: new_service_path %>
 
   <% if @current_guard %>
     <div class="mb-6 bg-gradient-to-r from-indigo-50 to-white border border-indigo-100 rounded-xl overflow-hidden">
@@ -39,10 +39,7 @@
           </div>
         </div>
       </div>
-      <div class="px-4 py-3 border-t border-indigo-100 flex items-center justify-between">
-        <%= link_to new_service_path(guard_id: @current_guard.id), class: "flex items-center gap-1 text-sm font-medium text-green-600 hover:text-green-800" do %>
-          <i class="ph ph-plus-circle"></i> <%= t(".new_service") %>
-        <% end %>
+      <div class="px-4 py-3 border-t border-indigo-100 flex items-center justify-end">
         <%= link_to @current_guard, class: "flex items-center gap-1 text-sm font-medium text-blue-600 hover:text-blue-800" do %>
           <i class="ph ph-arrow-right"></i> <%= t(".view_guard") %>
         <% end %>

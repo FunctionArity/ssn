@@ -12,21 +12,21 @@
           <%= image_tag "icon.svg", class: "h-8 w-8" %>
         <% end %>
       </div>
-      <div class="flex items-center gap-4 text-sm">
+      <div class="flex items-center gap-2 sm:gap-4 text-sm min-w-0">
         <% if user_signed_in? && current_user != true_user %>
-            <%= button_to stop_impersonating_path, method: :post, class: "cursor-pointer flex items-center gap-1.5 rounded-md bg-violet-600 px-3 py-1.5 text-xs font-semibold text-white shadow-sm hover:bg-violet-500" do %>
+            <%= button_to stop_impersonating_path, method: :post, class: "cursor-pointer flex items-center gap-1.5 rounded-md bg-violet-600 px-3 py-1.5 text-xs font-semibold text-white shadow-sm hover:bg-violet-500 shrink-0" do %>
               <i class="ph ph-detective text-lg shrink-0"></i>
-              <%= t("users.impersonation.banner", name: current_user.full_name) %>
+              <span class="hidden sm:inline"><%= t("users.impersonation.banner", name: current_user.full_name) %></span>
             <% end %>
         <% end %>
 
         <% if user_signed_in? %>
-          <%= user_crown_icon %>
-          <i class="ph <%= current_user.role_icon_class %> <%= current_user.role_icon_color_class %>"
+          <span class="shrink-0"><%= user_crown_icon %></span>
+          <i class="ph <%= current_user.role_icon_class %> <%= current_user.role_icon_color_class %> shrink-0"
              title="<%= t("activerecord.attributes.user.roles.#{current_user.role}") %>"></i>
-          <span class="text-gray-600"><%= link_to current_user.full_name, user_path(current_user) %></span>
+          <%= link_to current_user.full_name, user_path(current_user), class: "text-gray-600 truncate max-w-[110px] sm:max-w-none" %>
 
-          <%= button_to destroy_user_session_path, method: :delete, class: "flex items-center gap-1 text-blue-600 hover:text-blue-800 font-medium cursor-pointer" do %>
+          <%= button_to destroy_user_session_path, method: :delete, class: "flex items-center gap-1 text-blue-600 hover:text-blue-800 font-medium cursor-pointer shrink-0" do %>
             <i class="ph ph-sign-out"></i>
           <% end %>
         <% else %>
