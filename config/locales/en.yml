@@ -92,6 +92,7 @@ en:
             base:
               missing_contact: "must have at least one contact method (phone, email or WhatsApp)"
   sidebar:
+    menu: Menu
     setup: Setup
     documentation: Documentation
   users:

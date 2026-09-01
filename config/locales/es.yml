@@ -162,6 +162,7 @@ es:
         one: "1 error impidió guardar este %{resource}:"
         other: "%{count} errores impidieron guardar este %{resource}:"
   sidebar:
+    menu: Menú
     setup: Configuración
     documentation: Documentación
   users:
