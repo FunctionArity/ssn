@@ -13,6 +13,10 @@
           <i class="ph ph-calendar-check text-sm"></i>
         </div>
         <span class="text-xs font-semibold text-indigo-600 uppercase tracking-wide"><%= t(".current_guard") %>: <%= l(@current_guard.due_date, format: :long) %></span>
+
+        <span class="flex items-center gap-1 text-xs text-gray-400">
+          <i class="ph ph-hand-heart"></i> <%= @current_guard.services.count %> <%= t("guards.index.services_count", count: @current_guard.services.count) %>
+        </span>
         <span class="ml-auto text-xs font-bold text-indigo-400"># <%= @current_guard.day_number %></span>
       </div>
       <div class="grid grid-cols-1 sm:grid-cols-2 divide-y sm:divide-y-0 sm:divide-x divide-indigo-100">

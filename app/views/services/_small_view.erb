@@ -4,6 +4,15 @@
     <div class="min-w-0 flex-1">
       <p class="text-sm font-semibold text-gray-900 truncate"><%= service.full_name %></p>
       <p class="text-xs text-gray-500 truncate"><%= l(service.due_date, format: :long) %></p>
+      <% if service.health_facility.present? %>
+        <p class="text-xs text-teal-600 truncate flex items-center gap-1">
+          <i class="ph ph-hospital text-xs shrink-0"></i> <%= service.health_facility.name %>
+        </p>
+      <% elsif service.address.present? %>
+        <p class="text-xs text-gray-500 truncate flex items-center gap-1">
+          <i class="ph ph-map-pin text-xs shrink-0"></i> <%= service.address %>
+        </p>
+      <% end %>
     </div>
     <span class="<%= service.pending? ? "badge_red" : "badge_green" %> shrink-0"><%= t("services.status.#{service.status}") %></span>
   <% end %>
