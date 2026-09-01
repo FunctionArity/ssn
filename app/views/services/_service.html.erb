@@ -73,7 +73,7 @@
       <div>
         <p class="text-xs font-medium text-gray-400 uppercase tracking-wide"><%= Service.human_attribute_name(:guard) %></p>
         <p class="text-sm font-semibold text-gray-900 mt-0.5">
-          <%= link_to "Guardia ##{service.guard.day_number}", service.guard, class: "text-indigo-600 hover:underline" %>
+          <%= link_to l(service.guard.due_date, format: :long), service.guard, class: "text-indigo-600 hover:underline" %>
         </p>
       </div>
     </div>

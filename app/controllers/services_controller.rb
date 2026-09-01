@@ -1,9 +1,9 @@
 class ServicesController < ApplicationController
-  before_action :set_service, only: %i[ show edit update destroy pdf complete ]
+  before_action :set_service, only: %i[ show edit update destroy pdf complete move ]
 
   def index
     @current_guard = Guard.includes(:vocal, :priest, :guardians).find_by(status: :open, due_date: Date.current)
-    @services = @current_guard ? @current_guard.services.includes(:created_by).order(created_at: :desc) : Service.none
+    @services = @current_guard ? @current_guard.services.includes(:created_by).order(:position) : Service.none
     @pending_other_services = Service.pending
                                      .includes(:guard, :created_by)
                                      .where.not(guard: @current_guard)
@@ -18,6 +18,33 @@ class ServicesController < ApplicationController
     respond_to do |format|
       format.turbo_stream { render turbo_stream: turbo_stream.replace(@service, partial: "services/small_view", locals: { service: @service }) }
       format.html { redirect_to @service, notice: t("services.notices.completed") }
+    end
+  end
+
+  def move
+    authorize @service, :update?
+    @service.insert_at(params.expect(:position).to_i)
+
+    guard = @service.guard
+    broadcast_reordered_services(guard)
+
+    respond_to do |format|
+      format.turbo_stream {
+        if params[:context] == "services_index"
+          render turbo_stream: turbo_stream.replace(
+            "services",
+            partial: "services/services_grid",
+            locals: { services: guard.services.includes(:created_by).order(:position) }
+          )
+        else
+          render turbo_stream: turbo_stream.replace(
+            "guard_#{guard.id}_services",
+            partial: "guards/services_list",
+            locals: { guard: guard, services: guard.services.includes(:health_facility).order(:position) }
+          )
+        end
+      }
+      format.html { redirect_to guard }
     end
   end
 
@@ -86,6 +113,21 @@ class ServicesController < ApplicationController
   end
 
   private
+
+  def broadcast_reordered_services(guard)
+    @service.broadcast_replace_later_to "guard_#{guard.id}",
+      target: "guard_#{guard.id}_services",
+      partial: "guards/services_list",
+      locals: { guard: guard, services: guard.services.includes(:health_facility).order(:position).to_a }
+
+    current_guard = Guard.find_by(status: :open, due_date: Date.current)
+    return unless current_guard == guard
+
+    @service.broadcast_replace_later_to "services",
+      target: "services",
+      partial: "services/services_grid",
+      locals: { services: guard.services.includes(:created_by).order(:position).to_a }
+  end
 
   def set_service
     @service = Service.find(params.expect(:id))

@@ -1,4 +1,6 @@
 <div class="py-8">
+  <%= turbo_stream_from "guard_#{@guard.id}" %>
+
   <div class="flex items-center gap-2 mb-6">
     <%= link_to guards_path, class: "flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700" do %>
       <i class="ph ph-caret-left"></i> <%= t(".back") %>
@@ -128,26 +130,6 @@
       <% end %>
     </div>
 
-    <% if @services.any? %>
-      <div class="bg-white border border-gray-200 rounded-xl overflow-hidden divide-y divide-gray-100">
-        <% @services.each do |service| %>
-          <%= link_to service, class: "flex items-center gap-4 px-4 py-3 hover:bg-gray-50 transition-colors" do %>
-            <% icon_class = service.pending? ? "bg-red-100 text-red-600" : "bg-green-100 text-green-600" %>
-            <div class="flex items-center justify-center w-8 h-8 rounded-full <%= icon_class %> shrink-0">
-              <i class="ph ph-hand-heart text-sm"></i>
-            </div>
-            <div class="flex-1 min-w-0">
-              <p class="text-sm font-medium text-gray-900 truncate"><%= service.full_name %></p>
-              <p class="text-xs text-gray-400 mt-0.5"><%= l(service.due_date, format: :long) %><%= " · #{service.health_facility.name}" if service.health_facility.present? %></p>
-            </div>
-            <% status_class = service.pending? ? "badge_red" : "badge_green" %>
-            <span class="<%= status_class %> shrink-0"><%= t("services.status.#{service.status}") %></span>
-            <i class="ph ph-caret-right text-gray-400 shrink-0"></i>
-          <% end %>
-        <% end %>
-      </div>
-    <% else %>
-      <p class="text-sm text-gray-400">No hay servicios registrados para esta guardia.</p>
-    <% end %>
+    <%= render "guards/services_list", guard: @guard, services: @services %>
   </div>
 </div>

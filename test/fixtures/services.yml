@@ -4,6 +4,7 @@ one:
   status: pending
   guard: one
   created_by: one
+  position: 1
 
 completed_one:
   full_name: "Maria López"
@@ -11,3 +12,4 @@ completed_one:
   status: completed
   guard: one
   created_by: one
+  position: 2

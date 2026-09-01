@@ -2,6 +2,8 @@ require "test_helper"
 
 class ServicesControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
+  include ActionCable::TestHelper
+  include ActiveJob::TestHelper
 
   # users(:one)           — vocal role, vocal of guards(:one), guardian of guards(:one)
   # users(:vocal_guardian) — vocal role, guardian of guards(:one) but NOT its vocal
@@ -102,6 +104,57 @@ class ServicesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_equal "text/vnd.turbo-stream.html", response.media_type
     assert @service.reload.completed?
+  end
+
+  test "should move service to a new position within its guard" do
+    other = services(:completed_one)
+    assert_equal 1, @service.position
+    assert_equal 2, other.position
+
+    patch move_service_url(@service), params: { position: 2 }, headers: { "Accept" => "text/vnd.turbo-stream.html" }
+
+    assert_response :success
+    assert_equal "text/vnd.turbo-stream.html", response.media_type
+    assert_equal 2, @service.reload.position
+    assert_equal 1, other.reload.position
+  end
+
+  test "should broadcast the reordered guard services list to other devices" do
+    # Only the new guard-scoped broadcast targets this stream, so a single message proves it fired.
+    assert_broadcasts("guard_#{@service.guard_id}", 1) do
+      perform_enqueued_jobs do
+        patch move_service_url(@service), params: { position: 2 }, headers: { "Accept" => "text/vnd.turbo-stream.html" }
+      end
+    end
+  end
+
+  test "should additionally broadcast the services grid when the guard is today's open guard" do
+    guard = guards(:one)
+    guard.update!(due_date: Date.current, status: :open)
+
+    # 3 jobs: the service's own after_update_commit broadcast, the guard-scoped list, and the services grid.
+    assert_enqueued_jobs 3, only: Turbo::Streams::ActionBroadcastJob do
+      patch move_service_url(@service), params: { position: 2 }, headers: { "Accept" => "text/vnd.turbo-stream.html" }
+    end
+  end
+
+  test "should not broadcast the services grid when the guard is not today's open guard" do
+    # 2 jobs: the service's own after_update_commit broadcast and the guard-scoped list (no services grid).
+    assert_enqueued_jobs 2, only: Turbo::Streams::ActionBroadcastJob do
+      patch move_service_url(@service), params: { position: 2 }, headers: { "Accept" => "text/vnd.turbo-stream.html" }
+    end
+  end
+
+  test "should move service and replace the services index grid when context is services_index" do
+    other = services(:completed_one)
+
+    patch move_service_url(@service), params: { position: 2, context: "services_index" }, headers: { "Accept" => "text/vnd.turbo-stream.html" }
+
+    assert_response :success
+    assert_equal "text/vnd.turbo-stream.html", response.media_type
+    assert_equal 2, @service.reload.position
+    assert_equal 1, other.reload.position
+    assert_includes response.body, 'target="services"'
   end
 
   test "should get pdf" do

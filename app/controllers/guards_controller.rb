@@ -116,7 +116,7 @@ class GuardsController < ApplicationController
   end
 
   def set_services_count
-    @services = @guard.services.includes(:health_facility).order(due_date: :desc)
+    @services = @guard.services.includes(:health_facility).order(:position)
     @services_count = @services.size
   end
 

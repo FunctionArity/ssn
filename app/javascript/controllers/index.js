@@ -55,5 +55,8 @@ application.register("priest-assign-new", PriestAssignNewController)
 import RoleSelectorController from "./role_selector_controller"
 application.register("role-selector", RoleSelectorController)
 
+import ServiceReorderController from "./service_reorder_controller"
+application.register("service-reorder", ServiceReorderController)
+
 import UserSearchController from "./user_search_controller"
 application.register("user-search", UserSearchController)

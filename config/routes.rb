@@ -22,8 +22,9 @@ Rails.application.routes.draw do
 
   resources :services do
     member do
-      get  :pdf
-      post :complete
+      get   :pdf
+      post  :complete
+      patch :move
     end
   end
   resources :health_facilities

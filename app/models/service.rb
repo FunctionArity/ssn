@@ -3,6 +3,8 @@ class Service < ApplicationRecord
   belongs_to :created_by, class_name: "User"
   belongs_to :health_facility, optional: true
 
+  acts_as_list scope: :guard_id
+
   enum :status, { pending: 0, completed: 1 }, default: :pending
 
   validates :full_name, :due_date, :status, presence: true
