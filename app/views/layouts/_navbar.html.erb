@@ -24,7 +24,7 @@
           <span class="shrink-0"><%= user_crown_icon %></span>
           <i class="ph <%= current_user.role_icon_class %> <%= current_user.role_icon_color_class %> shrink-0"
              title="<%= t("activerecord.attributes.user.roles.#{current_user.role}") %>"></i>
-          <%= link_to current_user.full_name, user_path(current_user), class: "text-gray-600 truncate max-w-[110px] sm:max-w-none" %>
+          <%= link_to current_user.full_name, user_path(current_user), class: "text-gray-600 truncate min-w-0 max-w-[110px] sm:max-w-none" %>
 
           <%= button_to destroy_user_session_path, method: :delete, class: "flex items-center gap-1 text-blue-600 hover:text-blue-800 font-medium cursor-pointer shrink-0" do %>
             <i class="ph ph-sign-out"></i>

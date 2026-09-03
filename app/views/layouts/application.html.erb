@@ -1,10 +1,13 @@
+<% no_chrome = !user_signed_in? && controller_name.in?(%w[home sessions registrations passwords confirmations unlocks invitations]) %>
 <!DOCTYPE html>
-<html>
+<html class="overflow-x-hidden">
   <head>
     <title><%= content_for(:title) || "Ssn" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="<%= no_chrome ? 'black-translucent' : 'default' %>">
+    <meta name="theme-color" content="<%= no_chrome ? '#1e1b4b' : '#ffffff' %>">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
@@ -29,7 +32,6 @@
   <body class="min-h-screen bg-gray-50 overflow-x-hidden" data-controller="mobile-nav">
     <%# Custom confirm dialog %>
     <%= render "layouts/confirm_dialog" %>
-    <% no_chrome = !user_signed_in? && controller_name.in?(%w[home sessions registrations passwords confirmations unlocks invitations]) %>
     <% unless no_chrome %>
       <%= render "layouts/navbar" %>
     <% end %>
