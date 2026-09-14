@@ -37,6 +37,13 @@ class ServicesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test "show includes health facility name in clipboard text" do
+    @service.update!(health_facility: health_facilities(:one))
+    get service_url(@service)
+    assert_response :success
+    assert_select "button[data-clipboard-text-value*=?]", health_facilities(:one).name
+  end
+
   test "should get edit" do
     get edit_service_url(@service)
     assert_response :success
