@@ -14,7 +14,7 @@ const ALL_ICON_BG  = ["bg-green-200", "bg-red-200", "bg-purple-200"]
 const ALL_ICON_TEXT = ["text-green-700", "text-red-700", "text-purple-700"]
 
 export default class extends Controller {
-  static targets = ["pill", "label", "priestSection", "header", "icon"]
+  static targets = ["pill", "label", "priestSection", "guardianSection", "header", "icon"]
 
   connect() {
     const checked = this.element.querySelector("input:checked")
@@ -62,6 +62,10 @@ export default class extends Controller {
         )
         churchMap?.show()
       }
+    }
+
+    if (this.hasGuardianSectionTarget) {
+      this.guardianSectionTarget.classList.toggle("hidden", role !== "guardian")
     }
   }
 }

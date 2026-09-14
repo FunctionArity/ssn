@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
   before_action :set_user, only: %i[ show edit update destroy lock unlock resend_invitation impersonate ]
+  before_action :set_guard_setups, only: %i[ new create edit update ]
 
   # GET /users or /users.json
   def index
@@ -107,9 +108,13 @@ class UsersController < ApplicationController
       @user = User.includes(:guard_setups, :vocal_guard_setups, :church).find(params.expect(:id))
     end
 
+    def set_guard_setups
+      @guard_setups = GuardSetup.order(:day_number)
+    end
+
     # Only allow a list of trusted parameters through.
     def user_params
-      permitted = params.expect(user: [ :first_name, :last_name, :email, :phone, :role, :password, :password_confirmation, :church_id, :date_of_birth, :dni, :address, :city, :start_day ])
+      permitted = params.expect(user: [ :first_name, :last_name, :email, :phone, :role, :password, :password_confirmation, :church_id, :date_of_birth, :dni, :address, :city, :start_day, :guard_setup_day_number ])
       permitted[:church_id] = nil unless permitted[:role] == "priest"
       permitted
     end

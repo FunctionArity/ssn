@@ -9,9 +9,10 @@
    } : {} %>
 <%= turbo_frame_tag dom_id(service), **frame_options do %>
   <% card_bg_class = service.pending? ? "bg-red-50" : "bg-green-50" %>
+  <% status_color = service.pending? ? "text-red-700" : "text-green-700" %>
   <div class="sm:hidden flex items-center gap-3 px-4 py-3 <%= card_bg_class %> border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-all duration-200">
     <% if sortable %>
-      <i class="ph ph-dots-six-vertical text-gray-400 cursor-grab shrink-0" title="Arrastrar para reordenar"></i>
+      <i class="ph-bold ph-dots-six-vertical text-lg <%= status_color %> cursor-grab shrink-0" title="Arrastrar para reordenar"></i>
     <% end %>
     <%= link_to service, data: { turbo_frame: "_top" }, class: "flex items-center gap-3 flex-1 min-w-0" do %>
       <div class="w-2 h-2 rounded-full shrink-0 <%= service.pending? ? "bg-red-500" : "bg-green-500" %>"></div>
@@ -45,8 +46,8 @@
     <% icon_class   = service.pending? ? "bg-red-200 text-red-700" : "bg-green-200 text-green-700" %>
     <div class="<%= header_class %> border-b border-gray-100">
       <% if sortable %>
-        <div class="flex items-center justify-center py-1 text-gray-400 cursor-grab" title="Arrastrar para reordenar">
-          <i class="ph ph-dots-six-vertical text-lg"></i>
+        <div class="flex items-center justify-center py-1 <%= status_color %> cursor-grab" title="Arrastrar para reordenar">
+          <i class="ph-bold ph-dots-six-vertical text-lg"></i>
         </div>
       <% end %>
       <div class="px-5 <%= sortable ? "pb-4" : "py-4" %> flex items-center justify-between">
@@ -58,7 +59,7 @@
           <% status_class = service.pending? ? "badge_red" : "badge_green" %>
           <span class="<%= status_class %>"><%= t("services.status.#{service.status}") %></span>
           <div class="flex items-center justify-center w-8 h-8 rounded-full <%= icon_class %>">
-            <i class="ph ph-hand-heart text-sm"></i>
+            <span class="text-sm font-semibold"><%= service.position %></span>
           </div>
         </div>
       </div>

@@ -40,6 +40,7 @@ bundle exec rails test:system
 
 ## Import sample data
 ```
-DAY=15 bundle exec rails runner db/seeds/services.rb
+bundle exec rails runner db/seeds/services.rb
 ```
+Defaults to today's day of month; pass `DAY=<n>` to target a different guard, e.g. `DAY=15 bundle exec rails runner db/seeds/services.rb`.
 

@@ -3,7 +3,8 @@
 # The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
 #
 # Each CSV file in db/data has a matching seed file in db/seeds. Files are loaded explicitly (not globbed) because
-# db/seeds/services.rb is not part of db:seed — it is run manually with: DAY=<n> bundle exec rails runner db/seeds/services.rb
+# db/seeds/services.rb is not part of db:seed — it is run manually with: bundle exec rails runner db/seeds/services.rb
+# (defaults to today's day of month; pass DAY=<n> to target a different guard)
 
 [
   "admin_user",

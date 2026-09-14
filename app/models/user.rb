@@ -34,6 +34,10 @@ class User < ApplicationRecord
   has_many :guard_setup_guardians, dependent: :destroy
   has_many :guard_setups, through: :guard_setup_guardians
 
+  attr_accessor :guard_setup_day_number
+
+  after_save :move_to_guard_setup, if: -> { guard_setup_day_number.present? }
+
   def role_badge_class
     case role
     when "guardian" then "badge_green"
@@ -84,5 +88,11 @@ class User < ApplicationRecord
     bom = date.beginning_of_month
     first_occurrence = bom + ((date.cwday - bom.cwday) % 7)
     ((date - first_occurrence) / 7).floor + 1
+  end
+
+  private
+
+  def move_to_guard_setup
+    MoveUserToGuardSetupService.new(self, guard_setup_day_number).call
   end
 end
