@@ -112,6 +112,31 @@ class UserTest < ActiveSupport::TestCase
     assert_equal "badge_purple", users(:priest_one).role_badge_class
   end
 
+  # Guard setup assignment
+  test "moves the user to a guard setup when guard_setup_day_number is set on update" do
+    user = users(:one)
+    assert_equal [ guard_setups(:one) ], user.guard_setups.to_a
+
+    user.update!(guard_setup_day_number: guard_setups(:two).day_number)
+
+    assert_equal [ guard_setups(:two) ], user.reload.guard_setups.to_a
+  end
+
+  test "assigns a guard setup when guard_setup_day_number is set on create" do
+    user = User.create!(first_name: "Ana", last_name: "García", email: "ana2@garcia.com", phone: "1234567890",
+                         password: "password123", guard_setup_day_number: guard_setups(:one).day_number)
+
+    assert_equal [ guard_setups(:one) ], user.guard_setups.to_a
+  end
+
+  test "does not touch guard setups when guard_setup_day_number is blank" do
+    user = users(:one)
+
+    assert_no_changes -> { user.reload.guard_setups.to_a } do
+      user.update!(first_name: "Pablo")
+    end
+  end
+
   # Class methods
   test "week_of_month returns 1 for the first week" do
     date = Date.new(2026, 3, 1) # Sunday, first day of March 2026

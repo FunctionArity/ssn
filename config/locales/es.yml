@@ -99,6 +99,7 @@ es:
         address: Dirección
         city: Ciudad
         start_day: Fecha de inicio
+        guard_setup_day_number: Guardia asignada
         roles:
           guardian: Guardian
           vocal: Vocal
@@ -202,6 +203,8 @@ es:
     form:
       additional_info: Información adicional
       select_church: Seleccionar una parroquia
+      select_guard_setup: Sin guardia asignada
+      guard_setup_option: "Guardia #%{number}"
       avatar: Foto de perfil
       change_avatar: Cambiar foto
       avatar_hint: JPG, PNG o GIF. Máximo 5 MB.

@@ -1,9 +1,4 @@
-day = ENV["DAY"].to_i
-
-if day.zero?
-  puts "Usage: DAY=<day_number> bundle exec rails runner db/seeds/services.rb"
-  exit 1
-end
+day = ENV["DAY"].presence&.to_i || Date.current.day
 
 guard_setup = GuardSetup.find_by(day_number: day)
 

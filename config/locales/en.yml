@@ -29,6 +29,7 @@ en:
         address: Address
         city: City
         start_day: Start date
+        guard_setup_day_number: Assigned guard
         password: Password
         password_confirmation: Password confirmation
         phone: Phone
@@ -123,6 +124,8 @@ en:
       back: Back to users
     form:
       additional_info: Additional information
+      select_guard_setup: No guard assigned
+      guard_setup_option: "Guard #%{number}"
       avatar: Profile picture
       change_avatar: Change photo
       avatar_hint: JPG, PNG or GIF. Max 5 MB.

@@ -27,6 +27,27 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_nil User.last.invitation_accepted_at
   end
 
+  test "assigns a guard setup when creating a user with guard_setup_day_number" do
+    assert_difference("User.count") do
+      post users_url, params: {
+        user: {
+          email: "newguardian@test.com", first_name: "New", last_name: "Guardian", phone: "1111111112",
+          guard_setup_day_number: guard_setups(:one).day_number
+        }
+      }
+    end
+
+    assert_equal [ guard_setups(:one) ], User.find_by!(email: "newguardian@test.com").guard_setups.to_a
+  end
+
+  test "does not require guard_setup_day_number when creating a user" do
+    assert_difference("User.count") do
+      post users_url, params: { user: { email: "newnoguard@test.com", first_name: "New", last_name: "NoGuard", phone: "1111111113" } }
+    end
+
+    assert_empty User.find_by!(email: "newnoguard@test.com").guard_setups
+  end
+
   test "should not create user with missing required fields" do
     assert_no_difference("User.count") do
       post users_url, params: { user: { email: "", first_name: "", last_name: "", phone: "" } }
@@ -93,6 +114,63 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
   test "should not update user with duplicate email" do
     patch user_url(@user), params: { user: { email: users(:agustin).email } }
     assert_response :unprocessable_entity
+  end
+
+  test "updating guard_setup_day_number moves the user from their current guard setup to the new one" do
+    guardian = users(:one)
+    assert_equal [ guard_setups(:one) ], guardian.guard_setups.to_a
+
+    patch user_url(guardian), params: {
+      user: {
+        first_name: guardian.first_name,
+        last_name: guardian.last_name,
+        phone: guardian.phone,
+        guard_setup_day_number: guard_setups(:two).day_number
+      }
+    }
+
+    assert_redirected_to user_url(guardian)
+    assert_equal [ guard_setups(:two) ], guardian.reload.guard_setups.to_a
+  end
+
+  test "leaves the user's guard setup unchanged when guard_setup_day_number is blank" do
+    guardian = users(:one)
+
+    patch user_url(guardian), params: {
+      user: { first_name: guardian.first_name, last_name: guardian.last_name, phone: guardian.phone, guard_setup_day_number: "" }
+    }
+
+    assert_redirected_to user_url(guardian)
+    assert_equal [ guard_setups(:one) ], guardian.reload.guard_setups.to_a
+  end
+
+  test "leaves the user's guard setup unchanged when guard_setup_day_number matches no guard setup" do
+    guardian = users(:one)
+
+    patch user_url(guardian), params: {
+      user: { first_name: guardian.first_name, last_name: guardian.last_name, phone: guardian.phone, guard_setup_day_number: 999 }
+    }
+
+    assert_redirected_to user_url(guardian)
+    assert_equal [ guard_setups(:one) ], guardian.reload.guard_setups.to_a
+  end
+
+  test "assigns a guard setup to a guardian who previously had none" do
+    guardian = users(:agustin)
+    assert_empty guardian.guard_setups
+
+    patch user_url(guardian), params: {
+      user: { first_name: guardian.first_name, last_name: guardian.last_name, phone: guardian.phone, guard_setup_day_number: guard_setups(:one).day_number }
+    }
+
+    assert_redirected_to user_url(guardian)
+    assert_equal [ guard_setups(:one) ], guardian.reload.guard_setups.to_a
+  end
+
+  test "edit preselects the user's current guard setup in the dropdown" do
+    guardian = users(:one)
+    get edit_user_url(guardian)
+    assert_select "select#user_guard_setup_day_number option[selected][value=?]", guard_setups(:one).day_number.to_s
   end
 
   test "should require authentication" do

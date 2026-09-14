@@ -180,6 +180,17 @@
       <div data-church-map-target="map" class="w-full h-80 rounded-lg overflow-hidden border border-gray-200"></div>
     </div>
 
+    <% if @guard_setups.present? %>
+      <div data-role-selector-target="guardianSection"
+           class="space-y-3 <%= user.guardian? ? "" : "hidden" %>">
+        <%= form.label :guard_setup_day_number, t("activerecord.attributes.user.guard_setup_day_number"), class: "block text-sm font-medium text-gray-700 mb-1.5" %>
+        <%= form.select :guard_setup_day_number,
+              @guard_setups.map { |gs| [t("users.form.guard_setup_option", number: gs.day_number), gs.day_number] },
+              { selected: user.guard_setups.order(:day_number).first&.day_number, include_blank: t("users.form.select_guard_setup") },
+              class: "w-full rounded-md border border-gray-300 px-3 py-2.5 text-sm shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500" %>
+      </div>
+    <% end %>
+
   </div>
 
   <div class="border-t border-gray-100 pt-4 flex justify-end">
