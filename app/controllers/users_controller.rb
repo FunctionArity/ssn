@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
   before_action :set_user, only: %i[ show edit update destroy lock unlock resend_invitation impersonate ]
   before_action :set_guard_setups, only: %i[ new create edit update ]
+  before_action :set_churches, only: %i[ new create edit update ]
 
   # GET /users or /users.json
   def index
@@ -21,13 +22,11 @@ class UsersController < ApplicationController
   def new
     @user = User.new
     authorize @user
-    @churches = Church.all
   end
 
   # GET /users/1/edit
   def edit
     authorize @user
-    @churches = Church.all
   end
 
   # POST /users or /users.json
@@ -40,7 +39,6 @@ class UsersController < ApplicationController
         format.html { redirect_to @user, notice: t("users.notices.invited") }
         format.json { render :show, status: :created, location: @user }
       else
-        @churches = Church.all
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @user.errors, status: :unprocessable_entity }
       end
@@ -61,7 +59,6 @@ class UsersController < ApplicationController
         format.html { redirect_to @user, notice: t("users.notices.updated"), status: :see_other }
         format.json { render :show, status: :ok, location: @user }
       else
-        @churches = Church.all
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @user.errors, status: :unprocessable_entity }
       end
@@ -110,6 +107,10 @@ class UsersController < ApplicationController
 
     def set_guard_setups
       @guard_setups = GuardSetup.order(:day_number)
+    end
+
+    def set_churches
+      @churches = Church.order(:name)
     end
 
     # Only allow a list of trusted parameters through.

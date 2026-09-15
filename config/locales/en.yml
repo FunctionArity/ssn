@@ -96,6 +96,7 @@ en:
     menu: Menu
     setup: Setup
     documentation: Documentation
+    toggle: Collapse/expand menu
   users:
     index:
       title: Users
@@ -199,6 +200,7 @@ en:
       guardians_count:
         one: "%{count} guardian"
         other: "%{count} guardians"
+      drag_guardian: Drag to move to another guard setup
     show:
       edit: Edit this guard setup
       back: Back to guard setups

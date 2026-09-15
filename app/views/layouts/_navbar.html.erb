@@ -8,7 +8,7 @@
             <i class="ph ph-list text-xl"></i>
           </button>
         <% end %>
-        <%= link_to root_path do %>
+        <%= link_to root_path, class: (user_signed_in? ? "navbar-logo-link md:hidden" : nil) do %>
           <%= image_tag "icon.svg", class: "h-8 w-8" %>
         <% end %>
       </div>

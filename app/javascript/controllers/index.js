@@ -28,6 +28,9 @@ application.register("guard-date-reload", GuardDateReloadController)
 import GuardSelectController from "./guard_select_controller"
 application.register("guard-select", GuardSelectController)
 
+import GuardianMoveController from "./guardian_move_controller"
+application.register("guardian-move", GuardianMoveController)
+
 import GuardianSearchController from "./guardian_search_controller"
 application.register("guardian-search", GuardianSearchController)
 
@@ -57,6 +60,9 @@ application.register("role-selector", RoleSelectorController)
 
 import ServiceReorderController from "./service_reorder_controller"
 application.register("service-reorder", ServiceReorderController)
+
+import SidebarController from "./sidebar_controller"
+application.register("sidebar", SidebarController)
 
 import UserSearchController from "./user_search_controller"
 application.register("user-search", UserSearchController)

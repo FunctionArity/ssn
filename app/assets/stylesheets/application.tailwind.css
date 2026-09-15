@@ -27,6 +27,7 @@
 }
 .sidebar {
   display: none;
+  transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 @keyframes sidebar-slide-in {
@@ -66,6 +67,10 @@
   body.mobile-nav-open .mobile-nav-backdrop {
     display: block;
   }
+
+  body.mobile-nav-open .navbar-logo-link {
+    display: none;
+  }
 }
 
 .mobile-nav-backdrop {
@@ -98,6 +103,30 @@
 
   .sidebar-link {
     justify-content: flex-start;
+  }
+
+  body.sidebar-collapsed .sidebar {
+    width: 4.5rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+
+  body.sidebar-collapsed .sidebar-label {
+    display: none;
+  }
+
+  body.sidebar-collapsed .sidebar-link {
+    justify-content: center;
+  }
+
+  body.sidebar-collapsed .sidebar-disclosure-caret {
+    display: none;
+  }
+
+  body.sidebar-collapsed .sidebar-header {
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.75rem;
   }
 }
 
