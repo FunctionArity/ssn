@@ -1,0 +1,8 @@
+<% can_move_guardians = policy(GuardSetup).update? %>
+<%= tag.div id: "guard_setups",
+            class: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4",
+            data: (can_move_guardians ? { controller: "guardian-move" } : {}) do %>
+  <% guard_setups.each do |guard_setup| %>
+    <%= render "guard_setups/guard_setup_card", guard_setup: guard_setup %>
+  <% end %>
+<% end %>

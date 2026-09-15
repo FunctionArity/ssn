@@ -1,0 +1,67 @@
+<% can_move_guardians = policy(guard_setup).update? %>
+<%= tag.div class: "bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-0.5 overflow-hidden flex flex-col",
+            data: (can_move_guardians ? {
+              guardian_move_target: "dropzone",
+              guard_setup_id: guard_setup.id,
+              action: "dragover->guardian-move#dragOver dragleave->guardian-move#dragLeave drop->guardian-move#drop"
+            } : {}) do %>
+
+  <div class="px-5 py-4 flex items-center justify-between bg-gradient-to-r from-blue-50 to-white border-b border-gray-100">
+    <div>
+      <p class="text-xs font-medium text-blue-400 uppercase tracking-wide"><%= GuardSetup.human_attribute_name(:day_number) %></p>
+      <p class="text-2xl font-bold text-gray-900"># <%= guard_setup.day_number %></p>
+    </div>
+    <div class="flex items-center justify-center w-10 h-10 rounded-full bg-blue-100 text-blue-700">
+      <i class="ph ph-shield text-lg"></i>
+    </div>
+  </div>
+
+  <div class="px-5 py-4 flex flex-col gap-3 grow">
+    <div class="flex items-center gap-2">
+      <div class="flex items-center justify-center w-7 h-7 rounded-full bg-red-100 text-red-600 shrink-0">
+        <i class="ph ph-user text-xs"></i>
+      </div>
+      <div class="min-w-0">
+        <p class="text-sm font-medium text-gray-900 truncate">
+          <%= link_to guard_setup.vocal.full_name, user_path(guard_setup.vocal) %>
+        </p>
+      </div>
+    </div>
+
+    <div class="flex items-start gap-2">
+      <div class="flex items-center justify-center w-7 h-7 rounded-full bg-green-100 text-green-600 shrink-0 mt-0.5">
+        <i class="ph ph-users text-xs"></i>
+      </div>
+      <div class="min-w-0">
+        <div class="flex flex-wrap gap-1 mt-1">
+          <% guard_setup.guardians.order(:last_name, :first_name).each do |guardian| %>
+            <%= tag.span class: "badge_green hover:opacity-80#{' cursor-move gap-1' if can_move_guardians}",
+                         draggable: can_move_guardians,
+                         title: (t("guard_setups.index.drag_guardian") if can_move_guardians),
+                         data: (can_move_guardians ? {
+                           guardian_move_target: "pill",
+                           guardian_id: guardian.id,
+                           source_guard_setup_id: guard_setup.id,
+                           action: "dragstart->guardian-move#dragStart dragend->guardian-move#dragEnd"
+                         } : {}) do %>
+              <% if can_move_guardians %>
+                <i class="ph-bold ph-dots-six-vertical"></i>
+              <% end %>
+              <%= link_to guardian.full_name, user_path(guardian) %>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="px-5 py-3 border-t border-gray-100 flex items-center justify-between gap-2">
+    <%= link_to new_guard_path(guard_setup_id: guard_setup.id), class: "flex items-center gap-1.5 rounded-md bg-green-600 px-3 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-green-500 active:scale-95 transition-all" do %>
+      <i class="ph ph-shield-plus"></i> <%= t("guard_setups.index.create_guard") %>
+    <% end %>
+    <%= link_to guard_setup, class: "flex items-center gap-1 text-sm font-medium text-blue-600 hover:text-blue-800" do %>
+      <i class="ph ph-arrow-right"></i> <%= t("guard_setups.index.show") %>
+    <% end %>
+  </div>
+
+<% end %>
