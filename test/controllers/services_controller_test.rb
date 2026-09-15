@@ -126,6 +126,26 @@ class ServicesControllerTest < ActionDispatch::IntegrationTest
     assert_equal 1, other.reload.position
   end
 
+  test "should move service for a guardian unrelated to the guard" do
+    sign_out @user
+    sign_in users(:two)
+
+    patch move_service_url(@service), params: { position: 2 }, headers: { "Accept" => "text/vnd.turbo-stream.html" }
+
+    assert_response :success
+    assert_equal 2, @service.reload.position
+  end
+
+  test "should not allow a priest to move a service" do
+    sign_out @user
+    sign_in users(:priest_one)
+
+    patch move_service_url(@service), params: { position: 2 }, headers: { "Accept" => "text/vnd.turbo-stream.html" }
+
+    assert_redirected_to root_path
+    assert_equal 1, @service.reload.position
+  end
+
   test "should broadcast the reordered guard services list to other devices" do
     # Only the new guard-scoped broadcast targets this stream, so a single message proves it fired.
     assert_broadcasts("guard_#{@service.guard_id}", 1) do
