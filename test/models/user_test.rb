@@ -88,6 +88,20 @@ class UserTest < ActiveSupport::TestCase
     assert User.priests.all?(&:priest?)
   end
 
+  test "recent_logins excludes sign-ins older than 15 days" do
+    users(:one).update!(last_sign_in_at: 14.days.ago)
+    users(:two).update!(last_sign_in_at: 16.days.ago)
+
+    assert_includes User.recent_logins, users(:one)
+    assert_not_includes User.recent_logins, users(:two)
+  end
+
+  test "recent_logins excludes users who never signed in" do
+    users(:one).update!(last_sign_in_at: nil)
+
+    assert_not_includes User.recent_logins, users(:one)
+  end
+
   test "priests_without_setup excludes priests with a setup" do
     priest = users(:priest_one)
     assert_not User.priests_without_setup.include?(priest)
