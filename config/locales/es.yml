@@ -166,6 +166,7 @@ es:
     menu: Menú
     setup: Configuración
     documentation: Documentación
+    toggle: Contraer/expandir menú
   users:
     index:
       title: Usuarios
@@ -286,6 +287,7 @@ es:
       guardians_count:
         one: "%{count} guardián"
         other: "%{count} guardianes"
+      drag_guardian: Arrastrar para mover a otra guardia
     show:
       edit: Editar esta configuración de guardia
       back: Volver a configuraciones de guardia

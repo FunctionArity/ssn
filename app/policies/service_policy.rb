@@ -21,6 +21,10 @@ class ServicePolicy < ApplicationPolicy
     create?
   end
 
+  def move?
+    !user&.priest?
+  end
+
   class Scope < ApplicationPolicy::Scope
     def resolve
       scope.all

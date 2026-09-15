@@ -1,4 +1,4 @@
-<aside class="sidebar shrink-0 bg-white border-r border-gray-200 flex flex-col">
+<aside class="sidebar shrink-0 bg-white border-r border-gray-200 flex flex-col" data-controller="sidebar">
   <div class="md:hidden flex items-center justify-between px-4 py-4 border-b border-gray-100 shrink-0">
     <div class="flex items-center gap-2">
       <%= image_tag "icon.svg", class: "h-7 w-7" %>
@@ -8,6 +8,19 @@
             class="cursor-pointer flex items-center justify-center w-8 h-8 rounded-md text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors"
             data-action="click->mobile-nav#close">
       <i class="ph ph-x text-lg"></i>
+    </button>
+  </div>
+
+  <div class="sidebar-header hidden md:flex items-center justify-between px-4 py-4 border-b border-gray-100 shrink-0">
+    <div class="flex items-center gap-2">
+      <%= image_tag "icon.svg", class: "h-7 w-7 shrink-0" %>
+      <span class="sidebar-label text-sm font-semibold text-gray-700"><%= t("sidebar.menu") %></span>
+    </div>
+    <button type="button"
+            class="cursor-pointer flex items-center justify-center w-8 h-8 rounded-md text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors shrink-0"
+            data-action="click->sidebar#toggle"
+            title="<%= t("sidebar.toggle") %>">
+      <i class="ph ph-caret-line-left text-lg" data-sidebar-target="icon"></i>
     </button>
   </div>
 
@@ -26,7 +39,7 @@
       <summary data-action="click->disclosure#toggle" class="sidebar-link flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 cursor-pointer list-none select-none">
         <i class="ph ph-sliders text-lg"></i>
         <span class="sidebar-label"><%= t("sidebar.setup") %></span>
-        <i class="ph ph-caret-right text-xs ml-auto transition-transform duration-300 group-open:rotate-90"></i>
+        <i class="ph ph-caret-right sidebar-disclosure-caret text-xs ml-auto transition-transform duration-300 group-open:rotate-90"></i>
       </summary>
       <div data-disclosure-target="content" class="overflow-hidden border-t border-gray-100 divide-y divide-gray-100">
         <%= link_to users_path, class: "sidebar-link flex items-center gap-2 px-3 py-2 text-sm font-medium border-l-2 border-b-0 #{request.path.start_with?('/users') ? 'text-blue-700 border-blue-600 border-t-transparent' : 'text-gray-600 border-transparent hover:bg-gray-100 hover:text-gray-900'}" do %>

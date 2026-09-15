@@ -14,6 +14,27 @@ class GuardSetupsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test "index shows draggable guardian pills for admin users" do
+    get guard_setups_url
+
+    assert_response :success
+    assert_select "#guard_setups[data-controller='guardian-move']"
+    assert_select "span[draggable='true'][data-guardian-move-target='pill']"
+    assert_select "[data-guardian-move-target='dropzone']"
+  end
+
+  test "index hides draggable guardian pills for non-admin users" do
+    sign_out @user
+    sign_in users(:one)
+
+    get guard_setups_url
+
+    assert_response :success
+    assert_select "#guard_setups[data-controller='guardian-move']", false
+    assert_select "span[draggable='true']", false
+    assert_select "[data-guardian-move-target]", false
+  end
+
   test "should get new" do
     get new_guard_setup_url
     assert_response :success
@@ -122,5 +143,49 @@ class GuardSetupsControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_redirected_to guard_setups_url
+  end
+
+  test "move_guardian moves a guardian from one guard setup to another" do
+    guardian = users(:one)
+    target = guard_setups(:two)
+    assert_equal [ @guard_setup ], guardian.guard_setups.to_a
+
+    patch move_guardian_guard_setup_url(target), params: { user_id: guardian.id }, headers: { "Accept" => "text/vnd.turbo-stream.html" }
+
+    assert_response :success
+    assert_equal "text/vnd.turbo-stream.html", response.media_type
+    assert_equal [ target ], guardian.reload.guard_setups.to_a
+    assert_includes response.body, 'target="guard_setups"'
+  end
+
+  test "move_guardian redirects for html format" do
+    guardian = users(:one)
+    target = guard_setups(:two)
+
+    patch move_guardian_guard_setup_url(target), params: { user_id: guardian.id }
+
+    assert_redirected_to guard_setups_url
+    assert_equal [ target ], guardian.reload.guard_setups.to_a
+  end
+
+  test "move_guardian is a no-op when dropped on the guardian's current guard setup" do
+    guardian = users(:one)
+
+    patch move_guardian_guard_setup_url(@guard_setup), params: { user_id: guardian.id }, headers: { "Accept" => "text/vnd.turbo-stream.html" }
+
+    assert_response :success
+    assert_equal [ @guard_setup ], guardian.reload.guard_setups.to_a
+  end
+
+  test "move_guardian requires admin authorization" do
+    sign_out @user
+    guardian = users(:one)
+    sign_in guardian
+    target = guard_setups(:two)
+
+    patch move_guardian_guard_setup_url(target), params: { user_id: guardian.id }
+
+    assert_redirected_to root_path
+    assert_equal [ @guard_setup ], guardian.reload.guard_setups.to_a
   end
 end

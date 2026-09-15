@@ -22,7 +22,7 @@ class ServicesController < ApplicationController
   end
 
   def move
-    authorize @service, :update?
+    authorize @service, :move?
     @service.insert_at(params.expect(:position).to_i)
 
     guard = @service.guard

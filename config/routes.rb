@@ -17,7 +17,11 @@ Rails.application.routes.draw do
       post :confirm_pdf
     end
   end
-  resources :guard_setups
+  resources :guard_setups do
+    member do
+      patch :move_guardian
+    end
+  end
   resources :priest_setups
 
   resources :services do

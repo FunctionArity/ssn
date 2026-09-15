@@ -1,5 +1,5 @@
 class GuardSetupsController < ApplicationController
-  before_action :set_guard_setup, only: %i[ show edit update destroy ]
+  before_action :set_guard_setup, only: %i[ show edit update destroy move_guardian ]
 
   def index
     @guard_setups = GuardSetup.includes(:vocal, :guardians).order(:day_number)
@@ -55,6 +55,23 @@ class GuardSetupsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to guard_setups_path, notice: t("guard_setups.notices.destroyed"), status: :see_other }
       format.json { head :no_content }
+    end
+  end
+
+  def move_guardian
+    authorize @guard_setup, :update?
+    user = User.find(params.expect(:user_id))
+    MoveUserToGuardSetupService.new(user, @guard_setup.day_number).call
+
+    respond_to do |format|
+      format.turbo_stream {
+        render turbo_stream: turbo_stream.replace(
+          "guard_setups",
+          partial: "guard_setups/guard_setups_grid",
+          locals: { guard_setups: GuardSetup.includes(:vocal, :guardians).order(:day_number) }
+        )
+      }
+      format.html { redirect_to guard_setups_path }
     end
   end
 

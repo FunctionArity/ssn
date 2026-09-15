@@ -18,6 +18,13 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test "new lists churches ordered by name" do
+    get new_user_url
+
+    church_names = css_select("#user_church_id option[value]:not([value=''])").map(&:text)
+    assert_equal [ churches(:two).name, churches(:one).name ], church_names
+  end
+
   test "should create user and send invitation email" do
     assert_difference([ "User.count", "ActionMailer::Base.deliveries.size" ]) do
       post users_url, params: { user: { email: Faker::Internet.email, first_name: "New", last_name: "User", phone: "1111111111" } }
