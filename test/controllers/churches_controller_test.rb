@@ -87,11 +87,16 @@ class ChurchesControllerTest < ActionDispatch::IntegrationTest
   # Authorization — non-admin users
   # ---------------------------------------------------------------------------
 
-  test "non-admin cannot get index" do
+  test "index shows new button to admin" do
+    get churches_url
+    assert_select "a[href='#{new_church_path}']"
+  end
+
+  test "non-admin can get index without new button" do
     sign_in users(:one)
     get churches_url
-    assert_redirected_to root_path
-    assert_equal I18n.t("pundit.not_authorized"), flash[:alert]
+    assert_response :success
+    assert_select "a[href='#{new_church_path}']", false
   end
 
   test "non-admin cannot get new" do
@@ -101,11 +106,18 @@ class ChurchesControllerTest < ActionDispatch::IntegrationTest
     assert_equal I18n.t("pundit.not_authorized"), flash[:alert]
   end
 
-  test "non-admin cannot get show" do
+  test "show displays edit and destroy actions to admin" do
+    get church_url(@church)
+    assert_select "a[href='#{edit_church_path(@church)}']"
+    assert_select "form[action='#{church_path(@church)}'] input[name='_method'][value='delete']"
+  end
+
+  test "non-admin can get show without edit and destroy actions" do
     sign_in users(:one)
     get church_url(@church)
-    assert_redirected_to root_path
-    assert_equal I18n.t("pundit.not_authorized"), flash[:alert]
+    assert_response :success
+    assert_select "a[href='#{edit_church_path(@church)}']", false
+    assert_select "form[action='#{church_path(@church)}'] input[name='_method'][value='delete']", false
   end
 
   test "non-admin cannot get edit" do

@@ -83,11 +83,16 @@ class PriestSetupsControllerTest < ActionDispatch::IntegrationTest
   # Authorization — non-admin users
   # ---------------------------------------------------------------------------
 
-  test "non-admin cannot get index" do
+  test "index shows new button to admin" do
+    get priest_setups_url
+    assert_select "a[href='#{new_priest_setup_path}']"
+  end
+
+  test "non-admin can get index without new button" do
     sign_in users(:one)
     get priest_setups_url
-    assert_redirected_to root_path
-    assert_equal I18n.t("pundit.not_authorized"), flash[:alert]
+    assert_response :success
+    assert_select "a[href='#{new_priest_setup_path}']", false
   end
 
   test "non-admin cannot get new" do

@@ -70,6 +70,21 @@ class GuardSetupsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test "show displays edit and destroy actions to admin" do
+    get guard_setup_url(@guard_setup)
+    assert_select "a[href='#{edit_guard_setup_path(@guard_setup)}']"
+    assert_select "form[action='#{guard_setup_path(@guard_setup)}'] input[name='_method'][value='delete']"
+  end
+
+  test "show hides edit and destroy actions from non-admin" do
+    sign_out @user
+    sign_in users(:one)
+    get guard_setup_url(@guard_setup)
+    assert_response :success
+    assert_select "a[href='#{edit_guard_setup_path(@guard_setup)}']", false
+    assert_select "form[action='#{guard_setup_path(@guard_setup)}'] input[name='_method'][value='delete']", false
+  end
+
   test "should get edit" do
     get edit_guard_setup_url(@guard_setup)
     assert_response :success
