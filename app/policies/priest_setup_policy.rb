@@ -2,7 +2,7 @@
 
 class PriestSetupPolicy < ApplicationPolicy
   def index?
-    is_admin?
+    true
   end
 
   def create?

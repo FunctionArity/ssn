@@ -1,9 +1,10 @@
+<% priest_setup_path =  policy(PriestSetup).new? ? new_priest_setup_path : nil %>
 <%= render "shared/page_header",
       title: t("priest_setups.title"),
       icon: "ph-calendar",
       icon_class: "bg-purple-100 text-purple-700",
       action_label: t("priest_setups.new_priest_setup"),
-      action_path: new_priest_setup_path %>
+      action_path: priest_setup_path %>
 
 <%# Calendar %>
 <% calendar_start = @start_date.beginning_of_week %>

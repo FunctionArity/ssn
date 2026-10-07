@@ -1,10 +1,11 @@
+<% new_church_url = policy(Church).new? ? new_church_path : nil %>
 <div>
   <%= render "shared/page_header",
         title: t(".title"),
         icon: "ph-church",
         icon_class: "bg-purple-100 text-purple-700",
         action_label: t(".new_church"),
-        action_path: new_church_path %>
+        action_path: new_church_url %>
 
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
     <% @churches.each do |church| %>

@@ -1,10 +1,11 @@
+<% health_facilities_url = policy(HealthFacility).new? ? new_health_facility_path : nil  %>
 <div>
   <%= render "shared/page_header",
         title: t(".title"),
         icon: "ph-hospital",
         icon_class: "bg-teal-100 text-teal-700",
         action_label: t(".new_health_facility"),
-        action_path: new_health_facility_path %>
+        action_path: health_facilities_url %>
 
   <div data-controller="health-facilities-search">
     <%= form_with url: health_facilities_path, method: :get, data: { turbo_frame: "health_facilities_list", health_facilities_search_target: "form" } do |f| %>

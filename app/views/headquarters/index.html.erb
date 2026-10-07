@@ -1,10 +1,11 @@
+<% new_headquarter_url = policy(Headquarter).new? ? new_headquarter_path : nil %>
 <div>
   <%= render "shared/page_header",
         title: t(".title"),
         icon: "ph-buildings",
         icon_class: "bg-amber-100 text-amber-700",
         action_label: t(".new_headquarter"),
-        action_path: new_headquarter_path %>
+        action_path: new_headquarter_url %>
 
   <div class="flex justify-end mb-4">
     <%= link_to doc_headquarters_path, target: "_blank", rel: "noopener", class: "flex items-center gap-1.5 text-sm font-medium text-blue-600 hover:text-blue-800" do %>

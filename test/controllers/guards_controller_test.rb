@@ -28,6 +28,32 @@ class GuardsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test "show displays guard actions to the vocal of the guard" do
+    get guard_url(@guard)
+    assert_select "a[href='#{edit_guard_path(@guard)}']"
+    assert_select "a[href='#{preview_guard_path(@guard)}']"
+    assert_select "form[action='#{guard_path(@guard)}'] input[name='_method'][value='delete']"
+    assert_select "a[href='#{new_service_path(guard_id: @guard.id)}']"
+  end
+
+  test "show displays guard actions to an admin" do
+    sign_in users(:admin_user)
+    get guard_url(@guard)
+    assert_select "a[href='#{edit_guard_path(@guard)}']"
+    assert_select "a[href='#{preview_guard_path(@guard)}']"
+    assert_select "form[action='#{guard_path(@guard)}'] input[name='_method'][value='delete']"
+  end
+
+  test "show hides guard actions from a non-vocal user" do
+    sign_in users(:two)
+    get guard_url(@guard)
+    assert_response :success
+    assert_select "a[href='#{edit_guard_path(@guard)}']", false
+    assert_select "a[href='#{preview_guard_path(@guard)}']", false
+    assert_select "form[action='#{guard_path(@guard)}'] input[name='_method'][value='delete']", false
+    assert_select "a[href='#{new_service_path(guard_id: @guard.id)}']", false
+  end
+
   # ---------------------------------------------------------------------------
   # new
   # ---------------------------------------------------------------------------

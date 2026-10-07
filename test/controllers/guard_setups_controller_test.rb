@@ -35,6 +35,31 @@ class GuardSetupsControllerTest < ActionDispatch::IntegrationTest
     assert_select "[data-guardian-move-target]", false
   end
 
+  test "index shows open guard button for admin users" do
+    get guard_setups_url
+
+    assert_select "a[href='#{new_guard_path(guard_setup_id: @guard_setup.id)}']"
+  end
+
+  test "index shows open guard button for vocal users" do
+    sign_out @user
+    sign_in users(:one)
+
+    get guard_setups_url
+
+    assert_select "a[href='#{new_guard_path(guard_setup_id: @guard_setup.id)}']"
+  end
+
+  test "index hides open guard button for users without access" do
+    sign_out @user
+    sign_in users(:two)
+
+    get guard_setups_url
+
+    assert_response :success
+    assert_select "a[href^='#{new_guard_path}']", false
+  end
+
   test "should get new" do
     get new_guard_setup_url
     assert_response :success
