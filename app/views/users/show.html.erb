@@ -138,30 +138,34 @@
 
     <%# Actions %>
     <div class="px-6 py-4 border-t border-gray-100 flex flex-col sm:flex-row sm:items-center sm:justify-end gap-2">
-      <% if true_user.super_admin? && current_user != @user %>
+      <% if policy(@user).impersonate? && current_user != @user %>
         <%= button_to impersonate_user_path(@user), method: :post, form: { class: "w-full sm:w-auto" }, class: "w-full cursor-pointer flex items-center justify-center gap-1.5 rounded-md bg-violet-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-violet-500" do %>
           <i class="ph ph-detective"></i> <%= t(".impersonate") %>
         <% end %>
       <% end %>
-      <% if @user.access_locked? %>
+      <% if @user.access_locked? && policy(@user).unlock? %>
         <%= button_to unlock_user_path(@user), method: :patch, form: { class: "w-full sm:w-auto" }, class: "w-full cursor-pointer flex items-center justify-center gap-1.5 rounded-md bg-green-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500" do %>
           <i class="ph ph-lock-simple-open"></i> <%= t(".unlock") %>
         <% end %>
-      <% else %>
+      <% elsif !@user.access_locked? && policy(@user).lock? %>
         <%= button_to lock_user_path(@user), method: :patch, form: { class: "w-full sm:w-auto", data: { turbo_confirm: t(".lock_confirm") } }, class: "w-full cursor-pointer flex items-center justify-center gap-1.5 rounded-md bg-amber-500 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-amber-400" do %>
           <i class="ph ph-lock-simple"></i> <%= t(".lock") %>
         <% end %>
       <% end %>
-      <% unless @user.invitation_accepted_at? %>
+      <% if !@user.invitation_accepted_at? && policy(@user).resend_invitation? %>
         <%= button_to resend_invitation_user_path(@user), method: :post, form: { class: "w-full sm:w-auto" }, class: "w-full cursor-pointer flex items-center justify-center gap-1.5 rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500" do %>
           <i class="ph ph-envelope"></i> <%= t(".resend_invitation") %>
         <% end %>
       <% end %>
-      <%= link_to edit_user_path(@user), class: "w-full sm:w-auto flex items-center justify-center gap-1.5 rounded-md bg-white border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50" do %>
-        <i class="ph ph-pencil-simple"></i> <%= t("edit") %>
+      <% if policy(@user).edit? %>
+        <%= link_to edit_user_path(@user), class: "w-full sm:w-auto flex items-center justify-center gap-1.5 rounded-md bg-white border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50" do %>
+          <i class="ph ph-pencil-simple"></i> <%= t("edit") %>
+        <% end %>
       <% end %>
-      <%= button_to @user, method: :delete, form: { class: "w-full sm:w-auto", data: { turbo_confirm: t(".destroy_confirm") } }, class: "w-full cursor-pointer flex items-center justify-center gap-1.5 rounded-md bg-red-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500" do %>
-        <i class="ph ph-trash"></i> <%= t("destroy") %>
+      <% if policy(@user).destroy? %>
+        <%= button_to @user, method: :delete, form: { class: "w-full sm:w-auto", data: { turbo_confirm: t(".destroy_confirm") } }, class: "w-full cursor-pointer flex items-center justify-center gap-1.5 rounded-md bg-red-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500" do %>
+          <i class="ph ph-trash"></i> <%= t("destroy") %>
+        <% end %>
       <% end %>
     </div>
 

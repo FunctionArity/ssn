@@ -1,1 +1,10 @@
 # See https://www.robotstxt.org/robotstxt.html for documentation on how to use the robots.txt file
+
+User-agent: *
+Allow: /$
+Allow: /sedes
+Allow: /federacion
+Allow: /doc/
+Disallow: /
+
+Sitemap: https://serviciosacerdotalnocturno.org/sitemap.xml
