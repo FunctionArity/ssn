@@ -1,7 +1,7 @@
 source "https://rubygems.org"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
-gem "rails", "~> 8.1.3"
+gem "rails", "~> 8.1.4"
 # The modern asset pipeline for Rails [https://github.com/rails/propshaft]
 gem "propshaft"
 # Use postgresql as the database for Active Record
@@ -52,7 +52,7 @@ gem "prawn-table"
 gem "prawn-svg"
 
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
-gem "image_processing", "~> 2.1"
+gem "image_processing", "~> 2.2"
 gem "ruby-vips", "~> 2.0"
 gem "aws-sdk-s3", require: false
 # bundler-audit checks our dependencies for vulnerabilities
