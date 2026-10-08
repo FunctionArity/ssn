@@ -14,4 +14,8 @@ class Service < ApplicationRecord
       partial: "services/small_view",
       locals: { service: self }
   }
+
+  def can_be_completed?
+    pending? && guard.open?
+  end
 end

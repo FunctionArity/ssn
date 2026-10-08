@@ -531,6 +531,7 @@ es:
       destroy_confirm: "¿Estás seguro de que querés eliminar este servicio?"
       complete: Completar
       complete_confirm: "¿Estás seguro de que querés marcar este servicio como completado?"
+      reassign_to_open_guard: El servicio debe ser reasignado a una guardia abierta
       print_pdf: Imprimir
       copy: Copiar
       map: Mapa
