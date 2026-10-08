@@ -93,11 +93,16 @@ class HealthFacilitiesControllerTest < ActionDispatch::IntegrationTest
   # Authorization — non-admin users
   # ---------------------------------------------------------------------------
 
-  test "non-admin cannot get index" do
+  test "index shows new button to admin" do
+    get health_facilities_url
+    assert_select "a[href='#{new_health_facility_path}']"
+  end
+
+  test "non-admin can get index without new button" do
     sign_in users(:one)
     get health_facilities_url
-    assert_redirected_to root_path
-    assert_equal I18n.t("pundit.not_authorized"), flash[:alert]
+    assert_response :success
+    assert_select "a[href='#{new_health_facility_path}']", false
   end
 
   test "non-admin cannot get new" do
@@ -107,11 +112,18 @@ class HealthFacilitiesControllerTest < ActionDispatch::IntegrationTest
     assert_equal I18n.t("pundit.not_authorized"), flash[:alert]
   end
 
-  test "non-admin cannot get show" do
+  test "show displays edit and destroy actions to admin" do
+    get health_facility_url(@health_facility)
+    assert_select "a[href='#{edit_health_facility_path(@health_facility)}']"
+    assert_select "form[action='#{health_facility_path(@health_facility)}'] input[name='_method'][value='delete']"
+  end
+
+  test "non-admin can get show without edit and destroy actions" do
     sign_in users(:one)
     get health_facility_url(@health_facility)
-    assert_redirected_to root_path
-    assert_equal I18n.t("pundit.not_authorized"), flash[:alert]
+    assert_response :success
+    assert_select "a[href='#{edit_health_facility_path(@health_facility)}']", false
+    assert_select "form[action='#{health_facility_path(@health_facility)}'] input[name='_method'][value='delete']", false
   end
 
   test "non-admin cannot get edit" do

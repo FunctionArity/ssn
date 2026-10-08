@@ -118,6 +118,79 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to user_url(@user)
   end
 
+  test "regular user can edit their own profile" do
+    sign_in users(:one)
+    get edit_user_url(users(:one))
+    assert_response :success
+    assert_select "input[name='user[role]']", count: 0
+  end
+
+  test "regular user can update their own profile" do
+    user = users(:one)
+    sign_in user
+    patch user_url(user), params: { user: { first_name: "Nuevo" } }
+    assert_redirected_to user_url(user)
+    assert_equal "Nuevo", user.reload.first_name
+  end
+
+  test "regular user cannot change their own role" do
+    user = users(:one)
+    sign_in user
+    patch user_url(user), params: { user: { first_name: "Nuevo", role: "priest" } }
+    assert_redirected_to user_url(user)
+    assert_equal "Nuevo", user.reload.first_name
+    assert_not user.priest?
+  end
+
+  test "regular user cannot edit another user" do
+    sign_in users(:one)
+    get edit_user_url(users(:two))
+    assert_redirected_to root_path
+
+    patch user_url(users(:two)), params: { user: { first_name: "Hacked" } }
+    assert_redirected_to root_path
+    assert_not_equal "Hacked", users(:two).reload.first_name
+  end
+
+  test "show displays all admin actions to an admin" do
+    get user_url(users(:one))
+    assert_select "a[href='#{edit_user_path(users(:one))}']"
+    assert_select "form[action='#{lock_user_path(users(:one))}']"
+    assert_select "form[action='#{user_path(users(:one))}'] input[name='_method'][value='delete']"
+    assert_select "form[action='#{impersonate_user_path(users(:one))}']"
+  end
+
+  test "show hides impersonate to a super admin viewing their own profile" do
+    get user_url(@user)
+    assert_select "form[action='#{impersonate_user_path(@user)}']", count: 0
+  end
+
+  test "show hides impersonate to an admin who is not super admin" do
+    sign_in users(:admin_user)
+    get user_url(users(:one))
+    assert_select "a[href='#{edit_user_path(users(:one))}']"
+    assert_select "form[action='#{impersonate_user_path(users(:one))}']", count: 0
+  end
+
+  test "show displays only the edit action to a regular user viewing their own profile" do
+    user = users(:one)
+    sign_in user
+    get user_url(user)
+    assert_select "a[href='#{edit_user_path(user)}']"
+    assert_select "form[action='#{lock_user_path(user)}']", count: 0
+    assert_select "form[action='#{user_path(user)}'] input[name='_method'][value='delete']", count: 0
+    assert_select "form[action='#{impersonate_user_path(user)}']", count: 0
+  end
+
+  test "show displays no actions to a regular user viewing another user" do
+    sign_in users(:one)
+    get user_url(users(:two))
+    assert_select "a[href='#{edit_user_path(users(:two))}']", count: 0
+    assert_select "form[action='#{lock_user_path(users(:two))}']", count: 0
+    assert_select "form[action='#{user_path(users(:two))}'] input[name='_method'][value='delete']", count: 0
+    assert_select "form[action='#{impersonate_user_path(users(:two))}']", count: 0
+  end
+
   test "should not update user with duplicate email" do
     patch user_url(@user), params: { user: { email: users(:agustin).email } }
     assert_response :unprocessable_entity

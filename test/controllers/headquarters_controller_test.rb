@@ -101,11 +101,16 @@ class HeadquartersControllerTest < ActionDispatch::IntegrationTest
   # Authorization — non-admin users
   # ---------------------------------------------------------------------------
 
-  test "non-admin cannot get index" do
+  test "index shows new button to admin" do
+    get headquarters_url
+    assert_select "a[href='#{new_headquarter_path}']"
+  end
+
+  test "non-admin can get index without new button" do
     sign_in users(:one)
     get headquarters_url
-    assert_redirected_to root_path
-    assert_equal I18n.t("pundit.not_authorized"), flash[:alert]
+    assert_response :success
+    assert_select "a[href='#{new_headquarter_path}']", false
   end
 
   test "non-admin cannot get new" do
@@ -115,11 +120,18 @@ class HeadquartersControllerTest < ActionDispatch::IntegrationTest
     assert_equal I18n.t("pundit.not_authorized"), flash[:alert]
   end
 
-  test "non-admin cannot get show" do
+  test "show displays edit and destroy actions to admin" do
+    get headquarter_url(@headquarter)
+    assert_select "a[href='#{edit_headquarter_path(@headquarter)}']"
+    assert_select "form[action='#{headquarter_path(@headquarter)}'] input[name='_method'][value='delete']"
+  end
+
+  test "non-admin can get show without edit and destroy actions" do
     sign_in users(:one)
     get headquarter_url(@headquarter)
-    assert_redirected_to root_path
-    assert_equal I18n.t("pundit.not_authorized"), flash[:alert]
+    assert_response :success
+    assert_select "a[href='#{edit_headquarter_path(@headquarter)}']", false
+    assert_select "form[action='#{headquarter_path(@headquarter)}'] input[name='_method'][value='delete']", false
   end
 
   test "non-admin cannot get edit" do

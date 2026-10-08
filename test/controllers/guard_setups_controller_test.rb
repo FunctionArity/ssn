@@ -35,6 +35,31 @@ class GuardSetupsControllerTest < ActionDispatch::IntegrationTest
     assert_select "[data-guardian-move-target]", false
   end
 
+  test "index shows open guard button for admin users" do
+    get guard_setups_url
+
+    assert_select "a[href='#{new_guard_path(guard_setup_id: @guard_setup.id)}']"
+  end
+
+  test "index shows open guard button for vocal users" do
+    sign_out @user
+    sign_in users(:one)
+
+    get guard_setups_url
+
+    assert_select "a[href='#{new_guard_path(guard_setup_id: @guard_setup.id)}']"
+  end
+
+  test "index hides open guard button for users without access" do
+    sign_out @user
+    sign_in users(:two)
+
+    get guard_setups_url
+
+    assert_response :success
+    assert_select "a[href^='#{new_guard_path}']", false
+  end
+
   test "should get new" do
     get new_guard_setup_url
     assert_response :success
@@ -43,6 +68,21 @@ class GuardSetupsControllerTest < ActionDispatch::IntegrationTest
   test "should show guard_setup" do
     get guard_setup_url(@guard_setup)
     assert_response :success
+  end
+
+  test "show displays edit and destroy actions to admin" do
+    get guard_setup_url(@guard_setup)
+    assert_select "a[href='#{edit_guard_setup_path(@guard_setup)}']"
+    assert_select "form[action='#{guard_setup_path(@guard_setup)}'] input[name='_method'][value='delete']"
+  end
+
+  test "show hides edit and destroy actions from non-admin" do
+    sign_out @user
+    sign_in users(:one)
+    get guard_setup_url(@guard_setup)
+    assert_response :success
+    assert_select "a[href='#{edit_guard_setup_path(@guard_setup)}']", false
+    assert_select "form[action='#{guard_setup_path(@guard_setup)}'] input[name='_method'][value='delete']", false
   end
 
   test "should get edit" do

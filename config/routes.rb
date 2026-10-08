@@ -42,6 +42,8 @@ Rails.application.routes.draw do
   get "sedes", to: "doc/headquarters#index", as: :sedes
   get "sedes/:id", to: "doc/headquarters#show", as: :sede
   get "federacion", to: "doc/federacion#index", as: :federacion
+
+  get "sitemap.xml", to: "sitemaps#index", as: :sitemap, defaults: { format: "xml" }
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

@@ -10,10 +10,14 @@ class UserPolicy < ApplicationPolicy
   end
 
   def update?
-    is_admin?
+    is_admin? || own_profile?
   end
 
   def edit?
+    update?
+  end
+
+  def manage_role?
     is_admin?
   end
 
@@ -35,6 +39,12 @@ class UserPolicy < ApplicationPolicy
 
   def impersonate?
     super_admin?
+  end
+
+  private
+
+  def own_profile?
+    user.present? && record == user
   end
 
   class Scope < ApplicationPolicy::Scope

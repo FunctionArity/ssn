@@ -122,6 +122,7 @@ class UsersController < ApplicationController
 
     def update_user_params
       base = user_params.reject { |_, v| v.blank? }
+      base = base.except(:role, :church_id, :guard_setup_day_number) unless policy(@user).manage_role?
       avatar = params.dig(:user, :avatar)
       avatar.present? ? base.merge(avatar: avatar) : base
     end

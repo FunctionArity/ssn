@@ -2,7 +2,7 @@
 
 class HeadquarterPolicy < ApplicationPolicy
   def index?
-    is_admin?
+    true
   end
 
   def create?
@@ -26,7 +26,7 @@ class HeadquarterPolicy < ApplicationPolicy
   end
 
   def show?
-    is_admin?
+    true
   end
 
   class Scope < ApplicationPolicy::Scope
