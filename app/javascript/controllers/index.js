@@ -25,9 +25,6 @@ application.register("disclosure", DisclosureController)
 import GuardDateReloadController from "./guard_date_reload_controller"
 application.register("guard-date-reload", GuardDateReloadController)
 
-import GuardSelectController from "./guard_select_controller"
-application.register("guard-select", GuardSelectController)
-
 import GuardianMoveController from "./guardian_move_controller"
 application.register("guardian-move", GuardianMoveController)
 

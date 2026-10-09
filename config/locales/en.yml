@@ -92,6 +92,10 @@ en:
           attributes:
             base:
               missing_contact: "must have at least one contact method (phone, email or WhatsApp)"
+        service:
+          attributes:
+            guard:
+              must_be_open: "must be open"
   sidebar:
     menu: Menu
     setup: Setup
@@ -313,7 +317,10 @@ en:
       title: Services
       new_service: New service
       show: Show
-      pending_from_other_guards: Pending from other guards
+      current_guard: Today's active guard
+      view_guard: View guard
+      pending_from_other_guards: Pending services from other guards
+      pending_from_other_guards_hint: These services were left incomplete in previous guards. Reassign them to an open guard to complete them.
     show:
       edit: Edit this service
       back: Back to services

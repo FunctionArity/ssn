@@ -118,6 +118,7 @@ es:
           attributes:
             guard:
               required: "debe ser seleccionada"
+              must_be_open: "debe estar abierta"
         priest_setup:
           attributes:
             day_of_week:
@@ -523,7 +524,8 @@ es:
       show: Ver
       current_guard: Guardia activa hoy
       view_guard: Ver guardia
-      pending_from_other_guards: Pendientes de otras guardias
+      pending_from_other_guards: Servicios pendientes de otras guardias
+      pending_from_other_guards_hint: Estos servicios quedaron sin completar en guardias anteriores. Reasignalos a una guardia abierta para poder completarlos.
     show:
       edit: Editar
       back: Volver a servicios
