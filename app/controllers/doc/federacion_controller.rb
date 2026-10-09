@@ -6,7 +6,7 @@ class Doc::FederacionController < ApplicationController
     [ "que-es", "¿Qué es el Servicio?" ],
     [ "historia", "Historia y fundación" ],
     [ "estructura", "Finalidad y estructura" ],
-    [ "servicios", "Los Servicios" ],
+    [ "servicios", "Sedes" ],
     [ "expansion", "Expansión" ],
     [ "testimonios", "Testimonios" ],
     [ "iglesia", "Reconocida por la Iglesia" ],

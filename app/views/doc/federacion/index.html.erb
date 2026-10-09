@@ -107,7 +107,7 @@
       </section>
 
       <section>
-        <%= render "section_heading", id: "servicios", title: "Los Servicios que integran la Federación", sections: @sections %>
+        <%= render "section_heading", id: "servicios", title: "Sedes que integran la Federación", sections: @sections %>
         <p>Por orden de antigüedad, los 18 Servicios históricos que dieron origen a la Federación son: Córdoba, Buenos Aires, Mendoza, Tucumán, Rosario, Mar del Plata, Salta, Santa Fe, Avellaneda, Lomas de Zamora, San Rafael, La Plata, Paraná, San Juan, Quilmes, Catamarca, Concordia y La Pampa. A ellos se suma, como miembro adherente desde 2013, el Servicio Sacerdotal Nocturno de Quito (Ecuador).</p>
         <p>Hoy, <%= @headquarters.size %> sedes mantienen actividad y atención pública permanente, a las que se suma el SARCU de Madrid, obra hermana en España:</p>
 
@@ -235,11 +235,10 @@
       <section>
         <%= render "section_heading", id: "contacto", title: "Contacto institucional", sections: @sections %>
         <p>Para comunicarse con la Comisión Nacional de la Federación:</p>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mb-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6 max-w-2xl mx-auto">
           <% [
                [ "Presidente", "Ernesto Pecoraro", "54 9 261 206 9195" ],
-               [ "Vicepresidente", "Dario Estorni", "54 9 261 753 9095" ],
-               [ "Coordinador de Nuevas Fundaciones", nil, "54 9 261 470 8686" ]
+               [ "Vicepresidente", "Dario Estorni", "54 9 261 753 9095" ]
              ].each do |role, name, phone| %>
             <div class="flex flex-col bg-white border border-gray-200 rounded-xl p-5">
               <p class="!mb-0 text-xs font-semibold uppercase tracking-wide text-indigo-500"><%= role %></p>
@@ -256,7 +255,7 @@
           <% end %>
         </div>
         <p>Para consultas sobre un Servicio en particular, se puede acudir directamente a la sede de la diócesis correspondiente.</p>
-        <div class="flex">
+        <div class="flex justify-center">
           <%= link_to sedes_path, class: "flex items-center justify-center gap-2 px-6 py-3 bg-white border border-gray-300 text-gray-700 text-sm font-semibold rounded-md hover:bg-gray-50 shadow-sm transition-colors" do %>
             <i class="ph ph-buildings"></i> Ver sedes
           <% end %>

@@ -18,7 +18,6 @@ class Doc::FederacionControllerTest < ActionDispatch::IntegrationTest
     get federacion_url
     assert_select "a[href='tel:+5492612069195']", text: /Llamar/
     assert_select "a[href='tel:+5492617539095']", text: /Llamar/
-    assert_select "a[href='tel:+5492614708686']", text: /Llamar/
     assert_select "a[href*='sites.google.com']", count: 0
     assert_select "section:has(#contacto) a[href='#{sedes_path}']"
   end
