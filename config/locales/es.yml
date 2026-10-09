@@ -548,6 +548,11 @@ es:
     form:
       search_health_facility: Buscar centro de salud...
       no_guard_warning: No hay guardia asignada a este servicio. Por favor seleccione una guardia antes de guardar.
+      guard_groups:
+        current: "Guardia actual del servicio"
+        today: "Hoy"
+        upcoming: "Próximas"
+        previous_open: "Anteriores sin cerrar"
       errors:
         title:
           one: "%{count} error impidió que este servicio fuera guardado:"

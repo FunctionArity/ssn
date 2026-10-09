@@ -342,6 +342,11 @@ en:
     form:
       search_health_facility: Search health facility...
       no_guard_warning: No guard is assigned to this service. Please select a guard before saving.
+      guard_groups:
+        current: "Service's current guard"
+        today: "Today"
+        upcoming: "Upcoming"
+        previous_open: "Previous, not closed"
       errors:
         title:
           one: "%{count} error prohibited this service from being saved:"
