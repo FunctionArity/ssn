@@ -15,6 +15,7 @@ class ServicesController < ApplicationController
   end
 
   def complete
+    authorize @service
     @service.completed!
     respond_to do |format|
       format.turbo_stream { render turbo_stream: turbo_stream.replace(@service, partial: "services/small_view", locals: { service: @service }) }

@@ -444,6 +444,7 @@ es:
       edit: Editar este centro de salud
       back: Volver a centros de salud
       destroy: Eliminar este centro de salud
+      copy: Copiar
       map: Mapa
       open_in_maps: Abrir en Google Maps
       destroy_confirm: "¿Estás seguro de que querés eliminar este centro de salud?"
@@ -467,6 +468,7 @@ es:
     doc_navbar:
       sedes: Sedes
       federacion: Federación
+      asamblea: Asamblea 2026
   doc:
     headquarters:
       index:
@@ -482,7 +484,7 @@ es:
         map: Mapa
         open_in_maps: Abrir en Google Maps
         copy: Copiar
-    federacion:
+    asamblea:
       index:
         title: 44ª Asamblea Nacional de los Servicios Sacerdotales de Urgencia y Nocturnos de la República Argentina
         theme: "Lema: “Fieles a nuestra identidad, nos adaptamos a los tiempos actuales”"
@@ -499,6 +501,7 @@ es:
     show:
       back: Volver a sedes
       destroy_confirm: "¿Estás seguro de que querés eliminar esta sede?"
+      copy: Copiar
     new:
       title: Nueva sede
       back: Volver a sedes

@@ -35,4 +35,10 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
     get root_url
     assert_select "nav", count: 0
   end
+
+  test "links to the federacion page instead of the assembly" do
+    get root_url
+    assert_select "a[href=?]", federacion_path, text: /Federación/
+    assert_select "a[href=?]", asamblea2026_path, count: 0
+  end
 end

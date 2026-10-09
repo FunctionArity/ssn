@@ -52,6 +52,18 @@
     <% end %>
 
     <div class="px-6 py-4 flex items-center justify-end gap-3">
+      <% clipboard_text = [
+           "#{@headquarter.city}, #{@headquarter.state}, #{@headquarter.country}",
+           "#{Headquarter.human_attribute_name(:address)}: #{@headquarter.address}",
+           *contact_rows.filter_map { |attribute, _icon, value| "#{Headquarter.human_attribute_name(attribute)}: #{value}" if value.present? }
+         ].join("\n") %>
+      <button type="button"
+              data-controller="clipboard"
+              data-clipboard-text-value="<%= clipboard_text %>"
+              data-action="click->clipboard#copy"
+              class="cursor-pointer flex items-center gap-1.5 rounded-md bg-white border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50">
+        <i class="ph ph-copy" data-clipboard-target="icon"></i> <%= t(".copy") %>
+      </button>
       <% if policy(Headquarter).edit? %>
         <%= link_to edit_headquarter_path(@headquarter), class: "flex items-center gap-1.5 rounded-md bg-white border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50" do %>
           <i class="ph ph-pencil-simple"></i> <%= t("edit") %>

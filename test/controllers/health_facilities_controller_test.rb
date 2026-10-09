@@ -112,6 +112,17 @@ class HealthFacilitiesControllerTest < ActionDispatch::IntegrationTest
     assert_equal I18n.t("pundit.not_authorized"), flash[:alert]
   end
 
+  test "show has a copy button with the health facility info" do
+    get health_facility_url(@health_facility)
+
+    assert_select "button[data-controller='clipboard']" do |buttons|
+      text = buttons.first["data-clipboard-text-value"]
+      assert_includes text, @health_facility.name
+      assert_includes text, @health_facility.address
+      assert_includes text, "https://maps.google.com/?q="
+    end
+  end
+
   test "show displays edit and destroy actions to admin" do
     get health_facility_url(@health_facility)
     assert_select "a[href='#{edit_health_facility_path(@health_facility)}']"

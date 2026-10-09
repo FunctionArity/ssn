@@ -8,13 +8,18 @@
         <span class="hidden sm:inline text-sm font-semibold text-white">Servicio Sacerdotal Nocturno</span>
       <% end %>
 
-      <div class="flex items-center gap-1 sm:gap-2 text-sm font-medium">
+      <div class="flex items-center gap-0.5 sm:gap-2 text-xs sm:text-sm font-medium whitespace-nowrap">
         <%= link_to t(".sedes"), sedes_path,
-              class: "px-3 py-1.5 rounded-md transition-colors #{controller_path == "doc/headquarters" ? "text-white bg-white/10" : "text-indigo-200 hover:text-white hover:bg-white/5"}" %>
+              class: "px-2 sm:px-3 py-1.5 rounded-md transition-colors #{controller_path == "doc/headquarters" ? "text-white bg-white/10" : "text-indigo-200 hover:text-white hover:bg-white/5"}" %>
         <%= link_to t(".federacion"), federacion_path,
-              class: "px-3 py-1.5 rounded-md transition-colors #{controller_path == "doc/federacion" ? "text-white bg-white/10" : "text-indigo-200 hover:text-white hover:bg-white/5"}" %>
-        <%= link_to t("devise.sessions.sign_in"), new_user_session_path,
-              class: "ml-1 flex items-center gap-1.5 rounded-md bg-white px-3 py-1.5 text-indigo-900 font-semibold hover:bg-indigo-50" %>
+              class: "px-2 sm:px-3 py-1.5 rounded-md transition-colors #{controller_path == "doc/federacion" ? "text-white bg-white/10" : "text-indigo-200 hover:text-white hover:bg-white/5"}" %>
+        <%= link_to t(".asamblea"), asamblea2026_path,
+              class: "px-2 sm:px-3 py-1.5 rounded-md transition-colors #{controller_path == "doc/asamblea" ? "text-white bg-white/10" : "text-indigo-200 hover:text-white hover:bg-white/5"}" %>
+        <%= link_to new_user_session_path, title: t("devise.sessions.sign_in"), aria: { label: t("devise.sessions.sign_in") },
+              class: "ml-1 flex items-center gap-1.5 rounded-md bg-white px-2 sm:px-3 py-1.5 text-indigo-900 font-semibold hover:bg-indigo-50" do %>
+          <i class="ph ph-sign-in sm:hidden text-base"></i>
+          <span class="hidden sm:inline"><%= t("devise.sessions.sign_in") %></span>
+        <% end %>
       </div>
     </div>
   </div>
