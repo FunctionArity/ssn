@@ -6,13 +6,13 @@
   </div>
 
   <div id="<%= dom_id @headquarter %>" class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
-    <div class="px-6 py-5 flex items-center justify-between bg-gradient-to-r from-amber-50 to-white border-b border-gray-100">
-      <div>
-        <p class="text-xs font-medium text-amber-500 uppercase tracking-wide"><%= @headquarter.state %>, <%= @headquarter.country %></p>
-        <h2 class="text-xl font-bold text-gray-900 mt-0.5"><%= @headquarter.city %></h2>
-      </div>
+    <div class="px-6 py-5 flex items-center gap-4 bg-gradient-to-r from-amber-50 to-white border-b border-gray-100">
       <div class="flex items-center justify-center w-12 h-12 rounded-full bg-amber-100 text-amber-700 shrink-0">
         <i class="ph ph-buildings text-xl"></i>
+      </div>
+      <div class="min-w-0">
+        <p class="text-xs font-medium text-amber-500 uppercase tracking-wide"><%= @headquarter.state %>, <%= @headquarter.country %></p>
+        <h2 class="text-xl font-bold text-gray-900 mt-0.5"><%= @headquarter.city %></h2>
       </div>
     </div>
 
