@@ -27,7 +27,7 @@ class GuardPdf
   private
 
   def generate(pdf)
-    services = @guard.services.includes(:health_facility).order(due_date: :asc)
+    services = @guard.services.completed.includes(:health_facility).order(due_date: :asc)
     groups   = services.each_slice(SERVICES_PER_PAGE).to_a
 
     groups.each_with_index do |group, page_index|

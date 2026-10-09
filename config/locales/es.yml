@@ -118,6 +118,7 @@ es:
           attributes:
             guard:
               required: "debe ser seleccionada"
+              must_be_open: "debe estar abierta"
         priest_setup:
           attributes:
             day_of_week:
@@ -523,7 +524,8 @@ es:
       show: Ver
       current_guard: Guardia activa hoy
       view_guard: Ver guardia
-      pending_from_other_guards: Pendientes de otras guardias
+      pending_from_other_guards: Servicios pendientes de otras guardias
+      pending_from_other_guards_hint: Estos servicios quedaron sin completar en guardias anteriores. Reasignalos a una guardia abierta para poder completarlos.
     show:
       edit: Editar
       back: Volver a servicios
@@ -531,6 +533,7 @@ es:
       destroy_confirm: "¿Estás seguro de que querés eliminar este servicio?"
       complete: Completar
       complete_confirm: "¿Estás seguro de que querés marcar este servicio como completado?"
+      reassign_to_open_guard: El servicio debe ser reasignado a una guardia abierta
       print_pdf: Imprimir
       copy: Copiar
       map: Mapa
@@ -545,6 +548,11 @@ es:
     form:
       search_health_facility: Buscar centro de salud...
       no_guard_warning: No hay guardia asignada a este servicio. Por favor seleccione una guardia antes de guardar.
+      guard_groups:
+        current: "Guardia actual del servicio"
+        today: "Hoy"
+        upcoming: "Próximas"
+        previous_open: "Anteriores sin cerrar"
       errors:
         title:
           one: "%{count} error impidió que este servicio fuera guardado:"

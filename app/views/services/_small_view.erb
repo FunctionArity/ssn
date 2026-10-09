@@ -30,10 +30,14 @@
         <% end %>
       </div>
     <% end %>
-    <% if service.pending? %>
+    <% if service.can_be_completed? %>
       <%= button_to complete_service_path(service), method: :post, form: { data: { turbo_confirm: t("services.show.complete_confirm") } }, class: "cursor-pointer flex items-center gap-1.5 rounded-md bg-red-600 px-3 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-red-500 shrink-0" do %>
         <%= t("services.show.complete") %>
       <% end %>
+    <% elsif service.pending? %>
+      <span class="inline-flex items-center gap-1.5 text-xs font-medium text-amber-600 bg-amber-50 border border-amber-200 rounded-md px-2 py-0.5 shrink">
+        <i class="ph ph-warning shrink-0"></i> <%= t("services.show.reassign_to_open_guard") %>
+      </span>
     <% else %>
       <span class="badge_green shrink-0"><%= t("services.status.#{service.status}") %></span>
     <% end %>
@@ -115,10 +119,14 @@
     </div>
 
     <div class="px-5 py-3 border-t border-gray-100 flex items-center justify-between">
-      <% if service.pending? %>
+      <% if service.can_be_completed? %>
         <%= button_to complete_service_path(service), method: :post, form: { data: { turbo_confirm: t("services.show.complete_confirm") } }, class: "cursor-pointer flex items-center gap-1.5 rounded-md bg-red-600 px-3 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-red-500" do %>
           <%= t("services.show.complete") %>
         <% end %>
+      <% elsif service.pending? %>
+        <span class="inline-flex items-center gap-1.5 text-xs font-medium text-amber-600 bg-amber-50 border border-amber-200 rounded-md px-2 py-0.5">
+          <i class="ph ph-warning shrink-0"></i> <%= t("services.show.reassign_to_open_guard") %>
+        </span>
       <% else %>
         <span></span>
       <% end %>

@@ -49,6 +49,59 @@ class ServicesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test "edit guard dropdown lists only open guards and the service's current guard" do
+    sign_in users(:super_admin)
+    @service.guard.update_column(:status, Guard.statuses[:closed])
+    other_open = Guard.create!(day_number: 2, due_date: Date.current, status: :open,
+                               vocal: users(:one), priest: users(:two), guard_setup: guard_setups(:one), guardians: [ users(:one) ])
+    other_closed = Guard.create!(day_number: 3, due_date: Date.current - 2, status: :closed,
+                                 vocal: users(:one), priest: users(:two), guard_setup: guard_setups(:one), guardians: [ users(:one) ])
+
+    get edit_service_url(@service)
+
+    assert_response :success
+    assert_select "select[name='service[guard_id]']" do
+      assert_select "option[value='#{other_open.id}']"
+      assert_select "option[value='#{@service.guard_id}'][selected]"
+      assert_select "option[value='#{other_closed.id}']", count: 0
+    end
+  end
+
+  test "edit shows guard dropdown for a vocal" do
+    sign_in users(:unrelated_vocal)
+    get edit_service_url(@service)
+    assert_select "select[name='service[guard_id]']"
+  end
+
+  test "edit hides guard dropdown for a non-vocal guardian" do
+    guardian = users(:two).tap { |u| u.update_columns(role: User.roles[:guardian]) }
+    @service.guard.guardians << guardian
+    sign_in guardian
+    get edit_service_url(@service)
+    assert_response :success
+    assert_select "select[name='service[guard_id]']", count: 0
+  end
+
+  test "update changes guard for a vocal" do
+    other_open = Guard.create!(day_number: 2, due_date: Date.current, status: :open,
+                               vocal: users(:one), priest: users(:two), guard_setup: guard_setups(:one), guardians: [ users(:one) ])
+    patch service_url(@service), params: { service: { guard_id: other_open.id } }
+    assert_redirected_to service_url(@service)
+    assert_equal other_open, @service.reload.guard
+  end
+
+  test "update ignores guard change for a non-vocal guardian" do
+    guardian = users(:two).tap { |u| u.update_columns(role: User.roles[:guardian]) }
+    @service.guard.guardians << guardian
+    other_open = Guard.create!(day_number: 2, due_date: Date.current, status: :open,
+                               vocal: users(:one), priest: users(:two), guard_setup: guard_setups(:one), guardians: [ users(:one) ])
+    sign_in guardian
+    patch service_url(@service), params: { service: { full_name: "Updated", guard_id: other_open.id } }
+    assert_redirected_to service_url(@service)
+    assert_equal guards(:one), @service.reload.guard
+    assert_equal "Updated", @service.full_name
+  end
+
   test "should create service" do
     assert_difference("Service.count") do
       post services_url, params: {
@@ -144,6 +197,22 @@ class ServicesControllerTest < ActionDispatch::IntegrationTest
 
     assert_redirected_to root_path
     assert_equal 1, @service.reload.position
+  end
+
+  test "should broadcast the guard services list when a service is completed" do
+    assert_broadcasts("guard_#{@service.guard_id}", 1) do
+      perform_enqueued_jobs do
+        post complete_service_url(@service), headers: { "Accept" => "text/vnd.turbo-stream.html" }
+      end
+    end
+  end
+
+  test "should broadcast the guard services list when a service is updated" do
+    assert_broadcasts("guard_#{@service.guard_id}", 1) do
+      perform_enqueued_jobs do
+        patch service_url(@service), params: { service: { full_name: "Nombre Actualizado" } }
+      end
+    end
   end
 
   test "should broadcast the reordered guard services list to other devices" do

@@ -5,9 +5,10 @@ class ServicesController < ApplicationController
     @current_guard = Guard.includes(:vocal, :priest, :guardians).find_by(status: :open, due_date: Date.current)
     @services = @current_guard ? @current_guard.services.includes(:created_by).order(:position) : Service.none
     @pending_other_services = Service.pending
-                                     .includes(:guard, :created_by)
+                                     .includes(:guard, :created_by, :health_facility)
                                      .where.not(guard: @current_guard)
-                                     .order(due_date: :desc, created_at: :desc)
+                                     .joins(:guard)
+                                     .order("guards.due_date DESC", :position)
   end
 
   def show
@@ -70,7 +71,7 @@ class ServicesController < ApplicationController
 
   def edit
     authorize @service
-    @guards = Guard.order(due_date: :desc)
+    set_guards
   end
 
   def create
@@ -91,12 +92,16 @@ class ServicesController < ApplicationController
 
   def update
     authorize @service
+    attributes = policy(@service).change_guard? ? service_params : service_params.except(:guard_id)
     respond_to do |format|
-      if @service.update(service_params)
+      if @service.update(attributes)
         format.html { redirect_to @service, notice: t("services.notices.updated"), status: :see_other }
         format.json { render :show, status: :ok, location: @service }
       else
-        format.html { render :edit, status: :unprocessable_entity }
+        format.html do
+          set_guards
+          render :edit, status: :unprocessable_entity
+        end
         format.json { render json: @service.errors, status: :unprocessable_entity }
       end
     end
@@ -114,12 +119,8 @@ class ServicesController < ApplicationController
 
   private
 
+  # The guard show list is broadcast by Service's after_update_commit; only the index grid is handled here.
   def broadcast_reordered_services(guard)
-    @service.broadcast_replace_later_to "guard_#{guard.id}",
-      target: "guard_#{guard.id}_services",
-      partial: "guards/services_list",
-      locals: { guard: guard, services: guard.services.includes(:health_facility).order(:position).to_a }
-
     current_guard = Guard.find_by(status: :open, due_date: Date.current)
     return unless current_guard == guard
 
@@ -131,6 +132,11 @@ class ServicesController < ApplicationController
 
   def set_service
     @service = Service.find(params.expect(:id))
+  end
+
+  # Open guards, plus the service's current guard so it stays selected when that guard is closed.
+  def set_guards
+    @guards = Guard.where(status: :open).or(Guard.where(id: @service.guard_id_in_database)).order(due_date: :desc)
   end
 
   def service_params
