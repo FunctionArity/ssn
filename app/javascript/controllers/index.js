@@ -58,6 +58,9 @@ application.register("role-selector", RoleSelectorController)
 import ServiceReorderController from "./service_reorder_controller"
 application.register("service-reorder", ServiceReorderController)
 
+import ScrollSpyController from "./scroll_spy_controller"
+application.register("scroll-spy", ScrollSpyController)
+
 import SidebarController from "./sidebar_controller"
 application.register("sidebar", SidebarController)
 

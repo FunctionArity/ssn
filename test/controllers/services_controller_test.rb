@@ -166,6 +166,48 @@ class ServicesControllerTest < ActionDispatch::IntegrationTest
     assert @service.reload.completed?
   end
 
+  test "should not complete service when its guard is closed" do
+    @service.guard.update_column(:status, Guard.statuses[:closed])
+    post complete_service_url(@service)
+
+    assert_redirected_to root_path
+    assert @service.reload.pending?
+  end
+
+  test "should not complete service for a non-vocal user unrelated to the guard" do
+    sign_in users(:two)
+    post complete_service_url(@service)
+
+    assert_redirected_to root_path
+    assert @service.reload.pending?
+  end
+
+  test "show displays edit, complete and destroy actions when permitted" do
+    get service_url(@service)
+
+    assert_select "a[href='#{edit_service_path(@service)}']"
+    assert_select "form[action='#{complete_service_path(@service)}']"
+    assert_select "form[action='#{service_path(@service)}'] input[name='_method'][value='delete']"
+  end
+
+  test "show hides edit, complete and destroy actions when not permitted" do
+    sign_in users(:two)
+    get service_url(@service)
+
+    assert_response :success
+    assert_select "a[href='#{edit_service_path(@service)}']", count: 0
+    assert_select "form[action='#{complete_service_path(@service)}']", count: 0
+    assert_select "form[action='#{service_path(@service)}'] input[name='_method'][value='delete']", count: 0
+  end
+
+  test "show hides complete action when the guard is closed" do
+    @service.guard.update_column(:status, Guard.statuses[:closed])
+    get service_url(@service)
+
+    assert_select "a[href='#{edit_service_path(@service)}']"
+    assert_select "form[action='#{complete_service_path(@service)}']", count: 0
+  end
+
   test "should move service to a new position within its guard" do
     other = services(:completed_one)
     assert_equal 1, @service.position

@@ -240,6 +240,7 @@ en:
       edit: Edit this health facility
       back: Back to health facilities
       destroy: Destroy this health facility
+      copy: Copy
       map: Map
       open_in_maps: Open in Google Maps
     new:
@@ -262,6 +263,7 @@ en:
     doc_navbar:
       sedes: Headquarters
       federacion: Federation
+      asamblea: Assembly 2026
   doc:
     headquarters:
       index:
@@ -277,7 +279,7 @@ en:
         map: Map
         open_in_maps: Open in Google Maps
         copy: Copy
-    federacion:
+    asamblea:
       index:
         title: 44ª Asamblea Nacional de los Servicios Sacerdotales de Urgencia y Nocturnos de la República Argentina
         theme: "Theme: “Faithful to our identity, we adapt to current times”"
@@ -294,6 +296,7 @@ en:
     show:
       back: Back to headquarters
       destroy_confirm: "Are you sure you want to delete this headquarter?"
+      copy: Copy
     new:
       title: New headquarter
       back: Back to headquarters

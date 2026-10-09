@@ -1,68 +1,280 @@
+<% content_for :title, "Federación Argentina del Servicio Sacerdotal de Urgencia y Nocturno" %>
+<% h3_class = "text-lg font-bold text-indigo-900 mt-8 mb-3" %>
+<% quote_class = "border-l-4 border-indigo-300 bg-indigo-50/50 rounded-r-lg pl-5 pr-4 py-3 italic text-gray-700" %>
+<% cite_class = "block mt-2 not-italic text-sm text-indigo-700" %>
+<% note_class = "italic text-gray-500" %>
 
 <div>
-  <%= image_tag "fassnu-logo.jpg", alt: "FASSNU", class: "h-32 sm:h-80 w-auto mb-8 mx-auto" %>
-
-  <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight leading-tight text-gray-900 mb-4 text-center"><%= t(".title") %></h1>
-  <div class="flex justify-center">
-    <p class="inline-flex items-center gap-2 text-center text-base sm:text-lg font-semibold italic text-indigo-700 bg-indigo-50 border border-indigo-100 rounded-full px-5 py-2 max-w-3xl">
-      <i class="ph ph-quotes text-indigo-400"></i> <%= t(".theme") %>
-    </p>
+  <%# Hero %>
+  <div class="text-center">
+    <%= image_tag "fassnu-logo.jpg", alt: "FSSUN — Federación Argentina del Servicio Sacerdotal de Urgencia y Nocturno", class: "h-32 sm:h-64 w-auto mb-8 mx-auto" %>
+    <p class="text-xs font-semibold uppercase tracking-widest text-indigo-500 mb-3">República Argentina</p>
+    <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight leading-tight text-gray-900 mb-4 max-w-4xl mx-auto">
+      Federación Argentina del Servicio Sacerdotal de Urgencia y Nocturno
+    </h1>
+    <div class="flex justify-center">
+      <p class="inline-flex items-center gap-2 text-base sm:text-lg font-semibold italic text-indigo-700 bg-indigo-50 border border-indigo-100 rounded-full px-5 py-2">
+        <i class="ph ph-quotes text-indigo-400"></i> Servir, aliviar y salvar
+      </p>
+    </div>
+    <p class="mt-4 text-sm text-gray-500">Más de 70 años construyendo, noche a noche, la Civilización del Amor en la Argentina</p>
   </div>
 
-  <div class="mt-6 flex flex-col sm:flex-row gap-3">
-    <% calendar_params = {
-         action: "TEMPLATE",
-         text: t(".title"),
-         dates: "20260828/20260831",
-         details: t(".theme"),
-         location: t(".location")
-       } %>
-    <%= link_to "https://calendar.google.com/calendar/render?#{calendar_params.to_query}", target: "_blank", rel: "noopener", class: "group w-full sm:flex-1 flex items-center gap-3 bg-white border border-gray-200 rounded-xl px-4 py-3 hover:bg-indigo-50 hover:border-indigo-400 hover:shadow-md transition-all" do %>
-      <span class="flex items-center justify-center w-9 h-9 rounded-lg bg-indigo-50 text-indigo-500 shrink-0">
-        <i class="ph ph-calendar-blank text-lg"></i>
-      </span>
-      <i class="ph ph-arrow-right text-2xl text-indigo-600 shrink-0 transition-transform group-hover:translate-x-1"></i>
-      <span class="text-sm font-semibold text-gray-700 group-hover:text-indigo-600"><%= t(".dates") %></span>
-    <% end %>
-    <%= link_to "https://maps.google.com/?q=#{URI.encode_uri_component(t('.location'))}", target: "_blank", rel: "noopener", class: "group w-full sm:flex-1 flex items-center gap-3 bg-white border border-gray-200 rounded-xl px-4 py-3 hover:bg-indigo-50 hover:border-indigo-400 hover:shadow-md transition-all" do %>
-      <span class="flex items-center justify-center w-9 h-9 rounded-lg bg-indigo-50 text-indigo-500 shrink-0">
-        <i class="ph ph-map-pin text-lg"></i>
-      </span>
-      <i class="ph ph-arrow-right text-2xl text-indigo-600 shrink-0 transition-transform group-hover:translate-x-1"></i>
-      <span class="text-sm font-semibold text-gray-700 group-hover:text-indigo-600"><%= t(".location") %></span>
-    <% end %>
-  </div>
-
-  <div class="mt-8 flex justify-center">
-    <%= link_to "https://forms.gle/XcxyZZ74XtXGQdih8", target: "_blank", rel: "noopener", class: "flex items-center gap-2 px-6 py-3 bg-indigo-600 text-white text-sm font-semibold rounded-md hover:bg-indigo-700 shadow-sm transition-colors" do %>
-      <i class="ph ph-note-pencil"></i> <%= t(".fill_form") %>
-    <% end %>
-  </div>
-
-  <hr class="border-gray-200 my-8">
-
-  <h2 class="text-xl font-bold text-gray-900 mb-6"><%= t(".program") %></h2>
-
-  <div class="space-y-6">
-    <% @schedule.each do |day| %>
-      <div class="bg-white border border-gray-200 rounded-xl p-5 sm:p-6">
-        <h3 class="flex items-center gap-3 font-bold text-gray-900 mb-4">
-          <span class="flex items-center justify-center w-9 h-9 rounded-lg bg-indigo-50 text-indigo-500 shrink-0">
-            <i class="ph ph-calendar-check text-lg"></i>
-          </span>
-          <%= day[:label] %>
-        </h3>
-        <ul class="space-y-3">
-          <% day[:items].each do |time, activity| %>
-            <li class="flex items-start gap-3">
-              <span class="shrink-0 inline-flex items-center justify-center rounded-full bg-indigo-50 text-indigo-600 text-xs font-semibold px-2.5 py-1 min-w-[4.5rem] text-center">
-                <%= time %>
-              </span>
-              <span class="text-sm text-gray-700 pt-0.5"><%= activity %></span>
-            </li>
-          <% end %>
-        </ul>
+  <%# Key figures %>
+  <div class="mt-10 grid grid-cols-2 lg:grid-cols-4 gap-3">
+    <% [
+         [ "ph-calendar-star", "1952", "Primera guardia, Córdoba" ],
+         [ "ph-hand-heart", "+450", "Sacerdotes" ],
+         [ "ph-users-three", "+850", "Laicos guardianes" ],
+         [ "ph-first-aid-kit", "+309.900", "Visitas a enfermos" ]
+       ].each do |icon, value, label| %>
+      <div class="bg-white border border-gray-200 rounded-xl p-4 sm:p-5 flex items-center gap-3">
+        <span class="flex items-center justify-center w-10 h-10 rounded-lg bg-indigo-50 text-indigo-500 shrink-0">
+          <i class="ph <%= icon %> text-xl"></i>
+        </span>
+        <div class="min-w-0">
+          <p class="text-xl sm:text-2xl font-extrabold text-gray-900 leading-none"><%= value %></p>
+          <p class="text-xs text-gray-500 mt-1"><%= label %></p>
+        </div>
       </div>
     <% end %>
+  </div>
+
+  <div class="mt-10 lg:grid lg:grid-cols-[14rem_1fr] lg:gap-10"
+       data-controller="scroll-spy"
+       data-scroll-spy-active-class="!bg-indigo-50 !text-indigo-700 font-semibold">
+    <%# Table of contents %>
+    <nav class="hidden lg:block">
+      <div class="sticky top-6 bg-white border border-gray-200 rounded-xl p-4">
+        <p class="text-xs font-semibold uppercase tracking-wide text-gray-400 mb-3">Contenido</p>
+        <ul class="space-y-1 text-sm">
+          <% @sections.each do |anchor, label| %>
+            <li><a href="#<%= anchor %>" data-scroll-spy-target="link" data-action="scroll-spy#jump" class="block rounded-md px-2 py-1 text-gray-600 hover:bg-indigo-50 hover:text-indigo-700 transition-colors"><%= label %></a></li>
+          <% end %>
+          <li>
+            <%= link_to asamblea2026_path, class: "group flex items-center gap-1.5 rounded-md px-2 py-1 text-gray-600 hover:bg-indigo-50 hover:text-indigo-700 transition-colors" do %>
+              Asamblea 2026
+              <i class="ph ph-arrow-right text-indigo-400 transition-transform group-hover:translate-x-0.5"></i>
+            <% end %>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <article class="min-w-0 space-y-12 text-gray-700 leading-relaxed [&_p]:mb-4">
+
+      <section>
+        <%= render "section_heading", id: "que-es", title: "¿Qué es el Servicio Sacerdotal de Urgencia?", sections: @sections %>
+        <p>El Servicio Sacerdotal de Urgencia (SSU), también llamado en algunas diócesis Servicio Sacerdotal Nocturno (SSN), es una obra de Dios antes que una institución: una familia de sacerdotes y laicos que, noche a noche y en forma gratuita, se hacen presentes junto a los enfermos que atraviesan una hora de urgencia espiritual, especialmente cuando se solicita la Unción de los Enfermos y, si corresponde, el Viático.</p>
+        <p>Es una obra netamente de misericordia, netamente laical en su organización: sacerdotes y guardianes —hermanos laicos que sostienen la guardia— se unen a "ser misericordiosos como el Padre" (cf. Lc 6, 36), y cada noche se turnan para responder al llamado de una familia, un hospital o un centro de salud, llevando el consuelo de los Sacramentos en el momento más importante de la vida de una persona.</p>
+        <p>Cada Servicio depende exclusivamente de su autoridad diocesana; sin embargo, desde 1982 los distintos Servicios del país están unidos, como una misma familia espiritual, en la Federación Argentina del Servicio Sacerdotal de Urgencia y Nocturno (FSSUN), reconocida por la Conferencia Episcopal Argentina.</p>
+        <p>En cada guardia sostenida en silencio, en cada sacerdote que se levanta de madrugada, en cada guardián que no cuelga el teléfono, se va tejiendo algo más grande que la suma de esos gestos: un fragmento concreto de lo que la Iglesia llama la Civilización del Amor, hecha noche, hecha camino, hecha presencia de Cristo junto al que sufre.</p>
+        <p class="<%= note_class %>">La Federación tiene como patronos a Nuestra Señora de Lourdes y a San José, patrono de la buena muerte, y celebra el Día de los Servicios cada 26 de octubre, fecha de la primera guardia realizada en el país en 1952.</p>
+
+        <h3 class="<%= h3_class %>">El sacramento que sostiene esta obra</h3>
+        <p>En el centro de cada guardia está la Unción de los Enfermos: el sacramento que, instituido por Cristo y recomendado ya por Santiago (cf. St 5, 14-15), la Iglesia ofrece a quien atraviesa una enfermedad grave o la fragilidad de la vejez. Al ungir la frente y las manos del enfermo, el sacerdote pide para él una gracia de consuelo, paz y fortaleza; su unión más íntima con la Pasión de Cristo; y, si no hubiera podido confesarse, también el perdón de los pecados.</p>
+        <p class="<%= note_class %>">Contra una idea muy extendida, no es un sacramento reservado al último instante de la vida —por eso fue dejando de llamarse "Extremaunción"—, sino que puede recibirse cada vez que la enfermedad es grave, e incluso repetirse si esa enfermedad se agrava. Es, precisamente, porque este sacramento no puede esperar a que amanezca, que la Iglesia argentina organizó, noche tras noche desde 1952, una guardia permanente de sacerdotes dispuestos a administrarlo a cualquier hora.</p>
+      </section>
+
+      <section>
+        <%= render "section_heading", id: "historia", title: "Historia y fundación", sections: @sections %>
+        <p>La obra nació en Córdoba en 1952, del dolor y la lucidez de un solo hombre. El Dr. Armando César Sánchez, abogado cordobés, tenía a su padre gravemente enfermo, y una madrugada de mayo de ese año, cerca de las dos, su estado se agravó. Sánchez quiso que recibiera el sacramento de la Unción de los Enfermos y comenzó a llamar a su parroquia, sin respuesta. Tomó un taxi y recorrió otras iglesias y conventos de la ciudad en busca de un sacerdote: tampoco tuvo suerte. Pero en ese recorrido nocturno advirtió algo que no podía dejar de pensar: había farmacias de turno, sanatorios y hospitales de guardia, pero ningún sacerdote disponible para una urgencia espiritual.</p>
+        <p>De esa noche nació la idea de organizar una guardia sacerdotal permanente. Sánchez compartió el proyecto con otros laicos y sacerdotes amigos, y finalmente lo presentó al arzobispo de Córdoba, Mons. Fermín Laffitte, quien lo aprobó y lo alentó. Así, en la noche del 26 de octubre de 1952 —festividad de Jesucristo Rey del Universo— se puso en marcha por primera vez en la Argentina una guardia con un sacerdote y dos laicos, esperando en piadosa vigilia el llamado de algún hermano necesitado de la gracia de Dios: nacía la Hermandad del Santo Viático y Nuestra Señora de Fátima, primera de su tipo en el país y en el mundo.</p>
+        <p>Lo que comenzó como una respuesta local se extendió con rapidez a otras diócesis, como el fuego que se pasa de una lámpara a otra. En 1954 nació el Servicio de Buenos Aires, con sede en José E. Uriburu 1632, y ese mismo año se reunieron los presidentes de Córdoba y Buenos Aires dejando constancia del deseo de cooperación mutua. Durante las décadas siguientes, sucesivos encuentros —La Plata (1958), el Congreso Eucarístico de Córdoba (1958), el 10.º aniversario de Buenos Aires— fueron consolidando la idea de una federación nacional, de una familia de familias.</p>
+        <p>En agosto de 1969, en la Asamblea del XV Aniversario de Mendoza, representantes de Córdoba, Mendoza, San Juan, Tucumán y Buenos Aires crearon el Consejo Nacional de Servicios Sacerdotales, con primera presidencia a cargo de Tucumán. En 1982 el Consejo se transformó en Federación, y el 10 de agosto de 1983 la Comisión Permanente de la Conferencia Episcopal Argentina aprobó su primer Estatuto.</p>
+        <blockquote class="<%= quote_class %> mb-4">
+          "Queda mucho por hacer. Promover una Federación de Servicios Sacerdotales del país. Procurar la creación de nuevas Instituciones hermanas, alentándolas y orientándolas con nuestra experiencia."
+          <cite class="<%= cite_class %>">— Acta de la Asamblea del 10.º Aniversario de Buenos Aires</cite>
+        </blockquote>
+        <p>Bajo el impulso directo de la Comisión se fundaron, entre otros, los Servicios de Avellaneda, Bahía Blanca, Catamarca, Concordia, Corrientes, Lomas de Zamora, Mar del Plata, Morón, Paraná, Salta, San Isidro y Santa Fe, además de intervenir en la refundación de La Plata.</p>
+      </section>
+
+      <section>
+        <%= render "section_heading", id: "estructura", title: "Finalidad y estructura institucional", sections: @sections %>
+        <p>En agosto de 2024, la Conferencia Episcopal Argentina aprobó —ad experimentum, por un período de tres años— un nuevo Estatuto que actualiza el de 1983 y renombra a la Comisión Federal como Comisión Nacional, y a la Asamblea Federal como Asamblea Nacional.</p>
+        <p>Según este Estatuto vigente, las finalidades de la Federación son:</p>
+        <ul class="list-disc pl-6 space-y-1 mb-4">
+          <li>Coordinar a los Servicios miembros promoviendo el intercambio y la información necesaria para conformar una verdadera hermandad.</li>
+          <li>Apoyarlos según sus necesidades.</li>
+          <li>Impulsar el desarrollo de Reuniones Zonales.</li>
+          <li>Colaborar con las Pastorales de la Salud y de los Enfermos.</li>
+          <li>Representar a los Servicios ante la CEA, el clero, las instituciones civiles y el laicado.</li>
+          <li>Propiciar la creación de nuevos Servicios dentro y fuera del país, con la debida aprobación diocesana.</li>
+          <li>Colaborar con la creación de federaciones hermanas en otros países.</li>
+        </ul>
+        <p>La Comisión Nacional —organismo representativo de la Federación— está integrada por Asesor y Vice Asesor Espiritual, Presidente, Vicepresidente, Secretario de Actas, Tesorero, Encargado de Difusión, una Subcomisión de Actividades Generales y Vocales. Presidente y Vicepresidente se eligen por fórmula, en Asamblea Ordinaria, por un período de tres años, y su designación se eleva a la Conferencia Episcopal Argentina.</p>
+        <p>La Asamblea Nacional Ordinaria se convoca una vez al año, con un mínimo de seis meses de antelación, y reúne a un representante de cada Servicio miembro —con un voto por entidad— para informar sobre las actividades de la Comisión, intercambiar experiencias y, cuando corresponde, elegir nuevas autoridades. El Asesor Espiritual conserva la facultad de vetar cualquier decisión que, a su juicio, sea incompatible con la Doctrina Católica.</p>
+      </section>
+
+      <section>
+        <%= render "section_heading", id: "servicios", title: "Los Servicios que integran la Federación", sections: @sections %>
+        <p>Por orden de antigüedad, los 18 Servicios históricos que dieron origen a la Federación son: Córdoba, Buenos Aires, Mendoza, Tucumán, Rosario, Mar del Plata, Salta, Santa Fe, Avellaneda, Lomas de Zamora, San Rafael, La Plata, Paraná, San Juan, Quilmes, Catamarca, Concordia y La Pampa. A ellos se suma, como miembro adherente desde 2013, el Servicio Sacerdotal Nocturno de Quito (Ecuador).</p>
+        <p>Hoy, <%= @headquarters.size %> sedes mantienen actividad y atención pública permanente, a las que se suma el SARCU de Madrid, obra hermana en España:</p>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
+          <% @headquarters.each do |headquarter| %>
+            <%= link_to sede_path(headquarter), class: "group bg-white border border-gray-200 rounded-xl p-4 hover:border-indigo-400 hover:shadow-md transition-all" do %>
+              <div class="flex items-center justify-between gap-2 font-semibold text-gray-900 group-hover:text-indigo-700">
+                <span class="truncate"><%= headquarter.city %> <span class="font-normal text-gray-400">· <%= headquarter.state %><%= ", #{headquarter.country}" unless headquarter.country == "Argentina" %></span></span>
+                <i class="ph ph-arrow-right text-indigo-400 shrink-0 transition-transform group-hover:translate-x-1"></i>
+              </div>
+              <div class="mt-1 flex items-start gap-1.5 text-sm text-gray-500"><i class="ph ph-map-pin mt-0.5 shrink-0"></i> <%= headquarter.address %></div>
+              <% if headquarter.phone.present? %>
+                <div class="mt-0.5 flex items-start gap-1.5 text-sm text-gray-500"><i class="ph ph-phone mt-0.5 shrink-0"></i> <%= headquarter.phone %></div>
+              <% end %>
+            <% end %>
+          <% end %>
+          <div class="bg-white border border-dashed border-gray-300 rounded-xl p-4">
+            <div class="font-semibold text-gray-900">Madrid <span class="font-normal text-gray-400">· España — SARCU</span></div>
+            <div class="mt-1 flex items-start gap-1.5 text-sm text-gray-500"><i class="ph ph-map-pin mt-0.5 shrink-0"></i> Obispado de Madrid, Calle Bailén 8, 28013 Madrid</div>
+            <div class="mt-0.5 flex items-start gap-1.5 text-sm text-gray-500"><i class="ph ph-phone mt-0.5 shrink-0"></i> +34 913717717</div>
+          </div>
+        </div>
+        <div class="text-sm">
+          <%= link_to sedes_path, class: "inline-flex items-center gap-1 font-medium text-indigo-600 hover:text-indigo-800" do %>
+            Ver el directorio completo de sedes <i class="ph ph-arrow-right"></i>
+          <% end %>
+        </p>
+        <p>Según los datos reunidos por los propios Servicios —incluyendo al SARCU de Madrid, obra hermana—, hoy participan en esta familia del Servicio Sacerdotal más de 450 sacerdotes y más de 850 laicos guardianes, que entre todos acumulan más de 309.900 visitas realizadas a enfermos a lo largo de los años.</p>
+      </section>
+
+      <section>
+        <%= render "section_heading", id: "expansion", title: "Expansión y nuevas fundaciones", sections: @sections %>
+        <p>La Comisión de Nuevas Fundaciones y Servicios tiene como carisma y misión específica la expansión territorial, la fundación de nuevos Servicios, el acompañamiento técnico-pastoral y el padrinazgo de las comunidades emergentes. Trabaja bajo el amparo de San Cristóbal, el santo de los caminos, para que acompañe, ayude, proteja e ilumine el camino que la Federación emprende junto a cada nueva comunidad.</p>
+        <p>Según lo compartido en la 44.ª Asamblea Anual, realizada en Mendoza el 29 de agosto de 2026 bajo el lema "Fieles a nuestra identidad, nos adaptamos a los tiempos actuales", la Comisión asumió para este período el lema "sin prisa, pero sin pausa": un trabajo ordenado, con reuniones mensuales y el objetivo de sostener al menos un encuentro zonal por año en cada región del país.</p>
+        <p>Entre sus líneas de acción se cuentan acompañar a los Servicios que, tras los años de pandemia, están recuperando plenamente su presencialidad y su vínculo cercano con el obispo de cada diócesis; profundizar la espiritualidad y la vida de oración de los guardianes; y sostener campañas de difusión —en las misas parroquiales, con jóvenes y familias, y a través de medios de comunicación locales— para dar a conocer el Servicio y sumar nuevos guardianes. Se suma además la incorporación de una Subcomisión de Damas, que enriquece con su propio carisma la tarea de acompañamiento, en sintonía con el Comité Femenino que ya es una bendición para el Servicio de Quito.</p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+          <div class="bg-white border border-gray-200 rounded-xl p-5">
+            <h3 class="flex items-center gap-2 font-bold text-indigo-900 mb-3"><i class="ph ph-plant text-indigo-500"></i> Fundaciones en proceso de apertura</h3>
+            <ul class="grid grid-cols-2 gap-x-4 gap-y-1 text-sm">
+              <% [ "Bahía Blanca", "San Luis", "Jujuy", "Morón", "San Isidro", "Corrientes", "Santiago del Estero", "Concepción (Tucumán)" ].each do |city| %>
+                <li class="flex items-center gap-1.5"><i class="ph ph-dot-outline text-indigo-400"></i> <%= city %></li>
+              <% end %>
+            </ul>
+          </div>
+          <div class="bg-white border border-gray-200 rounded-xl p-5">
+            <h3 class="flex items-center gap-2 font-bold text-indigo-900 mb-3"><i class="ph ph-globe-hemisphere-west text-indigo-500"></i> Proyección más allá de la Argentina</h3>
+            <p class="text-sm !mb-0">El gran objetivo de la Comisión es "poder llegar con este apostolado a las otras diócesis", tal cual lo pidiera oportunamente el Papa Francisco en el encuentro que la Federación mantuvo con él en Roma.</p>
+          </div>
+        </div>
+
+        <p class="mt-6">En ese espíritu, la Federación acompaña o dialoga con experiencias hermanas fuera del país:</p>
+        <ul class="space-y-2 mb-4">
+          <% [
+               [ "Ecuador — Quito", "sede consolidada desde 2013, miembro pleno de la Federación. Su historia completa se comparte más adelante, a modo de testimonio." ],
+               [ "España — Madrid", "el SARCU, hermano en carisma y vocación, nacido en 2018. Su testimonio también se recoge en esta página." ],
+               [ "México — S.A.N.E. (León, Guanajuato)", "obra hermana, fundada en 1973, misma vocación de guardia nocturna." ],
+               [ "Perú — Lima", "la Comisión de Nuevas Fundaciones trabaja en la preparación de una carpeta especial para elevarle al Papa el pedido concreto de apertura del Servicio Sacerdotal de Urgencia y Nocturno en esa ciudad." ],
+               [ "Paraguay — Asunción", "conversaciones iniciales para explorar una futura fundación." ]
+             ].each do |place, text| %>
+            <li class="flex items-start gap-2"><i class="ph ph-map-pin-line text-indigo-400 mt-1 shrink-0"></i> <span><strong class="text-gray-900"><%= place %>:</strong> <%= text %></span></li>
+          <% end %>
+        </ul>
+      </section>
+
+      <section>
+        <%= render "section_heading", id: "testimonios", title: "Testimonios: la obra de Dios sin fronteras", sections: @sections %>
+        <p>Cada Servicio, aunque nazca en un lugar y un tiempo distintos, es fruto del mismo carisma: hacer presente a Cristo junto al que sufre, en medio de la noche. Compartimos aquí, en primera persona, el testimonio de dos comunidades hermanas que hoy llevan esta misión más allá de la Argentina.</p>
+
+        <h3 class="<%= h3_class %>">Quito, Ecuador — Servicio Sacerdotal Nocturno (desde 2013)</h3>
+        <p>Todo comenzó con un encuentro. A fines de 2010, Amparito Medina, de la Pastoral Familiar de Quito, conoció en uno de sus viajes a Manuel Martín, guardián del Servicio de Mendoza, quien le contó de qué se trataba este apostolado nocturno. Quedó conmovida por el amor y la entrega de los Caballeros del Santo Viático. Al volver a Quito, le llevó la idea al arzobispo, Monseñor Fausto Gabriel Trávez Trávez, quien respondió sin dudar: "quiero esto en mi Arquidiócesis".</p>
+        <p>El 19 de abril de 2013, con la presencia de cinco sacerdotes y veinte laicos venidos de distintas diócesis argentinas —entre ellos Chalo Moreti, fundador del Servicio de Mendoza—, se realizó el Retiro Fundacional en Quito. El 17 de junio de ese mismo año, gracias a la donación de una línea telefónica gratuita por parte de Telefónica (hoy Movistar), se realizó la primera guardia; el 23 de junio el arzobispo inauguró oficialmente el Servicio y bendijo su sede, instalada en la Basílica del Voto Nacional.</p>
+        <p>Meses después, en noviembre de 2013, delegados de Quito viajaron al Congreso de la Federación en Avellaneda-Lanús: fue precisamente allí donde Manuel Martín fue elegido Presidente de la Federación, asumiendo también la tarea de impulsar las fundaciones del Servicio en el extranjero.</p>
+        <p>Una de las notas más hermosas de esta fundación es la presencia del Comité Femenino, cuyo trabajo de acompañamiento posterior a la visita fue tan valorado que el arzobispo les concedió, por delegación, ser Ministras Extraordinarias de la Comunión por un día: pueden llevar la Sagrada Comunión al enfermo en su jornada de postvisita. Hoy, el Servicio de Quito sueña con levantar la Capilla de Adoración Perpetua "María Auxiliadora de los Cristianos" y su sede permanente, y se propone para 2027 duplicar el número de guardias que realiza cada noche.</p>
+        <blockquote class="<%= quote_class %> mb-4">
+          "Que el Señor y María Santísima nos sigan bendiciendo para continuar con nuestra misión: ayudar a las almas a entrar en el Cielo."
+          <cite class="<%= cite_class %>">— Hno. Amílcar Neppas Abalco, SSN Quito – Ecuador</cite>
+        </blockquote>
+
+        <h3 class="<%= h3_class %>">Madrid, España — SARCU (desde 2018)</h3>
+        <p>En Madrid, la misma vocación tomó el nombre de SARCU: Servicio de Asistencia Religiosa Católica Urgente. Nació el 15 de mayo de 2018 por iniciativa del entonces arzobispo, Cardenal Carlos Osoro, como un servicio de caridad de la Iglesia en salida, para hacer presente la cercanía de Cristo, en la figura de un sacerdote, a quienes lo necesitan fuera del horario habitual de las parroquias.</p>
+        <p>Unos 32 sacerdotes se turnan para sostener la guardia los 365 días del año, entre las 22:00 y las 7:00 horas, siempre en articulación y nunca en competencia con la tarea parroquial. En sus primeros ocho años de vida, el SARCU atendió más de 1.500 llamadas, realizó más de 50 unciones en domicilios, residencias y sanatorios sin capellán propio, acompañó incontables duelos en tanatorios y celebró, en una ocasión, un matrimonio "in articulo mortis" junto al lecho del enfermo.</p>
+        <p>La experiencia de Madrid dejó, además, una enseñanza que resuena en toda la familia del Servicio Sacerdotal: buena parte de lo que se pide en esas llamadas nocturnas no es solamente un sacramento, sino, sencillamente, poder hablar con un sacerdote. Es la soledad de tantos hermanos la que también sale al encuentro de esta obra.</p>
+        <blockquote class="<%= quote_class %>">
+          "Es la caridad de la Iglesia que también se visibiliza a esas horas en que todo permanece en tranquilidad y serenidad."
+          <cite class="<%= cite_class %>">— Bienbenido Nieto, Director del SARCU – Madrid</cite>
+        </blockquote>
+      </section>
+
+      <section>
+        <%= render "section_heading", id: "iglesia", title: "Una obra reconocida por la Iglesia", sections: @sections %>
+        <p>El Servicio Sacerdotal de Urgencia es, según coinciden los registros históricos de la Federación, la única obra de la Iglesia argentina mencionada específicamente por un Papa en nuestro país. San Juan Pablo II la nombró el 8 de abril de 1987, en su encuentro con los enfermos en la Catedral de Córdoba, reconociendo que, como fruto de esa iniciativa nacida en la ciudad, sacerdotes y laicos se movilizan cada noche, en vigilante espera, para atender el llamado de Cristo a través de sus enfermos. Ese mismo discurso, dirigido a los propios enfermos, los animaba recordándoles que la Iglesia "contempla en vosotros el dulce rostro de Cristo doliente".</p>
+        <p class="<%= note_class %>">Por eso el Servicio es conocido, con cariño, como la Iglesia de Noche o la Iglesia Nocturna, y también como Iglesia Samaritana: la que se detiene, como el buen samaritano de la parábola, ante quien yace herido al costado del camino. El rostro misericordioso de Dios que no descansa cuando alguno de sus hijos sufre.</p>
+        <p>El Papa Francisco pidió a toda la Iglesia salir a las periferias: no solo las geográficas, sino también las existenciales, esos lugares y esos tiempos donde la vida de las personas corre el riesgo de quedar sin nadie que la mire. La noche es, en ese sentido, una periferia: la hora en que casi todo se detiene, en que la mayoría de las puertas están cerradas, y en que el dolor del enfermo suele atravesarse en la mayor soledad. Salir a esa periferia, noche tras noche, es la forma más sencilla y más concreta que este Servicio ha encontrado de vivir ese llamado.</p>
+        <p>El vínculo de Jorge Mario Bergoglio con el Servicio es, en realidad, mucho más personal e íntimo que el de cualquier otro Papa: de joven provincial jesuita, y más tarde como arzobispo de Buenos Aires, hizo él mismo guardias en el SSU porteño, sin turno fijo, sumándose como uno más entre los sacerdotes disponibles para acudir de noche junto a los enfermos.</p>
+        <p>Años más tarde, ya como Papa, Francisco respondió personalmente por carta al entonces presidente de la Federación (2015) y, en 2024, hizo llegar su Bendición Apostólica a los miembros del Servicio Sacerdotal Nocturno con motivo del 70.º aniversario de la obra. Este vínculo con los sucesores de Pedro se desarrolla en detalle en la carpeta especial preparada para la llegada de Su Santidad el Papa León XIV.</p>
+      </section>
+
+      <section>
+        <%= render "section_heading", id: "vida-espiritual", title: "La vida espiritual de la guardia", sections: @sections %>
+        <p>Cada guardia se sostiene, además de en la disponibilidad y la organización, en una vida de oración compartida entre el sacerdote y el guardián. Es tradición de muchos Servicios comenzar y terminar cada turno con una oración propia. A modo de ejemplo, la oración de inicio de guardia del Servicio de Mendoza:</p>
+        <blockquote class="<%= quote_class %> mb-4">
+          "Te damos gracias, Dios Padre, por habernos congregado una vez más, para amarte y servirte mejor, para hacernos mejores hijos tuyos. […] Que sepamos llevar, junto con el auxilio de tus Sacramentos, fuente de vida verdadera, tu mensaje de Amor y Paz a los que sufren en la enfermedad. […] Señor, ¿qué quieres hoy de mí?"
+          <cite class="<%= cite_class %>">— Oración para iniciar la guardia, SSN Mendoza</cite>
+        </blockquote>
+        <p>Esa entrega silenciosa se resume, quizás, en una sola frase que repiten los guardianes de Buenos Aires para explicar por qué vale la pena levantarse de madrugada:</p>
+        <blockquote class="<%= quote_class %> mb-4">
+          "Un alma que se vaya al cielo justifica mil horas de guardia."
+          <cite class="<%= cite_class %>">— Servicio Sacerdotal de Urgencia, Buenos Aires</cite>
+        </blockquote>
+        <p>Esa vida espiritual es, en definitiva, el cimiento de la fraternidad que se cultiva en cada guardia. Las guardias suelen reunir a personas de distintas edades y generaciones, provenientes de distintos movimientos y parroquias de la diócesis. Ha sido una gracia el espíritu de hermandad que allí se genera, entre los laicos y también entre sacerdotes y laicos: un pequeño espacio en el que se edifica la comunión de la Iglesia como una sola familia, unida por la misión de evangelizar.</p>
+
+        <h3 class="<%= h3_class %>">El servicio de las mujeres: Comité Femenino y Subcomisión de Damas</h3>
+        <p>En varios Servicios, las mujeres se han organizado en un Comité Femenino o Subcomisión de Damas, inspiradas en el ejemplo de Marta y María del Evangelio (Lc 10, 38-42): la escucha atenta de la Palabra, junto con la dedicación práctica al servicio de los enfermos. Como recuerda el Papa Francisco en Evangelii Gaudium, "el encuentro con Cristo lleva a María a adorarlo en silencio, mientras que el servicio de Marta se orienta a Cristo presente en el hermano necesitado" (EG 103): esa misma síntesis de oración y acción es la que anima a las damas del Servicio.</p>
+        <p>Donde ya están organizadas, prestan un servicio muy valorado dentro de la vida de la guardia:</p>
+        <ul class="list-disc pl-6 space-y-1 mb-4">
+          <li>Acompañan a los guardianes con la oración, incluyendo encuentros virtuales donde se reza el Rosario por los enfermos y sus familias.</li>
+          <li>Ayudan en la organización de la cena anual y de otras actividades que fortalecen la comunidad y la misión del Servicio.</li>
+          <li>Realizan la "post-visita": en el caso de Quito, vuelven a contactar a los enfermos que fueron visitados durante la noche, para continuar acompañándolos.</li>
+          <li>Se encargan de llamar e invitar a la comunidad a la misa mensual que se celebra en la sede del Servicio, para pedir por los enfermos y por los guardianes fallecidos.</li>
+        </ul>
+        <p class="<%= note_class %>">Este servicio, silencioso como toda la obra, es parte viva de cómo cada Servicio sostiene en el tiempo el vínculo con los enfermos y con la propia comunidad de guardianes.</p>
+      </section>
+
+      <section>
+        <%= render "section_heading", id: "contacto", title: "Contacto institucional", sections: @sections %>
+        <p>Para comunicarse con la Comisión Nacional de la Federación:</p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mb-6">
+          <% [
+               [ "Presidente", "Ernesto Pecoraro", "54 9 261 206 9195" ],
+               [ "Vicepresidente", "Dario Estorni", "54 9 261 753 9095" ],
+               [ "Coordinador de Nuevas Fundaciones", nil, "54 9 261 470 8686" ]
+             ].each do |role, name, phone| %>
+            <div class="flex flex-col bg-white border border-gray-200 rounded-xl p-5">
+              <p class="!mb-0 text-xs font-semibold uppercase tracking-wide text-indigo-500"><%= role %></p>
+              <% if name %>
+                <p class="!mb-0 mt-1 font-semibold text-gray-900"><%= name %></p>
+              <% end %>
+              <p class="!mb-0 mt-1 flex items-center gap-1.5 text-sm text-gray-600"><i class="ph ph-phone text-gray-400"></i> <%= phone %></p>
+              <div class="mt-auto pt-4">
+                <%= link_to "tel:+#{phone.delete(" ")}", class: "inline-flex items-center gap-1.5 px-4 py-2 bg-indigo-600 text-white text-sm font-semibold rounded-md hover:bg-indigo-700 shadow-sm transition-colors" do %>
+                  <i class="ph ph-phone-call"></i> Llamar
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+        <p>Para consultas sobre un Servicio en particular, se puede acudir directamente a la sede de la diócesis correspondiente.</p>
+        <div class="flex">
+          <%= link_to sedes_path, class: "flex items-center justify-center gap-2 px-6 py-3 bg-white border border-gray-300 text-gray-700 text-sm font-semibold rounded-md hover:bg-gray-50 shadow-sm transition-colors" do %>
+            <i class="ph ph-buildings"></i> Ver sedes
+          <% end %>
+        </div>
+      </section>
+
+      <section>
+        <%= render "section_heading", id: "carta", title: "Anexo: la carta del Papa Francisco (2015)", sections: @sections %>
+        <p>A modo de testimonio, se reproduce la carta que el Papa Francisco envió desde el Vaticano el 27 de julio de 2015, en respuesta a la misiva que le hiciera llegar Manuel Martín, entonces presidente de la Federación, apoyando y alentando esta obra de misericordia cristiana.</p>
+        <figure class="mt-4">
+          <%= link_to image_path("carta-papa-francisco-2015.jpg"), target: "_blank", rel: "noopener" do %>
+            <%= image_tag "carta-papa-francisco-2015.jpg", alt: "Carta del Papa Francisco a la Federación, Vaticano, 27 de julio de 2015", loading: "lazy", class: "w-full max-w-xl mx-auto rounded-lg border border-gray-200 shadow-sm" %>
+          <% end %>
+          <figcaption class="mt-2 text-center text-xs text-gray-400">Vaticano, 27 de julio de 2015</figcaption>
+        </figure>
+      </section>
+
+      <p class="<%= note_class %> border-t border-gray-200 pt-6">Que siga siendo, como hasta hoy, un pequeño testimonio de una obra que no busca reconocimiento sino, simplemente, seguir sirviendo y aliviando, una noche a la vez, para que sea Cristo quien salve.</p>
+    </article>
   </div>
 </div>

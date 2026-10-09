@@ -4,6 +4,7 @@ User-agent: *
 Allow: /$
 Allow: /sedes
 Allow: /federacion
+Allow: /asamblea2026
 Allow: /doc/
 Disallow: /
 

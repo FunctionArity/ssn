@@ -15,6 +15,12 @@ xml.urlset xmlns: "http://www.sitemaps.org/schemas/sitemap/0.9" do
   xml.url do
     xml.loc federacion_url
     xml.changefreq "monthly"
+    xml.priority "0.7"
+  end
+
+  xml.url do
+    xml.loc asamblea2026_url
+    xml.changefreq "monthly"
     xml.priority "0.5"
   end
 

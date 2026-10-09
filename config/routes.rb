@@ -37,10 +37,10 @@ Rails.application.routes.draw do
 
   namespace :doc do
     resources :headquarters, only: %i[ index show ]
-    resources :federacion, only: %i[ index ]
   end
   get "sedes", to: "doc/headquarters#index", as: :sedes
   get "sedes/:id", to: "doc/headquarters#show", as: :sede
+  get "asamblea2026", to: "doc/asamblea#index", as: :asamblea2026
   get "federacion", to: "doc/federacion#index", as: :federacion
 
   get "sitemap.xml", to: "sitemaps#index", as: :sitemap, defaults: { format: "xml" }

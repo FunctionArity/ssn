@@ -120,6 +120,17 @@ class HeadquartersControllerTest < ActionDispatch::IntegrationTest
     assert_equal I18n.t("pundit.not_authorized"), flash[:alert]
   end
 
+  test "show has a copy button with the headquarter info" do
+    get headquarter_url(@headquarter)
+
+    assert_select "button[data-controller='clipboard']" do |buttons|
+      text = buttons.first["data-clipboard-text-value"]
+      assert_includes text, "#{@headquarter.city}, #{@headquarter.state}, #{@headquarter.country}"
+      assert_includes text, @headquarter.address
+      assert_includes text, @headquarter.email
+    end
+  end
+
   test "show displays edit and destroy actions to admin" do
     get headquarter_url(@headquarter)
     assert_select "a[href='#{edit_headquarter_path(@headquarter)}']"
