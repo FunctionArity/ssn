@@ -27,6 +27,10 @@ class GuardPolicy < ApplicationPolicy
     is_admin? || is_vocal?
   end
 
+  def history?
+    super_admin?
+  end
+
   class Scope < ApplicationPolicy::Scope
     def resolve
       scope.all

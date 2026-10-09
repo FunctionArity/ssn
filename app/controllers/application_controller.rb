@@ -7,10 +7,16 @@ class ApplicationController < ActionController::Base
   allow_browser versions: :modern
   before_action :authenticate_user!
   before_action :configure_permitted_parameters, if: :devise_controller?
+  before_action :set_paper_trail_whodunnit
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   protected
+
+  # Record the real user behind a change, even while impersonating someone else.
+  def user_for_paper_trail
+    true_user&.id
+  end
 
   def user_not_authorized
     redirect_to root_path, alert: t("pundit.not_authorized")

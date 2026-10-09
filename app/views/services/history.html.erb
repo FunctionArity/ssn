@@ -1,0 +1,6 @@
+<%= render "shared/history",
+      record: @service,
+      versions: @versions,
+      authors: @authors,
+      subtitle: [ @service.full_name, ("NRO #{@service.nro}" if @service.nro.present?) ].compact.join(" · "),
+      events_scope: "services.history" %>

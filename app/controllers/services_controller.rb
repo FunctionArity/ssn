@@ -1,5 +1,5 @@
 class ServicesController < ApplicationController
-  before_action :set_service, only: %i[ show edit update destroy pdf complete move ]
+  before_action :set_service, only: %i[ show edit update destroy pdf complete move history ]
 
   def index
     @current_guard = Guard.includes(:vocal, :priest, :guardians).find_by(status: :open, due_date: Date.current)
@@ -12,6 +12,12 @@ class ServicesController < ApplicationController
   end
 
   def show
+  end
+
+  def history
+    authorize @service
+    @versions = @service.versions.reorder(created_at: :desc, id: :desc)
+    @authors = User.where(id: @versions.filter_map(&:whodunnit).uniq).index_by { |user| user.id.to_s }
   end
 
   def complete

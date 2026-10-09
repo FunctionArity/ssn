@@ -443,4 +443,37 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_match users(:one).email, response.body
     assert_no_match(/#{Regexp.escape(users(:two).email)}/, response.body)
   end
+
+  # ---------------------------------------------------------------------------
+  # Change history (PaperTrail)
+  # ---------------------------------------------------------------------------
+
+  test "history is shown to super_admin with readable role and user type changes" do
+    PaperTrail.request(whodunnit: @user.id.to_s) { users(:one).update!(role: :priest, user_type: :admin) }
+
+    get history_user_url(users(:one))
+
+    assert_response :success
+    assert_select "dd span", text: I18n.t("activerecord.attributes.user.roles.vocal")
+    assert_select "dd span", text: I18n.t("activerecord.attributes.user.roles.priest")
+    assert_select "dd span", text: I18n.t("activerecord.attributes.user.user_types.admin")
+    assert_select "span", text: @user.full_name
+  end
+
+  test "user history is forbidden for non super_admin users" do
+    sign_in users(:admin_user)
+    get history_user_url(users(:one))
+    assert_redirected_to root_path
+  end
+
+  test "user show displays the history button with its count only to super_admin" do
+    users(:one).update!(phone: "2610000000")
+
+    get user_url(users(:one))
+    assert_select "a[href='#{history_user_path(users(:one))}'] span", text: "1"
+
+    sign_in users(:admin_user)
+    get user_url(users(:one))
+    assert_select "a[href='#{history_user_path(users(:one))}']", count: 0
+  end
 end

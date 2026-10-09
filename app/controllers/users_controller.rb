@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: %i[ show edit update destroy lock unlock resend_invitation impersonate ]
+  before_action :set_user, only: %i[ show edit update destroy lock unlock resend_invitation impersonate history ]
   before_action :set_guard_setups, only: %i[ new create edit update ]
   before_action :set_churches, only: %i[ new create edit update ]
 
@@ -75,6 +75,12 @@ class UsersController < ApplicationController
     authorize @user
     @user.unlock_access!
     redirect_to @user, notice: t("users.notices.unlocked")
+  end
+
+  def history
+    authorize @user
+    @versions = @user.versions.reorder(created_at: :desc, id: :desc)
+    @authors = User.where(id: @versions.filter_map(&:whodunnit).uniq).index_by { |user| user.id.to_s }
   end
 
   def impersonate

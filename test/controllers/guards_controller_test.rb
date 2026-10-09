@@ -476,4 +476,74 @@ class GuardsControllerTest < ActionDispatch::IntegrationTest
 
     assert_redirected_to pdf_guard_url(@guard)
   end
+
+  # ---------------------------------------------------------------------------
+  # Change history (PaperTrail)
+  # ---------------------------------------------------------------------------
+
+  test "closing a guard records who did it" do
+    sign_in users(:super_admin)
+    post close_guard_url(@guard)
+
+    version = @guard.versions.last
+    assert_equal users(:super_admin).id.to_s, version.whodunnit
+    assert_equal %w[open closed], version.object_changes["status"]
+  end
+
+  test "history is shown to super_admin and highlights the status change" do
+    sign_in users(:super_admin)
+    post close_guard_url(@guard)
+
+    get history_guard_url(@guard)
+
+    assert_response :success
+    assert_select "dl div.border-indigo-400" do
+      assert_select "span.badge_green", text: I18n.t("guards.status.open")
+      assert_select "span.badge_red", text: I18n.t("guards.status.closed")
+    end
+    assert_select "p", text: /#{I18n.t("guards.history.events.update")}/
+  end
+
+  test "history resolves user ids to names" do
+    sign_in users(:super_admin)
+    @guard.update!(priest: users(:vocal_guardian))
+
+    get history_guard_url(@guard)
+
+    assert_select "dd span", text: users(:two).full_name
+    assert_select "dd span", text: users(:vocal_guardian).full_name
+  end
+
+  test "guard history is forbidden for non super_admin users" do
+    get history_guard_url(@guard)
+    assert_redirected_to root_path
+  end
+
+  test "guard show displays the history button with its count only to super_admin" do
+    get guard_url(@guard)
+    assert_select "a[href='#{history_guard_path(@guard)}']", count: 0
+
+    sign_in users(:super_admin)
+    post close_guard_url(@guard)
+    get guard_url(@guard)
+    assert_select "a[href='#{history_guard_path(@guard)}'] span", text: "1"
+  end
+
+  test "edit lists vocals and guardians sorted by name" do
+    User.create!(first_name: "Zoe", last_name: "Alvarez", email: "zoe@example.com", phone: "1111111111", role: :vocal, password: "password123")
+    User.create!(first_name: "Ana", last_name: "Zapata", email: "ana@example.com", phone: "2222222222", role: :vocal, password: "password123")
+    User.create!(first_name: "Zulma", last_name: "Bravo", email: "zulma@example.com", phone: "3333333333", role: :guardian, password: "password123")
+    User.create!(first_name: "Abel", last_name: "Yanez", email: "abel@example.com", phone: "4444444444", role: :guardian, password: "password123")
+
+    get edit_guard_url(@guard)
+
+    vocal_names = css_select("select[name='guard[vocal_id]'] option").reject { |o| o["value"].blank? }.map(&:text)
+    assert_includes vocal_names, "Alvarez Zoe"
+    assert_equal vocal_names.sort, vocal_names
+
+    guardians = JSON.parse(css_select("[data-guardian-search-guardians-value]").first["data-guardian-search-guardians-value"])
+    guardian_names = guardians.map { |g| g["name"] }
+    assert_includes guardian_names, "Yanez Abel"
+    assert_equal guardian_names.sort, guardian_names
+  end
 end

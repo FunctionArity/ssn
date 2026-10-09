@@ -8,6 +8,23 @@ es:
       default: "%d/%m/%Y"
       short: "%d de %b"
       long: "%d de %B de %Y"
+  time:
+    formats:
+      default: "%d/%m/%Y %H:%M"
+      short: "%d de %b, %H:%M"
+      long: "%d de %B de %Y, %H:%M"
+    am: am
+    pm: pm
+  history:
+    title: Historial de cambios
+    empty: Todavía no hay cambios registrados.
+    unknown_author: Sistema
+    no_changes: Sin cambios de datos.
+    today: Hoy
+    yesterday: Ayer
+    changes:
+      one: "%{count} cambio"
+      other: "%{count} cambios"
   helpers:
     submit:
       create: Crear %{model}
@@ -100,10 +117,18 @@ es:
         city: Ciudad
         start_day: Fecha de inicio
         guard_setup_day_number: Guardia asignada
+        user_type: Tipo de usuario
+        locked_at: Bloqueado el
+        invitation_accepted_at: Invitación aceptada el
+        invited_by: Invitado por
         roles:
           guardian: Guardian
           vocal: Vocal
           priest: Sacerdote
+        user_types:
+          regular: Regular
+          admin: Administrador
+          super_admin: Super administrador
         roles_plural:
           guardian: Guardianes
           vocal: Vocales
@@ -170,6 +195,12 @@ es:
     federacion: Federación
     toggle: Contraer/expandir menú
   users:
+    history:
+      back: Volver al usuario
+      events:
+        create: creó el usuario
+        update: actualizó el usuario
+        destroy: eliminó el usuario
     index:
       title: Usuarios
       new_user: Nuevo usuario
@@ -179,6 +210,7 @@ es:
       no_results: No se encontraron usuarios.
       clear_search: Limpiar búsqueda
     show:
+      history: Historial
       edit: Editar este usuario
       back: Volver a usuarios
       destroy: Eliminar este usuario
@@ -232,6 +264,12 @@ es:
       banner: "Suplantando a %{name}."
       stop: Dejar de suplantar
   guards:
+    history:
+      back: Volver a la guardia
+      events:
+        create: creó la guardia
+        update: actualizó la guardia
+        destroy: eliminó la guardia
     index:
       title: Guardias
       new_guard: Nueva guardia
@@ -246,6 +284,7 @@ es:
         one: "%{count} guardián"
         other: "%{count} guardianes"
     show:
+      history: Historial
       edit: Editar esta guardia
       back: Volver a guardias
       destroy: Eliminar esta guardia
@@ -522,6 +561,12 @@ es:
       updated: La sede fue actualizada exitosamente.
       destroyed: La sede fue eliminada exitosamente.
   services:
+    history:
+      back: Volver al servicio
+      events:
+        create: creó el servicio
+        update: actualizó el servicio
+        destroy: eliminó el servicio
     index:
       title: Servicios
       new_service: Nuevo servicio
@@ -538,6 +583,7 @@ es:
       complete: Completar
       complete_confirm: "¿Estás seguro de que querés marcar este servicio como completado?"
       reassign_to_open_guard: El servicio debe ser reasignado a una guardia abierta
+      history: Historial
       print_pdf: Imprimir
       copy: Copiar
       map: Mapa

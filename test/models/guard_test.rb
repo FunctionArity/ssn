@@ -22,4 +22,23 @@ class GuardTest < ActiveSupport::TestCase
 
     assert guard.valid?
   end
+
+  test "records a version with the changed attributes on update" do
+    guard = guards(:one)
+
+    assert_difference -> { guard.versions.count }, 1 do
+      guard.update!(notes: "Notas nuevas")
+    end
+
+    changes = guard.versions.last.object_changes
+    assert_equal [ "Test guard notes", "Notas nuevas" ], changes["notes"]
+    assert_not changes.key?("updated_at")
+  end
+
+  test "records the status change when the guard is closed" do
+    guard = guards(:one)
+    guard.closed!
+
+    assert_equal %w[open closed], guard.versions.last.object_changes["status"]
+  end
 end

@@ -4,6 +4,7 @@ class Service < ApplicationRecord
   belongs_to :health_facility, optional: true
 
   acts_as_list scope: :guard_id
+  has_paper_trail ignore: %i[position updated_at]
 
   enum :status, { pending: 0, completed: 1 }, default: :pending
 

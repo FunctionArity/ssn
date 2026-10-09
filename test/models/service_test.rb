@@ -31,4 +31,24 @@ class ServiceTest < ActiveSupport::TestCase
 
     assert service.update(guard: open_guard)
   end
+
+  test "records a version with the changed attributes on update" do
+    service = services(:one)
+
+    assert_difference -> { service.versions.count }, 1 do
+      service.update!(full_name: "Nombre Nuevo")
+    end
+
+    changes = service.versions.last.object_changes
+    assert_equal [ services(:one).full_name_before_last_save, "Nombre Nuevo" ], changes["full_name"]
+    assert_not changes.key?("updated_at")
+  end
+
+  test "does not record a version when only the position changes" do
+    service = services(:one)
+
+    assert_no_difference -> { service.versions.count } do
+      service.update!(position: service.position + 1)
+    end
+  end
 end

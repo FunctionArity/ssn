@@ -25,6 +25,10 @@ class ServicePolicy < ApplicationPolicy
     update? && record.can_be_completed?
   end
 
+  def history?
+    super_admin?
+  end
+
   def move?
     !user&.priest?
   end

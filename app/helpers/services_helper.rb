@@ -18,6 +18,13 @@ module ServicesHelper
     end
   end
 
+  # Comments are HTML from the Lexxy editor; older ones are plain text and keep their line breaks.
+  def service_comments_html(comments)
+    return if comments.blank?
+
+    comments.match?(/<[a-z][^>]*>/i) ? sanitize(comments, scrubber: RichTextScrubber.new) : simple_format(comments, {}, wrapper_tag: "p")
+  end
+
   private
 
   def guard_option_label(guard)

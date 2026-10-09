@@ -41,6 +41,10 @@ class UserPolicy < ApplicationPolicy
     super_admin?
   end
 
+  def history?
+    super_admin?
+  end
+
   private
 
   def own_profile?

@@ -6,6 +6,7 @@ Rails.application.routes.draw do
       patch :unlock
       post :resend_invitation
       post :impersonate
+      get  :history
     end
   end
   post "stop_impersonating", to: "users#stop_impersonating", as: :stop_impersonating
@@ -13,6 +14,7 @@ Rails.application.routes.draw do
     member do
       post :close
       get  :pdf
+      get  :history
       get  :preview
       post :confirm_pdf
     end
@@ -27,6 +29,7 @@ Rails.application.routes.draw do
   resources :services do
     member do
       get   :pdf
+      get   :history
       post  :complete
       patch :move
     end
