@@ -92,8 +92,9 @@ class ServicesController < ApplicationController
 
   def update
     authorize @service
+    attributes = policy(@service).change_guard? ? service_params : service_params.except(:guard_id)
     respond_to do |format|
-      if @service.update(service_params)
+      if @service.update(attributes)
         format.html { redirect_to @service, notice: t("services.notices.updated"), status: :see_other }
         format.json { render :show, status: :ok, location: @service }
       else

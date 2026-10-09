@@ -25,6 +25,10 @@ class ServicePolicy < ApplicationPolicy
     !user&.priest?
   end
 
+  def change_guard?
+    super_admin? || is_vocal?
+  end
+
   class Scope < ApplicationPolicy::Scope
     def resolve
       scope.all

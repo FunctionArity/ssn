@@ -67,6 +67,41 @@ class ServicesControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "edit shows guard dropdown for a vocal" do
+    sign_in users(:unrelated_vocal)
+    get edit_service_url(@service)
+    assert_select "select[name='service[guard_id]']"
+  end
+
+  test "edit hides guard dropdown for a non-vocal guardian" do
+    guardian = users(:two).tap { |u| u.update_columns(role: User.roles[:guardian]) }
+    @service.guard.guardians << guardian
+    sign_in guardian
+    get edit_service_url(@service)
+    assert_response :success
+    assert_select "select[name='service[guard_id]']", count: 0
+  end
+
+  test "update changes guard for a vocal" do
+    other_open = Guard.create!(day_number: 2, due_date: Date.current, status: :open,
+                               vocal: users(:one), priest: users(:two), guard_setup: guard_setups(:one), guardians: [ users(:one) ])
+    patch service_url(@service), params: { service: { guard_id: other_open.id } }
+    assert_redirected_to service_url(@service)
+    assert_equal other_open, @service.reload.guard
+  end
+
+  test "update ignores guard change for a non-vocal guardian" do
+    guardian = users(:two).tap { |u| u.update_columns(role: User.roles[:guardian]) }
+    @service.guard.guardians << guardian
+    other_open = Guard.create!(day_number: 2, due_date: Date.current, status: :open,
+                               vocal: users(:one), priest: users(:two), guard_setup: guard_setups(:one), guardians: [ users(:one) ])
+    sign_in guardian
+    patch service_url(@service), params: { service: { full_name: "Updated", guard_id: other_open.id } }
+    assert_redirected_to service_url(@service)
+    assert_equal guards(:one), @service.reload.guard
+    assert_equal "Updated", @service.full_name
+  end
+
   test "should create service" do
     assert_difference("Service.count") do
       post services_url, params: {

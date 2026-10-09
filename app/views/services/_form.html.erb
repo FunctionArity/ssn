@@ -1,4 +1,4 @@
-<% can_change_guard = @guards.present? && (current_user.admin? || current_user.super_admin?) %>
+<% can_change_guard = @guards.present? && policy(service).change_guard? %>
 <%= form_with(model: service, class: "space-y-6") do |form| %>
   <% if service.errors.any? %>
     <div class="bg-red-50 border border-red-300 text-red-800 rounded-lg p-4">
