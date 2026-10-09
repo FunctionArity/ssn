@@ -1,0 +1,6 @@
+<%= render "shared/history",
+      record: @user,
+      versions: @versions,
+      authors: @authors,
+      subtitle: [ @user.full_name, @user.email ].compact_blank.join(" · "),
+      events_scope: "users.history" %>

@@ -1,0 +1,6 @@
+<%= render "shared/history",
+      record: @guard,
+      versions: @versions,
+      authors: @authors,
+      subtitle: "#{Guard.model_name.human} ##{@guard.day_number} · #{l(@guard.due_date, format: :long)}",
+      events_scope: "guards.history" %>

@@ -9,6 +9,8 @@ class Guard < ApplicationRecord
 
   enum :status, { open: 0, closed: 1 }, default: :open
 
+  has_paper_trail ignore: %i[updated_at]
+
   after_initialize :set_defaults_from_setup, if: -> { new_record? && guard_setup.present? }
 
   validates :day_number, presence: true

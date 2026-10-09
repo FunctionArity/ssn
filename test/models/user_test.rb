@@ -161,4 +161,53 @@ class UserTest < ActiveSupport::TestCase
     date = Date.new(2026, 3, 9) # Monday, second Monday of March 2026
     assert_equal 2, User.week_of_month(date)
   end
+
+  # ---------------------------------------------------------------------------
+  # Change history (PaperTrail)
+  # ---------------------------------------------------------------------------
+
+  test "records a version with the changed attributes on update" do
+    user = users(:one)
+
+    assert_difference -> { user.versions.count }, 1 do
+      user.update!(phone: "2610000000", role: :priest)
+    end
+
+    changes = user.versions.last.object_changes
+    assert_equal [ "1234567890", "2610000000" ], changes["phone"]
+    assert_equal %w[vocal priest], changes["role"]
+    assert_not changes.key?("updated_at")
+  end
+
+  test "sign-in tracking alone does not record a version" do
+    user = users(:one)
+
+    assert_no_difference -> { user.versions.count } do
+      user.update!(sign_in_count: user.sign_in_count + 1, current_sign_in_at: Time.current, last_sign_in_at: Time.current,
+                   current_sign_in_ip: "10.0.0.1", last_sign_in_ip: "10.0.0.2", failed_attempts: 2)
+    end
+  end
+
+  test "password changes are never stored in the history" do
+    user = users(:one)
+
+    assert_no_difference -> { user.versions.count } do
+      user.update!(password: "otra-clave-123", password_confirmation: "otra-clave-123")
+    end
+
+    user.update!(first_name: "Pablito")
+    version = user.versions.last
+    assert_not version.object.key?("encrypted_password")
+    assert_not version.object_changes.key?("encrypted_password")
+  end
+
+  test "locking an account records it without storing the unlock token" do
+    user = users(:one)
+    user.lock_access!(send_instructions: false)
+
+    changes = user.versions.last.object_changes
+    assert changes.key?("locked_at")
+    assert_not changes.key?("unlock_token")
+    assert_not user.versions.last.object.key?("unlock_token")
+  end
 end

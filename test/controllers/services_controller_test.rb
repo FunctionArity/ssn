@@ -532,8 +532,22 @@ class ServicesControllerTest < ActionDispatch::IntegrationTest
     get history_service_url(@service)
 
     assert_response :success
-    assert_select "td", text: "Cambio Auditado"
+    assert_select "dd span", text: "Cambio Auditado"
+    assert_select "dt", text: Service.human_attribute_name(:full_name)
     assert_select "span", text: /#{users(:super_admin).full_name}/
+  end
+
+  test "history highlights status changes" do
+    sign_in users(:super_admin)
+    post complete_service_url(@service)
+
+    get history_service_url(@service)
+
+    assert_select "dl div.border-indigo-400" do
+      assert_select "dt", text: /#{Service.human_attribute_name(:status)}/
+      assert_select "span.badge_red", text: I18n.t("services.status.pending")
+      assert_select "span.badge_green", text: I18n.t("services.status.completed")
+    end
   end
 
   test "history is forbidden for non super_admin users" do
@@ -548,5 +562,44 @@ class ServicesControllerTest < ActionDispatch::IntegrationTest
     sign_in users(:super_admin)
     get service_url(@service)
     assert_select "a[href='#{history_service_path(@service)}']"
+  end
+
+  test "history button shows the number of recorded changes" do
+    sign_in users(:super_admin)
+    2.times { |i| patch service_url(@service), params: { service: { full_name: "Cambio #{i}" } } }
+
+    get service_url(@service)
+
+    assert_select "a[href='#{history_service_path(@service)}'] span", text: "2"
+  end
+
+  test "changes made while impersonating are recorded under the real super_admin" do
+    sign_in users(:super_admin)
+    post impersonate_user_url(users(:one))
+
+    patch service_url(@service), params: { service: { full_name: "Cambio Suplantado" } }
+
+    assert_equal "Cambio Suplantado", @service.reload.full_name
+    assert_equal users(:super_admin).id.to_s, @service.versions.last.whodunnit
+  end
+
+  test "history shows a guard change with readable guard labels" do
+    sign_in users(:super_admin)
+    other_open = Guard.create!(day_number: 2, due_date: Date.new(2026, 3, 2), status: :open,
+                               vocal: users(:one), priest: users(:two), guard_setup: guard_setups(:one), guardians: [ users(:one) ])
+    patch service_url(@service), params: { service: { guard_id: other_open.id } }
+
+    get history_service_url(@service)
+
+    assert_select "dd span", text: "##{guards(:one).day_number} – #{I18n.l(guards(:one).due_date, format: :long)}"
+    assert_select "dd span", text: "#2 – #{I18n.l(other_open.due_date, format: :long)}"
+  end
+
+  test "history shows an empty state when nothing was recorded" do
+    sign_in users(:super_admin)
+    get history_service_url(@service)
+
+    assert_response :success
+    assert_select "p", text: I18n.t("history.empty")
   end
 end

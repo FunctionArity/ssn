@@ -1,5 +1,5 @@
 class GuardsController < ApplicationController
-  before_action :set_guard, only: %i[ show edit update destroy close pdf preview confirm_pdf ]
+  before_action :set_guard, only: %i[ show edit update destroy close pdf preview confirm_pdf history ]
   before_action :set_services_count, only: %i[ show ]
 
   def index
@@ -14,6 +14,12 @@ class GuardsController < ApplicationController
   end
 
   def show
+  end
+
+  def history
+    authorize @guard
+    @versions = @guard.versions.reorder(created_at: :desc, id: :desc)
+    @authors = User.where(id: @versions.filter_map(&:whodunnit).uniq).index_by { |user| user.id.to_s }
   end
 
   def close

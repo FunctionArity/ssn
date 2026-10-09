@@ -9,6 +9,12 @@ class User < ApplicationRecord
   enum :role, { guardian: 0, vocal: 1, priest: 2 }, default: :guardian
   enum :user_type, { regular: 0, admin: 1, super_admin: 2 }, default: :regular
 
+  # Secrets and IPs are never stored; Devise sign-in tracking and invitation bookkeeping alone don't create a version.
+  has_paper_trail \
+    skip: %i[encrypted_password reset_password_token unlock_token invitation_token remember_created_at current_sign_in_ip last_sign_in_ip],
+    ignore: %i[updated_at sign_in_count current_sign_in_at last_sign_in_at failed_attempts reset_password_sent_at
+               invitation_created_at invitation_sent_at invitation_limit invitations_count invited_by_type]
+
   default_scope { order(:last_name, :first_name) }
 
   validates :first_name, :last_name, presence: true
