@@ -602,4 +602,51 @@ class ServicesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_select "p", text: I18n.t("history.empty")
   end
+
+  # ---------------------------------------------------------------------------
+  # Comments (Lexxy rich text)
+  # ---------------------------------------------------------------------------
+
+  test "edit renders the comments field as a Lexxy editor without attachments" do
+    @service.update!(comments: "<p>Llamar antes de ir</p>")
+
+    get edit_service_url(@service)
+
+    assert_select "lexxy-editor[name='service[comments]'][attachments='false']" do |editors|
+      assert_equal "<p>Llamar antes de ir</p>", editors.first["value"]
+    end
+    assert_select "textarea[name='service[comments]']", count: 0
+  end
+
+  test "update saves rich text comments" do
+    patch service_url(@service), params: { service: { comments: "<p>Paciente en <strong>sala 3</strong></p>" } }
+
+    assert_redirected_to service_url(@service)
+    assert_equal "<p>Paciente en <strong>sala 3</strong></p>", @service.reload.comments
+  end
+
+  test "show renders rich text comments sanitized" do
+    @service.update!(comments: %(<p>Paciente en <strong>sala 3</strong></p><script>alert("x")</script>))
+
+    get service_url(@service)
+
+    assert_select ".lexxy-content strong", text: "sala 3"
+    assert_select ".lexxy-content script", count: 0
+  end
+
+  test "show keeps Lexxy highlight colors in comments" do
+    @service.update!(comments: %(<p><mark style="color: var(--highlight-2);">urgente</mark></p>))
+
+    get service_url(@service)
+
+    assert_select ".lexxy-content mark[style='color: var(--highlight-2);']", text: "urgente"
+  end
+
+  test "show keeps line breaks of plain text comments" do
+    @service.update!(comments: "Primera línea\nSegunda línea")
+
+    get service_url(@service)
+
+    assert_select ".lexxy-content p br"
+  end
 end

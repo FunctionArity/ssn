@@ -3,6 +3,10 @@
 @import "@phosphor-icons/web/bold";
 @import "@phosphor-icons/web/fill";
 @import "cropperjs/dist/cropper.css";
+/* Lexxy rich text editor (imported by path: its package only exports JS, and lexxy.css uses url() imports Tailwind skips) */
+@import "../../../node_modules/@37signals/lexxy/dist/stylesheets/lexxy-variables.css";
+@import "../../../node_modules/@37signals/lexxy/dist/stylesheets/lexxy-editor.css";
+@import "../../../node_modules/@37signals/lexxy/dist/stylesheets/lexxy-content.css";
 @source "../../views/**/*.erb";
 
 

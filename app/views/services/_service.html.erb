@@ -172,7 +172,7 @@
         </div>
         <div>
           <p class="text-xs font-medium text-gray-400 uppercase tracking-wide"><%= Service.human_attribute_name(:comments) %></p>
-          <p class="text-sm text-gray-700 mt-0.5"><%= service.comments %></p>
+          <div class="lexxy-content text-sm text-gray-700 mt-0.5"><%= service_comments_html(service.comments) %></div>
         </div>
       </div>
     <% end %>

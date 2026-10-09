@@ -46,7 +46,7 @@ module HistoryHelper
     case model.type_for_attribute(attribute).type
     when :date then l(Date.parse(value.to_s), format: :long)
     when :datetime then l(Time.zone.parse(value.to_s), format: :long)
-    else value.to_s
+    else history_plain_text(value.to_s)
     end
   end
 
@@ -70,6 +70,13 @@ module HistoryHelper
   end
 
   private
+
+  # Rich text (e.g. Lexxy comments) is shown as plain text, keeping words of separate blocks apart.
+  def history_plain_text(text)
+    return text unless text.match?(/<[a-z][^>]*>/i)
+
+    strip_tags(text.gsub(%r{</(p|li|h\d|div|blockquote|pre)>|<br\s*/?>}i, "\\0 ")).squish
+  end
 
   def history_record_label(record)
     case record
