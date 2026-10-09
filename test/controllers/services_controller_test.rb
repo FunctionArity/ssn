@@ -513,4 +513,40 @@ class ServicesControllerTest < ActionDispatch::IntegrationTest
     end
     assert_redirected_to root_path
   end
+
+  # ---------------------------------------------------------------------------
+  # Change history (PaperTrail)
+  # ---------------------------------------------------------------------------
+
+  test "update records who made the change" do
+    sign_in users(:super_admin)
+    patch service_url(@service), params: { service: { full_name: "Cambio Auditado" } }
+
+    assert_equal users(:super_admin).id.to_s, @service.versions.last.whodunnit
+  end
+
+  test "history is shown to super_admin with the recorded changes" do
+    sign_in users(:super_admin)
+    patch service_url(@service), params: { service: { full_name: "Cambio Auditado" } }
+
+    get history_service_url(@service)
+
+    assert_response :success
+    assert_select "td", text: "Cambio Auditado"
+    assert_select "span", text: /#{users(:super_admin).full_name}/
+  end
+
+  test "history is forbidden for non super_admin users" do
+    get history_service_url(@service)
+    assert_redirected_to root_path
+  end
+
+  test "show displays the history button only to super_admin" do
+    get service_url(@service)
+    assert_select "a[href='#{history_service_path(@service)}']", count: 0
+
+    sign_in users(:super_admin)
+    get service_url(@service)
+    assert_select "a[href='#{history_service_path(@service)}']"
+  end
 end

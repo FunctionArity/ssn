@@ -8,6 +8,13 @@ es:
       default: "%d/%m/%Y"
       short: "%d de %b"
       long: "%d de %B de %Y"
+  time:
+    formats:
+      default: "%d/%m/%Y %H:%M"
+      short: "%d de %b, %H:%M"
+      long: "%d de %B de %Y, %H:%M"
+    am: am
+    pm: pm
   helpers:
     submit:
       create: Crear %{model}
@@ -522,6 +529,19 @@ es:
       updated: La sede fue actualizada exitosamente.
       destroyed: La sede fue eliminada exitosamente.
   services:
+    history:
+      title: Historial de cambios
+      back: Volver al servicio
+      empty: Todavía no hay cambios registrados para este servicio.
+      unknown_author: Sistema
+      field: Campo
+      before: Antes
+      after: Después
+      no_changes: Sin cambios de datos.
+      events:
+        create: Creado
+        update: Actualizado
+        destroy: Eliminado
     index:
       title: Servicios
       new_service: Nuevo servicio
@@ -538,6 +558,7 @@ es:
       complete: Completar
       complete_confirm: "¿Estás seguro de que querés marcar este servicio como completado?"
       reassign_to_open_guard: El servicio debe ser reasignado a una guardia abierta
+      history: Historial
       print_pdf: Imprimir
       copy: Copiar
       map: Mapa

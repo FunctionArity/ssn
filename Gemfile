@@ -29,6 +29,7 @@ gem "pretender"
 gem "pundit"
 gem "friendly_id"
 gem "acts_as_list"
+gem "paper_trail"
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: %i[ windows jruby ]

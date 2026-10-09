@@ -18,6 +18,39 @@ module ServicesHelper
     end
   end
 
+  HISTORY_SKIPPED_ATTRIBUTES = %w[id created_at updated_at position].freeze
+
+  # Attribute changes of a PaperTrail version, without bookkeeping columns.
+  def service_version_changes(version)
+    (version.object_changes || {}).except(*HISTORY_SKIPPED_ATTRIBUTES)
+  end
+
+  def service_history_attribute_name(attribute)
+    Service.human_attribute_name(attribute.delete_suffix("_id"))
+  end
+
+  # Human-readable value for a stored attribute, resolving ids to the record they point to.
+  def service_history_value(attribute, value)
+    return tag.span("—", class: "text-gray-300") if value.nil? || value == ""
+
+    case attribute
+    when "guard_id"
+      guard = Guard.find_by(id: value)
+      guard ? "##{guard.day_number} – #{l(guard.due_date, format: :long)}" : "##{value}"
+    when "health_facility_id"
+      HealthFacility.find_by(id: value)&.name || "##{value}"
+    when "created_by_id"
+      User.find_by(id: value)&.full_name || "##{value}"
+    when "status"
+      status = value.is_a?(Integer) ? Service.statuses.key(value) : value
+      t("services.status.#{status}", default: status.to_s)
+    when "due_date"
+      l(Date.parse(value.to_s), format: :long)
+    else
+      value.to_s
+    end
+  end
+
   private
 
   def guard_option_label(guard)
