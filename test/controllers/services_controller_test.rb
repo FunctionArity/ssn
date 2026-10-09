@@ -208,6 +208,23 @@ class ServicesControllerTest < ActionDispatch::IntegrationTest
     assert_select "form[action='#{complete_service_path(@service)}']", count: 0
   end
 
+  test "show warns to reassign a pending service whose guard is closed" do
+    @service.guard.update_column(:status, Guard.statuses[:closed])
+    get service_url(@service)
+
+    assert_select "span", text: I18n.t("services.show.reassign_to_open_guard")
+  end
+
+  test "show does not warn when the guard is open or the service is completed" do
+    get service_url(@service)
+    assert_select "span", text: I18n.t("services.show.reassign_to_open_guard"), count: 0
+
+    completed = services(:completed_one)
+    completed.guard.update_column(:status, Guard.statuses[:closed])
+    get service_url(completed)
+    assert_select "span", text: I18n.t("services.show.reassign_to_open_guard"), count: 0
+  end
+
   test "should move service to a new position within its guard" do
     other = services(:completed_one)
     assert_equal 1, @service.position

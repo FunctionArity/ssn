@@ -41,4 +41,16 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
     assert_select "a[href=?]", federacion_path, text: /Federación/
     assert_select "a[href=?]", asamblea2026_path, count: 0
   end
+
+  test "sidebar links to the federacion page when signed in" do
+    sign_in users(:one)
+    get services_url
+    assert_select "a.sidebar-link[href=?]", federacion_path, text: /Federación/
+  end
+
+  test "dashboard has a quick access card to the federacion page" do
+    sign_in users(:one)
+    get root_url
+    assert_select "a[href=?]", federacion_path, text: /Ver federación/
+  end
 end

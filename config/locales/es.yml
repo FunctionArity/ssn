@@ -167,6 +167,7 @@ es:
     menu: Menú
     setup: Configuración
     documentation: Documentación
+    federacion: Federación
     toggle: Contraer/expandir menú
   users:
     index:

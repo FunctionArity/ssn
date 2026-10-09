@@ -37,6 +37,13 @@
     </div>
   </div>
 
+  <% if service.pending? && service.guard&.closed? %>
+    <div class="px-6 py-3 border-b border-amber-200 bg-amber-50 flex items-center gap-2 text-sm font-medium text-amber-700">
+      <i class="ph ph-warning text-base shrink-0"></i>
+      <span><%= t("services.show.reassign_to_open_guard") %></span>
+    </div>
+  <% end %>
+
   <div class="divide-y divide-gray-100">
 
     <%# Patient info %>
