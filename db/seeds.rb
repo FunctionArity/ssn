@@ -12,7 +12,8 @@
   "priest_users",
   "users",
   "churches",
-  "headquarters"
+  "headquarters",
+  "contact_directories"
 ].each do |seed|
   load Rails.root.join("db/seeds", "#{seed}.rb")
 end

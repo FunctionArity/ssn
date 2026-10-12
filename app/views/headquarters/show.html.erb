@@ -76,4 +76,39 @@
       <% end %>
     </div>
   </div>
+
+  <%# Contact directories %>
+  <div class="mt-8">
+    <div class="flex items-center justify-between mb-3">
+      <h2 class="text-sm font-semibold text-gray-700 uppercase tracking-wide"><%= t(".contact_directories") %></h2>
+      <% if policy(ContactDirectory.new(headquarter: @headquarter)).new? %>
+        <%= link_to new_headquarter_contact_directory_path(@headquarter), class: "flex items-center gap-1 text-sm font-medium text-indigo-600 hover:text-indigo-800" do %>
+          <i class="ph ph-plus"></i> <%= t(".new_contact_directory") %>
+        <% end %>
+      <% end %>
+    </div>
+
+    <% directories = @headquarter.contact_directories.includes(:contact_groups) %>
+    <% if directories.empty? %>
+      <p class="text-sm text-gray-400"><%= t(".no_contact_directories") %></p>
+    <% else %>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <% directories.each do |directory| %>
+          <%= link_to headquarter_contact_directory_path(@headquarter, directory), class: "group bg-white border border-gray-200 rounded-xl p-4 flex items-center gap-3 hover:border-amber-400 hover:shadow-md transition-all" do %>
+            <span class="flex items-center justify-center w-10 h-10 rounded-full bg-amber-100 text-amber-700 shrink-0">
+              <i class="ph ph-address-book text-lg"></i>
+            </span>
+            <span class="min-w-0 flex-1">
+              <span class="block font-semibold text-gray-900 truncate group-hover:text-amber-800"><%= directory.title %></span>
+              <span class="block text-xs text-gray-500">
+                <%= directory.contact_groups.size %> <%= directory.group_label_or_default.downcase.pluralize(directory.contact_groups.size, :es) %>
+                · <%= t("activerecord.attributes.contact_directory.visibilities.#{directory.visibility}") %>
+              </span>
+            </span>
+            <i class="ph ph-arrow-right text-gray-400 shrink-0 transition-transform group-hover:translate-x-1"></i>
+          <% end %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
 </div>

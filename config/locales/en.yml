@@ -1,6 +1,15 @@
 en:
   activerecord:
     models:
+      contact_directory:
+        one: Contact directory
+        other: Contact directories
+      contact_group:
+        one: Group
+        other: Groups
+      contact:
+        one: Contact
+        other: Contacts
       user:
         one: User
         other: Users
@@ -20,6 +29,26 @@ en:
         one: Headquarter
         other: Headquarters
     attributes:
+      contact_directory:
+        title: Title
+        description: Description
+        group_label: Group name
+        updated_on: Updated
+        visibility: Visibility
+        default_group_label: Group
+        contact_groups: Groups
+        visibilities:
+          members: Signed-in users only
+          public: Public
+      contact_group:
+        name: Name
+        notes: Note
+        contacts: Contacts
+      contact:
+        name: Name
+        detail: Detail
+        phone: Phone
+        email: Email
       user:
         first_name: First name
         last_name: Last name
@@ -320,6 +349,42 @@ en:
         location: "Casa de Retiro “Ntra. Sra. del Tránsito”, RP 14 3720, M5517 Lunlunta, Mendoza, Argentina"
         program: Activity program
         fill_form: Fill out the registration form
+  contact_directories:
+    show:
+      back: "Back to %{headquarter}"
+      updated_on: "Updated: %{date}"
+      empty: This directory has no contacts yet.
+      copy: Copy contacts
+      destroy_confirm: "Are you sure you want to delete this directory and all its contacts?"
+    new:
+      title: New contact directory
+      back: Back to headquarter
+    edit:
+      title: Editing contact directory
+      back: Back to directory
+    form:
+      title_placeholder: e.g. Health Pastoral contacts
+      description_placeholder: "e.g. Adviser: Fr. Enrique López"
+      group_label_placeholder: e.g. Deanery, Zone, Parish
+      group_label_hint: What this headquarter calls each group of contacts.
+      notes_placeholder: e.g. being organized
+      detail_placeholder: e.g. Deacon, Palmira
+      groups_title: Groups and contacts
+      add_group: Add group
+      remove_group: Remove group
+      add_contact: Add contact
+      remove_contact: Remove contact
+      visibility_hints:
+        members: Only signed-in users can see it. Recommended for personal phone numbers.
+        public: Also shown on the headquarter's public page.
+      errors:
+        title:
+          one: "%{count} error prohibited this directory from being saved:"
+          other: "%{count} errors prohibited this directory from being saved:"
+    notices:
+      created: The directory was created.
+      updated: The directory was updated.
+      destroyed: The directory was deleted.
   headquarters:
     index:
       title: Headquarters
@@ -330,6 +395,9 @@ en:
       back: Back to headquarters
       destroy_confirm: "Are you sure you want to delete this headquarter?"
       copy: Copy
+      contact_directories: Contact directories
+      new_contact_directory: New directory
+      no_contact_directories: This headquarter has no contact directories yet.
     new:
       title: New headquarter
       back: Back to headquarters

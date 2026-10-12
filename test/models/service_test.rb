@@ -51,4 +51,16 @@ class ServiceTest < ActiveSupport::TestCase
       service.update!(position: service.position + 1)
     end
   end
+
+  test "clears comments that contain only empty rich text markup" do
+    service = services(:one)
+
+    [ "<p><br></p>", "<h2><br></h2>", "<p> &nbsp; </p>" ].each do |empty|
+      service.update!(comments: empty)
+      assert_nil service.comments, "expected #{empty.inspect} to be cleared"
+    end
+
+    service.update!(comments: "<p>Llamar antes</p>")
+    assert_equal "<p>Llamar antes</p>", service.comments
+  end
 end

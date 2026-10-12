@@ -11,6 +11,7 @@ class Service < ApplicationRecord
   validates :full_name, :due_date, :status, presence: true
   validate :guard_must_be_open, on: :update, if: :will_save_change_to_guard_id?
 
+  before_validation :clear_blank_comments
   after_update_commit :broadcast_changes
 
   def can_be_completed?
@@ -39,6 +40,11 @@ class Service < ApplicationRecord
       target: "guard_#{guard.id}_services",
       partial: "guards/services_list",
       locals: { guard: guard, services: guard.services.includes(:health_facility).order(:position).to_a }
+  end
+
+  # The rich text editor submits markup like "<p><br></p>" when the comment is empty.
+  def clear_blank_comments
+    self.comments = nil if comments.present? && ActionController::Base.helpers.strip_tags(comments).gsub(/[[:space:]]|&nbsp;/, "").empty?
   end
 
   def guard_must_be_open

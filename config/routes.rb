@@ -36,7 +36,9 @@ Rails.application.routes.draw do
   end
   resources :health_facilities
   resources :churches
-  resources :headquarters
+  resources :headquarters do
+    resources :contact_directories, except: :index
+  end
 
   namespace :doc do
     resources :headquarters, only: %i[ index show ]

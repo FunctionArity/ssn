@@ -1,0 +1,11 @@
+<div class="grid grid-cols-1 sm:grid-cols-[1fr_1fr_1fr_1fr_2rem] gap-2 items-center rounded-md sm:rounded-none border sm:border-0 border-gray-200 bg-white sm:bg-transparent p-2 sm:p-0" data-nested-fields-item>
+  <%= form.hidden_field :_destroy %>
+  <%= form.text_field :name, placeholder: Contact.human_attribute_name(:name), "aria-label": Contact.human_attribute_name(:name), class: "w-full rounded-md border border-gray-300 px-2.5 py-1.5 text-sm shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 bg-white" %>
+  <%= form.text_field :detail, placeholder: t("contact_directories.form.detail_placeholder"), "aria-label": Contact.human_attribute_name(:detail), class: "w-full rounded-md border border-gray-300 px-2.5 py-1.5 text-sm shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 bg-white" %>
+  <%= form.telephone_field :phone, placeholder: Contact.human_attribute_name(:phone), "aria-label": Contact.human_attribute_name(:phone), class: "w-full rounded-md border border-gray-300 px-2.5 py-1.5 text-sm shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 bg-white" %>
+  <%= form.email_field :email, placeholder: Contact.human_attribute_name(:email), "aria-label": Contact.human_attribute_name(:email), class: "w-full rounded-md border border-gray-300 px-2.5 py-1.5 text-sm shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 bg-white" %>
+  <button type="button" data-action="nested-fields#remove" title="<%= t("contact_directories.form.remove_contact") %>" aria-label="<%= t("contact_directories.form.remove_contact") %>"
+          class="justify-self-end flex items-center justify-center w-8 h-8 rounded-md text-gray-400 hover:bg-red-50 hover:text-red-600">
+    <i class="ph ph-x"></i>
+  </button>
+</div>

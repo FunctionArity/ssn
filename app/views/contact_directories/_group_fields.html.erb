@@ -1,0 +1,45 @@
+<div class="rounded-xl border border-gray-200 bg-gray-50/60 p-4" data-nested-fields-item>
+  <%= form.hidden_field :_destroy %>
+
+  <div class="flex items-start gap-3">
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 flex-1">
+      <div>
+        <%= form.label :name, class: "block text-xs font-medium text-gray-600 mb-1" %>
+        <%= form.text_field :name, class: "w-full rounded-md border border-gray-300 px-2.5 py-1.5 text-sm shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 bg-white" %>
+      </div>
+      <div>
+        <%= form.label :notes, class: "block text-xs font-medium text-gray-600 mb-1" %>
+        <%= form.text_field :notes, placeholder: t("contact_directories.form.notes_placeholder"), class: "w-full rounded-md border border-gray-300 px-2.5 py-1.5 text-sm shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 bg-white" %>
+      </div>
+    </div>
+    <button type="button" data-action="nested-fields#remove" title="<%= t("contact_directories.form.remove_group") %>" aria-label="<%= t("contact_directories.form.remove_group") %>"
+            class="mt-5 flex items-center justify-center w-8 h-8 rounded-md text-gray-400 hover:bg-red-50 hover:text-red-600 shrink-0">
+      <i class="ph ph-trash"></i>
+    </button>
+  </div>
+
+  <div class="mt-4" data-controller="nested-fields" data-nested-fields-placeholder-value="NEW_CONTACT">
+    <div class="hidden sm:grid grid-cols-[1fr_1fr_1fr_1fr_2rem] gap-2 px-1 mb-1 text-xs font-medium text-gray-500">
+      <span><%= Contact.human_attribute_name(:name) %></span>
+      <span><%= Contact.human_attribute_name(:detail) %></span>
+      <span><%= Contact.human_attribute_name(:phone) %></span>
+      <span><%= Contact.human_attribute_name(:email) %></span>
+    </div>
+
+    <div class="space-y-2" data-nested-fields-target="container">
+      <%= form.fields_for :contacts do |contact_form| %>
+        <%= render "contact_fields", form: contact_form %>
+      <% end %>
+    </div>
+
+    <template data-nested-fields-target="template">
+      <%= form.fields_for :contacts, Contact.new, child_index: "NEW_CONTACT" do |contact_form| %>
+        <%= render "contact_fields", form: contact_form %>
+      <% end %>
+    </template>
+
+    <button type="button" data-action="nested-fields#add" class="mt-2 flex items-center gap-1 text-sm font-medium text-blue-600 hover:text-blue-800">
+      <i class="ph ph-plus"></i> <%= t("contact_directories.form.add_contact") %>
+    </button>
+  </div>
+</div>

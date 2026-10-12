@@ -1,0 +1,19 @@
+silvia:
+  contact_group: capital
+  name: Silvia Calderón
+  phone: 261 5087203
+  position: 1
+
+liliana:
+  contact_group: capital
+  name: Liliana Colombatti
+  phone: "2615184357"
+  position: 2
+
+chaplain:
+  contact_group: central
+  name: P. Juan Pérez
+  detail: Capellán
+  phone: 261 4000000
+  email: capellan@example.com
+  position: 1
