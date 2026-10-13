@@ -87,4 +87,19 @@
       </div>
     </div>
   </div>
+
+  <% @contact_directories.each do |directory| %>
+    <section class="mt-10">
+      <div class="mb-4">
+        <h2 class="text-xl font-bold text-gray-900"><%= directory.title %></h2>
+        <% if directory.description.present? %>
+          <div class="text-sm text-gray-600 mt-1"><%= simple_format(directory.description, {}, wrapper_tag: "p") %></div>
+        <% end %>
+        <% if directory.updated_on %>
+          <p class="text-xs text-gray-400 mt-1"><%= t("contact_directories.show.updated_on", date: l(directory.updated_on, format: "%B %Y")) %></p>
+        <% end %>
+      </div>
+      <%= render "contact_directories/groups", contact_directory: directory %>
+    </section>
+  <% end %>
 </div>

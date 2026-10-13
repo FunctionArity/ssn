@@ -58,6 +58,9 @@ application.register("role-selector", RoleSelectorController)
 import ServiceReorderController from "./service_reorder_controller"
 application.register("service-reorder", ServiceReorderController)
 
+import NestedFieldsController from "./nested_fields_controller"
+application.register("nested-fields", NestedFieldsController)
+
 import ScrollSpyController from "./scroll_spy_controller"
 application.register("scroll-spy", ScrollSpyController)
 

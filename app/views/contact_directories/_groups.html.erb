@@ -1,0 +1,60 @@
+<%# Group cards of a contact directory. locals: contact_directory %>
+<% groups = contact_directory.contact_groups %>
+<% if groups.empty? %>
+  <p class="text-sm text-gray-400"><%= t("contact_directories.show.empty") %></p>
+<% else %>
+  <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+    <% groups.each do |group| %>
+      <% clipboard_text = [
+           group.name,
+           *group.contacts.map { |contact| [ contact.name, contact.detail.presence && "(#{contact.detail})", contact.phone, contact.email ].compact_blank.join(" ") }
+         ].join("\n") %>
+      <section class="bg-white border border-gray-200 rounded-xl overflow-hidden flex flex-col">
+        <div class="px-4 py-3 border-b border-gray-100 bg-gradient-to-r from-amber-50 to-white flex items-start justify-between gap-2">
+          <div class="min-w-0">
+            <h3 class="font-semibold text-gray-900"><%= group.name %></h3>
+            <% if group.notes.present? %>
+              <p class="text-xs italic text-gray-500"><%= group.notes %></p>
+            <% end %>
+          </div>
+          <button type="button"
+                  data-controller="clipboard"
+                  data-clipboard-text-value="<%= clipboard_text %>"
+                  data-action="click->clipboard#copy"
+                  title="<%= t("contact_directories.show.copy") %>"
+                  aria-label="<%= t("contact_directories.show.copy") %>"
+                  class="cursor-pointer flex items-center justify-center w-8 h-8 rounded-md text-gray-400 hover:bg-white hover:text-gray-700 shrink-0">
+            <i class="ph ph-copy" data-clipboard-target="icon"></i>
+          </button>
+        </div>
+        <ul class="divide-y divide-gray-100 grow">
+          <% group.contacts.each do |contact| %>
+            <li class="px-4 py-3">
+              <p class="text-sm font-medium text-gray-900">
+                <%= contact.name %>
+                <% if contact.detail.present? %>
+                  <span class="font-normal text-gray-500">· <%= contact.detail %></span>
+                <% end %>
+              </p>
+              <div class="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
+                <% if contact.phone.present? %>
+                  <%= link_to "tel:#{contact.phone_digits}", class: "flex items-center gap-1 text-gray-600 hover:text-blue-700 tabular-nums" do %>
+                    <i class="ph ph-phone text-gray-400"></i> <%= contact.phone %>
+                  <% end %>
+                  <%= link_to "https://wa.me/#{contact.phone_digits}", target: "_blank", rel: "noopener", title: "WhatsApp", "aria-label": "WhatsApp #{contact.name}", class: "flex items-center text-green-600 hover:text-green-800" do %>
+                    <i class="ph ph-whatsapp-logo text-base"></i>
+                  <% end %>
+                <% end %>
+                <% if contact.email.present? %>
+                  <%= mail_to contact.email, class: "flex items-center gap-1 text-gray-600 hover:text-blue-700 break-all" do %>
+                    <i class="ph ph-envelope-simple text-gray-400"></i> <%= contact.email %>
+                  <% end %>
+                <% end %>
+              </div>
+            </li>
+          <% end %>
+        </ul>
+      </section>
+    <% end %>
+  </div>
+<% end %>

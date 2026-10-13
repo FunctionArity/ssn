@@ -1,0 +1,15 @@
+pastoral:
+  headquarter: one
+  title: Referentes Pastoral de la Salud
+  description: "Asesor: P. Enrique López"
+  group_label: Decanato
+  updated_on: 2025-06-01
+  visibility: 0
+  position: 1
+
+public_directory:
+  headquarter: one
+  title: Capellanes de hospitales
+  group_label: Hospital
+  visibility: 1
+  position: 2

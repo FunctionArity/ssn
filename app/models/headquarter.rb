@@ -2,6 +2,8 @@ class Headquarter < ApplicationRecord
   extend FriendlyId
   friendly_id :slug_candidates, use: :slugged
 
+  has_many :contact_directories, -> { order(:position) }, dependent: :destroy
+
   validates :country, :state, :city, :address, presence: true
   validate :contact_method_present
 

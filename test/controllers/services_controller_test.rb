@@ -612,7 +612,8 @@ class ServicesControllerTest < ActionDispatch::IntegrationTest
 
     get edit_service_url(@service)
 
-    assert_select "lexxy-editor[name='service[comments]'][attachments='false']" do |editors|
+    # The lexxy-content class makes Lexxy's text styles (strikethrough, underline, headings…) apply inside the editor.
+    assert_select "lexxy-editor.lexxy-content[name='service[comments]'][attachments='false']" do |editors|
       assert_equal "<p>Llamar antes de ir</p>", editors.first["value"]
     end
     assert_select "textarea[name='service[comments]']", count: 0

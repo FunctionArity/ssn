@@ -1,0 +1,15 @@
+capital:
+  contact_directory: pastoral
+  name: Capital
+  position: 1
+
+maipu:
+  contact_directory: pastoral
+  name: Maipú
+  notes: en organización
+  position: 2
+
+central:
+  contact_directory: public_directory
+  name: Hospital Central
+  position: 1

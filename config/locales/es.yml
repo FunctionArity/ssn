@@ -32,6 +32,15 @@ es:
       submit: Guardar %{model}
   activerecord:
     models:
+      contact_directory:
+        one: Directorio de contacto
+        other: Directorios de contacto
+      contact_group:
+        one: Grupo
+        other: Grupos
+      contact:
+        one: Contacto
+        other: Contactos
       user:
         one: Usuario
         other: Usuarios
@@ -54,6 +63,26 @@ es:
         one: Sede
         other: Sedes
     attributes:
+      contact_directory:
+        title: Título
+        description: Descripción
+        group_label: Nombre de los grupos
+        updated_on: Actualizado
+        visibility: Visibilidad
+        default_group_label: Grupo
+        contact_groups: Grupos
+        visibilities:
+          members: Solo usuarios del sistema
+          public: Pública
+      contact_group:
+        name: Nombre
+        notes: Nota
+        contacts: Contactos
+      contact:
+        name: Nombre
+        detail: Detalle
+        phone: Teléfono
+        email: Email
       guard:
         day_number: Número de día
         due_date: Fecha de guardia
@@ -532,6 +561,42 @@ es:
         location: "Casa de Retiro “Ntra. Sra. del Tránsito”, RP 14 3720, M5517 Lunlunta, Mendoza"
         program: Programa de actividades
         fill_form: Completar formulario de inscripción
+  contact_directories:
+    show:
+      back: "Volver a %{headquarter}"
+      updated_on: "Actualizado: %{date}"
+      empty: Este directorio todavía no tiene contactos.
+      copy: Copiar contactos
+      destroy_confirm: "¿Estás seguro de que querés eliminar este directorio y todos sus contactos?"
+    new:
+      title: Nuevo directorio de contacto
+      back: Volver a la sede
+    edit:
+      title: Editando directorio de contacto
+      back: Volver al directorio
+    form:
+      title_placeholder: Ej. Referentes Pastoral de la Salud
+      description_placeholder: "Ej. Asesor: P. Enrique López"
+      group_label_placeholder: Ej. Decanato, Zona, Parroquia
+      group_label_hint: Cómo llama esta sede a cada grupo de contactos.
+      notes_placeholder: Ej. en organización
+      detail_placeholder: Ej. Diác., Palmira
+      groups_title: Grupos y contactos
+      add_group: Agregar grupo
+      remove_group: Quitar grupo
+      add_contact: Agregar contacto
+      remove_contact: Quitar contacto
+      visibility_hints:
+        members: Solo la ven los usuarios que inician sesión. Recomendado para teléfonos personales.
+        public: También se muestra en la página pública de la sede.
+      errors:
+        title:
+          one: "%{count} error impidió guardar este directorio:"
+          other: "%{count} errores impidieron guardar este directorio:"
+    notices:
+      created: El directorio fue creado.
+      updated: El directorio fue actualizado.
+      destroyed: El directorio fue eliminado.
   headquarters:
     index:
       title: Sedes
@@ -542,6 +607,9 @@ es:
       back: Volver a sedes
       destroy_confirm: "¿Estás seguro de que querés eliminar esta sede?"
       copy: Copiar
+      contact_directories: Directorios de contacto
+      new_contact_directory: Nuevo directorio
+      no_contact_directories: Esta sede todavía no tiene directorios de contacto.
     new:
       title: Nueva sede
       back: Volver a sedes

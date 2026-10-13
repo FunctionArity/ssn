@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_09_212113) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_12_130000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -48,6 +48,41 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_09_212113) do
     t.string "name"
     t.string "phone"
     t.datetime "updated_at", null: false
+  end
+
+  create_table "contact_directories", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.text "description"
+    t.string "group_label"
+    t.bigint "headquarter_id", null: false
+    t.integer "position", null: false
+    t.string "title", null: false
+    t.datetime "updated_at", null: false
+    t.date "updated_on"
+    t.integer "visibility", default: 0, null: false
+    t.index ["headquarter_id"], name: "index_contact_directories_on_headquarter_id"
+  end
+
+  create_table "contact_groups", force: :cascade do |t|
+    t.bigint "contact_directory_id", null: false
+    t.datetime "created_at", null: false
+    t.string "name", null: false
+    t.string "notes"
+    t.integer "position", null: false
+    t.datetime "updated_at", null: false
+    t.index ["contact_directory_id"], name: "index_contact_groups_on_contact_directory_id"
+  end
+
+  create_table "contacts", force: :cascade do |t|
+    t.bigint "contact_group_id", null: false
+    t.datetime "created_at", null: false
+    t.string "detail"
+    t.string "email"
+    t.string "name", null: false
+    t.string "phone"
+    t.integer "position", null: false
+    t.datetime "updated_at", null: false
+    t.index ["contact_group_id"], name: "index_contacts_on_contact_group_id"
   end
 
   create_table "guard_guardians", force: :cascade do |t|
@@ -213,6 +248,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_09_212113) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "contact_directories", "headquarters"
+  add_foreign_key "contact_groups", "contact_directories"
+  add_foreign_key "contacts", "contact_groups"
   add_foreign_key "guard_guardians", "guards"
   add_foreign_key "guard_guardians", "users"
   add_foreign_key "guard_setup_guardians", "guard_setups"
