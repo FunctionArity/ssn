@@ -48,6 +48,12 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
     assert_select "a.sidebar-link[href=?]", federacion_path, text: /Federación/
   end
 
+  test "dashboard has a quick access card to the headquarters" do
+    sign_in users(:one)
+    get root_url
+    assert_select "a[href=?]", headquarters_path, text: /Ver sedes/
+  end
+
   test "dashboard has a quick access card to the federacion page" do
     sign_in users(:one)
     get root_url

@@ -567,6 +567,9 @@ es:
       updated_on: "Actualizado: %{date}"
       empty: Este directorio todavía no tiene contactos.
       copy: Copiar contactos
+      contacts_count:
+        one: "%{count} contacto"
+        other: "%{count} contactos"
       destroy_confirm: "¿Estás seguro de que querés eliminar este directorio y todos sus contactos?"
     new:
       title: Nuevo directorio de contacto

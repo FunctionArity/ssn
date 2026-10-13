@@ -13,6 +13,9 @@ application.register("avatar-crop", AvatarCropController)
 import ChurchMapController from "./church_map_controller"
 application.register("church-map", ChurchMapController)
 
+import CardExpandController from "./card_expand_controller"
+application.register("card-expand", CardExpandController)
+
 import ClipboardController from "./clipboard_controller"
 application.register("clipboard", ClipboardController)
 

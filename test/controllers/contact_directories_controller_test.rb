@@ -14,11 +14,12 @@ class ContactDirectoriesControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     assert_select "h1", @directory.title
-    assert_select "h3", "Capital"
-    assert_select "h3", "Maipú"
-    assert_select "p", text: "en organización"
-    assert_select "a[href='tel:2615087203']", text: /261 5087203/
-    assert_select "a[href='https://wa.me/2615087203']"
+    assert_select "h3 button[aria-expanded='false']", text: /Capital/
+    assert_select "h3 button", text: /2 contactos/
+    assert_select "h3 button", text: /Maipú.*en organización/m
+    # Contact details are rendered but hidden until the card is expanded
+    assert_select "[data-card-expand-details][hidden] a[href='tel:2615087203']", text: /261 5087203/
+    assert_select "[data-card-expand-details][hidden] a[href='https://wa.me/2615087203']"
   end
 
   test "regular users can see a directory but not its edit or delete actions" do
