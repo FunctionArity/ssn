@@ -546,4 +546,42 @@ class GuardsControllerTest < ActionDispatch::IntegrationTest
     assert_includes guardian_names, "Yanez Abel"
     assert_equal guardian_names.sort, guardian_names
   end
+
+  # ---------------------------------------------------------------------------
+  # Notes (Lexxy rich text)
+  # ---------------------------------------------------------------------------
+
+  test "edit renders the notes field as a Lexxy editor without attachments" do
+    @guard.update!(notes: "<p>Traer llaves</p>")
+
+    get edit_guard_url(@guard)
+
+    assert_select "lexxy-editor.lexxy-content[name='guard[notes]'][attachments='false']" do |editors|
+      assert_equal "<p>Traer llaves</p>", editors.first["value"]
+    end
+    assert_select "textarea[name='guard[notes]']", count: 0
+  end
+
+  test "update saves rich text notes" do
+    patch guard_url(@guard), params: { guard: { notes: "<p>Turno <strong>noche</strong></p>" } }
+
+    assert_equal "<p>Turno <strong>noche</strong></p>", @guard.reload.notes
+  end
+
+  test "show renders rich text notes sanitized" do
+    @guard.update!(notes: %(<p>Turno <strong>noche</strong></p><script>alert("x")</script>))
+
+    get guard_url(@guard)
+
+    assert_select ".lexxy-content strong", text: "noche"
+    assert_select ".lexxy-content script", count: 0
+  end
+
+  test "show keeps line breaks of plain text notes" do
+    @guard.update!(notes: "Primera línea\nSegunda línea")
+
+    get guard_url(@guard)
+
+    assert_select ".lexxy-content p br"
+  end
 end

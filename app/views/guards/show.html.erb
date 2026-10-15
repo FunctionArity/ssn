@@ -98,7 +98,7 @@
           </div>
           <div>
             <p class="text-xs font-medium text-gray-400 uppercase tracking-wide"><%= Guard.human_attribute_name(:notes) %></p>
-            <p class="text-sm text-gray-700 mt-0.5"><%= @guard.notes %></p>
+            <div class="lexxy-content text-sm text-gray-700 mt-0.5"><%= rich_text_html(@guard.notes) %></div>
           </div>
         </div>
       <% end %>

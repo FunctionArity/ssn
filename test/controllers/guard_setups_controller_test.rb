@@ -228,4 +228,42 @@ class GuardSetupsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to root_path
     assert_equal [ @guard_setup ], guardian.reload.guard_setups.to_a
   end
+
+  # ---------------------------------------------------------------------------
+  # Notes (Lexxy rich text)
+  # ---------------------------------------------------------------------------
+
+  test "edit renders the notes field as a Lexxy editor without attachments" do
+    @guard_setup.update!(notes: "<p>Traer llaves</p>")
+
+    get edit_guard_setup_url(@guard_setup)
+
+    assert_select "lexxy-editor.lexxy-content[name='guard_setup[notes]'][attachments='false']" do |editors|
+      assert_equal "<p>Traer llaves</p>", editors.first["value"]
+    end
+    assert_select "textarea[name='guard_setup[notes]']", count: 0
+  end
+
+  test "update saves rich text notes" do
+    patch guard_setup_url(@guard_setup), params: { guard_setup: { notes: "<p>Turno <strong>noche</strong></p>" } }
+
+    assert_equal "<p>Turno <strong>noche</strong></p>", @guard_setup.reload.notes
+  end
+
+  test "show renders rich text notes sanitized" do
+    @guard_setup.update!(notes: %(<p>Turno <strong>noche</strong></p><script>alert("x")</script>))
+
+    get guard_setup_url(@guard_setup)
+
+    assert_select ".lexxy-content strong", text: "noche"
+    assert_select ".lexxy-content script", count: 0
+  end
+
+  test "show keeps line breaks of plain text notes" do
+    @guard_setup.update!(notes: "Primera línea\nSegunda línea")
+
+    get guard_setup_url(@guard_setup)
+
+    assert_select ".lexxy-content p br"
+  end
 end
