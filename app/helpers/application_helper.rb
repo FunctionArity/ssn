@@ -6,6 +6,13 @@ module ApplicationHelper
     tag.i class: "ph ph-crown" if user&.super_admin?
   end
 
+  # Text from the Lexxy editor is sanitized HTML; older plain text keeps its line breaks.
+  def rich_text_html(text)
+    return if text.blank?
+
+    text.match?(/<[a-z][^>]*>/i) ? sanitize(text, scrubber: RichTextScrubber.new) : simple_format(text, {}, wrapper_tag: "p")
+  end
+
   def setup_active?
     setup_paths = %w[/guard_setups /priest_setups /users /health_facilities /churches /headquarters]
     setup_paths.any? { |path| request.path.start_with?(path) }

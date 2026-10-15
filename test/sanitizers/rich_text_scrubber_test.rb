@@ -21,4 +21,10 @@ class RichTextScrubberTest < ActiveSupport::TestCase
 
     assert_equal "<h2>T</h2><p><strong>b</strong> <em>i</em></p>alert(1)<a>l</a>", result
   end
+
+  test "keeps Lexxy strikethrough and underline" do
+    html = "<p><u><s><strong>x</strong></s></u></p>"
+
+    assert_equal html, sanitize(html)
+  end
 end
