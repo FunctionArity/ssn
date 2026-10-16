@@ -28,7 +28,7 @@ const LEVELS = {
 }
 
 const BASE_ICON_CLASS = "flex items-center justify-center w-10 h-10 rounded-full shrink-0"
-const BASE_BUTTON_CLASS = "cursor-pointer rounded-lg px-4 py-2 text-sm font-semibold uppercase text-white shadow-sm"
+const BASE_BUTTON_CLASS = "cursor-pointer rounded-lg px-4 py-2 text-sm font-semibold text-white shadow-sm"
 
 // Options are read from data-turbo-confirm-title / -level / -button,
 // on the submitter button first, then on the form or link.
@@ -69,7 +69,7 @@ document.addEventListener("click", (e) => {
     close()
     _resolve?.(true)
     _resolve = null
-  } else if (e.target.closest("#confirm-dialog-cancel")) {
+  } else if (e.target.closest("#confirm-dialog-cancel, #confirm-dialog-close")) {
     close()
     _resolve?.(false)
     _resolve = null

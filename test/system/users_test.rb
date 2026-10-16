@@ -47,7 +47,7 @@ class UsersTest < ApplicationSystemTestCase
   test "should destroy User" do
     visit user_url(users(:agustin))
     click_on I18n.t("destroy"), match: :first
-    click_on "Aceptar"
+    within("#confirm-dialog") { click_on I18n.t("destroy") }
 
     assert_text I18n.t("users.notices.destroyed")
   end
