@@ -16,7 +16,16 @@
           </div>
           <div class="flex-1 min-w-0">
             <p class="text-sm font-medium text-gray-900 truncate"><%= service.full_name %></p>
-            <p class="text-xs text-gray-400 mt-0.5"><%= l(service.due_date, format: :long) %><%= " · #{service.health_facility.name}" if service.health_facility.present? %></p>
+            <p class="text-xs text-gray-400 mt-0.5"><%= l(service.due_date, format: :long) %></p>
+            <% if service.health_facility.present? %>
+              <p class="text-xs text-teal-600 truncate flex items-center gap-1 mt-0.5">
+                <i class="ph ph-hospital text-xs shrink-0"></i> <%= service.health_facility.name %>
+              </p>
+            <% elsif service.address.present? %>
+              <p class="text-xs text-gray-500 truncate flex items-center gap-1 mt-0.5">
+                <i class="ph ph-map-pin text-xs shrink-0"></i> <%= service.address %>
+              </p>
+            <% end %>
           </div>
           <% status_class = service.pending? ? "badge_red" : "badge_green" %>
           <span class="<%= status_class %> shrink-0"><%= t("services.status.#{service.status}") %></span>
