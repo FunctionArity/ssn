@@ -244,8 +244,10 @@ es:
       back: Volver a usuarios
       destroy: Eliminar este usuario
       destroy_confirm: "¿Estás seguro de que querés eliminar este usuario?"
+      destroy_confirm_title: "Eliminar usuario"
       lock: Bloquear
       lock_confirm: "¿Estás seguro de que querés bloquear este usuario?"
+      lock_confirm_title: "Bloquear usuario"
       unlock: Desbloquear
       locked: Bloqueado
       status: Estado
@@ -317,7 +319,8 @@ es:
       edit: Editar esta guardia
       back: Volver a guardias
       destroy: Eliminar esta guardia
-      destroy_confirm: "¿Estás seguro de que querés eliminar esta guardia?"
+      destroy_confirm: "¿Estás seguro de eliminar esta guardia?"
+      destroy_confirm_title: "¿ Eliminar guardia ?"
       close_guard: Finalizar guardia
       close_confirm: "¿Estás seguro de que querés finalizar esta guardia?"
       print_pdf: Imprimir
@@ -363,6 +366,7 @@ es:
       back: Volver a configuraciones de guardia
       destroy: Eliminar esta configuración de guardia
       destroy_confirm: "¿Estás seguro de que querés eliminar esta configuración de guardia?"
+      destroy_confirm_title: "Eliminar configuración de guardia"
     new:
       title: Nueva configuración de guardia
       back: Volver a configuraciones de guardia
@@ -400,6 +404,7 @@ es:
         submit: "Actualizar"
         cancel_title: "Cancelar mi cuenta"
         cancel_confirm: "¿Estás seguro?"
+        cancel_confirm_title: "Cancelar cuenta"
         cancel_prompt: "¿No estás contento?"
         cancel_button: "Cancelar mi cuenta"
         back: "Volver"
@@ -517,6 +522,7 @@ es:
       map: Mapa
       open_in_maps: Abrir en Google Maps
       destroy_confirm: "¿Estás seguro de que querés eliminar este centro de salud?"
+      destroy_confirm_title: "Eliminar centro de salud"
     new:
       title: Nuevo centro de salud
       back: Volver a centros de salud
@@ -571,6 +577,7 @@ es:
         one: "%{count} contacto"
         other: "%{count} contactos"
       destroy_confirm: "¿Estás seguro de que querés eliminar este directorio y todos sus contactos?"
+      destroy_confirm_title: "Eliminar directorio"
     new:
       title: Nuevo directorio de contacto
       back: Volver a la sede
@@ -609,6 +616,7 @@ es:
     show:
       back: Volver a sedes
       destroy_confirm: "¿Estás seguro de que querés eliminar esta sede?"
+      destroy_confirm_title: "Eliminar sede"
       copy: Copiar
       contact_directories: Directorios de contacto
       new_contact_directory: Nuevo directorio
@@ -650,9 +658,11 @@ es:
       edit: Editar
       back: Volver a servicios
       destroy: Eliminar
-      destroy_confirm: "¿Estás seguro de que querés eliminar este servicio?"
+      destroy_confirm: "¿Estás seguro de eliminar este servicio?"
+      destroy_confirm_title: "Eliminar servicio"
       complete: Completar
-      complete_confirm: "¿Estás seguro de que querés marcar este servicio como completado?"
+      complete_confirm: "¿Estás seguro de marcar este servicio como completado?"
+      complete_confirm_title: "¿ Completar servicio ?"
       reassign_to_open_guard: El servicio debe ser reasignado a una guardia abierta
       history: Historial
       print_pdf: Imprimir
@@ -689,6 +699,7 @@ es:
   priest_setups:
     confirm:
       destroy: ¿Estás seguro de que deseas eliminar esta asignación?
+      destroy_title: "Eliminar asignación"
     notices:
       created: Sacerdote asignado exitosamente.
       destroyed: Asignación eliminada exitosamente.
@@ -726,6 +737,7 @@ es:
     show:
       back: Volver a parroquias
       destroy_confirm: "¿Estás seguro de que querés eliminar esta parroquia?"
+      destroy_confirm_title: "Eliminar parroquia"
       priest: Sacerdote
       map: Mapa
       open_in_maps: Abrir en Google Maps

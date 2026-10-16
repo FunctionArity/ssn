@@ -89,7 +89,7 @@
         <% end %>
       <%end %>
       <% if policy(Church).destroy? %>
-        <%= button_to @church, method: :delete, form: { data: { turbo_confirm: t(".destroy_confirm") } }, class: "cursor-pointer flex items-center gap-1.5 rounded-md bg-red-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500" do %>
+        <%= button_to @church, method: :delete, form: { data: { turbo_confirm: t(".destroy_confirm"), turbo_confirm_title: t(".destroy_confirm_title"), turbo_confirm_level: "danger" } }, class: "cursor-pointer flex items-center gap-1.5 rounded-md bg-red-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500" do %>
           <i class="ph ph-trash"></i> <%= t("destroy") %>
         <% end %>
       <% end %>
