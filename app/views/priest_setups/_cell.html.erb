@@ -21,7 +21,7 @@
       <%= button_to priest_setup_path(slot[:assignment]),
             method: :delete,
             class: "text-purple-300 hover:text-red-400 leading-none shrink-0 transition-colors",
-            data: { turbo_confirm: t("priest_setups.confirm.destroy") } do %>
+            data: { turbo_confirm: t("priest_setups.confirm.destroy"), turbo_confirm_title: t("priest_setups.confirm.destroy_title"), turbo_confirm_level: "danger" } do %>
         <i class="ph ph-trash text-xs"></i>
       <% end %>
     </div>

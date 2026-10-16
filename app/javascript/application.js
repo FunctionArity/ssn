@@ -2,6 +2,7 @@
 import "@hotwired/turbo-rails"
 import "./controllers"
 import "@37signals/lexxy"
-import { open as openConfirmDialog } from "./confirm_dialog"
+import { open as openConfirmDialog, optionsFrom as confirmOptionsFrom } from "./confirm_dialog"
 
-Turbo.config.forms.confirm = (message) => openConfirmDialog(message)
+Turbo.config.forms.confirm = (message, element, submitter) =>
+  openConfirmDialog(message, confirmOptionsFrom(element, submitter))

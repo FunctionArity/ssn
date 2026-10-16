@@ -31,7 +31,7 @@
       </div>
     <% end %>
     <% if service.can_be_completed? %>
-      <%= button_to complete_service_path(service), method: :post, form: { data: { turbo_confirm: t("services.show.complete_confirm") } }, class: "cursor-pointer flex items-center gap-1.5 rounded-md bg-red-600 px-3 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-red-500 shrink-0" do %>
+      <%= button_to complete_service_path(service), method: :post, form: { data: { turbo_confirm: t("services.show.complete_confirm"), turbo_confirm_title: t("services.show.complete_confirm_title"), turbo_confirm_level: "success" } }, class: "cursor-pointer flex items-center gap-1.5 rounded-md bg-red-600 px-3 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-red-500 shrink-0" do %>
         <%= t("services.show.complete") %>
       <% end %>
     <% elsif service.pending? %>
@@ -120,7 +120,7 @@
 
     <div class="px-5 py-3 border-t border-gray-100 flex items-center justify-between">
       <% if service.can_be_completed? %>
-        <%= button_to complete_service_path(service), method: :post, form: { data: { turbo_confirm: t("services.show.complete_confirm") } }, class: "cursor-pointer flex items-center gap-1.5 rounded-md bg-red-600 px-3 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-red-500" do %>
+        <%= button_to complete_service_path(service), method: :post, form: { data: { turbo_confirm: t("services.show.complete_confirm"), turbo_confirm_title: t("services.show.complete_confirm_title"), turbo_confirm_level: "success" } }, class: "cursor-pointer flex items-center gap-1.5 rounded-md bg-red-600 px-3 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-red-500" do %>
           <%= t("services.show.complete") %>
         <% end %>
       <% elsif service.pending? %>

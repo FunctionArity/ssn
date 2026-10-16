@@ -148,7 +148,7 @@
           <i class="ph ph-lock-simple-open"></i> <%= t(".unlock") %>
         <% end %>
       <% elsif !@user.access_locked? && policy(@user).lock? %>
-        <%= button_to lock_user_path(@user), method: :patch, form: { class: "w-full sm:w-auto", data: { turbo_confirm: t(".lock_confirm") } }, class: "w-full cursor-pointer flex items-center justify-center gap-1.5 rounded-md bg-amber-500 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-amber-400" do %>
+        <%= button_to lock_user_path(@user), method: :patch, form: { class: "w-full sm:w-auto", data: { turbo_confirm: t(".lock_confirm"), turbo_confirm_title: t(".lock_confirm_title"), turbo_confirm_level: "warning" } }, class: "w-full cursor-pointer flex items-center justify-center gap-1.5 rounded-md bg-amber-500 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-amber-400" do %>
           <i class="ph ph-lock-simple"></i> <%= t(".lock") %>
         <% end %>
       <% end %>
@@ -169,7 +169,7 @@
         <% end %>
       <% end %>
       <% if policy(@user).destroy? %>
-        <%= button_to @user, method: :delete, form: { class: "w-full sm:w-auto", data: { turbo_confirm: t(".destroy_confirm") } }, class: "w-full cursor-pointer flex items-center justify-center gap-1.5 rounded-md bg-red-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500" do %>
+        <%= button_to @user, method: :delete, form: { class: "w-full sm:w-auto", data: { turbo_confirm: t(".destroy_confirm"), turbo_confirm_title: t(".destroy_confirm_title"), turbo_confirm_level: "danger" } }, class: "w-full cursor-pointer flex items-center justify-center gap-1.5 rounded-md bg-red-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500" do %>
           <i class="ph ph-trash"></i> <%= t("destroy") %>
         <% end %>
       <% end %>
