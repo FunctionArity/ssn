@@ -14,6 +14,15 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test "renders SEO tags for guests" do
+    get root_url
+    assert_select "html[lang=es]"
+    assert_select "title", /Servicio Sacerdotal Nocturno/
+    assert_select "meta[name=description]"
+    assert_select "link[rel=canonical][href=?]", root_url
+    assert_select "script[type='application/ld+json']"
+  end
+
   test "shows login button when not signed in" do
     get root_url
     assert_select "a[href=?]", new_user_session_path, text: "Iniciar sesión"

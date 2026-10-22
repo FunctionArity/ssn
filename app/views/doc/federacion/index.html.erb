@@ -1,4 +1,7 @@
 <% content_for :title, "Federación Argentina del Servicio Sacerdotal de Urgencia y Nocturno" %>
+<% content_for :description, "Desde 1952, la Federación Argentina del Servicio Sacerdotal de Urgencia y Nocturno lleva sacerdotes y laicos a acompañar a enfermos durante la noche. Historia, sedes, testimonios y contacto." %>
+<% content_for :og_image, image_url("fassnu-logo.jpg") %>
+<% content_for :json_ld, json_ld(organization_schema.merge("@context": "https://schema.org", url: federacion_url, slogan: "Servir, aliviar y salvar")) %>
 <% h3_class = "text-lg font-bold text-indigo-900 mt-8 mb-3" %>
 <% quote_class = "border-l-4 border-indigo-300 bg-indigo-50/50 rounded-r-lg pl-5 pr-4 py-3 italic text-gray-700" %>
 <% cite_class = "block mt-2 not-italic text-sm text-indigo-700" %>

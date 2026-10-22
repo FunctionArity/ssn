@@ -1,8 +1,8 @@
 <% no_chrome = !user_signed_in? && controller_name.in?(%w[home sessions registrations passwords confirmations unlocks invitations]) %>
 <!DOCTYPE html>
-<html class="overflow-x-hidden">
+<html lang="<%= I18n.locale %>" class="overflow-x-hidden">
   <head>
-    <title><%= content_for(:title) || "Ssn" %></title>
+    <%= render "layouts/seo" %>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">

@@ -1,3 +1,31 @@
+<% content_for :title, t(".page_title") %>
+<% content_for :description, t(".description") %>
+<% content_for :og_image, image_url("fassnu-logo.jpg") %>
+<% content_for :json_ld, json_ld(
+     "@context": "https://schema.org",
+     "@type": "Event",
+     name: t(".title"),
+     description: t(".theme"),
+     startDate: "2026-08-28T15:00:00-03:00",
+     endDate: "2026-08-30T15:30:00-03:00",
+     eventStatus: "https://schema.org/EventScheduled",
+     eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+     url: asamblea2026_url,
+     image: image_url("fassnu-logo.jpg"),
+     location: {
+       "@type": "Place",
+       name: "Casa de Retiro “Ntra. Sra. del Tránsito”",
+       address: {
+         "@type": "PostalAddress",
+         streetAddress: "RP 14 3720",
+         postalCode: "M5517",
+         addressLocality: "Lunlunta",
+         addressRegion: "Mendoza",
+         addressCountry: "AR"
+       }
+     },
+     organizer: organization_schema
+   ) %>
 
 <div>
   <%= image_tag "fassnu-logo.jpg", alt: "FASSNU", class: "h-32 sm:h-80 w-auto mb-8 mx-auto" %>
