@@ -1,4 +1,7 @@
 <% content_for :title, "#{@headquarter.city} · #{t(".title")}" %>
+<% content_for :description, t(".description", city: @headquarter.city, state: @headquarter.state) %>
+<% content_for :canonical, sede_url(@headquarter) %>
+<% content_for :json_ld, json_ld(headquarter_schema(@headquarter)) %>
 
 <% full_address = [ @headquarter.address, @headquarter.city, @headquarter.state, @headquarter.country ].compact_blank.join(", ") %>
 <% clipboard_text = [

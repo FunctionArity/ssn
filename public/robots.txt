@@ -6,6 +6,10 @@ Allow: /sedes
 Allow: /federacion
 Allow: /asamblea2026
 Allow: /doc/
+Allow: /assets/
+Allow: /icon
+Allow: /apple-touch-icon.png
+Allow: /manifest
 Disallow: /
 
 Sitemap: https://serviciosacerdotalnocturno.org/sitemap.xml
