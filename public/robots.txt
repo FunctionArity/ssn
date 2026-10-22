@@ -10,6 +10,7 @@ Allow: /assets/
 Allow: /icon
 Allow: /apple-touch-icon.png
 Allow: /manifest
+Allow: /sitemap.xml
 Disallow: /
 
 Sitemap: https://serviciosacerdotalnocturno.org/sitemap.xml
