@@ -180,6 +180,8 @@ en:
       avatar: Profile picture
       change_avatar: Change photo
       avatar_hint: JPG, PNG or GIF. Max 5 MB.
+      avatar_uploading: Uploading photo…
+      avatar_upload_failed: The photo could not be uploaded. Please try again.
       crop_title: Crop photo
       crop_cancel: Cancel
       crop_apply: Apply
