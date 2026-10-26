@@ -80,4 +80,14 @@ document.addEventListener("click", (e) => {
   }
 })
 
+// Escape cancels, like the Cancel button; ignored while the dialog is closed.
+document.addEventListener("keydown", (e) => {
+  if (e.key !== "Escape" || !_resolve) return
+
+  e.preventDefault()
+  close()
+  _resolve(false)
+  _resolve = null
+})
+
 export { open, optionsFrom }

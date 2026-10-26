@@ -4,7 +4,12 @@ import { DirectUpload } from "@rails/activestorage"
 
 export default class extends Controller {
   static targets = ["input", "preview", "placeholder", "modal", "cropImage", "signedId", "status"]
-  static values = { directUploadUrl: String, uploadingText: String, errorText: String }
+  static values = {
+    directUploadUrl: String,
+    uploadingText: String,
+    errorText: String,
+    filename: { type: String, default: "avatar.jpg" }
+  }
 
   connect() {
     this.cropper = null
@@ -86,7 +91,7 @@ export default class extends Controller {
     if (!this.cropper) return
 
     this.cropper.getCroppedCanvas({ width: 400, height: 400 }).toBlob((blob) => {
-      const file = new File([blob], "avatar.jpg", { type: "image/jpeg" })
+      const file = new File([blob], this.filenameValue, { type: "image/jpeg" })
       this.upload(file)
 
       const url = URL.createObjectURL(blob)

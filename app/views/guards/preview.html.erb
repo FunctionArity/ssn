@@ -15,7 +15,7 @@
     <%= link_to @guard, class: "rounded border border-gray-300 px-3 py-1 text-sm font-medium text-gray-700 hover:bg-gray-50" do %>
       Cancelar
     <% end %>
-    <%= f.submit "Confirmar y generar PDF", onclick: "event.preventDefault(); Turbo.config.forms.confirm('¿Confirmar los NRO asignados y generar el PDF?').then(ok => { if (ok) this.form.submit() })", class: "cursor-pointer rounded bg-red-600 px-4 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-red-500" %>
+    <%= f.submit "Finalizar", data: { turbo_confirm_title: "¿ Finalizar Guardia ?" }, onclick: "event.preventDefault(); Turbo.config.forms.confirm('¿Confirmar los NRO asignados y finalizar la Guardia?', this.form, this).then(ok => { if (ok) this.form.submit() })", class: "cursor-pointer rounded bg-red-600 px-4 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-red-500" %>
   <% end %>
 </div>
 

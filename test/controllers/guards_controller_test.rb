@@ -403,6 +403,12 @@ class GuardsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test "preview confirm button sets the confirm dialog title" do
+    get preview_guard_url(@guard)
+
+    assert_select "form[action='#{confirm_pdf_guard_path(@guard)}'] input[type=submit][data-turbo-confirm-title='¿ Finalizar Guardia ?']"
+  end
+
   test "preview defaults first_nro to 1 when no services have nro assigned" do
     Service.update_all(nro: nil)
 
@@ -461,6 +467,7 @@ class GuardsControllerTest < ActionDispatch::IntegrationTest
     post confirm_pdf_guard_url(@guard), params: { first_nro: 1 }
 
     assert @guard.reload.pdf_file.attached?
+    assert_match %r{\A#{@guard.id}/[a-z0-9]{28}\z}, @guard.pdf_file.blob.key
   end
 
   test "confirm_pdf closes the guard" do
