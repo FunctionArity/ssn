@@ -1,7 +1,8 @@
 <%= form_with(model: user, class: "space-y-5", multipart: true) do |form| %>
   <% if user.persisted? %>
     <%# Avatar upload with crop %>
-    <div data-controller="avatar-crop" class="space-y-3">
+    <%# Named after the user id, not their name: the filename shows up in the image URL %>
+    <div data-controller="avatar-crop" data-avatar-crop-filename-value="avatar-<%= user.id %>.jpg" class="space-y-3">
       <p class="text-xs font-semibold text-gray-400 uppercase tracking-wide"><%= t("users.form.avatar") %></p>
       <div class="flex flex-col items-center gap-3">
         <div class="relative shrink-0">

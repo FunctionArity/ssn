@@ -118,6 +118,15 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to user_url(@user)
   end
 
+  test "stores the uploaded avatar under the user's id" do
+    avatar = Rack::Test::UploadedFile.new(StringIO.new("img"), "image/jpeg", original_filename: "avatar-#{@user.id}.jpg")
+    patch user_url(@user), params: { user: { first_name: @user.first_name, avatar: avatar } }
+
+    blob = @user.reload.avatar.blob
+    assert_match %r{\A#{@user.id}/[a-z0-9]{28}\z}, blob.key
+    assert_equal "avatar-#{@user.id}.jpg", blob.filename.to_s
+  end
+
   test "regular user can edit their own profile" do
     sign_in users(:one)
     get edit_user_url(users(:one))

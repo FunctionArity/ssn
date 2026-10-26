@@ -57,10 +57,12 @@ class GuardsController < ApplicationController
       service.update_column(:nro, first_nro + idx)
     end
     pdf_data = GuardPdf.new(@guard.reload).render
+    # Stored in S3 as pdf_file/<guard id>/<random token>, like avatars.
     @guard.pdf_file.attach(
       io: StringIO.new(pdf_data),
       filename: "guardia_#{@guard.id}.pdf",
-      content_type: "application/pdf"
+      content_type: "application/pdf",
+      key: "#{@guard.id}/#{ActiveStorage::Blob.generate_unique_secure_token}"
     )
     @guard.closed!
     redirect_to pdf_guard_path(@guard)

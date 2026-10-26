@@ -10,29 +10,29 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_12_130000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_26_184909) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
   create_table "active_storage_attachments", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "record_type", null: false
+    t.bigint "record_id", null: false
     t.bigint "blob_id", null: false
     t.datetime "created_at", null: false
-    t.string "name", null: false
-    t.bigint "record_id", null: false
-    t.string "record_type", null: false
     t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
     t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
   end
 
   create_table "active_storage_blobs", force: :cascade do |t|
-    t.bigint "byte_size", null: false
-    t.string "checksum"
-    t.string "content_type"
-    t.datetime "created_at", null: false
-    t.string "filename", null: false
     t.string "key", null: false
+    t.string "filename", null: false
+    t.string "content_type"
     t.text "metadata"
     t.string "service_name", null: false
+    t.bigint "byte_size", null: false
+    t.string "checksum"
+    t.datetime "created_at", null: false
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
@@ -51,36 +51,36 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_12_130000) do
   end
 
   create_table "contact_directories", force: :cascade do |t|
-    t.datetime "created_at", null: false
+    t.bigint "headquarter_id", null: false
+    t.string "title", null: false
     t.text "description"
     t.string "group_label"
-    t.bigint "headquarter_id", null: false
-    t.integer "position", null: false
-    t.string "title", null: false
-    t.datetime "updated_at", null: false
     t.date "updated_on"
     t.integer "visibility", default: 0, null: false
+    t.integer "position", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["headquarter_id"], name: "index_contact_directories_on_headquarter_id"
   end
 
   create_table "contact_groups", force: :cascade do |t|
     t.bigint "contact_directory_id", null: false
-    t.datetime "created_at", null: false
     t.string "name", null: false
     t.string "notes"
     t.integer "position", null: false
+    t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["contact_directory_id"], name: "index_contact_groups_on_contact_directory_id"
   end
 
   create_table "contacts", force: :cascade do |t|
     t.bigint "contact_group_id", null: false
-    t.datetime "created_at", null: false
-    t.string "detail"
-    t.string "email"
     t.string "name", null: false
+    t.string "detail"
     t.string "phone"
+    t.string "email"
     t.integer "position", null: false
+    t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["contact_group_id"], name: "index_contacts_on_contact_group_id"
   end
@@ -130,19 +130,19 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_12_130000) do
   end
 
   create_table "headquarters", force: :cascade do |t|
-    t.string "address", null: false
-    t.string "city", null: false
     t.string "country", null: false
-    t.datetime "created_at", null: false
+    t.string "state", null: false
+    t.string "city", null: false
+    t.string "address", null: false
+    t.string "phone"
     t.string "email"
+    t.string "whatsapp"
+    t.string "web_address"
     t.string "facebook"
     t.string "instagram"
-    t.string "phone"
-    t.string "slug", null: false
-    t.string "state", null: false
+    t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "web_address"
-    t.string "whatsapp"
+    t.string "slug", null: false
     t.index ["slug"], name: "index_headquarters_on_slug", unique: true
   end
 
@@ -179,12 +179,12 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_12_130000) do
     t.bigint "health_facility_id"
     t.string "health_facility_place"
     t.string "health_status"
-    t.bigint "nro"
     t.string "pathology"
-    t.integer "position", null: false
     t.string "sacraments"
     t.integer "status", default: 0, null: false
     t.datetime "updated_at", null: false
+    t.bigint "nro"
+    t.integer "position", null: false
     t.index ["created_by_id"], name: "index_services_on_created_by_id"
     t.index ["guard_id", "position"], name: "index_services_on_guard_id_and_position"
     t.index ["guard_id"], name: "index_services_on_guard_id"
@@ -192,40 +192,40 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_12_130000) do
   end
 
   create_table "users", force: :cascade do |t|
-    t.string "address"
     t.bigint "church_id"
-    t.string "city"
     t.datetime "created_at", null: false
-    t.datetime "current_sign_in_at"
-    t.string "current_sign_in_ip"
-    t.date "date_of_birth"
-    t.integer "dni"
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
-    t.integer "failed_attempts", default: 0, null: false
     t.string "first_name"
-    t.datetime "invitation_accepted_at"
-    t.datetime "invitation_created_at"
-    t.integer "invitation_limit"
-    t.datetime "invitation_sent_at"
-    t.string "invitation_token"
-    t.integer "invitations_count", default: 0
-    t.bigint "invited_by_id"
-    t.string "invited_by_type"
     t.string "last_name"
-    t.datetime "last_sign_in_at"
-    t.string "last_sign_in_ip"
-    t.datetime "locked_at"
     t.string "phone"
     t.datetime "remember_created_at"
     t.datetime "reset_password_sent_at"
     t.string "reset_password_token"
     t.integer "role", default: 0, null: false
-    t.integer "sign_in_count", default: 0, null: false
-    t.date "start_day"
-    t.string "unlock_token"
     t.datetime "updated_at", null: false
+    t.integer "failed_attempts", default: 0, null: false
+    t.string "unlock_token"
+    t.datetime "locked_at"
+    t.string "invitation_token"
+    t.datetime "invitation_created_at"
+    t.datetime "invitation_sent_at"
+    t.datetime "invitation_accepted_at"
+    t.integer "invitation_limit"
+    t.string "invited_by_type"
+    t.bigint "invited_by_id"
+    t.integer "invitations_count", default: 0
     t.integer "user_type", default: 0, null: false
+    t.date "date_of_birth"
+    t.integer "dni"
+    t.string "address"
+    t.string "city"
+    t.date "start_day"
+    t.integer "sign_in_count", default: 0, null: false
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.string "current_sign_in_ip"
+    t.string "last_sign_in_ip"
     t.index ["church_id"], name: "index_users_on_church_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["invitation_token"], name: "index_users_on_invitation_token", unique: true
@@ -236,13 +236,13 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_12_130000) do
   end
 
   create_table "versions", force: :cascade do |t|
+    t.string "whodunnit"
     t.datetime "created_at"
-    t.string "event", null: false
     t.bigint "item_id", null: false
     t.string "item_type", null: false
+    t.string "event", null: false
     t.jsonb "object"
     t.jsonb "object_changes"
-    t.string "whodunnit"
     t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
   end
 

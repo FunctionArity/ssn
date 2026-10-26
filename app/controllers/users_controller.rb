@@ -130,6 +130,15 @@ class UsersController < ApplicationController
       base = user_params.reject { |_, v| v.blank? }
       base = base.except(:role, :church_id, :guard_setup_day_number) unless policy(@user).manage_role?
       avatar = params.dig(:user, :avatar)
-      avatar.present? ? base.merge(avatar: avatar) : base
+      avatar.present? ? base.merge(avatar: avatar_attachable(avatar)) : base
+    end
+
+    # Stores the picture in S3 as avatar/<user id>/<random token>: traceable to its user,
+    # but still unguessable and never overwriting the previous picture.
+    def avatar_attachable(file)
+      return file unless file.is_a?(ActionDispatch::Http::UploadedFile)
+
+      { io: file, filename: file.original_filename, content_type: file.content_type,
+        key: "#{@user.id}/#{ActiveStorage::Blob.generate_unique_secure_token}" }
     end
 end

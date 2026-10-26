@@ -7,12 +7,14 @@ local:
   root: <%= Rails.root.join("storage") %>
 
 # Use bin/rails credentials:edit to set the AWS secrets (as aws:access_key_id|secret_access_key)
+# Buckets are created by infra/terraform/ssn_s3, each with CORS for its environment's origin.
+<% assets_bucket = Rails.env.production? ? "ssn-prd-web-assets" : "ssn-dev-web-assets" %>
 amazon:
   service: S3
   access_key_id: <%= Rails.application.credentials.dig(:aws, :access_key_id) %>
   secret_access_key: <%= Rails.application.credentials.dig(:aws, :secret_access_key) %>
   region: <%= Rails.application.credentials.dig(:aws, :region) || "us-east-1" %>
-  bucket: <%= Rails.application.credentials.dig(:aws, :bucket) || "placeholder" %>
+  bucket: <%= assets_bucket %>
 
 <% if Rails.env.test? %>
 amazon_avatar:
@@ -28,7 +30,7 @@ amazon_avatar:
   access_key_id: <%= Rails.application.credentials.dig(:aws, :access_key_id) %>
   secret_access_key: <%= Rails.application.credentials.dig(:aws, :secret_access_key) %>
   region: <%= Rails.application.credentials.dig(:aws, :region) || "us-east-1" %>
-  bucket: <%= Rails.application.credentials.dig(:aws, :bucket) || "placeholder" %>
+  bucket: <%= assets_bucket %>
   prefix: avatar
 
 amazon_pdf_file:
@@ -36,7 +38,7 @@ amazon_pdf_file:
   access_key_id: <%= Rails.application.credentials.dig(:aws, :access_key_id) %>
   secret_access_key: <%= Rails.application.credentials.dig(:aws, :secret_access_key) %>
   region: <%= Rails.application.credentials.dig(:aws, :region) || "us-east-1" %>
-  bucket: <%= Rails.application.credentials.dig(:aws, :bucket) || "placeholder" %>
+  bucket: <%= assets_bucket %>
   prefix: pdf_file
 <% end %>
 

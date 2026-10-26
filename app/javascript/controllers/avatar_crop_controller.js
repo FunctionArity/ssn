@@ -3,6 +3,7 @@ import Cropper from "cropperjs"
 
 export default class extends Controller {
   static targets = ["input", "preview", "placeholder", "modal", "cropImage"]
+  static values = { filename: { type: String, default: "avatar.jpg" } }
 
   connect() {
     this.cropper = null
@@ -64,7 +65,7 @@ export default class extends Controller {
     if (!this.cropper) return
 
     this.cropper.getCroppedCanvas({ width: 400, height: 400 }).toBlob((blob) => {
-      const file = new File([blob], "avatar.jpg", { type: "image/jpeg" })
+      const file = new File([blob], this.filenameValue, { type: "image/jpeg" })
       const dt = new DataTransfer()
       dt.items.add(file)
       this.inputTarget.files = dt.files
