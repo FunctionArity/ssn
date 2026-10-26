@@ -10,6 +10,9 @@ application.register("address-map", AddressMapController)
 import AvatarCropController from "./avatar_crop_controller"
 application.register("avatar-crop", AvatarCropController)
 
+import AvatarFallbackController from "./avatar_fallback_controller"
+application.register("avatar-fallback", AvatarFallbackController)
+
 import ChurchMapController from "./church_map_controller"
 application.register("church-map", ChurchMapController)
 

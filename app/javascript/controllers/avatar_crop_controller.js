@@ -14,6 +14,19 @@ export default class extends Controller {
       if (this.uploading) event.preventDefault()
     }
     this.form?.addEventListener("submit", this.blockSubmit)
+
+    // The saved avatar may have already failed to load before the controller connected
+    if (this.hasPreviewTarget && this.previewTarget.getAttribute("src") &&
+        this.previewTarget.complete && this.previewTarget.naturalWidth === 0) {
+      this.previewFailed()
+    }
+  }
+
+  // Shows the initials when the saved avatar file is missing
+  previewFailed() {
+    if (!this.hasPlaceholderTarget) return
+    this.previewTarget.classList.add("hidden")
+    this.placeholderTarget.classList.remove("hidden")
   }
 
   disconnect() {

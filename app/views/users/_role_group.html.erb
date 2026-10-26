@@ -31,7 +31,13 @@
         <div class="user-card bg-white border border-gray-200 border-t-4 <%= accent_top_class %> rounded-xl p-5 flex flex-col gap-4 shadow-sm hover:shadow-lg transition-all duration-200 hover:-translate-y-0.5">
           <div class="flex items-center gap-3">
             <% if user.avatar.attached? %>
-              <%= image_tag url_for(user.avatar), class: "w-11 h-11 rounded-full object-cover shrink-0" %>
+              <div data-controller="avatar-fallback" class="shrink-0">
+                <%= image_tag url_for(user.avatar), class: "w-11 h-11 rounded-full object-cover shrink-0",
+                      data: { avatar_fallback_target: "image", action: "error->avatar-fallback#fallback" } %>
+                <div data-avatar-fallback-target="placeholder" class="hidden items-center justify-center w-11 h-11 rounded-full text-base font-bold shrink-0 <%= avatar_class %>">
+                  <%= user.initials %>
+                </div>
+              </div>
             <% else %>
               <div class="flex items-center justify-center w-11 h-11 rounded-full text-base font-bold shrink-0 <%= avatar_class %>">
                 <%= user.initials %>

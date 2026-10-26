@@ -10,7 +10,12 @@
       <div class="flex flex-col items-center gap-3">
         <div class="relative shrink-0">
           <% if user.avatar.attached? %>
+            <div data-avatar-crop-target="placeholder"
+                 class="w-14 h-14 rounded-full flex items-center justify-center bg-gray-100 text-gray-500 text-xl font-bold border-2 border-gray-200 shadow-sm hidden">
+              <%= user.first_name[0] %><%= user.last_name[0] %>
+            </div>
             <img data-avatar-crop-target="preview"
+                 data-action="error->avatar-crop#previewFailed"
                  src="<%= url_for(user.avatar) %>"
                  class="w-14 h-14 rounded-full object-cover border-2 border-gray-200 shadow-sm">
           <% else %>
