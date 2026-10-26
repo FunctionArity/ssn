@@ -8,9 +8,9 @@ Rails.application.routes.draw do
       post :impersonate
       get  :history
     end
+    resources :avatar_direct_uploads, only: :create
   end
   post "stop_impersonating", to: "users#stop_impersonating", as: :stop_impersonating
-  post "avatar_direct_uploads", to: "avatar_direct_uploads#create", as: :avatar_direct_uploads
   resources :guards do
     member do
       post :close

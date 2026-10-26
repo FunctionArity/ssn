@@ -2,7 +2,7 @@
   <% if user.persisted? %>
     <%# Avatar upload with crop %>
     <div data-controller="avatar-crop"
-         data-avatar-crop-direct-upload-url-value="<%= avatar_direct_uploads_url %>"
+         data-avatar-crop-direct-upload-url-value="<%= user_avatar_direct_uploads_url(user) %>"
          data-avatar-crop-uploading-text-value="<%= t("users.form.avatar_uploading") %>"
          data-avatar-crop-error-text-value="<%= t("users.form.avatar_upload_failed") %>"
          data-avatar-crop-filename-value="avatar-<%= user.id %>.jpg"

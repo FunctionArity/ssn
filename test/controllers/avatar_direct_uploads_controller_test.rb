@@ -16,20 +16,49 @@ class AvatarDirectUploadsControllerTest < ActionDispatch::IntegrationTest
     sign_in users(:one)
 
     assert_difference "ActiveStorage::Blob.count", 1 do
-      post avatar_direct_uploads_url, params: { blob: @blob_params }, as: :json
+      post user_avatar_direct_uploads_url(users(:one)), params: { blob: @blob_params }, as: :json
     end
 
     assert_response :success
     json = response.parsed_body
-    assert_equal "amazon_avatar", ActiveStorage::Blob.find_signed!(json["signed_id"]).service_name
+    blob = ActiveStorage::Blob.find_signed!(json["signed_id"])
+    assert_equal "amazon_avatar", blob.service_name
+    assert_match %r{\A#{users(:one).id}/[a-z0-9]{28}\z}, blob.key
     assert json.dig("direct_upload", "url").present?
+  end
+
+  test "ignores a key sent by the browser" do
+    sign_in users(:one)
+
+    post user_avatar_direct_uploads_url(users(:one)), params: { blob: @blob_params.merge(key: "someone-else/avatar") }, as: :json
+
+    assert_match %r{\A#{users(:one).id}/}, ActiveStorage::Blob.find_signed!(response.parsed_body["signed_id"]).key
+  end
+
+  test "regular user cannot upload an avatar for another user" do
+    sign_in users(:one)
+
+    assert_no_difference "ActiveStorage::Blob.count" do
+      post user_avatar_direct_uploads_url(users(:two)), params: { blob: @blob_params }, as: :json
+    end
+
+    assert_response :forbidden
+  end
+
+  test "admin uploads another user's avatar under that user's id" do
+    sign_in users(:admin_user)
+
+    post user_avatar_direct_uploads_url(users(:two)), params: { blob: @blob_params }, as: :json
+
+    assert_response :success
+    assert_match %r{\A#{users(:two).id}/}, ActiveStorage::Blob.find_signed!(response.parsed_body["signed_id"]).key
   end
 
   test "rejects non image uploads" do
     sign_in users(:one)
 
     assert_no_difference "ActiveStorage::Blob.count" do
-      post avatar_direct_uploads_url, params: { blob: @blob_params.merge(content_type: "application/pdf") }, as: :json
+      post user_avatar_direct_uploads_url(users(:one)), params: { blob: @blob_params.merge(content_type: "application/pdf") }, as: :json
     end
 
     assert_response :unprocessable_content
@@ -39,7 +68,7 @@ class AvatarDirectUploadsControllerTest < ActionDispatch::IntegrationTest
     sign_in users(:one)
 
     assert_no_difference "ActiveStorage::Blob.count" do
-      post avatar_direct_uploads_url, params: { blob: @blob_params.merge(byte_size: 6.megabytes) }, as: :json
+      post user_avatar_direct_uploads_url(users(:one)), params: { blob: @blob_params.merge(byte_size: 6.megabytes) }, as: :json
     end
 
     assert_response :unprocessable_content
@@ -47,7 +76,7 @@ class AvatarDirectUploadsControllerTest < ActionDispatch::IntegrationTest
 
   test "requires authentication" do
     assert_no_difference "ActiveStorage::Blob.count" do
-      post avatar_direct_uploads_url, params: { blob: @blob_params }, as: :json
+      post user_avatar_direct_uploads_url(users(:one)), params: { blob: @blob_params }, as: :json
     end
 
     assert_response :unauthorized
