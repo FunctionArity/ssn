@@ -1,16 +1,42 @@
 import { Controller } from "@hotwired/stimulus"
 import Cropper from "cropperjs"
+import { DirectUpload } from "@rails/activestorage"
 
 export default class extends Controller {
-  static targets = ["input", "preview", "placeholder", "modal", "cropImage"]
-  static values = { filename: { type: String, default: "avatar.jpg" } }
+  static targets = ["input", "preview", "placeholder", "modal", "cropImage", "signedId", "status"]
+  static values = {
+    directUploadUrl: String,
+    uploadingText: String,
+    errorText: String,
+    filename: { type: String, default: "avatar.jpg" }
+  }
 
   connect() {
     this.cropper = null
+    this.uploading = false
+    this.form = this.element.closest("form")
+    this.blockSubmit = (event) => {
+      if (this.uploading) event.preventDefault()
+    }
+    this.form?.addEventListener("submit", this.blockSubmit)
+
+    // The saved avatar may have already failed to load before the controller connected
+    if (this.hasPreviewTarget && this.previewTarget.getAttribute("src") &&
+        this.previewTarget.complete && this.previewTarget.naturalWidth === 0) {
+      this.previewFailed()
+    }
+  }
+
+  // Shows the initials when the saved avatar file is missing
+  previewFailed() {
+    if (!this.hasPlaceholderTarget) return
+    this.previewTarget.classList.add("hidden")
+    this.placeholderTarget.classList.remove("hidden")
   }
 
   disconnect() {
     this.destroyCropper()
+    this.form?.removeEventListener("submit", this.blockSubmit)
   }
 
   openFilePicker() {
@@ -66,9 +92,7 @@ export default class extends Controller {
 
     this.cropper.getCroppedCanvas({ width: 400, height: 400 }).toBlob((blob) => {
       const file = new File([blob], this.filenameValue, { type: "image/jpeg" })
-      const dt = new DataTransfer()
-      dt.items.add(file)
-      this.inputTarget.files = dt.files
+      this.upload(file)
 
       const url = URL.createObjectURL(blob)
       if (this.hasPreviewTarget) {
@@ -86,5 +110,42 @@ export default class extends Controller {
   cancel() {
     this.inputTarget.value = ""
     this.hideModal()
+  }
+
+  // Uploads the cropped picture straight to S3; the form only submits the signed blob id.
+  upload(file) {
+    this.uploading = true
+    this.signedIdTarget.value = ""
+    this.setSubmitDisabled(true)
+    this.showStatus(this.uploadingTextValue, false)
+
+    new DirectUpload(file, this.directUploadUrlValue).create((error, blob) => {
+      this.uploading = false
+      this.setSubmitDisabled(false)
+      this.inputTarget.value = ""
+
+      if (error) {
+        this.showStatus(this.errorTextValue, true)
+      } else {
+        this.signedIdTarget.value = blob.signed_id
+        this.hideStatus()
+      }
+    })
+  }
+
+  setSubmitDisabled(disabled) {
+    this.form?.querySelectorAll("[type=submit]").forEach((button) => (button.disabled = disabled))
+  }
+
+  showStatus(text, isError) {
+    if (!this.hasStatusTarget) return
+    this.statusTarget.textContent = text
+    this.statusTarget.classList.toggle("text-red-600", isError)
+    this.statusTarget.classList.toggle("text-gray-500", !isError)
+    this.statusTarget.classList.remove("hidden")
+  }
+
+  hideStatus() {
+    if (this.hasStatusTarget) this.statusTarget.classList.add("hidden")
   }
 }

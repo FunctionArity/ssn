@@ -69,6 +69,13 @@
       </div>
     </div>
 
+    <% if service.pending? && service.guard&.closed? %>
+      <div class="px-5 py-3 border-b border-amber-200 bg-amber-50 flex items-center gap-2 text-sm font-medium text-amber-700">
+        <i class="ph ph-warning text-base shrink-0"></i>
+        <span><%= t("services.show.reassign_to_open_guard") %></span>
+      </div>
+    <% end %>
+
     <div class="px-5 py-4 flex flex-col gap-3 grow">
       <div class="flex items-center gap-2">
         <div class="flex items-center justify-center w-7 h-7 rounded-full bg-indigo-100 text-indigo-600 shrink-0">
@@ -123,10 +130,6 @@
         <%= button_to complete_service_path(service), method: :post, form: { data: { turbo_confirm: t("services.show.complete_confirm"), turbo_confirm_title: t("services.show.complete_confirm_title"), turbo_confirm_level: "success" } }, class: "cursor-pointer flex items-center gap-1.5 rounded-md bg-red-600 px-3 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-red-500" do %>
           <%= t("services.show.complete") %>
         <% end %>
-      <% elsif service.pending? %>
-        <span class="inline-flex items-center gap-1.5 text-xs font-medium text-amber-600 bg-amber-50 border border-amber-200 rounded-md px-2 py-0.5">
-          <i class="ph ph-warning shrink-0"></i> <%= t("services.show.reassign_to_open_guard") %>
-        </span>
       <% else %>
         <span></span>
       <% end %>

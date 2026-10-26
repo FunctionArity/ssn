@@ -274,6 +274,8 @@ es:
       avatar: Foto de perfil
       change_avatar: Cambiar foto
       avatar_hint: JPG, PNG o GIF. Máximo 5 MB.
+      avatar_uploading: Subiendo foto…
+      avatar_upload_failed: No se pudo subir la foto. Por favor intente de nuevo.
       crop_title: Recortar foto
       crop_cancel: Cancelar
       crop_apply: Aplicar
