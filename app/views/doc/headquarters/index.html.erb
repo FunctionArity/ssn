@@ -1,4 +1,14 @@
 <% content_for :title, t(".title") %>
+<% content_for :description, t(".description") %>
+<% content_for :canonical, sedes_url %>
+<% content_for :json_ld, json_ld(
+     "@context": "https://schema.org",
+     "@type": "ItemList",
+     name: t(".title"),
+     itemListElement: @headquarters.each_with_index.map { |headquarter, index|
+       { "@type": "ListItem", position: index + 1, name: headquarter.city, url: sede_url(headquarter) }
+     }
+   ) %>
 
 <div data-controller="headquarters-filter">
   <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight leading-tight text-gray-900 mb-4"><%= t(".title") %></h1>

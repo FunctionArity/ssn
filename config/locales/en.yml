@@ -336,11 +336,13 @@ en:
         eyebrow: Directory
         title: Headquarters
         subtitle: Public directory of Servicio Sacerdotal Nocturno headquarters.
+        description: Directory of the Servicio Sacerdotal de Urgencia y Nocturno headquarters in Argentina. Find the address, phone and WhatsApp to request an emergency priest in your city.
         clear_filters: Clear filters
         results_label: headquarters
         empty: No headquarters match the selected filters.
       show:
         title: Headquarters
+        description: "Servicio Sacerdotal de Urgencia y Nocturno in %{city}, %{state}: address, phone and contact to request an emergency priest at any time of the night."
         back: Back to headquarters
         map: Map
         open_in_maps: Open in Google Maps
@@ -348,6 +350,8 @@ en:
     asamblea:
       index:
         title: 44ª Asamblea Nacional de los Servicios Sacerdotales de Urgencia y Nocturnos de la República Argentina
+        page_title: 44th National Assembly 2026 · Mendoza
+        description: "44th National Assembly of the Servicios Sacerdotales de Urgencia y Nocturnos, August 28–30, 2026 in Lunlunta, Mendoza. Program, venue and registration."
         theme: "Theme: “Faithful to our identity, we adapt to current times”"
         dates: August 28, 29 and 30, 2026
         location: "Casa de Retiro “Ntra. Sra. del Tránsito”, RP 14 3720, M5517 Lunlunta, Mendoza, Argentina"

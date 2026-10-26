@@ -1,3 +1,15 @@
+<% unless user_signed_in? %>
+  <% content_for :title, "Servicio Sacerdotal Nocturno · Sacerdotes de urgencia en Argentina" %>
+  <% content_for :description, "El Servicio Sacerdotal de Urgencia y Nocturno lleva un sacerdote a enfermos y moribundos a cualquier hora de la noche. Encontrá la sede de tu ciudad." %>
+  <% content_for :og_image, image_url("fassnu-logo.jpg") %>
+  <% content_for :json_ld, json_ld(
+       "@context": "https://schema.org",
+       "@graph": [
+         organization_schema.merge("@id": "#{root_url}#organization"),
+         { "@type": "WebSite", name: SeoHelper::SITE_NAME, url: root_url, inLanguage: "es", publisher: { "@id": "#{root_url}#organization" } }
+       ]
+     ) %>
+<% end %>
 <% if user_signed_in? %>
   <%= render "dashboard" %>
 <% else %>

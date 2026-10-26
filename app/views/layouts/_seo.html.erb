@@ -1,0 +1,16 @@
+<title><%= page_title %></title>
+<% if content_for?(:description) %>
+  <meta name="description" content="<%= content_for(:description) %>">
+<% end %>
+<link rel="canonical" href="<%= canonical_url %>">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="<%= SeoHelper::SITE_NAME %>">
+<meta property="og:locale" content="es_AR">
+<meta property="og:title" content="<%= page_title %>">
+<% if content_for?(:description) %>
+  <meta property="og:description" content="<%= content_for(:description) %>">
+<% end %>
+<meta property="og:url" content="<%= canonical_url %>">
+<meta property="og:image" content="<%= og_image_url %>">
+<meta name="twitter:card" content="summary">
+<%= yield :json_ld %>

@@ -552,11 +552,13 @@ es:
         eyebrow: Directorio
         title: Sedes
         subtitle: Directorio público de sedes del Servicio Sacerdotal Nocturno.
+        description: Directorio de sedes del Servicio Sacerdotal de Urgencia y Nocturno en Argentina. Encontrá la dirección, el teléfono y el WhatsApp para pedir un sacerdote de urgencia en tu ciudad.
         clear_filters: Limpiar filtros
         results_label: sedes
         empty: No hay sedes que coincidan con los filtros seleccionados.
       show:
         title: Sedes
+        description: "Servicio Sacerdotal de Urgencia y Nocturno en %{city}, %{state}: dirección, teléfono y contacto para pedir un sacerdote de urgencia a cualquier hora de la noche."
         back: Volver a sedes
         map: Mapa
         open_in_maps: Abrir en Google Maps
@@ -564,6 +566,8 @@ es:
     asamblea:
       index:
         title: 44ª Asamblea Nacional de los Servicios Sacerdotales de Urgencia y Nocturnos de la República Argentina
+        page_title: 44ª Asamblea Nacional 2026 · Mendoza
+        description: "44ª Asamblea Nacional de los Servicios Sacerdotales de Urgencia y Nocturnos, 28 al 30 de agosto de 2026 en Lunlunta, Mendoza. Programa, lugar e inscripción."
         theme: "Lema: “Fieles a nuestra identidad, nos adaptamos a los tiempos actuales”"
         dates: 28, 29 y 30 de agosto de 2026
         location: "Casa de Retiro “Ntra. Sra. del Tránsito”, RP 14 3720, M5517 Lunlunta, Mendoza"
