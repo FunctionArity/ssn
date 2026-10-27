@@ -237,7 +237,8 @@ en:
       destroy_confirm: "Are you sure you want to delete this guard?"
       destroy_confirm_title: "Delete guard"
       print_pdf: Print
-      download_pdf: Download PDF
+      download_pdf: Download Information
+      copy_services: Copy Information
     new:
       title: New guard
       back: Back to guards

@@ -1,5 +1,5 @@
 <% if services.any? %>
-  <div id="guard_<%= guard.id %>_services" data-controller="service-reorder" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+  <div id="guard_<%= guard.id %>_services" data-copy-text="<%= guard_services_clipboard_text(guard, services) %>" data-controller="service-reorder" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
     <% services.each do |service| %>
       <% status_color = service.pending? ? "text-red-700" : "text-green-700" %>
       <% header_class = service.pending? ? "bg-gradient-to-r from-red-100 to-white" : "bg-gradient-to-r from-green-100 to-white" %>
@@ -88,5 +88,5 @@
     <% end %>
   </div>
 <% else %>
-  <p id="guard_<%= guard.id %>_services" class="text-sm text-gray-400">No hay servicios registrados para esta guardia.</p>
+  <p id="guard_<%= guard.id %>_services" data-copy-text="<%= guard_services_clipboard_text(guard, services) %>" class="text-sm text-gray-400">No hay servicios registrados para esta guardia.</p>
 <% end %>
