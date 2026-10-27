@@ -11,7 +11,16 @@
     </div>
   <% end %>
 
-  <% if service.guard_id.blank? %>
+  <% if service.new_record? && @assignable_guards.to_a.size > 1 %>
+    <div class="bg-gradient-to-r from-indigo-50 to-white border border-indigo-100 rounded-xl p-4">
+      <%= form.label :guard_id, t("services.form.choose_guard"), class: "block text-sm font-medium text-gray-700 mb-1" %>
+      <%= form.select :guard_id,
+            options_for_select(@assignable_guards.map { |g| [ "#{guard_option_label(g)} — # #{g.day_number}", g.id ] }, service.guard_id),
+            { include_blank: t("services.form.choose_guard_prompt") },
+            required: true,
+            class: "w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500" %>
+    </div>
+  <% elsif service.guard_id.blank? %>
     <%= form.hidden_field :guard_id %>
     <div class="flex items-center gap-3 bg-red-50 border border-red-200 text-red-700 rounded-xl p-4 text-sm">
       <i class="ph ph-warning text-lg shrink-0"></i>

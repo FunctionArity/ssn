@@ -467,6 +467,8 @@ en:
     form:
       search_health_facility: Search health facility...
       no_guard_warning: No guard is assigned to this service. Please select a guard before saving.
+      choose_guard: Guard
+      choose_guard_prompt: Select the guard for this service
       guard_groups:
         current: "Service's current guard"
         today: "Today"

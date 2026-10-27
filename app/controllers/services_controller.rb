@@ -67,10 +67,11 @@ class ServicesController < ApplicationController
   def new
     @service = Service.new(due_date: Date.current)
 
-    @service.guard_id = if params[:guard_id].present?
-       params[:guard_id]
+    if params[:guard_id].present?
+      @service.guard_id = params[:guard_id]
     else
-      GuardService.current&.id
+      set_assignable_guards
+      @service.guard_id = @assignable_guards.first.id if @assignable_guards.one?
     end
 
     authorize @service
@@ -91,7 +92,10 @@ class ServicesController < ApplicationController
         format.html { redirect_to @service, notice: t("services.notices.created") }
         format.json { render :show, status: :created, location: @service }
       else
-        format.html { render :new, status: :unprocessable_entity }
+        format.html do
+          set_assignable_guards
+          render :new, status: :unprocessable_entity
+        end
         format.json { render json: @service.errors, status: :unprocessable_entity }
       end
     end
@@ -144,6 +148,11 @@ class ServicesController < ApplicationController
   # Open guards, plus the service's current guard so it stays selected when that guard is closed.
   def set_guards
     @guards = Guard.where(status: :open).or(Guard.where(id: @service.guard_id_in_database)).order(due_date: :desc)
+  end
+
+  # When more than one guard qualifies, the new service form asks which one to use.
+  def set_assignable_guards
+    @assignable_guards = GuardService.assignable.includes(:priest, :vocal).to_a
   end
 
   def service_params

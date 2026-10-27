@@ -27,6 +27,47 @@ class ServicesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test "new assigns the only open guard opened in the last 12 hours" do
+    travel_to Time.zone.local(2026, 10, 27, 2, 0) do
+      guards(:one).update_columns(due_date: Date.new(2026, 10, 26))
+
+      get new_service_url
+    end
+
+    assert_response :success
+    assert_select "input[type=hidden][name='service[guard_id]'][value='#{guards(:one).id}']"
+    assert_select "select[name='service[guard_id]']", count: 0
+  end
+
+  test "new shows a guard drop-down when several open guards qualify" do
+    travel_to Time.zone.local(2026, 10, 27, 2, 0) do
+      guards(:one).update_columns(due_date: Date.new(2026, 10, 26))
+      upcoming = Guard.create!(day_number: 28, due_date: Date.new(2026, 10, 28), vocal: @user, priest: users(:two),
+                               guard_setup: guard_setups(:one), guardians: [ @user ])
+
+      get new_service_url
+
+      assert_response :success
+      assert_select "select[name='service[guard_id]'][required]" do
+        assert_select "option[value='']", count: 1
+        assert_select "option[value='#{guards(:one).id}']", count: 1
+        assert_select "option[value='#{upcoming.id}']", count: 1
+      end
+    end
+  end
+
+  test "new warns when no open guard qualifies" do
+    travel_to Time.zone.local(2026, 10, 27, 2, 0) do
+      guards(:one).update_columns(due_date: Date.new(2026, 10, 25))
+
+      get new_service_url
+    end
+
+    assert_response :success
+    assert_select "select[name='service[guard_id]']", count: 0
+    assert_match I18n.t("services.form.no_guard_warning"), response.body
+  end
+
   test "should get new with guard_id param" do
     get new_service_url, params: { guard_id: guards(:one).id }
     assert_response :success

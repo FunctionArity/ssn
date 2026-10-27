@@ -685,6 +685,8 @@ es:
     form:
       search_health_facility: Buscar centro de salud...
       no_guard_warning: No hay guardia asignada a este servicio. Por favor seleccione una guardia antes de guardar.
+      choose_guard: Guardia
+      choose_guard_prompt: Seleccione la guardia del servicio
       guard_groups:
         current: "Guardia actual del servicio"
         today: "Hoy"
