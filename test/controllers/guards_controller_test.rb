@@ -44,6 +44,21 @@ class GuardsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test "show has a button that copies the services of a closed guard" do
+    @guard.closed!
+
+    get guard_url(@guard)
+
+    assert_select "button[data-controller=clipboard][data-clipboard-source-value='guard_#{@guard.id}_services']"
+    assert_select "#guard_#{@guard.id}_services[data-copy-text*=?]", services(:one).full_name
+  end
+
+  test "show hides the copy services button while the guard is open" do
+    get guard_url(@guard)
+
+    assert_select "button[data-clipboard-source-value='guard_#{@guard.id}_services']", count: 0
+  end
+
   test "show displays guard actions to the vocal of the guard" do
     get guard_url(@guard)
     assert_select "a[href='#{edit_guard_path(@guard)}']"
