@@ -107,7 +107,7 @@ class ServicesControllerTest < ActionDispatch::IntegrationTest
       post services_url, params: {
         service: {
           full_name: "Carlos García",
-          due_date: Date.today,
+          due_date: Date.current,
           guard_id: guards(:one).id
         }
       }
@@ -321,7 +321,7 @@ class ServicesControllerTest < ActionDispatch::IntegrationTest
 
   test "should set created_by to current user on create" do
     post services_url, params: {
-      service: { full_name: "Test User", due_date: Date.today, guard_id: guards(:one).id }
+      service: { full_name: "Test User", due_date: Date.current, guard_id: guards(:one).id }
     }
 
     assert_equal @user, Service.last.created_by
@@ -369,7 +369,7 @@ class ServicesControllerTest < ActionDispatch::IntegrationTest
     sign_in users(:vocal_guardian)
     assert_difference("Service.count") do
       post services_url, params: {
-        service: { full_name: "Test User", due_date: Date.today, guard_id: guards(:one).id }
+        service: { full_name: "Test User", due_date: Date.current, guard_id: guards(:one).id }
       }
     end
     assert_redirected_to service_url(Service.last)
@@ -379,7 +379,7 @@ class ServicesControllerTest < ActionDispatch::IntegrationTest
     sign_in users(:super_admin)
     assert_difference("Service.count") do
       post services_url, params: {
-        service: { full_name: "Test User", due_date: Date.today, guard_id: guards(:one).id }
+        service: { full_name: "Test User", due_date: Date.current, guard_id: guards(:one).id }
       }
     end
     assert_redirected_to service_url(Service.last)
@@ -389,7 +389,7 @@ class ServicesControllerTest < ActionDispatch::IntegrationTest
     sign_in users(:unrelated_vocal)
     assert_difference("Service.count") do
       post services_url, params: {
-        service: { full_name: "Test User", due_date: Date.today, guard_id: guards(:one).id }
+        service: { full_name: "Test User", due_date: Date.current, guard_id: guards(:one).id }
       }
     end
     assert_redirected_to service_url(Service.unscoped.last)
@@ -399,7 +399,7 @@ class ServicesControllerTest < ActionDispatch::IntegrationTest
     sign_in users(:two)
     assert_no_difference("Service.count") do
       post services_url, params: {
-        service: { full_name: "Test User", due_date: Date.today, guard_id: guards(:one).id }
+        service: { full_name: "Test User", due_date: Date.current, guard_id: guards(:one).id }
       }
     end
     assert_redirected_to root_path

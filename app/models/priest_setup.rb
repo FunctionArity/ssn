@@ -25,7 +25,7 @@ class PriestSetup < ApplicationRecord
     self.day_of_month = day
   end
 
-  def day_of_current_month(reference = Date.today)
+  def day_of_current_month(reference = Date.current)
     bom = reference.beginning_of_month
     days_until_target = (day_of_week - bom.cwday) % 7
     first_occurrence = bom + days_until_target
@@ -40,7 +40,7 @@ class PriestSetup < ApplicationRecord
     fallback_day
   end
 
-  def current_date(reference = Date.today)
+  def current_date(reference = Date.current)
     day = day_of_current_month(reference)
     return nil if day.nil?
 
@@ -48,7 +48,7 @@ class PriestSetup < ApplicationRecord
   end
 
   def date
-    Date.today.beginning_of_month + (day_of_month - 1)
+    Date.current.beginning_of_month + (day_of_month - 1)
   end
 
   def description
