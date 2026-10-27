@@ -23,6 +23,22 @@ class GuardsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test "index marks today's guard using the Argentina date, not the server's UTC date" do
+    original_tz = ENV["TZ"]
+    ENV["TZ"] = "UTC" # production servers run on UTC
+    @guard.update_columns(due_date: Date.new(2026, 10, 26))
+
+    # 23:30 in Buenos Aires is already 02:30 of the 27th in UTC
+    travel_to Time.find_zone("Buenos Aires").local(2026, 10, 26, 23, 30) do
+      get guards_url
+    end
+
+    assert_response :success
+    assert_select "span", text: I18n.t("guards.index.today")
+  ensure
+    ENV["TZ"] = original_tz
+  end
+
   test "should get show" do
     get guard_url(@guard)
     assert_response :success
@@ -96,7 +112,7 @@ class GuardsControllerTest < ActionDispatch::IntegrationTest
       post guards_url, params: {
         guard: {
           day_number: 5,
-          due_date: Date.today,
+          due_date: Date.current,
           notes: "New guard notes",
           vocal_id: users(:one).id,
           priest_id: users(:two).id,
@@ -114,7 +130,7 @@ class GuardsControllerTest < ActionDispatch::IntegrationTest
       post guards_url, params: {
         guard: {
           day_number: 5,
-          due_date: Date.today,
+          due_date: Date.current,
           vocal_id: users(:one).id,
           priest_id: users(:two).id,
           guard_setup_id: guard_setups(:one).id,
@@ -132,7 +148,7 @@ class GuardsControllerTest < ActionDispatch::IntegrationTest
       post guards_url, params: {
         guard: {
           day_number: 5,
-          due_date: Date.today,
+          due_date: Date.current,
           vocal_id: users(:unrelated_vocal).id,
           priest_id: users(:two).id,
           guard_setup_id: guard_setups(:one).id,
@@ -150,7 +166,7 @@ class GuardsControllerTest < ActionDispatch::IntegrationTest
       post guards_url, params: {
         guard: {
           day_number: 5,
-          due_date: Date.today,
+          due_date: Date.current,
           vocal_id: users(:two).id,
           priest_id: users(:two).id,
           guard_setup_id: guard_setups(:one).id,
@@ -281,7 +297,7 @@ class GuardsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should destroy guard along with its services" do
-    @guard.services.create!(full_name: "Test", due_date: Date.today, created_by: @user)
+    @guard.services.create!(full_name: "Test", due_date: Date.current, created_by: @user)
     services_count = @guard.services.count
 
     assert_difference("Service.count", -services_count) do
@@ -372,7 +388,7 @@ class GuardsControllerTest < ActionDispatch::IntegrationTest
 
   test "should return PDF for guard with multiple pages of services" do
     4.times do |i|
-      @guard.services.create!(full_name: "Service #{i}", due_date: Date.today, created_by: @user)
+      @guard.services.create!(full_name: "Service #{i}", due_date: Date.current, created_by: @user)
     end
 
     get pdf_guard_url(@guard)
@@ -433,7 +449,7 @@ class GuardsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "preview assigns sequential nro values to services starting from first_nro" do
-    @guard.services.create!(full_name: "Extra", due_date: Date.today + 1, status: :completed, created_by: @user)
+    @guard.services.create!(full_name: "Extra", due_date: Date.current + 1, status: :completed, created_by: @user)
     get preview_guard_url(@guard), params: { first_nro: 3 }
 
     assert_match "NRO 3", response.body
@@ -452,8 +468,8 @@ class GuardsControllerTest < ActionDispatch::IntegrationTest
 
   test "confirm_pdf saves nro values to services in order" do
     @guard.services.destroy_all
-    service1 = @guard.services.create!(full_name: "A", due_date: Date.today - 1, status: :completed, created_by: @user)
-    service2 = @guard.services.create!(full_name: "B", due_date: Date.today,     status: :completed, created_by: @user)
+    service1 = @guard.services.create!(full_name: "A", due_date: Date.current - 1, status: :completed, created_by: @user)
+    service2 = @guard.services.create!(full_name: "B", due_date: Date.current,     status: :completed, created_by: @user)
 
     post confirm_pdf_guard_url(@guard), params: { first_nro: 5 }
 

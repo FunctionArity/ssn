@@ -21,7 +21,7 @@ class ServicePdfTest < ActiveSupport::TestCase
   test "renders without error when optional fields are blank" do
     service = Service.new(
       full_name: "Sin Datos",
-      due_date: Date.today,
+      due_date: Date.current,
       guard: guards(:one)
     )
 

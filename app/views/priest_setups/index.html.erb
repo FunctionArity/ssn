@@ -19,7 +19,7 @@
           class: "rounded-lg p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors" do %>
       <i class="ph ph-caret-right text-base leading-none"></i>
     <% end %>
-    <% if @start_date.month != Date.today.month %>
+    <% if @start_date.month != Date.current.month %>
       <%= link_to priest_setups_path, class: "ml-1 flex items-center gap-1 text-xs font-medium text-indigo-500 hover:text-indigo-700 transition-colors" do %>
         <i class="ph ph-calendar-dot"></i> Mes actual
       <% end %>
@@ -44,7 +44,7 @@
             <% 7.times do |day_offset| %>
               <% date = week_start + day_offset %>
               <% in_month = date.month == @start_date.month %>
-              <% is_today = date == Date.today %>
+              <% is_today = date == Date.current %>
               <% is_weekend = date.cwday >= 6 %>
               <% setup = @assignments[date] %>
               <td class="align-top h-24 w-36 min-w-36 p-2 border-r border-gray-100 last:border-r-0

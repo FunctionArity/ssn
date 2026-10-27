@@ -4,7 +4,7 @@ class PriestSetupsController < ApplicationController
   before_action :clear_previous_assignments, only: %i[create]
   before_action :build_assignment_slots, only: :new
   def index
-    @start_date = Date.today.beginning_of_month
+    @start_date = Date.current.beginning_of_month
     @start_date = @start_date.change(month: params[:m].to_i) if params[:m].present?
 
     @assignments = build_monthly_assignments(@start_date)

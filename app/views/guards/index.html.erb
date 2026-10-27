@@ -68,7 +68,7 @@
   <div id="guards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
     <% @guards.each do |guard| %>
       <% header_bg = guard.open? ? "bg-gradient-to-r from-indigo-50 to-white" : "bg-gradient-to-r from-gray-100 to-white" %>
-      <% is_today = guard.due_date == Date.today %>
+      <% is_today = guard.due_date == Date.current %>
       <div class="<%= guard.open? ? 'bg-white border-gray-200' : 'bg-gray-50 border-gray-200' %> <%= 'ring-2 ring-blue-400' if is_today %> border rounded-xl shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-0.5 overflow-hidden flex flex-col">
 
         <div class="px-5 py-4 flex items-center justify-between <%= header_bg %> border-b border-gray-100">
