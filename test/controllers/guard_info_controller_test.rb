@@ -87,24 +87,32 @@ class GuardInfoControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test "new previews the PDF at /guard_info/:id/new" do
-    assert_equal "/guard_info/#{@guard.id}/new", new_guard_info_path(@guard)
+  test "new previews the PDF at /guard_info/new?guard_id=" do
+    assert_equal "/guard_info/new?guard_id=#{@guard.id}", new_guard_info_path(guard_id: @guard.id)
 
-    get new_guard_info_url(@guard)
+    get new_guard_info_url(guard_id: @guard.id)
 
     assert_response :success
+    assert_select "form[action='#{new_guard_info_path}'][method=get] input[type=hidden][name=guard_id][value='#{@guard.id}']"
+    assert_select "form[action='#{guard_info_index_path}'][method=post] input[type=hidden][name=guard_id][value='#{@guard.id}']"
+  end
+
+  test "new without a guard_id is a bad request" do
+    get new_guard_info_url
+
+    assert_response :bad_request
   end
 
   test "new confirm button sets the confirm dialog title" do
-    get new_guard_info_url(@guard)
+    get new_guard_info_url(guard_id: @guard.id)
 
-    assert_select "form[action='#{guard_info_path(@guard)}'] input[type=submit][data-turbo-confirm-title='¿ Finalizar Guardia ?']"
+    assert_select "form[action='#{guard_info_index_path}'] input[type=submit][data-turbo-confirm-title='¿ Finalizar Guardia ?']"
   end
 
   test "new defaults first_nro to 1 when no services have nro assigned" do
     Service.update_all(nro: nil)
 
-    get new_guard_info_url(@guard)
+    get new_guard_info_url(guard_id: @guard.id)
 
     assert_match "Primer Servicio NRO:", response.body
     assert_match 'value="1"', response.body
@@ -113,27 +121,27 @@ class GuardInfoControllerTest < ActionDispatch::IntegrationTest
   test "new defaults first_nro to last nro plus one" do
     services(:one).update!(nro: 10)
 
-    get new_guard_info_url(@guard)
+    get new_guard_info_url(guard_id: @guard.id)
 
     assert_match 'value="11"', response.body
   end
 
   test "new uses provided first_nro param" do
-    get new_guard_info_url(@guard), params: { first_nro: 5 }
+    get new_guard_info_url, params: { guard_id: @guard.id, first_nro: 5 }
 
     assert_match 'value="5"', response.body
   end
 
   test "new assigns sequential nro values to services starting from first_nro" do
     @guard.services.create!(full_name: "Extra", due_date: Date.current + 1, status: :completed, created_by: @user)
-    get new_guard_info_url(@guard), params: { first_nro: 3 }
+    get new_guard_info_url, params: { guard_id: @guard.id, first_nro: 3 }
 
     assert_match "NRO 3", response.body
     assert_match "NRO 4", response.body
   end
 
   test "new does not persist nro values to database" do
-    get new_guard_info_url(@guard), params: { first_nro: 99 }
+    get new_guard_info_url, params: { guard_id: @guard.id, first_nro: 99 }
 
     assert_nil services(:one).reload.nro
   end
@@ -143,7 +151,7 @@ class GuardInfoControllerTest < ActionDispatch::IntegrationTest
     service1 = @guard.services.create!(full_name: "A", due_date: Date.current - 1, status: :completed, created_by: @user)
     service2 = @guard.services.create!(full_name: "B", due_date: Date.current,     status: :completed, created_by: @user)
 
-    post guard_info_url(@guard), params: { first_nro: 5 }
+    post guard_info_index_url, params: { guard_id: @guard.id, first_nro: 5 }
 
     assert_equal 5, service1.reload.nro
     assert_equal 6, service2.reload.nro
@@ -152,7 +160,7 @@ class GuardInfoControllerTest < ActionDispatch::IntegrationTest
   test "create attaches pdf_file to guard" do
     assert_not @guard.pdf_file.attached?
 
-    post guard_info_url(@guard), params: { first_nro: 1 }
+    post guard_info_index_url, params: { guard_id: @guard.id, first_nro: 1 }
 
     assert @guard.reload.pdf_file.attached?
     assert_match %r{\A#{@guard.id}/[a-z0-9]{28}\z}, @guard.pdf_file.blob.key
@@ -161,13 +169,13 @@ class GuardInfoControllerTest < ActionDispatch::IntegrationTest
   test "create closes the guard" do
     assert @guard.open?
 
-    post guard_info_url(@guard), params: { first_nro: 1 }
+    post guard_info_index_url, params: { guard_id: @guard.id, first_nro: 1 }
 
     assert @guard.reload.closed?
   end
 
   test "create redirects to the information page" do
-    post guard_info_url(@guard), params: { first_nro: 1 }
+    post guard_info_index_url, params: { guard_id: @guard.id, first_nro: 1 }
 
     assert_redirected_to guard_info_url(@guard)
   end

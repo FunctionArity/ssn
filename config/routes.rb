@@ -18,11 +18,7 @@ Rails.application.routes.draw do
       get  :preview
     end
   end
-  resources :guard_info, only: :show
-  # Preview of a guard's PDF before confirming. A member route named :new would drop the /new segment.
-  get "guard_info/:id/new", to: "guard_info#new", as: :new_guard_info
-  # Confirms the preview and stores the PDF; on the member URL because it acts on an existing guard.
-  post "guard_info/:id", to: "guard_info#create"
+  resources :guard_info, only: %i[ new create show ]
   resources :guard_setups do
     member do
       patch :move_guardian

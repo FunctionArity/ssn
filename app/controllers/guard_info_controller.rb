@@ -1,5 +1,5 @@
-# The guard's PDF: /guard_info/:id shows the guard header with the PDF embedded,
-# /guard_info/:id.pdf serves the file itself, /guard_info/:id/new previews it, and POST /guard_info/:id confirms it.
+# The guard's PDF. new (/guard_info/new?guard_id=) previews it, create (POST /guard_info) confirms it,
+# and show (/guard_info/:id) shows the guard header with the PDF embedded, or the file itself as .pdf.
 class GuardInfoController < ApplicationController
   before_action :set_guard
 
@@ -55,7 +55,8 @@ class GuardInfoController < ApplicationController
 
   private
 
+  # show is /guard_info/:id; new and create receive the guard as guard_id.
   def set_guard
-    @guard = Guard.find(params.expect(:id))
+    @guard = Guard.find(params.key?(:id) ? params.expect(:id) : params.expect(:guard_id))
   end
 end

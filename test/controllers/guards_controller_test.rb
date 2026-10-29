@@ -70,7 +70,7 @@ class GuardsControllerTest < ActionDispatch::IntegrationTest
   test "show displays guard actions to the vocal of the guard" do
     get guard_url(@guard)
     assert_select "a[href='#{edit_guard_path(@guard)}']"
-    assert_select "a[href='#{new_guard_info_path(@guard)}']"
+    assert_select "a[href='#{new_guard_info_path(guard_id: @guard.id)}']"
     assert_select "form[action='#{guard_path(@guard)}'] input[name='_method'][value='delete']"
     assert_select "a[href='#{new_service_path(guard_id: @guard.id)}']"
   end
@@ -79,7 +79,7 @@ class GuardsControllerTest < ActionDispatch::IntegrationTest
     sign_in users(:admin_user)
     get guard_url(@guard)
     assert_select "a[href='#{edit_guard_path(@guard)}']"
-    assert_select "a[href='#{new_guard_info_path(@guard)}']"
+    assert_select "a[href='#{new_guard_info_path(guard_id: @guard.id)}']"
     assert_select "form[action='#{guard_path(@guard)}'] input[name='_method'][value='delete']"
   end
 
@@ -88,7 +88,7 @@ class GuardsControllerTest < ActionDispatch::IntegrationTest
     get guard_url(@guard)
     assert_response :success
     assert_select "a[href='#{edit_guard_path(@guard)}']", false
-    assert_select "a[href='#{new_guard_info_path(@guard)}']", false
+    assert_select "a[href='#{new_guard_info_path(guard_id: @guard.id)}']", false
     assert_select "form[action='#{guard_path(@guard)}'] input[name='_method'][value='delete']", false
     assert_select "a[href='#{new_service_path(guard_id: @guard.id)}']", false
   end
