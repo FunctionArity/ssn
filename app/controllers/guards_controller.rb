@@ -1,5 +1,5 @@
 class GuardsController < ApplicationController
-  before_action :set_guard, only: %i[ show edit update destroy close pdf preview confirm_pdf history ]
+  before_action :set_guard, only: %i[ show edit update destroy close history ]
   before_action :set_services_count, only: %i[ show ]
 
   def index
@@ -26,46 +26,6 @@ class GuardsController < ApplicationController
     authorize @guard
     @guard.closed!
     redirect_to @guard, notice: t("guards.notices.closed")
-  end
-
-  def pdf
-    if @guard.pdf_file.attached?
-      redirect_to rails_blob_url(@guard.pdf_file, disposition: "inline")
-    else
-      pdf_data = GuardPdf.new(@guard).render
-      send_data pdf_data,
-        filename: "guardia_#{@guard.id}.pdf",
-        type: "application/pdf",
-        disposition: "inline"
-    end
-  end
-
-  def preview
-    if params[:first_nro].present?
-      @first_nro = params[:first_nro].to_i
-    else
-      last_nro = Service.where.not(nro: nil).maximum(:nro)
-      @first_nro = last_nro ? last_nro + 1 : 1
-    end
-    @services = @guard.services.completed.includes(:health_facility).order(due_date: :asc)
-    @services.each_with_index { |s, i| s.nro = @first_nro + i }
-  end
-
-  def confirm_pdf
-    first_nro = params[:first_nro].to_i
-    @guard.services.completed.order(due_date: :asc).each_with_index do |service, idx|
-      service.update_column(:nro, first_nro + idx)
-    end
-    pdf_data = GuardPdf.new(@guard.reload).render
-    # Stored in S3 as pdf_file/<guard id>/<random token>, like avatars.
-    @guard.pdf_file.attach(
-      io: StringIO.new(pdf_data),
-      filename: "guardia_#{@guard.id}.pdf",
-      content_type: "application/pdf",
-      key: "#{@guard.id}/#{ActiveStorage::Blob.generate_unique_secure_token}"
-    )
-    @guard.closed!
-    redirect_to pdf_guard_path(@guard)
   end
 
   def new

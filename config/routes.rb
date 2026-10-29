@@ -14,12 +14,11 @@ Rails.application.routes.draw do
   resources :guards do
     member do
       post :close
-      get  :pdf
       get  :history
       get  :preview
-      post :confirm_pdf
     end
   end
+  resources :guard_info, only: %i[ new create show ]
   resources :guard_setups do
     member do
       patch :move_guardian

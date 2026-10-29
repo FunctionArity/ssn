@@ -7,29 +7,9 @@
     <% end %>
   </div>
 
-  <% header_bg = @guard.open? ? "bg-gradient-to-r from-indigo-50 to-white" : "bg-gradient-to-r from-gray-100 to-white" %>
   <div id="<%= dom_id @guard %>" class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
 
-    <div class="px-6 py-5 flex items-center justify-between gap-4 <%= header_bg %> border-b border-gray-100">
-      <div class="flex items-center gap-4 min-w-0">
-        <div class="flex items-center justify-center w-12 h-12 rounded-full shrink-0 <%= @guard.open? ? 'bg-indigo-100 text-indigo-700' : 'bg-gray-200 text-gray-400' %>">
-          <i class="ph ph-calendar-check text-xl"></i>
-        </div>
-        <div class="min-w-0">
-          <p class="text-xs font-medium text-indigo-400 uppercase tracking-wide"><%= l(@guard.due_date, format: :long) %></p>
-          <h2 class="text-2xl font-bold text-gray-900 mt-0.5">
-            # <%= @guard.day_number %>
-            <%= " #{content_tag(:i, '', class: 'ph ph-lock-simple text-lg text-gray-400 align-middle')}".html_safe if @guard.closed? %>
-          </h2>
-          <p class="text-xs text-gray-400 mt-0.5">
-            <%= @guard.number %>
-          </p>
-        </div>
-      </div>
-      <span class="flex items-center gap-1 text-xs text-gray-400 shrink-0">
-        <i class="ph ph-hand-heart"></i> <%= @services_count %> <%= t("guards.index.services_count", count: @services_count) %>
-      </span>
-    </div>
+    <%= render "guards/header", guard: @guard, services_count: @services_count %>
 
     <div class="divide-y divide-gray-100">
       <div class="px-6 py-4 flex items-center gap-4">
@@ -109,12 +89,12 @@
         <%= link_to t("edit"), edit_guard_path(@guard), class: "w-full sm:w-auto flex items-center justify-center gap-1.5 rounded-md bg-white border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50" %>
       <% end %>
       <% if @guard.pdf_file.attached? %>
-        <%= link_to rails_blob_path(@guard.pdf_file, disposition: "inline"), target: "_blank", class: "w-full sm:w-auto flex items-center justify-center gap-1.5 rounded-md bg-white border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50" do %>
-          <i class="ph ph-download-simple"></i> <%= t(".download_pdf") %>
+        <%= link_to guard_info_path(@guard), class: "w-full sm:w-auto flex items-center justify-center gap-1.5 rounded-md bg-white border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50" do %>
+          <i class="ph ph-eye"></i> <%= t(".download_pdf") %>
         <% end %>
       <% end %>
       <% if @guard.open? && policy(@guard).close? %>
-        <%= link_to preview_guard_path(@guard), target: "_blank", class: "w-full sm:w-auto cursor-pointer flex items-center justify-center gap-1.5 rounded-md bg-green-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500" do %>
+        <%= link_to new_guard_info_path(guard_id: @guard.id), class: "w-full sm:w-auto cursor-pointer flex items-center justify-center gap-1.5 rounded-md bg-green-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500" do %>
           <i class="ph ph-printer"></i> <%= t(".close_guard") %>
         <% end %>
       <% end %>

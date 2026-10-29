@@ -326,7 +326,7 @@ es:
       close_guard: Finalizar guardia
       close_confirm: "¿Estás seguro de que querés finalizar esta guardia?"
       print_pdf: Imprimir
-      download_pdf: Descargar Información
+      download_pdf: Ver Información
       copy_services: Copiar Información
     new:
       title: Nueva guardia
@@ -765,3 +765,8 @@ es:
       created: La parroquia fue creada exitosamente.
       updated: La parroquia fue actualizada exitosamente.
       destroyed: La parroquia fue eliminada exitosamente.
+  guard_info:
+    show:
+      back: Volver a la guardia
+      title: "PDF de la guardia #%{number}"
+      open_in_new_tab: Abrir en pestaña nueva

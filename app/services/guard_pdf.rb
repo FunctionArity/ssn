@@ -4,6 +4,11 @@ require "prawn-svg"
 class GuardPdf
   PAGE_MARGIN     = [ 30, 35, 30, 35 ].freeze
   SERVICES_PER_PAGE = 3
+  # A4 in whole points. Prawn's "A4" is 595.28 x 841.89, and macOS Preview does not rescale
+  # pages with fractional sizes as the window is resized.
+  PAGE_SIZE       = [ 595, 842 ].freeze
+  # URL fragment that opens Chrome's PDF viewer fitted to the window width.
+  VIEWER_ANCHOR   = "view=FitH"
   LOGO_SIZE       = 40
   LABEL_SIZE      = 10
   VALUE_SIZE      = 11
@@ -16,7 +21,7 @@ class GuardPdf
 
   def render
     pdf = Prawn::Document.new(
-      page_size:   "A4",
+      page_size:   PAGE_SIZE,
       page_layout: :portrait,
       margin:      PAGE_MARGIN
     )

@@ -12,6 +12,12 @@ class GuardPdfTest < ActiveSupport::TestCase
     assert result.start_with?("%PDF"), "output should start with PDF magic bytes"
   end
 
+  test "uses A4 pages in whole points so macOS Preview rescales them with the window" do
+    result = GuardPdf.new(@guard).render
+
+    assert_match %r{/MediaBox \[0 0 595 842\]}, result
+  end
+
   test "rendered PDF is non-empty" do
     result = GuardPdf.new(@guard).render
 
