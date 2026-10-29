@@ -174,7 +174,7 @@ GEM
       raabro (~> 1.4)
     globalid (1.4.0)
       activesupport (>= 6.1)
-    honeybadger (6.9.3)
+    honeybadger (6.10.0)
       logger
       ostruct
     i18n (1.15.2)
@@ -498,7 +498,7 @@ DEPENDENCIES
   devise_invitable
   faker
   friendly_id
-  honeybadger (~> 6.9)
+  honeybadger (~> 6.10)
   image_processing (~> 2.2)
   jbuilder
   jsbundling-rails
