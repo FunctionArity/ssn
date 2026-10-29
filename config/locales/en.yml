@@ -237,7 +237,7 @@ en:
       destroy_confirm: "Are you sure you want to delete this guard?"
       destroy_confirm_title: "Delete guard"
       print_pdf: Print
-      download_pdf: Download Information
+      download_pdf: View Information
       copy_services: Copy Information
     new:
       title: New guard
@@ -574,3 +574,8 @@ en:
         intro: "Your account has been locked due to an excessive number of unsuccessful sign in attempts."
         instruction: "Click the link below to unlock your account:"
         action: "Unlock my account"
+  guard_info:
+    show:
+      back: Back to guard
+      title: "Guard #%{number} PDF"
+      open_in_new_tab: Open in new tab
