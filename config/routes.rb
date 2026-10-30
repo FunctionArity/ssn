@@ -27,6 +27,7 @@ Rails.application.routes.draw do
   resources :priest_setups
 
   resources :services do
+    get :duplicates, on: :collection
     member do
       get   :pdf
       get   :history

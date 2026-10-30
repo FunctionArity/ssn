@@ -1,4 +1,4 @@
-<div class="py-8">
+<div class="py-8" data-controller="service-duplicates" data-service-duplicates-url-value="<%= duplicates_services_path %>">
   <div class="flex items-center gap-2 mb-6">
     <%= link_to services_path, class: "flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700" do %>
       <i class="ph ph-caret-left"></i> <%= t(".back") %>
@@ -17,4 +17,6 @@
       <%= render "form", service: @service %>
     </div>
   </div>
+
+  <%= render "duplicates_modal" %>
 </div>

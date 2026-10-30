@@ -1,17 +1,35 @@
 class ServicesController < ApplicationController
+  SEARCH_FILTERS = %i[ full_name health_facility date guard_day caller_phone ].freeze
+  RESULTS_PER_PAGE = 12
+
   before_action :set_service, only: %i[ show edit update destroy pdf complete move history ]
 
   def index
     @current_guard = Guard.includes(:vocal, :priest, :guardians).find_by(status: :open, due_date: Date.current)
-    @services = @current_guard ? @current_guard.services.includes(:created_by).order(:position) : Service.none
-    @pending_other_services = Service.pending
-                                     .includes(:guard, :created_by, :health_facility)
-                                     .where.not(guard: @current_guard)
-                                     .joins(:guard)
-                                     .order("guards.due_date DESC", :position)
+    @filters = params.permit(*SEARCH_FILTERS).to_h.transform_values(&:strip).compact_blank
+
+    if @filters.any?
+      set_search_results
+      @pending_other_services = Service.none
+    else
+      @services = @current_guard ? @current_guard.services.includes(:created_by, :health_facility).order(:position) : Service.none
+      @pending_other_services = Service.pending
+                                       .includes(:guard, :created_by, :health_facility)
+                                       .where.not(guard: @current_guard)
+                                       .joins(:guard)
+                                       .order("guards.due_date DESC", :position)
+    end
   end
 
   def show
+  end
+
+  def duplicates
+    full_name = params[:full_name].to_s
+    @duplicates = full_name.blank? ? Service.none : Service.search_by_full_name(full_name)
+                                                           .where(due_date: 2.months.ago.to_date..)
+                                                           .includes(:guard, :health_facility)
+                                                           .order(due_date: :desc, id: :desc)
   end
 
   def history
@@ -129,6 +147,17 @@ class ServicesController < ApplicationController
   end
 
   private
+
+  def set_search_results
+    results = Service.search(@filters)
+    @results_count = results.count
+    @total_pages = (@results_count / RESULTS_PER_PAGE.to_f).ceil
+    @page = params[:page].to_i.clamp(1, [ @total_pages, 1 ].max)
+    @results = results.includes(:guard, :created_by, :health_facility)
+                      .order(due_date: :desc, id: :desc)
+                      .limit(RESULTS_PER_PAGE)
+                      .offset((@page - 1) * RESULTS_PER_PAGE)
+  end
 
   # The guard show list is broadcast by Service's after_update_commit; only the index grid is handled here.
   def broadcast_reordered_services(guard)

@@ -77,8 +77,31 @@
       <%= form.date_field :due_date, class: "w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500" %>
     </div>
     <div class="col-span-1">
-      <%= form.label :full_name, class: "block text-sm font-medium text-gray-700 mb-1" %>
-      <%= form.text_field :full_name, class: "w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500" %>
+      <div class="flex items-center gap-2 mb-1">
+        <%= form.label :full_name, class: "block text-sm font-medium text-gray-700" %>
+        <% if service.new_record? %>
+          <button type="button"
+                  data-service-duplicates-target="button"
+                  data-action="service-duplicates#open"
+                  title="<%= t("services.form.duplicates_found") %>"
+                  aria-label="<%= t("services.form.duplicates_found") %>"
+                  class="hidden cursor-pointer leading-none text-amber-600 hover:text-amber-700">
+            <span class="flex items-center gap-1 text-xs font-semibold whitespace-nowrap">
+              <i class="ph-bold ph-warning text-base leading-none"></i>
+              <%= t("services.form.duplicates_link") %>
+            </span>
+          </button>
+          <span data-service-duplicates-target="spinner" role="status" class="hidden">
+            <span class="flex items-center gap-1 text-xs font-semibold leading-none text-blue-600">
+              <i class="ph-bold ph-spinner text-lg leading-none animate-spin"></i>
+              <%= t("services.form.duplicates_loading") %>
+            </span>
+          </span>
+        <% end %>
+      </div>
+      <%= form.text_field :full_name,
+            data: (service.new_record? ? { service_duplicates_target: "input", action: "input->service-duplicates#search" } : {}),
+            class: "w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500" %>
     </div>
     <div class="col-span-1">
       <%= form.label :age, class: "block text-sm font-medium text-gray-700 mb-1" %>

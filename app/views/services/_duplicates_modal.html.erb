@@ -1,0 +1,26 @@
+<%# A native dialog renders in the top layer, so the transformed page wrapper can't reposition it. %>
+<dialog data-service-duplicates-target="modal"
+        data-action="click->service-duplicates#backdropClick"
+        aria-labelledby="service-duplicates-title"
+        class="m-auto p-0 w-[calc(100%-2rem)] max-w-3xl max-h-[85vh] bg-white rounded-2xl shadow-xl overflow-hidden backdrop:bg-black/50">
+  <div class="flex flex-col max-h-[85vh]">
+    <div class="px-6 pt-6 pb-4 flex items-center gap-3 border-b border-gray-200">
+      <div class="flex items-center justify-center w-10 h-10 rounded-full shrink-0 bg-amber-100 text-amber-700">
+        <i class="ph ph-warning text-lg"></i>
+      </div>
+      <div class="flex-1 min-w-0">
+        <h3 id="service-duplicates-title" class="text-base font-semibold text-gray-900"><%= t(".title") %></h3>
+        <p class="text-sm text-gray-500"><%= t(".hint") %></p>
+      </div>
+      <button type="button"
+              data-action="service-duplicates#close"
+              aria-label="<%= t(".close") %>"
+              class="cursor-pointer flex items-center justify-center w-8 h-8 rounded-full text-gray-800 hover:bg-gray-100 hover:text-gray-700 shrink-0">
+        <i class="ph ph-x text-lg"></i>
+      </button>
+    </div>
+    <div class="px-6 py-6 overflow-y-auto">
+      <%= turbo_frame_tag "service_duplicates", data: { service_duplicates_target: "frame", action: "turbo:before-fetch-request->service-duplicates#lookupStarted turbo:frame-load->service-duplicates#frameLoaded turbo:fetch-request-error->service-duplicates#lookupFailed turbo:frame-missing->service-duplicates#lookupFailed" } %>
+    </div>
+  </div>
+</dialog>

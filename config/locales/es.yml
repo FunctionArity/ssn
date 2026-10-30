@@ -656,11 +656,30 @@ es:
     index:
       title: Servicios
       new_service: Nuevo servicio
+      show_filters: Mostrar filtros
+      hide_filters: Ocultar filtros
       show: Ver
       current_guard: Guardia activa hoy
       view_guard: Ver guardia
       pending_from_other_guards: Servicios pendientes de otras guardias
       pending_from_other_guards_hint: Estos servicios quedaron sin completar en guardias anteriores. Reasignalos a una guardia abierta para poder completarlos.
+    duplicates_modal:
+      title: Servicios con un nombre parecido
+      hint: Registrados en los últimos 2 meses.
+      close: Cerrar
+    search_form:
+      prompt: Usá los filtros para buscar servicios.
+      guard_day: Día de guardia
+      search: Buscar
+      clear: Limpiar
+    search_results:
+      title: Resultados de la búsqueda
+      no_results: No se encontraron servicios.
+      loading: Buscando...
+      pagination: Paginación
+      previous_page: Anterior
+      next_page: Siguiente
+      page_of: "Página %{page} de %{total}"
     show:
       edit: Editar
       back: Volver a servicios
@@ -686,6 +705,9 @@ es:
     form:
       search_health_facility: Buscar centro de salud...
       no_guard_warning: No hay guardia asignada a este servicio. Por favor seleccione una guardia antes de guardar.
+      duplicates_found: Hay otros servicios con un nombre parecido
+      duplicates_link: Ver similares
+      duplicates_loading: Buscando...
       choose_guard: Guardia
       choose_guard_prompt: Seleccione la guardia del servicio
       guard_groups:

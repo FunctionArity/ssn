@@ -14,6 +14,31 @@ class Service < ApplicationRecord
   before_validation :clear_blank_comments
   after_update_commit :broadcast_changes
 
+  # Every typed word must appear, in any order and ignoring case and accents: "rodriguez pablo" finds "Pablo Rodríguez".
+  scope :search_by_full_name, ->(query) {
+    query.split.reduce(all) do |relation, word|
+      relation.where("translate(lower(services.full_name), 'áéíóúüñ', 'aeiouun') LIKE translate(lower(?), 'áéíóúüñ', 'aeiouun')", "%#{sanitize_sql_like(word)}%")
+    end
+  }
+  scope :search_by_health_facility, ->(query) { joins(:health_facility).where("health_facilities.name ILIKE ?", "%#{sanitize_sql_like(query)}%") }
+  scope :search_by_guard_day, ->(day) { joins(:guard).where(guards: { day_number: day }) }
+
+  # Phones are stored as typed, so "261-555" has to match "261 555 1234".
+  scope :search_by_caller_phone, ->(query) {
+    digits = query.gsub(/\D/, "")
+    digits.empty? ? none : where("regexp_replace(services.caller_phone, '\\D', '', 'g') LIKE ?", "%#{digits}%")
+  }
+
+  def self.search(filters)
+    scope = all
+    scope = scope.search_by_full_name(filters[:full_name]) if filters[:full_name].present?
+    scope = scope.search_by_health_facility(filters[:health_facility]) if filters[:health_facility].present?
+    scope = scope.where(due_date: filters[:date]) if filters[:date].present?
+    scope = scope.search_by_guard_day(filters[:guard_day]) if filters[:guard_day].present?
+    scope = scope.search_by_caller_phone(filters[:caller_phone]) if filters[:caller_phone].present?
+    scope
+  end
+
   def can_be_completed?
     pending? && guard.open?
   end
