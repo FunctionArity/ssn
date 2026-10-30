@@ -58,3 +58,46 @@ Defaults to today's day of month; pass `DAY=<n>` to target a different guard, e.
 
 ### DNS Domain
 https://ap.www.namecheap.com/
+
+## Tecnologías
+
+### Backend
+
+- **Ruby 4.0.1** y **Rails 8.1**
+- **PostgreSQL 17** — Base de datos
+- **Puma** y **Thruster** — Servidor de aplicación y proxy HTTP
+- **Solid Queue**, **Solid Cache** y **Solid Cable** — Trabajos en segundo plano, caché y WebSockets sobre la base de datos
+- **Devise** y **devise_invitable** — Autenticación e invitación de usuarios
+- **Pundit** — Autorización por roles
+- **Pretender** — Impersonación de usuarios
+- **PaperTrail** — Historial de cambios
+- **FriendlyId** y **acts_as_list** — URLs legibles y orden de registros
+- **Prawn**, **prawn-table** y **prawn-svg** — Generación de PDF
+- **Active Storage**, **image_processing** y **ruby-vips** — Archivos y procesamiento de imágenes
+
+### Frontend
+
+- **Hotwire** (**Turbo** y **Stimulus**) — Interactividad y actualizaciones en vivo
+- **Tailwind CSS 4** — Estilos
+- **esbuild** y **Propshaft** — Empaquetado de JavaScript y assets
+- **Lexxy** — Editor de texto enriquecido
+- **Cropper.js** — Recorte de avatares
+- **Phosphor Icons** — Íconos
+- **Google Maps JavaScript API** — Mapas y geocodificación de direcciones
+
+### Infraestructura y servicios
+
+- **Kamal** y **Docker** — Despliegue en contenedores, con imágenes en Docker Hub
+- **Amazon S3** — Archivos (avatares y PDF, con subida directa desde el navegador) y copias de seguridad de la base de datos
+- **Terraform** — Usuario IAM y buckets de S3 (`infra/terraform`)
+- **Cloudflare** — DNS y redirecciones
+- **Resend** — Envío de correos (SMTP)
+- **Honeybadger** — Monitoreo de errores
+
+### Calidad y tests
+
+- **Minitest**, **Capybara** y **Selenium** — Tests unitarios, de integración y de sistema
+- **SimpleCov** y **Faker** — Cobertura y datos de prueba
+- **RuboCop** (rubocop-rails-omakase) — Estilo de código
+- **Brakeman** y **bundler-audit** — Análisis de seguridad
+- **GitHub Actions** y **Dependabot** — Integración continua y actualización de dependencias
