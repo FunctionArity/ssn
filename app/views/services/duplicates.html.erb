@@ -1,0 +1,9 @@
+<%= turbo_frame_tag "service_duplicates" do %>
+  <% if @duplicates.any? %>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+      <% @duplicates.each do |service| %>
+        <%= render partial: "compact_view", locals: { service: service } %>
+      <% end %>
+    </div>
+  <% end %>
+<% end %>

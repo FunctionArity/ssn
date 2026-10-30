@@ -1,6 +1,60 @@
 require "test_helper"
 
 class ServiceTest < ActiveSupport::TestCase
+  test "search_by_full_name ignores case, accents, word order and extra spaces" do
+    assert_equal [ services(:one) ], Service.search_by_full_name("  PEREZ   juan ").to_a
+  end
+
+  test "search_by_full_name finds names containing a single word" do
+    assert_equal [ services(:one) ], Service.search_by_full_name("perez").to_a
+  end
+
+  test "search_by_full_name requires every word" do
+    assert_empty Service.search_by_full_name("juan lopez")
+  end
+
+  test "search without filters returns every service" do
+    assert_equal Service.count, Service.search({}).count
+  end
+
+  test "search filters by full name ignoring case" do
+    assert_equal [ services(:one) ], Service.search(full_name: "pérez").to_a
+  end
+
+  test "search treats like wildcards in the name literally" do
+    assert_empty Service.search(full_name: "%")
+  end
+
+  test "search filters by health facility name" do
+    services(:one).update_columns(health_facility_id: health_facilities(:one).id)
+
+    assert_equal [ services(:one) ], Service.search(health_facility: "central").to_a
+    assert_empty Service.search(health_facility: "santa rosa")
+  end
+
+  test "search filters by date" do
+    assert_equal [ services(:completed_one) ], Service.search(date: "2026-03-02").to_a
+    assert_empty Service.search(date: "not-a-date")
+  end
+
+  test "search filters by guard day" do
+    assert_equal Service.count, Service.search(guard_day: guards(:one).day_number.to_s).count
+    assert_empty Service.search(guard_day: "31")
+  end
+
+  test "search filters by caller phone ignoring its format" do
+    services(:one).update_columns(caller_phone: "+54 261-555 1234")
+
+    assert_equal [ services(:one) ], Service.search(caller_phone: "261 555").to_a
+    assert_empty Service.search(caller_phone: "999")
+    assert_empty Service.search(caller_phone: "abc")
+  end
+
+  test "search combines filters" do
+    assert_equal [ services(:one) ], Service.search(full_name: "juan", date: "2026-03-01").to_a
+    assert_empty Service.search(full_name: "juan", date: "2026-03-02")
+  end
+
   test "can be completed when its guard is open" do
     service = services(:one)
     service.guard.update_column(:status, Guard.statuses[:open])

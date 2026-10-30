@@ -22,6 +22,200 @@ class ServicesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test "duplicates lists services with the same name from the last 2 months" do
+    travel_to Date.new(2026, 4, 15) do
+      get duplicates_services_url, params: { full_name: "juan  perez " }
+
+      assert_response :success
+      assert_select "turbo-frame#service_duplicates a[href=?]", service_path(services(:one)), count: 1
+      assert_select "a[href=?]", service_path(services(:completed_one)), count: 0
+    end
+  end
+
+  test "duplicates lists services whose name contains the typed word" do
+    travel_to Date.new(2026, 4, 15) do
+      get duplicates_services_url, params: { full_name: "perez" }
+
+      assert_select "a[href=?]", service_path(services(:one)), count: 1
+    end
+  end
+
+  test "duplicates lists nothing for a blank name" do
+    travel_to Date.new(2026, 4, 15) do
+      get duplicates_services_url, params: { full_name: "  " }
+
+      assert_response :success
+      assert_select "a[href=?]", service_path(services(:one)), count: 0
+    end
+  end
+
+  test "duplicates opens the address on Google Maps in a new tab and hides the pathology" do
+    services(:one).update_columns(address: "Portugal 1572", pathology: "enfermedad grave")
+
+    travel_to Date.new(2026, 4, 15) do
+      get duplicates_services_url, params: { full_name: "Juan Pérez" }
+
+      assert_select "a[href=?][target=_blank]", "https://maps.google.com/?q=Portugal%201572", text: "Portugal 1572", count: 1
+      assert_no_match "enfermedad grave", response.body
+    end
+  end
+
+  test "duplicates opens the health facility on Google Maps in a new tab" do
+    services(:one).update_columns(health_facility_id: health_facilities(:one).id)
+
+    travel_to Date.new(2026, 4, 15) do
+      get duplicates_services_url, params: { full_name: "Juan Pérez" }
+
+      assert_select "a[href^='https://maps.google.com/'][target=_blank]", text: health_facilities(:one).name, count: 1
+    end
+  end
+
+  test "duplicates links open in a new tab and offer no actions" do
+    services(:one).guard.update_column(:status, Guard.statuses[:open])
+
+    travel_to Date.new(2026, 4, 15) do
+      get duplicates_services_url, params: { full_name: "Juan Pérez" }
+
+      assert_select "a[href=?][target=_blank]", service_path(services(:one))
+      assert_select "a[href=?]:not([target=_blank])", service_path(services(:one)), count: 0
+      assert_select "a[href=?][target=_blank]", guard_path(services(:one).guard)
+      assert_select "form[action=?]", complete_service_path(services(:one)), count: 0
+    end
+  end
+
+  test "duplicates leaves out services older than 2 months" do
+    travel_to Date.new(2026, 5, 2) do
+      get duplicates_services_url, params: { full_name: "Juan Pérez" }
+
+      assert_response :success
+      assert_select "turbo-frame#service_duplicates"
+      assert_select "a[href=?]", service_path(services(:one)), count: 0
+    end
+  end
+
+  test "new wires the duplicate lookup and keeps the modal outside the form" do
+    get new_service_url
+
+    assert_select "[data-controller=service-duplicates][data-service-duplicates-url-value=?]", duplicates_services_path
+    assert_select "input[name='service[full_name]'][data-service-duplicates-target=input]", count: 1
+    assert_select "button.hidden[data-service-duplicates-target=button]", text: I18n.t("services.form.duplicates_link"), count: 1
+    assert_select "span.hidden[data-service-duplicates-target=spinner] i.ph-spinner", count: 1
+    assert_select "[data-service-duplicates-target=modal] turbo-frame#service_duplicates", count: 1
+    assert_select "form [data-service-duplicates-target=modal]", count: 0
+  end
+
+  test "edit does not look up duplicates" do
+    get edit_service_url(@service)
+
+    assert_response :success
+    assert_select "[data-controller=service-duplicates]", count: 0
+    assert_select "[data-service-duplicates-target]", count: 0
+  end
+
+  test "index shows no search results until a filter is used" do
+    get services_url
+
+    assert_response :success
+    assert_select "turbo-frame#services_results"
+    assert_select "[data-services-search-target=spinner]", count: 1
+    assert_select "[data-services-search-target=results] *", count: 0
+  end
+
+  test "index hides the filters and prompt by default behind an icon button next to new service" do
+    show_label = I18n.t("services.index.show_filters")
+
+    get services_url
+
+    assert_select "[data-controller=services-search]" do
+      assert_select "button[data-action='services-search#toggleFilters'][aria-expanded=false][title=?][aria-label=?] + a[href=?]", show_label, show_label, new_service_path, count: 1
+      assert_select "button[data-action='services-search#toggleFilters']", text: "", count: 1
+      assert_select "[data-services-search-target=filters][hidden]" do
+        assert_select "form[data-services-search-target=form]", count: 1
+        assert_select "p[data-services-search-target=prompt]:not(.hidden)", text: I18n.t("services.search_form.prompt"), count: 1
+      end
+    end
+  end
+
+  test "index keeps the filters open while filters are active" do
+    hide_label = I18n.t("services.index.hide_filters")
+
+    get services_url, params: { full_name: "juan" }
+
+    assert_select "button[data-action='services-search#toggleFilters'][aria-expanded=true][title=?]", hide_label, count: 1
+    assert_select "[data-services-search-target=filters]:not([hidden]) form", count: 1
+    assert_select "p.hidden[data-services-search-target=prompt]", count: 1
+  end
+
+  test "index lists services matching the filters" do
+    get services_url, params: { full_name: "juan" }
+
+    assert_response :success
+    assert_select "turbo-frame#service_#{services(:one).id}", count: 1
+    assert_select "turbo-frame#service_#{services(:completed_one).id}", count: 0
+  end
+
+  test "index shows a message when nothing matches" do
+    get services_url, params: { full_name: "nobody" }
+
+    assert_response :success
+    assert_match I18n.t("services.search_results.no_results"), response.body
+  end
+
+  test "index paginates search results and keeps the filters in the links" do
+    guard = guards(:one)
+    13.times { |index| Service.create!(full_name: "Paginado #{index}", due_date: Date.new(2026, 3, 1), guard: guard, created_by: @user) }
+
+    get services_url, params: { full_name: "paginado" }
+    assert_select "#services_results [data-services-search-target=results] turbo-frame", count: 12
+    assert_select "a[href=?][data-turbo-frame=services_results]", services_path(full_name: "paginado", page: 2)
+
+    get services_url, params: { full_name: "paginado", page: 2 }
+    assert_select "#services_results [data-services-search-target=results] turbo-frame", count: 1
+    assert_select "a[href=?]", services_path(full_name: "paginado", page: 1)
+  end
+
+  test "index falls back to the last page when the page is out of range" do
+    get services_url, params: { full_name: "juan", page: 99 }
+
+    assert_response :success
+    assert_select "turbo-frame#service_#{services(:one).id}", count: 1
+  end
+
+  test "index lists matches from the current guard with the results and hides the guard while searching" do
+    guards(:one).update_columns(due_date: Date.current, status: Guard.statuses[:open])
+    other_guard = Guard.create!(day_number: 2, due_date: Date.current - 3, vocal: @user, priest: users(:two),
+                                guard_setup: guard_setups(:one), guardians: [ @user ])
+    other_service = Service.create!(full_name: "Juan Gómez", due_date: Date.current - 3, guard: other_guard, created_by: @user)
+
+    get services_url, params: { full_name: "juan" }
+
+    assert_response :success
+    assert_select "[data-services-search-target=results] turbo-frame#service_#{other_service.id}", count: 1
+    assert_select "[data-services-search-target=results] turbo-frame#service_#{services(:one).id}", count: 1
+    assert_select "turbo-frame#service_#{services(:one).id}[draggable]", count: 0
+    assert_select "turbo-frame#service_#{services(:one).id}", count: 1
+    assert_select "#services", count: 0
+    assert_select "[data-services-search-target=guard]", count: 0
+    assert_no_match I18n.t("services.index.current_guard"), response.body
+  end
+
+  test "index keeps the current guard sortable and pending services visible without filters" do
+    guards(:one).update_columns(due_date: Date.current, status: Guard.statuses[:open])
+    other_guard = Guard.create!(day_number: 2, due_date: Date.current - 3, vocal: @user, priest: users(:two),
+                                guard_setup: guard_setups(:one), guardians: [ @user ])
+    pending_service = Service.create!(full_name: "Ana Díaz", due_date: Date.current - 3, guard: other_guard, created_by: @user)
+
+    get services_url
+
+    assert_select "[data-services-search-target=guard]:not([hidden]) #services[data-controller=service-reorder] turbo-frame#service_#{services(:one).id}[draggable]", count: 1
+    assert_select "turbo-frame#service_#{services(:completed_one).id}", count: 1
+    assert_select "turbo-frame#service_#{pending_service.id}", count: 1
+
+    get services_url, params: { full_name: "juan" }
+
+    assert_select "turbo-frame#service_#{pending_service.id}", count: 0
+  end
+
   test "new without guard_id is allowed for vocal user" do
     get new_service_url
     assert_response :success

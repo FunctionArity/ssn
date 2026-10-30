@@ -1,0 +1,34 @@
+<%# Read-only card shown over an unsaved form: every link opens in a new tab so the form isn't lost. %>
+<% link_options = { target: "_blank", rel: "noopener" } %>
+<div class="px-4 py-3 flex flex-col gap-1.5 <%= service.pending? ? "bg-red-50" : "bg-green-50" %> border border-gray-200 rounded-xl shadow-sm">
+  <div class="flex items-center justify-between gap-2">
+    <p class="text-sm font-semibold text-gray-900 truncate"><%= service.full_name %></p>
+    <span class="<%= service.pending? ? "badge_red" : "badge_green" %> shrink-0"><%= t("services.status.#{service.status}") %></span>
+  </div>
+
+  <div class="flex items-center justify-between gap-2">
+    <p class="text-xs text-gray-500 truncate"><%= l(service.due_date, format: :long) %></p>
+    <%= link_to service, **link_options, class: "flex items-center gap-1 text-sm font-medium text-blue-600 hover:text-blue-800 shrink-0" do %>
+      <i class="ph ph-arrow-right"></i> <%= t("services.index.show") %>
+    <% end %>
+  </div>
+
+  <p class="text-xs truncate flex items-center gap-1" title="<%= Service.human_attribute_name(:guard) %>">
+    <i class="ph ph-shield text-gray-400 shrink-0"></i>
+    <span class="text-gray-500 shrink-0"><%= Service.human_attribute_name(:guard) %>:</span>
+    <%= link_to l(service.guard.due_date, format: :long), service.guard, **link_options, class: "font-medium text-indigo-600 hover:underline truncate" %>
+  </p>
+
+  <% if service.health_facility.present? %>
+    <% hf_address = service.health_facility.address.presence || service.health_facility.name %>
+    <p class="text-xs truncate flex items-center gap-1" title="<%= Service.human_attribute_name(:health_facility) %>">
+      <i class="ph ph-hospital text-teal-600 shrink-0"></i>
+      <%= link_to service.health_facility.name, "https://maps.google.com/?q=#{URI.encode_uri_component(hf_address)}", **link_options, class: "font-medium text-indigo-600 hover:underline truncate" %>
+    </p>
+  <% elsif service.address.present? %>
+    <p class="text-xs truncate flex items-center gap-1" title="<%= Service.human_attribute_name(:address) %>">
+      <i class="ph ph-map-pin text-gray-400 shrink-0"></i>
+      <%= link_to service.address, "https://maps.google.com/?q=#{URI.encode_uri_component(service.address)}", **link_options, class: "font-medium text-indigo-600 hover:underline truncate" %>
+    </p>
+  <% end %>
+</div>

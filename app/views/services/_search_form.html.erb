@@ -1,0 +1,40 @@
+<% input_class = "w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500" %>
+<% label_class = "block text-sm font-medium text-gray-700 mb-1" %>
+<% input_data = { services_search_target: "input" } %>
+<%= form_with url: services_path, method: :get, data: { turbo_frame: "services_results", services_search_target: "form", action: "input->services-search#search" }, class: "mb-6 px-5 py-4 bg-white rounded-2xl border border-gray-200 shadow-sm" do |f| %>
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+    <div>
+      <%= f.label :full_name, Service.human_attribute_name(:full_name), class: label_class %>
+      <%= f.text_field :full_name, value: filters[:full_name], autocomplete: "off", data: input_data, class: input_class %>
+    </div>
+    <div>
+      <%= f.label :health_facility, Service.human_attribute_name(:health_facility), class: label_class %>
+      <%= f.text_field :health_facility, value: filters[:health_facility], autocomplete: "off", data: input_data, class: input_class %>
+    </div>
+    <div>
+      <%= f.label :date, Service.human_attribute_name(:due_date), class: label_class %>
+      <%= f.date_field :date, value: filters[:date], data: input_data, class: input_class %>
+    </div>
+    <div>
+      <%= f.label :guard_day, t(".guard_day"), class: label_class %>
+      <%= f.number_field :guard_day, value: filters[:guard_day], min: 1, max: 31, data: input_data, class: input_class %>
+    </div>
+    <div>
+      <%= f.label :caller_phone, Service.human_attribute_name(:caller_phone), class: label_class %>
+      <%= f.telephone_field :caller_phone, value: filters[:caller_phone], autocomplete: "off", data: input_data, class: input_class %>
+    </div>
+  </div>
+  <div class="mt-4 flex items-center justify-end gap-3">
+    <button type="button"
+            data-services-search-target="clear"
+            data-action="click->services-search#clear"
+            class="<%= "hidden" if filters.empty? %> cursor-pointer flex items-center gap-1 text-sm font-medium text-gray-500 hover:text-gray-700">
+      <i class="ph ph-x"></i> <%= t(".clear") %>
+    </button>
+    <button type="submit" class="cursor-pointer flex items-center gap-2 rounded-md bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 transition-colors">
+      <i class="ph ph-magnifying-glass text-base"></i> <%= t(".search") %>
+    </button>
+  </div>
+<% end %>
+
+<p data-services-search-target="prompt" class="<%= "hidden" if filters.any? %> text-center text-sm text-gray-500 pb-6"><%= t(".prompt") %></p>

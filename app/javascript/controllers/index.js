@@ -61,8 +61,14 @@ application.register("priest-assign-new", PriestAssignNewController)
 import RoleSelectorController from "./role_selector_controller"
 application.register("role-selector", RoleSelectorController)
 
+import ServiceDuplicatesController from "./service_duplicates_controller"
+application.register("service-duplicates", ServiceDuplicatesController)
+
 import ServiceReorderController from "./service_reorder_controller"
 application.register("service-reorder", ServiceReorderController)
+
+import ServicesSearchController from "./services_search_controller"
+application.register("services-search", ServicesSearchController)
 
 import NestedFieldsController from "./nested_fields_controller"
 application.register("nested-fields", NestedFieldsController)

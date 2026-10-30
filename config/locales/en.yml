@@ -440,11 +440,30 @@ en:
     index:
       title: Services
       new_service: New service
+      show_filters: Show filters
+      hide_filters: Hide filters
       show: Show
       current_guard: Today's active guard
       view_guard: View guard
       pending_from_other_guards: Pending services from other guards
       pending_from_other_guards_hint: These services were left incomplete in previous guards. Reassign them to an open guard to complete them.
+    duplicates_modal:
+      title: Services with a similar name
+      hint: Recorded in the last 2 months.
+      close: Close
+    search_form:
+      prompt: Use the filters to search services.
+      guard_day: Guard day
+      search: Search
+      clear: Clear
+    search_results:
+      title: Search results
+      no_results: No services found.
+      loading: Searching...
+      pagination: Pagination
+      previous_page: Previous
+      next_page: Next
+      page_of: "Page %{page} of %{total}"
     show:
       edit: Edit this service
       back: Back to services
@@ -468,6 +487,9 @@ en:
     form:
       search_health_facility: Search health facility...
       no_guard_warning: No guard is assigned to this service. Please select a guard before saving.
+      duplicates_found: There are other services with a similar name
+      duplicates_link: View similar
+      duplicates_loading: Searching...
       choose_guard: Guard
       choose_guard_prompt: Select the guard for this service
       guard_groups:
