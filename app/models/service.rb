@@ -1,4 +1,7 @@
 class Service < ApplicationRecord
+  # The @ prompt of the comments editor inserts a link to the mentioned user.
+  MENTION_HREF = %r{\A/users/(\d+)\z}
+
   belongs_to :guard
   belongs_to :created_by, class_name: "User"
   belongs_to :health_facility, optional: true
@@ -43,7 +46,23 @@ class Service < ApplicationRecord
     pending? && guard.open?
   end
 
+  # Emails only the users who weren't mentioned before this save, so editing a comment doesn't notify anyone twice.
+  def notify_new_mentions(author)
+    return unless saved_change_to_comments?
+
+    previous_comments, current_comments = saved_change_to_comments
+    new_ids = mentioned_user_ids(current_comments) - mentioned_user_ids(previous_comments) - [ author.id ]
+
+    User.mentionable.where(id: new_ids).each do |user|
+      ServiceMailer.with(service: self, user: user, author: author).mention.deliver_later
+    end
+  end
+
   private
+
+  def mentioned_user_ids(html)
+    Nokogiri::HTML5.fragment(html.to_s).css("a[href]").filter_map { |link| link["href"][MENTION_HREF, 1]&.to_i }.uniq
+  end
 
   def broadcast_changes
     broadcast_replace_later_to "services",

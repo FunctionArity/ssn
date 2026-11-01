@@ -854,6 +854,92 @@ class ServicesControllerTest < ActionDispatch::IntegrationTest
     assert_select "textarea[name='service[comments]']", count: 0
   end
 
+  test "edit offers the mention prompt in the comments editor" do
+    get edit_service_url(@service)
+
+    assert_select "lexxy-editor[name='service[comments]'] lexxy-prompt[trigger='@'][insert-editable-text][src=?]", mentionable_users_service_path(@service)
+  end
+
+  test "new has no mention prompt" do
+    get new_service_url(guard_id: @service.guard_id)
+
+    assert_response :success
+    assert_select "lexxy-editor[name='service[comments]']"
+    assert_select "lexxy-prompt", count: 0
+  end
+
+  test "mentionable_users requires signing in" do
+    sign_out @user
+
+    get mentionable_users_service_url(@service)
+
+    assert_redirected_to new_user_session_url
+  end
+
+  test "mentionable_users is denied to users who can't edit the service" do
+    sign_out @user
+    sign_in users(:two)
+
+    get mentionable_users_service_url(@service)
+
+    assert_redirected_to root_url
+  end
+
+  test "mentionable_users exposes only the names and links of active users" do
+    target = users(:vocal_guardian)
+    users(:unrelated_vocal).update_column(:locked_at, Time.current)
+    users(:two).update_column(:invitation_token, "pending")
+
+    get mentionable_users_service_url(@service)
+
+    assert_response :success
+    assert_select "lexxy-prompt-item[search=?]", "#{target.full_name} #{target.first_name} #{target.last_name}", count: 1
+    assert_select "lexxy-prompt-item[search*=?]", users(:unrelated_vocal).last_name, count: 0
+    assert_select "lexxy-prompt-item[search*=?]", users(:two).first_name, count: 0
+    assert_includes response.body, %(<a href="/users/#{target.id}">@#{target.full_name}</a>)
+    assert_not_includes response.body, target.email
+    assert_not_includes response.body, target.phone
+    assert_not_includes response.body, "<html"
+  end
+
+  test "update emails a newly mentioned user only once" do
+    mention = mention_link(users(:vocal_guardian))
+
+    assert_enqueued_emails 1 do
+      patch service_url(@service), params: { service: { comments: "<p>#{mention} ver</p>" } }
+    end
+
+    assert_no_enqueued_emails do
+      patch service_url(@service), params: { service: { comments: "<p>#{mention} ver hoy</p>" } }
+    end
+  end
+
+  test "update emails the mention when the service also moves to another guard" do
+    guard = Guard.create!(day_number: 2, due_date: Date.current, status: :open,
+                          vocal: users(:one), priest: users(:two), guard_setup: guard_setups(:one), guardians: [ users(:one) ])
+
+    assert_enqueued_emails 1 do
+      patch service_url(@service), params: { service: { guard_id: guard.id, comments: "<p>#{mention_link(users(:vocal_guardian))}</p>" } }
+    end
+    assert_equal guard.id, @service.reload.guard_id
+  end
+
+  test "update sends nothing when validation fails" do
+    assert_no_enqueued_emails do
+      patch service_url(@service), params: { service: { full_name: "", comments: "<p>#{mention_link(users(:vocal_guardian))}</p>" } }
+    end
+    assert_response :unprocessable_entity
+  end
+
+  test "show keeps mentions as links" do
+    target = users(:vocal_guardian)
+    @service.update!(comments: "<p>#{mention_link(target)}</p>")
+
+    get service_url(@service)
+
+    assert_select "a[href=?]", user_path(target), text: "@#{target.full_name}"
+  end
+
   test "update saves rich text comments" do
     patch service_url(@service), params: { service: { comments: "<p>Paciente en <strong>sala 3</strong></p>" } }
 
@@ -884,5 +970,11 @@ class ServicesControllerTest < ActionDispatch::IntegrationTest
     get service_url(@service)
 
     assert_select ".lexxy-content p br"
+  end
+
+  private
+
+  def mention_link(user)
+    %(<a href="/users/#{user.id}">@#{user.full_name}</a>)
   end
 end

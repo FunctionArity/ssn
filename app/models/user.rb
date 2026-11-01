@@ -29,6 +29,8 @@ class User < ApplicationRecord
     sanitized = "%#{sanitize_sql_like(query)}%"
     where("first_name ILIKE :q OR last_name ILIKE :q", q: sanitized)
   }
+  # Users who can sign in, leaving out pending invitations and locked accounts.
+  scope :mentionable, -> { where(invitation_token: nil, locked_at: nil) }
 
   belongs_to :church, optional: true
 

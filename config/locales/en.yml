@@ -430,6 +430,12 @@ en:
       created: Headquarter was successfully created.
       updated: Headquarter was successfully updated.
       destroyed: Headquarter was successfully destroyed.
+  service_mailer:
+    mention:
+      subject: "You were mentioned on the service for %{full_name}"
+      intro: "%{author} mentioned you in a comment on the service for %{full_name}."
+      action: View the service
+      comment: Comment
   services:
     history:
       back: Back to service
@@ -492,6 +498,8 @@ en:
       duplicates_loading: Searching...
       choose_guard: Guard
       choose_guard_prompt: Select the guard for this service
+      mentions_hint: Type @ to mention a user. They will get the comment by email when you save.
+      no_mentionable_users: No users found
       guard_groups:
         current: "Service's current guard"
         today: "Today"

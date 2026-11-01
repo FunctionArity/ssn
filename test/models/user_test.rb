@@ -210,4 +210,13 @@ class UserTest < ActiveSupport::TestCase
     assert_not changes.key?("unlock_token")
     assert_not user.versions.last.object.key?("unlock_token")
   end
+
+  test "mentionable leaves out locked users and pending invitations" do
+    users(:one).update_column(:locked_at, Time.current)
+    users(:two).update_column(:invitation_token, "pending")
+
+    assert_not_includes User.mentionable, users(:one)
+    assert_not_includes User.mentionable, users(:two)
+    assert_includes User.mentionable, users(:vocal_guardian)
+  end
 end

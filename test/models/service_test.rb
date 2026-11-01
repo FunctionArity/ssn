@@ -1,6 +1,8 @@
 require "test_helper"
 
 class ServiceTest < ActiveSupport::TestCase
+  include ActionMailer::TestHelper
+
   test "search_by_full_name ignores case, accents, word order and extra spaces" do
     assert_equal [ services(:one) ], Service.search_by_full_name("  PEREZ   juan ").to_a
   end
@@ -106,6 +108,49 @@ class ServiceTest < ActiveSupport::TestCase
     end
   end
 
+  test "notify_new_mentions emails only the users added in this save" do
+    service = services(:one)
+    author = users(:one)
+    service.update!(comments: "<p>#{mention_link(users(:vocal_guardian))}</p>")
+
+    service.update!(comments: "<p>#{mention_link(users(:vocal_guardian))} y #{mention_link(users(:unrelated_vocal))} #{mention_link(users(:unrelated_vocal))}</p>")
+
+    assert_enqueued_email_with ServiceMailer, :mention, params: { service: service, user: users(:unrelated_vocal), author: author } do
+      service.notify_new_mentions(author)
+    end
+  end
+
+  test "notify_new_mentions sends nothing when the comments did not change" do
+    service = services(:one)
+    service.update!(comments: "<p>#{mention_link(users(:vocal_guardian))}</p>")
+    service.update!(full_name: "Otro nombre")
+
+    assert_no_enqueued_emails { service.notify_new_mentions(users(:one)) }
+  end
+
+  test "notify_new_mentions skips the author, locked and invited users, and other links" do
+    service = services(:one)
+    author = users(:one)
+    users(:vocal_guardian).update_column(:locked_at, Time.current)
+    users(:unrelated_vocal).update_column(:invitation_token, "pending")
+
+    service.update!(comments: <<~HTML)
+      <p>#{mention_link(author)} #{mention_link(users(:vocal_guardian))} #{mention_link(users(:unrelated_vocal))}
+      <a href="https://example.com/users/#{users(:two).id}">x</a> <a href="/users/#{users(:two).id}/edit">y</a> <a href="/users/0">z</a></p>
+    HTML
+
+    assert_no_enqueued_emails { service.notify_new_mentions(author) }
+  end
+
+  test "keeps a comment that only has a mention" do
+    service = services(:one)
+    comment = "<p>#{mention_link(users(:two))}</p>"
+
+    service.update!(comments: comment)
+
+    assert_equal comment, service.comments
+  end
+
   test "clears comments that contain only empty rich text markup" do
     service = services(:one)
 
@@ -116,5 +161,11 @@ class ServiceTest < ActiveSupport::TestCase
 
     service.update!(comments: "<p>Llamar antes</p>")
     assert_equal "<p>Llamar antes</p>", service.comments
+  end
+
+  private
+
+  def mention_link(user)
+    %(<a href="/users/#{user.id}">@#{user.full_name}</a>)
   end
 end

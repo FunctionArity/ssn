@@ -1,0 +1,7 @@
+<% @users.each do |user| %>
+  <%# Both name orders, since the prompt matches the typed text as a whole. %>
+  <lexxy-prompt-item search="<%= user.full_name %> <%= user.first_name %> <%= user.last_name %>">
+    <template type="menu"><%= user.full_name %></template>
+    <template type="editor"><%= link_to "@#{user.full_name}", user_path(user) %></template>
+  </lexxy-prompt-item>
+<% end %>

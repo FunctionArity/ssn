@@ -31,6 +31,7 @@ Rails.application.routes.draw do
     member do
       get   :pdf
       get   :history
+      get   :mentionable_users
       post  :complete
       patch :move
     end

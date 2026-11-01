@@ -646,6 +646,12 @@ es:
       created: La sede fue creada exitosamente.
       updated: La sede fue actualizada exitosamente.
       destroyed: La sede fue eliminada exitosamente.
+  service_mailer:
+    mention:
+      subject: "Te mencionaron en el servicio de %{full_name}"
+      intro: "%{author} te mencionó en un comentario del servicio de %{full_name}."
+      action: Ver el servicio
+      comment: Comentario
   services:
     history:
       back: Volver al servicio
@@ -710,6 +716,8 @@ es:
       duplicates_loading: Buscando...
       choose_guard: Guardia
       choose_guard_prompt: Seleccione la guardia del servicio
+      mentions_hint: Escriba @ para mencionar a un usuario. Recibirá el comentario por email al guardar.
+      no_mentionable_users: No se encontraron usuarios
       guard_groups:
         current: "Guardia actual del servicio"
         today: "Hoy"

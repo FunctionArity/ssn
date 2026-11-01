@@ -178,12 +178,25 @@
 
   <div>
     <%= form.label :comments, class: "block text-sm font-medium text-gray-700 mb-1" %>
-    <%= content_tag "lexxy-editor", "",
+    <%= content_tag "lexxy-editor",
           id: form.field_id(:comments),
           name: form.field_name(:comments),
           value: service.comments,
           attachments: "false",
-          class: "lexxy-content block w-full rounded-md border border-gray-300 shadow-sm focus-within:border-blue-500 focus-within:ring-1 focus-within:ring-blue-500" %>
+          class: "lexxy-content block w-full rounded-md border border-gray-300 shadow-sm focus-within:border-blue-500 focus-within:ring-1 focus-within:ring-blue-500" do %>
+      <% if service.persisted? %>
+        <%= content_tag "lexxy-prompt", "",
+              trigger: "@",
+              name: "mention",
+              src: mentionable_users_service_path(service),
+              "insert-editable-text": true,
+              "supports-space-in-searches": true,
+              "empty-results": t("services.form.no_mentionable_users") %>
+      <% end %>
+    <% end %>
+    <% if service.persisted? %>
+      <p class="mt-1 text-xs text-gray-500"><%= t("services.form.mentions_hint") %></p>
+    <% end %>
   </div>
 
   <div class="border-t border-gray-100 pt-4 flex justify-end">
