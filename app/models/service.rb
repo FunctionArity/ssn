@@ -15,6 +15,7 @@ class Service < ApplicationRecord
   validate :guard_must_be_open, on: :update, if: :will_save_change_to_guard_id?
 
   before_validation :clear_blank_comments
+  after_save :notify_new_mentions, if: :saved_change_to_comments?
   after_update_commit :broadcast_changes
 
   # Every typed word must appear, in any order and ignoring case and accents: "rodriguez pablo" finds "Pablo Rodríguez".
@@ -46,10 +47,11 @@ class Service < ApplicationRecord
     pending? && guard.open?
   end
 
-  # Emails only the users who weren't mentioned before this save, so editing a comment doesn't notify anyone twice.
-  def notify_new_mentions(author)
-    return unless saved_change_to_comments?
+  private
 
+  # Emails only the users who weren't mentioned before this save, so editing a comment doesn't notify anyone twice.
+  def notify_new_mentions
+    author = mention_author
     previous_comments, current_comments = saved_change_to_comments
     new_ids = mentioned_user_ids(current_comments) - mentioned_user_ids(previous_comments) - [ author.id ]
 
@@ -58,7 +60,10 @@ class Service < ApplicationRecord
     end
   end
 
-  private
+  # The model has no current_user, so it uses the user recorded for the request. Saves outside a request have none.
+  def mention_author
+    User.find_by(id: PaperTrail.request.whodunnit) || created_by
+  end
 
   def mentioned_user_ids(html)
     Nokogiri::HTML5.fragment(html.to_s).css("a[href]").filter_map { |link| link["href"][MENTION_HREF, 1]&.to_i }.uniq

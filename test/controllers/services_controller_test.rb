@@ -860,12 +860,52 @@ class ServicesControllerTest < ActionDispatch::IntegrationTest
     assert_select "lexxy-editor[name='service[comments]'] lexxy-prompt[trigger='@'][insert-editable-text][src=?]", mentionable_users_service_path(@service)
   end
 
-  test "new has no mention prompt" do
+  test "new offers the mention prompt in the comments editor" do
     get new_service_url(guard_id: @service.guard_id)
 
     assert_response :success
-    assert_select "lexxy-editor[name='service[comments]']"
-    assert_select "lexxy-prompt", count: 0
+    assert_select "lexxy-editor[name='service[comments]'] lexxy-prompt[trigger='@'][src=?]", mentionable_users_services_path(guard_id: @service.guard_id)
+  end
+
+  test "mentionable_users for a new service lists the active users" do
+    get mentionable_users_services_url(guard_id: @service.guard_id)
+
+    assert_response :success
+    assert_includes response.body, %(<a href="/users/#{users(:vocal_guardian).id}">)
+  end
+
+  test "mentionable_users for a new service is denied to users who can't create it" do
+    sign_out @user
+    sign_in users(:two)
+
+    get mentionable_users_services_url(guard_id: @service.guard_id)
+
+    assert_redirected_to root_url
+  end
+
+  test "create emails the mentioned users" do
+    assert_enqueued_emails 1 do
+      post services_url, params: { service: { full_name: "Carlos García", due_date: Date.current, guard_id: guards(:one).id,
+                                              comments: "<p>#{mention_link(users(:vocal_guardian))} ver</p>" } }
+    end
+  end
+
+  test "create sends nothing without mentions or when it fails" do
+    assert_no_enqueued_emails do
+      post services_url, params: { service: { full_name: "Carlos García", due_date: Date.current, guard_id: guards(:one).id, comments: "<p>ver</p>" } }
+      post services_url, params: { service: { full_name: "", due_date: Date.current, guard_id: guards(:one).id,
+                                              comments: "<p>#{mention_link(users(:vocal_guardian))}</p>" } }
+    end
+  end
+
+  test "update emails only the user added to a comment with an earlier mention" do
+    @service.update!(comments: "<p>#{mention_link(users(:vocal_guardian))}</p>")
+
+    assert_enqueued_emails 1 do
+      assert_enqueued_email_with ServiceMailer, :mention, params: { service: @service, user: users(:unrelated_vocal), author: @user } do
+        patch service_url(@service), params: { service: { comments: "<p>#{mention_link(users(:vocal_guardian))} #{mention_link(users(:unrelated_vocal))}</p>" } }
+      end
+    end
   end
 
   test "mentionable_users requires signing in" do

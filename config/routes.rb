@@ -28,6 +28,7 @@ Rails.application.routes.draw do
 
   resources :services do
     get :duplicates, on: :collection
+    get :mentionable_users, on: :collection
     member do
       get   :pdf
       get   :history

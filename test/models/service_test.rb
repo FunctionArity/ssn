@@ -108,38 +108,56 @@ class ServiceTest < ActiveSupport::TestCase
     end
   end
 
-  test "notify_new_mentions emails only the users added in this save" do
+  test "saving emails only the users added in this save" do
     service = services(:one)
-    author = users(:one)
+    author = users(:two)
     service.update!(comments: "<p>#{mention_link(users(:vocal_guardian))}</p>")
+    comments = "<p>#{mention_link(users(:vocal_guardian))} y #{mention_link(users(:unrelated_vocal))} #{mention_link(users(:unrelated_vocal))}</p>"
 
-    service.update!(comments: "<p>#{mention_link(users(:vocal_guardian))} y #{mention_link(users(:unrelated_vocal))} #{mention_link(users(:unrelated_vocal))}</p>")
-
-    assert_enqueued_email_with ServiceMailer, :mention, params: { service: service, user: users(:unrelated_vocal), author: author } do
-      service.notify_new_mentions(author)
+    assert_enqueued_emails 1 do
+      assert_enqueued_email_with ServiceMailer, :mention, params: { service: service, user: users(:unrelated_vocal), author: author } do
+        PaperTrail.request(whodunnit: author.id.to_s) { service.update!(comments: comments) }
+      end
     end
   end
 
-  test "notify_new_mentions sends nothing when the comments did not change" do
-    service = services(:one)
-    service.update!(comments: "<p>#{mention_link(users(:vocal_guardian))}</p>")
-    service.update!(full_name: "Otro nombre")
+  test "creating a service emails the mentioned users" do
+    service = services(:one).dup
 
-    assert_no_enqueued_emails { service.notify_new_mentions(users(:one)) }
+    assert_enqueued_emails 1 do
+      service.update!(comments: "<p>#{mention_link(users(:vocal_guardian))}</p>")
+    end
   end
 
-  test "notify_new_mentions skips the author, locked and invited users, and other links" do
+  test "saving sends nothing when the comments did not change" do
+    service = services(:one)
+    service.update!(comments: "<p>#{mention_link(users(:vocal_guardian))}</p>")
+
+    assert_no_enqueued_emails { service.update!(full_name: "Otro nombre") }
+  end
+
+  test "saving outside a request uses the creator as the author" do
+    service = services(:one)
+
+    assert_enqueued_email_with ServiceMailer, :mention, params: { service: service, user: users(:vocal_guardian), author: service.created_by } do
+      service.update!(comments: "<p>#{mention_link(users(:vocal_guardian))}</p>")
+    end
+  end
+
+  test "saving skips the author, locked and invited users, and other links" do
     service = services(:one)
     author = users(:one)
     users(:vocal_guardian).update_column(:locked_at, Time.current)
     users(:unrelated_vocal).update_column(:invitation_token, "pending")
 
-    service.update!(comments: <<~HTML)
-      <p>#{mention_link(author)} #{mention_link(users(:vocal_guardian))} #{mention_link(users(:unrelated_vocal))}
-      <a href="https://example.com/users/#{users(:two).id}">x</a> <a href="/users/#{users(:two).id}/edit">y</a> <a href="/users/0">z</a></p>
-    HTML
-
-    assert_no_enqueued_emails { service.notify_new_mentions(author) }
+    assert_no_enqueued_emails do
+      PaperTrail.request(whodunnit: author.id.to_s) do
+        service.update!(comments: <<~HTML)
+          <p>#{mention_link(author)} #{mention_link(users(:vocal_guardian))} #{mention_link(users(:unrelated_vocal))}
+          <a href="https://example.com/users/#{users(:two).id}">x</a> <a href="/users/#{users(:two).id}/edit">y</a> <a href="/users/0">z</a></p>
+        HTML
+      end
+    end
   end
 
   test "keeps a comment that only has a mention" do

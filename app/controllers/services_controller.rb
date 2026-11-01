@@ -2,7 +2,7 @@ class ServicesController < ApplicationController
   SEARCH_FILTERS = %i[ full_name health_facility date guard_day caller_phone ].freeze
   RESULTS_PER_PAGE = 12
 
-  before_action :set_service, only: %i[ show edit update destroy pdf complete move history mentionable_users ]
+  before_action :set_service, only: %i[ show edit update destroy pdf complete move history ]
 
   def index
     @current_guard = Guard.includes(:vocal, :priest, :guardians).find_by(status: :open, due_date: Date.current)
@@ -40,7 +40,8 @@ class ServicesController < ApplicationController
 
   # Options for the @ prompt of the comments editor, which filters them as the user types.
   def mentionable_users
-    authorize @service, :edit?
+    service = params[:id] ? Service.find(params[:id]) : Service.new(guard_id: params[:guard_id])
+    authorize service, :edit?
     @users = User.mentionable
     render layout: false
   end
@@ -131,7 +132,6 @@ class ServicesController < ApplicationController
     attributes = policy(@service).change_guard? ? service_params : service_params.except(:guard_id)
     respond_to do |format|
       if @service.update(attributes)
-        @service.notify_new_mentions(current_user)
         format.html { redirect_to @service, notice: t("services.notices.updated"), status: :see_other }
         format.json { render :show, status: :ok, location: @service }
       else
