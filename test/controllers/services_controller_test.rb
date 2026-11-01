@@ -860,6 +860,18 @@ class ServicesControllerTest < ActionDispatch::IntegrationTest
     assert_select "lexxy-editor[name='service[comments]'] lexxy-prompt[trigger='@'][insert-editable-text][src=?]", mentionable_users_service_path(@service)
   end
 
+  test "edit and show offer the mention popover" do
+    @service.update!(comments: "<p>#{mention_link(users(:vocal_guardian))}</p>")
+
+    get edit_service_url(@service)
+    assert_select "[data-controller=mention-card] lexxy-editor[name='service[comments]']"
+    assert_select "[data-controller=mention-card] turbo-frame#mention_card"
+
+    get service_url(@service)
+    assert_select "[data-controller=mention-card] .lexxy-content a[href=?]", user_path(users(:vocal_guardian))
+    assert_select "[data-controller=mention-card] turbo-frame#mention_card"
+  end
+
   test "new offers the mention prompt in the comments editor" do
     get new_service_url(guard_id: @service.guard_id)
 
@@ -923,6 +935,15 @@ class ServicesControllerTest < ActionDispatch::IntegrationTest
     get mentionable_users_service_url(@service)
 
     assert_redirected_to root_url
+  end
+
+  test "mentionable_users shows the role icon only in the menu" do
+    target = users(:vocal_guardian)
+
+    get mentionable_users_service_url(@service)
+
+    assert_includes response.body, %(<template type="menu"><i class="ph #{target.role_icon_class} #{target.role_icon_color_class}"></i> #{target.full_name}</template>)
+    assert_includes response.body, %(<template type="editor"><a href="/users/#{target.id}">@#{target.full_name}</a></template>)
   end
 
   test "mentionable_users exposes only the names and links of active users" do

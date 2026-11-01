@@ -82,6 +82,10 @@ class User < ApplicationRecord
     (vocal_guard_setups + guard_setups).map(&:day_number).join(" ")
   end
 
+  def guard_day_numbers
+    (vocal_guard_setups + guard_setups).map(&:day_number).uniq.sort
+  end
+
   def self.current_priest(date = Date.current)
     if date.day >= 28
       PriestSetup.where(day_of_month: date.day).first&.priest

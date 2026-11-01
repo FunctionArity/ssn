@@ -178,19 +178,21 @@
 
   <div>
     <%= form.label :comments, class: "block text-sm font-medium text-gray-700 mb-1" %>
-    <%= content_tag "lexxy-editor",
-          id: form.field_id(:comments),
-          name: form.field_name(:comments),
-          value: service.comments,
-          attachments: "false",
-          class: "lexxy-content block w-full rounded-md border border-gray-300 shadow-sm focus-within:border-blue-500 focus-within:ring-1 focus-within:ring-blue-500" do %>
-      <%= content_tag "lexxy-prompt", "",
-            trigger: "@",
-            name: "mention",
-            src: service.persisted? ? mentionable_users_service_path(service) : mentionable_users_services_path(guard_id: service.guard_id),
-            "insert-editable-text": true,
-            "supports-space-in-searches": true,
-            "empty-results": t("services.form.no_mentionable_users") %>
+    <%= render layout: "shared/mention_card" do %>
+      <%= content_tag "lexxy-editor",
+            id: form.field_id(:comments),
+            name: form.field_name(:comments),
+            value: service.comments,
+            attachments: "false",
+            class: "lexxy-content block w-full rounded-md border border-gray-300 shadow-sm focus-within:border-blue-500 focus-within:ring-1 focus-within:ring-blue-500" do %>
+        <%= content_tag "lexxy-prompt", "",
+              trigger: "@",
+              name: "mention",
+              src: service.persisted? ? mentionable_users_service_path(service) : mentionable_users_services_path(guard_id: service.guard_id),
+              "insert-editable-text": true,
+              "supports-space-in-searches": true,
+              "empty-results": t("services.form.no_mentionable_users") %>
+      <% end %>
     <% end %>
     <p class="mt-1 text-xs text-gray-500"><%= t("services.form.mentions_hint") %></p>
   </div>

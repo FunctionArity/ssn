@@ -170,10 +170,10 @@
         <div class="flex items-center justify-center w-8 h-8 rounded-full bg-gray-100 text-gray-500 shrink-0 mt-0.5">
           <i class="ph ph-note text-sm"></i>
         </div>
-        <div>
+        <%= render layout: "shared/mention_card" do %>
           <p class="text-xs font-medium text-gray-400 uppercase tracking-wide"><%= Service.human_attribute_name(:comments) %></p>
           <div class="lexxy-content text-sm text-gray-700 mt-0.5"><%= rich_text_html(service.comments) %></div>
-        </div>
+        <% end %>
       </div>
     <% end %>
 

@@ -7,6 +7,7 @@ Rails.application.routes.draw do
       post :resend_invitation
       post :impersonate
       get  :history
+      get  :card
     end
     resources :avatar_direct_uploads, only: :create
   end

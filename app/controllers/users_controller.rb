@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: %i[ show edit update destroy lock unlock resend_invitation impersonate history ]
+  before_action :set_user, only: %i[ show card edit update destroy lock unlock resend_invitation impersonate history ]
   before_action :set_guard_setups, only: %i[ new create edit update ]
   before_action :set_churches, only: %i[ new create edit update ]
 
@@ -16,6 +16,11 @@ class UsersController < ApplicationController
 
   # GET /users/1 or /users/1.json
   def show
+  end
+
+  # Summary shown in the popover of a mention in a comment.
+  def card
+    render layout: false
   end
 
   # GET /users/new

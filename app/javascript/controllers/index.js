@@ -52,6 +52,9 @@ application.register("health-facility-search", HealthFacilitySearchController)
 import HelloController from "./hello_controller"
 application.register("hello", HelloController)
 
+import MentionCardController from "./mention_card_controller"
+application.register("mention-card", MentionCardController)
+
 import MobileNavController from "./mobile_nav_controller"
 application.register("mobile-nav", MobileNavController)
 
