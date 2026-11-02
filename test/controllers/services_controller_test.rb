@@ -1024,16 +1024,32 @@ class ServicesControllerTest < ActionDispatch::IntegrationTest
     get service_url(@service)
 
     ids = css_select("#comments_service_#{@service.id} > li").map { |li| li["id"] }
-    assert_equal [ newer, older ].map { |comment| ActionView::RecordIdentifier.dom_id(comment) }, ids
+    assert_equal [ newer, older ].map { |comment| ActionView::RecordIdentifier.dom_id(comment, :thread) }, ids
   end
 
-  test "show offers to reply to every comment, starting with its mentions" do
+  test "show nests replies under their comment, newest first" do
+    parent = @service.comments.create!(user: @user, body: "<p>pregunta</p>", created_at: 3.days.ago)
+    first = @service.comments.create!(user: users(:two), body: "<p>primera</p>", parent: parent, created_at: 2.days.ago)
+    second = @service.comments.create!(user: @user, body: "<p>segunda</p>", parent: parent, created_at: 1.day.ago)
+    nested = @service.comments.create!(user: @user, body: "<p>anidada</p>", parent: first)
+
+    get service_url(@service)
+
+    dom_id = ->(comment, prefix = nil) { ActionView::RecordIdentifier.dom_id(comment, prefix) }
+    assert_equal [ dom_id[parent, :thread] ], css_select("#comments_service_#{@service.id} > li").map { |li| li["id"] }
+    assert_equal [ second, first ].map { |reply| dom_id[reply, :thread] }, css_select("##{dom_id[parent, :replies]} > li").map { |li| li["id"] }
+    assert_select "##{dom_id[first, :replies]} > ##{dom_id[nested, :thread]}"
+  end
+
+  test "show offers to reply to other people's comments, starting with their mentions" do
     mentioning = @service.comments.create!(user: users(:two), body: "<p>#{mention_link(@user)} #{mention_link(users(:vocal_guardian))}</p>")
     plain = @service.comments.create!(user: users(:two), body: "<p>sin menciones</p>")
+    own = @service.comments.create!(user: @user, body: "<p>mi comentario</p>")
 
     get service_url(@service)
 
     assert_select "button[data-action='comment-reply#reply']", count: 2
+    assert_select "##{ActionView::RecordIdentifier.dom_id(own)} button[data-action='comment-reply#reply']", count: 0
     assert_select "##{ActionView::RecordIdentifier.dom_id(mentioning)} button[data-comment-reply-body-param=?]",
       "<p>#{mention_link(users(:two))} #{mention_link(users(:vocal_guardian))}&nbsp;</p>"
     assert_select "##{ActionView::RecordIdentifier.dom_id(plain)} button[data-comment-reply-body-param=?]",

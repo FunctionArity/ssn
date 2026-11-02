@@ -680,6 +680,8 @@ es:
         one: 1 carácter de más
         other: "%{count} caracteres de más"
     form:
+      replying_to: Respondiendo a
+      cancel_reply: Cancelar respuesta
       placeholder: Escriba un comentario…
       hint: Escriba @ para mencionar a un usuario. Lo verá como no leído y lo recibirá por email.
       submit: Comentar

@@ -49,6 +49,16 @@ class CommentTest < ActiveSupport::TestCase
     assert too_long.errors.added?(:body, :too_long, count: Comment::MAX_LENGTH)
   end
 
+  test "replies only to comments of the same record" do
+    parent = @service.comments.create!(user: @author, body: "<p>pregunta</p>")
+
+    assert @service.comments.build(user: @author, body: "<p>sí</p>", parent: parent).valid?
+
+    other = services(:completed_one).comments.build(user: @author, body: "<p>no</p>", parent: parent)
+    assert_not other.valid?
+    assert other.errors.added?(:parent, :invalid)
+  end
+
   test "is invalid with only empty rich text markup" do
     [ "<p><br></p>", "<h2><br></h2>", "<p> &nbsp; </p>", "" ].each do |empty|
       comment = @service.comments.build(user: @author, body: empty)

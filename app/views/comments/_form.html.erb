@@ -3,6 +3,18 @@
   <% if comment.errors.any? %>
     <p class="text-sm text-red-600"><%= comment.errors.full_messages.to_sentence %></p>
   <% end %>
+  <%# Set by the reply button of a comment; cancelling makes it a top-level comment again. %>
+  <%= form.hidden_field :parent_id, data: { comment_reply_target: "parent" } %>
+  <%= tag.div hidden: comment.parent.nil?, data: { comment_reply_target: "replying" },
+        class: "flex items-center gap-2 rounded-md bg-blue-50 px-3 py-1.5 text-xs text-blue-800" do %>
+    <i class="ph ph-arrow-bend-down-right"></i>
+    <span><%= t("comments.form.replying_to") %> <strong data-comment-reply-target="author"><%= comment.parent&.user&.full_name %></strong></span>
+    <button type="button" data-action="comment-reply#cancel"
+            class="cursor-pointer ml-auto flex items-center text-blue-700 hover:text-blue-900"
+            title="<%= t("comments.form.cancel_reply") %>" aria-label="<%= t("comments.form.cancel_reply") %>">
+      <i class="ph ph-x"></i>
+    </button>
+  <% end %>
   <%= render layout: "comments/editor", locals: {
         id: form.field_id(:body),
         name: form.field_name(:body),

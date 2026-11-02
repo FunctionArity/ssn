@@ -2,6 +2,9 @@
 class Comment < ApplicationRecord
   belongs_to :commentable, polymorphic: true
   belongs_to :user
+  # The comment this one replies to. Deleting a comment keeps its replies, as top-level comments.
+  belongs_to :parent, class_name: "Comment", optional: true, inverse_of: :replies
+  has_many :replies, class_name: "Comment", foreign_key: :parent_id, inverse_of: :parent, dependent: :nullify
   has_many :mentions, class_name: "CommentMention", dependent: :destroy
 
   # Characters of visible text; the markup doesn't count.
@@ -9,6 +12,7 @@ class Comment < ApplicationRecord
 
   validates :body, presence: true
   validate :body_length
+  validate :parent_on_same_record
 
   before_validation :clear_blank_body
   after_create :create_mentions
@@ -33,6 +37,12 @@ class Comment < ApplicationRecord
 
   def body_length
     errors.add(:body, :too_long, count: MAX_LENGTH) if Mentions.text(body).length > MAX_LENGTH
+  end
+
+  def parent_on_same_record
+    return if parent.nil? || (parent.commentable_type == commentable_type && parent.commentable_id == commentable_id)
+
+    errors.add(:parent, :invalid)
   end
 
   def clear_blank_body

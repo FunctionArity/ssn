@@ -464,6 +464,8 @@ en:
         one: 1 character over
         other: "%{count} characters over"
     form:
+      replying_to: Replying to
+      cancel_reply: Cancel reply
       placeholder: Write a comment…
       hint: Type @ to mention a user. They will see it as unread and get it by email.
       submit: Comment

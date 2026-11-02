@@ -68,7 +68,44 @@ class CommentsControllerTest < ActionDispatch::IntegrationTest
     assert_difference -> { Comment.count } => -1, -> { CommentMention.count } => -1 do
       delete service_comment_url(@service, comment), headers: TURBO_STREAM
     end
-    assert_includes response.body, %(action="remove" target="#{ActionView::RecordIdentifier.dom_id(comment)}")
+    assert_includes response.body, %(action="remove" target="#{ActionView::RecordIdentifier.dom_id(comment, :thread)}")
+  end
+
+  test "destroy keeps the replies as top-level comments and refreshes the page" do
+    comment = @service.comments.create!(user: @author, body: "<p>pregunta</p>")
+    reply = @service.comments.create!(user: @mentioned, body: "<p>respuesta</p>", parent: comment)
+
+    delete service_comment_url(@service, comment), headers: TURBO_STREAM
+
+    assert_nil reply.reload.parent
+    assert_includes response.body, %(action="refresh")
+  end
+
+  test "create links a reply to its parent and adds it first under it" do
+    parent = @service.comments.create!(user: @mentioned, body: "<p>pregunta</p>")
+
+    post service_comments_url(@service), params: { comment: { body: "<p>respuesta</p>", parent_id: parent.id } }, headers: TURBO_STREAM
+
+    assert_equal parent, Comment.order(:id).last.parent
+    assert_includes response.body, %(action="prepend" target="replies_comment_#{parent.id}")
+  end
+
+  test "create lets users reply to their own comment" do
+    own = @service.comments.create!(user: @author, body: "<p>mi comentario</p>")
+
+    assert_difference -> { own.replies.count } => 1 do
+      post service_comments_url(@service), params: { comment: { body: "<p>agrego algo</p>", parent_id: own.id } }, headers: TURBO_STREAM
+    end
+    assert_response :success
+  end
+
+  test "create doesn't reply to a comment of another record" do
+    other = services(:completed_one).comments.create!(user: @mentioned, body: "<p>otro</p>")
+
+    assert_no_difference -> { Comment.count } do
+      post service_comments_url(@service), params: { comment: { body: "<p>respuesta</p>", parent_id: other.id } }, headers: TURBO_STREAM
+    end
+    assert_response :not_found
   end
 
   test "destroy is denied to other users but allowed to super admins" do
