@@ -9,9 +9,13 @@ class Service < ApplicationRecord
 
   enum :status, { pending: 0, completed: 1 }, default: :pending
 
+  # The new service form starts the conversation with this comment, written by whoever creates the service.
+  attribute :first_comment, :string
+
   validates :full_name, :due_date, :status, presence: true
   validate :guard_must_be_open, on: :update, if: :will_save_change_to_guard_id?
 
+  before_validation :build_first_comment, on: :create
   after_update_commit :broadcast_changes
 
   # Every typed word must appear, in any order and ignoring case and accents: "rodriguez pablo" finds "Pablo Rodríguez".
@@ -48,6 +52,11 @@ class Service < ApplicationRecord
   end
 
   private
+
+  # Built on validation, once created_by is set, and only once if the service is validated again.
+  def build_first_comment
+    comments.build(body: first_comment, user: created_by) if comments.none? && !Mentions.blank?(first_comment)
+  end
 
   def broadcast_changes
     broadcast_replace_later_to "services",

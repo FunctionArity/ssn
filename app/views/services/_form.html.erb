@@ -184,7 +184,7 @@
         <%= render layout: "comments/editor", locals: {
               id: form.field_id(:first_comment),
               name: form.field_name(:first_comment),
-              value: service.comments.first&.body,
+              value: service.first_comment,
               prompt_src: mentionable_users_services_path(guard_id: service.guard_id),
               placeholder: t("comments.form.placeholder") } do %>
         <% end %>

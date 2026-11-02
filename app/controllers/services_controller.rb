@@ -112,9 +112,7 @@ class ServicesController < ApplicationController
   end
 
   def create
-    @service = Service.new(service_params)
-    @service.created_by = current_user
-    build_first_comment
+    @service = Service.new(service_params.merge(created_by: current_user, first_comment: params.dig(:service, :first_comment)))
     authorize @service
 
     respond_to do |format|
@@ -180,12 +178,6 @@ class ServicesController < ApplicationController
       target: "services",
       partial: "services/services_grid",
       locals: { services: guard.services.includes(:created_by).order(:position).to_a }
-  end
-
-  # The new service form starts the conversation with its first comment.
-  def build_first_comment
-    body = params.dig(:service, :first_comment).to_s
-    @service.comments.build(body: body, user: current_user) unless Mentions.blank?(body)
   end
 
   def set_service
