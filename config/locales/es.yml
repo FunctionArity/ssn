@@ -22,6 +22,7 @@ es:
     no_changes: Sin cambios de datos.
     today: Hoy
     yesterday: Ayer
+    load_more: "Cargar %{count} más"
     changes:
       one: "%{count} cambio"
       other: "%{count} cambios"

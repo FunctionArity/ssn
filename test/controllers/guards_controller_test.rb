@@ -385,6 +385,17 @@ class GuardsControllerTest < ActionDispatch::IntegrationTest
   # Change history (PaperTrail)
   # ---------------------------------------------------------------------------
 
+  test "history loads the next changes of a day" do
+    sign_in users(:super_admin)
+    6.times { |i| @guard.update!(notes: "Nota #{i}") }
+
+    get history_guard_url(@guard, day: Date.current.iso8601, offset: 5), headers: { "Accept" => "text/vnd.turbo-stream.html" }
+
+    assert_response :success
+    assert_equal 1, response.body.scan("<li id=").size
+    assert_includes response.body, "Nota 0"
+  end
+
   test "closing a guard records who did it" do
     sign_in users(:super_admin)
     post close_guard_url(@guard)

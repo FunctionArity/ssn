@@ -209,6 +209,7 @@ en:
     no_changes: No data changes.
     today: Today
     yesterday: Yesterday
+    load_more: "Load %{count} more"
     changes:
       one: "%{count} change"
       other: "%{count} changes"
