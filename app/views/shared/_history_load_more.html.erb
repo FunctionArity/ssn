@@ -1,0 +1,9 @@
+<%# Button loading the next changes of a history day, if any are left. locals: record, day, day_versions, offset %>
+<% remaining = day_versions.size - offset %>
+<% if remaining.positive? %>
+  <%= link_to polymorphic_path([ :history, record ], day: day, offset: offset),
+        data: { turbo_stream: true },
+        class: "mt-4 ml-12 cursor-pointer inline-flex items-center gap-1.5 rounded-md bg-white border border-gray-300 px-3 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 transition-colors" do %>
+    <i class="ph ph-caret-down"></i> <%= t("history.load_more", count: [ remaining, HistoryHelper::HISTORY_PAGE_SIZE ].min) %>
+  <% end %>
+<% end %>

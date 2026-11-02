@@ -785,6 +785,61 @@ class ServicesControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "history expands only the newest day" do
+    sign_in users(:super_admin)
+    travel_to(3.days.ago) { patch service_url(@service), params: { service: { full_name: "Cambio Antiguo" } } }
+    patch service_url(@service), params: { service: { full_name: "Cambio Reciente" } }
+
+    get history_service_url(@service)
+
+    assert_select "details > ol", count: 2
+    assert_select "details[open] > ol", count: 1
+    assert_select "details[open] dd span", text: "Cambio Reciente"
+    assert_select "details:not([open]) dd span", text: "Cambio Antiguo"
+  end
+
+  test "history shows the last 5 changes of a day and loads the next ones" do
+    sign_in users(:super_admin)
+    7.times { |i| patch service_url(@service), params: { service: { full_name: "Cambio #{i}" } } }
+    day = Date.current.iso8601
+
+    get history_service_url(@service)
+
+    assert_select "#history_day_#{day} > li", count: 5
+    assert_select "#history_day_#{day} dd span", text: "Cambio 6"
+    assert_select "#history_day_#{day} dd span", text: "Cambio 0", count: 0
+    assert_select "#history_more_#{day} a[href='#{history_service_path(@service, day: day, offset: 5)}'][data-turbo-stream]", text: /#{I18n.t("history.load_more", count: 2)}/
+
+    get history_service_url(@service, day: day, offset: 5), headers: { "Accept" => "text/vnd.turbo-stream.html" }
+
+    assert_response :success
+    assert_equal 2, response.body.scan("<li id=").size
+    assert_includes response.body, "Cambio 0"
+    assert_not_includes response.body, "Cambio 6<"
+    assert_not_includes response.body, "data-turbo-stream"
+  end
+
+  test "history keeps the load more button while changes are left" do
+    sign_in users(:super_admin)
+    12.times { |i| patch service_url(@service), params: { service: { full_name: "Cambio #{i}" } } }
+    day = Date.current.iso8601
+
+    get history_service_url(@service, day: day, offset: 5), headers: { "Accept" => "text/vnd.turbo-stream.html" }
+
+    assert_equal 5, response.body.scan("<li id=").size
+    assert_includes response.body, "offset=10"
+  end
+
+  test "history with an unknown day or a negative offset adds nothing unexpected" do
+    sign_in users(:super_admin)
+    patch service_url(@service), params: { service: { full_name: "Cambio" } }
+
+    get history_service_url(@service, day: "no-es-fecha", offset: -3), headers: { "Accept" => "text/vnd.turbo-stream.html" }
+
+    assert_response :success
+    assert_equal 0, response.body.scan("<li id=").size
+  end
+
   test "history is forbidden for non super_admin users" do
     get history_service_url(@service)
     assert_redirected_to root_path

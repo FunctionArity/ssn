@@ -527,6 +527,16 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
   # Change history (PaperTrail)
   # ---------------------------------------------------------------------------
 
+  test "history loads the next changes of a day" do
+    6.times { |i| users(:one).update!(first_name: "Nombre#{i}") }
+
+    get history_user_url(users(:one), day: Date.current.iso8601, offset: 5), headers: { "Accept" => "text/vnd.turbo-stream.html" }
+
+    assert_response :success
+    assert_equal 1, response.body.scan("<li id=").size
+    assert_includes response.body, "Nombre0"
+  end
+
   test "history is shown to super_admin with readable role and user type changes" do
     PaperTrail.request(whodunnit: @user.id.to_s) { users(:one).update!(role: :priest, user_type: :admin) }
 

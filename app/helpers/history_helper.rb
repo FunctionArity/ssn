@@ -1,5 +1,6 @@
 module HistoryHelper
   HISTORY_SKIPPED_ATTRIBUTES = %w[id created_at updated_at position].freeze
+  HISTORY_PAGE_SIZE = 5
 
   # Badge and timeline icon for each status value of the tracked models.
   HISTORY_STATUS_STYLES = {

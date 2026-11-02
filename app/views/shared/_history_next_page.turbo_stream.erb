@@ -1,0 +1,12 @@
+<%# Appends the next changes of a history day. locals: record, versions, authors, events_scope %>
+<% day = params[:day].to_s %>
+<% offset = params[:offset].to_i.clamp(0..) %>
+<% day_versions = versions.select { |version| version.created_at.to_date.iso8601 == day } %>
+<%= turbo_stream.append "history_day_#{day}",
+      partial: "shared/history_version",
+      collection: day_versions.drop(offset).first(HistoryHelper::HISTORY_PAGE_SIZE),
+      as: :version,
+      locals: { model: record.class, authors: authors, events_scope: events_scope } %>
+<%= turbo_stream.update "history_more_#{day}",
+      partial: "shared/history_load_more",
+      locals: { record: record, day: day, day_versions: day_versions, offset: offset + HistoryHelper::HISTORY_PAGE_SIZE } %>
