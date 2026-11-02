@@ -27,7 +27,13 @@ Rails.application.routes.draw do
   end
   resources :priest_setups
 
-  resources :services do
+  concern :commentable do
+    resources :comments, only: %i[ create destroy ] do
+      post :read, on: :member
+    end
+  end
+
+  resources :services, concerns: :commentable do
     get :duplicates, on: :collection
     get :mentionable_users, on: :collection
     member do
@@ -37,6 +43,9 @@ Rails.application.routes.draw do
       post  :complete
       patch :move
     end
+  end
+  resources :mentions, only: :index do
+    post :read_all, on: :collection
   end
   resources :health_facilities
   resources :churches

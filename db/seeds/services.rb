@@ -97,7 +97,7 @@ created = 0
 services_data.each_with_index do |data, i|
   facility = data[:has_facility] ? health_facilities.sample : nil
 
-  Service.create!(
+  service = Service.create!(
     guard:                 guard,
     created_by:            created_by,
     full_name:             NAMES[i % NAMES.size],
@@ -112,9 +112,9 @@ services_data.each_with_index do |data, i|
     sacraments:            SACRAMENTS.sample,
     health_facility:       facility,
     health_facility_place: facility ? PLACES.sample : nil,
-    address:               facility ? nil : GODOY_CRUZ_ADDRESSES.sample,
-    comments:              COMMENTS.sample
+    address:               facility ? nil : GODOY_CRUZ_ADDRESSES.sample
   )
+  service.comments.create!(user: created_by, body: COMMENTS.sample)
 
   created += 1
 end

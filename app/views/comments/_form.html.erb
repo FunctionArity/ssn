@@ -1,0 +1,16 @@
+<%# locals: commentable, comment. The @ prompt lists users from the record's mentionable_users route. %>
+<%= form_with model: comment, url: polymorphic_path([ commentable, :comments ]), id: dom_id(commentable, :comment_form), data: { comment_reply_target: "form" }, class: "px-6 py-4 bg-gray-50/60 space-y-3" do |form| %>
+  <% if comment.errors.any? %>
+    <p class="text-sm text-red-600"><%= comment.errors.full_messages.to_sentence %></p>
+  <% end %>
+  <%= render layout: "comments/editor", locals: {
+        id: form.field_id(:body),
+        name: form.field_name(:body),
+        value: comment.body,
+        prompt_src: polymorphic_path([ :mentionable_users, commentable ]),
+        placeholder: t("comments.form.placeholder") } do %>
+    <%= form.button type: "submit", class: "cursor-pointer inline-flex items-center gap-1.5 rounded-md bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500" do %>
+      <i class="ph ph-paper-plane-tilt"></i> <%= t("comments.form.submit") %>
+    <% end %>
+  <% end %>
+<% end %>

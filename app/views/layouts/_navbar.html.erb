@@ -21,6 +21,8 @@
         <% end %>
 
         <% if user_signed_in? %>
+          <%= turbo_stream_from current_user, :mentions %>
+          <%= render "layouts/mentions_indicator", user: current_user %>
           <span class="shrink-0"><%= user_crown_icon %></span>
           <i class="ph <%= current_user.role_icon_class %> <%= current_user.role_icon_color_class %> shrink-0"
              title="<%= t("activerecord.attributes.user.roles.#{current_user.role}") %>"></i>

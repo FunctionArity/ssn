@@ -22,6 +22,8 @@ class ServicesController < ApplicationController
   end
 
   def show
+    @comments = @service.comments.newest_first.includes(:mentions, user: { avatar_attachment: :blob }).to_a
+    @unread_comment_ids = current_user.comment_mentions.unread.where(comment: @comments).pluck(:comment_id)
   end
 
   def duplicates
@@ -40,8 +42,9 @@ class ServicesController < ApplicationController
 
   # Options for the @ prompt of the comments editor, which filters them as the user types.
   def mentionable_users
+    # A service's conversation is open to every user; the new service form needs permission to create one.
     service = params[:id] ? Service.find(params[:id]) : Service.new(guard_id: params[:guard_id])
-    authorize service, :edit?
+    authorize service, params[:id] ? :comment? : :new?
     @users = User.mentionable
     render layout: false
   end
@@ -111,6 +114,7 @@ class ServicesController < ApplicationController
   def create
     @service = Service.new(service_params)
     @service.created_by = current_user
+    build_first_comment
     authorize @service
 
     respond_to do |format|
@@ -178,6 +182,12 @@ class ServicesController < ApplicationController
       locals: { services: guard.services.includes(:created_by).order(:position).to_a }
   end
 
+  # The new service form starts the conversation with its first comment.
+  def build_first_comment
+    body = params.dig(:service, :first_comment).to_s
+    @service.comments.build(body: body, user: current_user) unless Mentions.blank?(body)
+  end
+
   def set_service
     @service = Service.find(params.expect(:id))
   end
@@ -193,6 +203,6 @@ class ServicesController < ApplicationController
   end
 
   def service_params
-    params.expect(service: [ :guard_id, :due_date, :full_name, :age, :status, :caller_full_name, :caller_phone, :caller_relationship, :comments, :address, :health_facility_id, :health_facility_place, :pathology, :health_status, :sacraments ])
+    params.expect(service: [ :guard_id, :due_date, :full_name, :age, :status, :caller_full_name, :caller_phone, :caller_relationship, :address, :health_facility_id, :health_facility_place, :pathology, :health_status, :sacraments ])
   end
 end

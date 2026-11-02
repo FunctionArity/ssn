@@ -101,6 +101,8 @@ es:
       health_facility:
         name: Nombre
         address: Dirección
+      comment:
+        body: Comentario
       service:
         guard: Guardia
         health_facility: Centro de salud
@@ -165,6 +167,10 @@ es:
           priest: Sacerdotes
     errors:
       models:
+        comment:
+          attributes:
+            body:
+              too_long: "es demasiado largo (máximo %{count} caracteres)"
         headquarter:
           attributes:
             base:
@@ -647,12 +653,48 @@ es:
       created: La sede fue creada exitosamente.
       updated: La sede fue actualizada exitosamente.
       destroyed: La sede fue eliminada exitosamente.
-  service_mailer:
+  comment_mailer:
     mention:
-      subject: "Te mencionaron en el servicio de %{full_name}"
-      intro: "%{author} te mencionó en un comentario del servicio de %{full_name}."
-      action: Ver el servicio
       comment: Comentario
+      action: Ver el comentario
+      service:
+        subject: "Te mencionaron en el servicio de %{name}"
+        intro: "%{author} te mencionó en un comentario del servicio de %{name}."
+  comments:
+    thread:
+      title: Conversación
+      empty: Todavía no hay comentarios.
+    comment:
+      new: Nuevo
+      reply: Responder
+      mention_unread: Todavía no lo leyó
+      mark_read: Haga clic para marcarlo como leído
+      destroy: Eliminar comentario
+      destroy_confirm: ¿Está seguro de que desea eliminar este comentario?
+      destroy_confirm_title: Eliminar comentario
+    editor:
+      remaining:
+        one: Queda 1 carácter
+        other: Quedan %{count} caracteres
+      over:
+        one: 1 carácter de más
+        other: "%{count} caracteres de más"
+    form:
+      placeholder: Escriba un comentario…
+      hint: Escriba @ para mencionar a un usuario. Lo verá como no leído y lo recibirá por email.
+      submit: Comentar
+  mentions:
+    index:
+      title: Menciones
+      empty: Nadie te mencionó todavía.
+      read_all: Marcar todas como leídas
+      mentioned_you:
+        service_html: "%{author} te mencionó en el servicio de %{name}"
+    indicator:
+      title:
+        zero: No hay comentarios sin leer
+        one: "%{count} comentario sin leer"
+        other: "%{count} comentarios sin leer"
   services:
     history:
       back: Volver al servicio
@@ -717,7 +759,7 @@ es:
       duplicates_loading: Buscando...
       choose_guard: Guardia
       choose_guard_prompt: Seleccione la guardia del servicio
-      mentions_hint: Escriba @ para mencionar a un usuario. Recibirá el comentario por email al guardar.
+      first_comment: Comentario
       no_mentionable_users: No se encontraron usuarios
       guard_groups:
         current: "Guardia actual del servicio"

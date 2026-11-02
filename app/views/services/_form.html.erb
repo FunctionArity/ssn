@@ -176,26 +176,21 @@
          style="height: 400px;"></div>
   </div>
 
-  <div>
-    <%= form.label :comments, class: "block text-sm font-medium text-gray-700 mb-1" %>
-    <%= render layout: "shared/mention_card" do %>
-      <%= content_tag "lexxy-editor",
-            id: form.field_id(:comments),
-            name: form.field_name(:comments),
-            value: service.comments,
-            attachments: "false",
-            class: "lexxy-content block w-full rounded-md border border-gray-300 shadow-sm focus-within:border-blue-500 focus-within:ring-1 focus-within:ring-blue-500" do %>
-        <%= content_tag "lexxy-prompt", "",
-              trigger: "@",
-              name: "mention",
-              src: service.persisted? ? mentionable_users_service_path(service) : mentionable_users_services_path(guard_id: service.guard_id),
-              "insert-editable-text": true,
-              "supports-space-in-searches": true,
-              "empty-results": t("services.form.no_mentionable_users") %>
+  <%# A new service starts its conversation; later comments are added on the service page. %>
+  <% if service.new_record? %>
+    <div>
+      <%= form.label :first_comment, t("services.form.first_comment"), class: "block text-sm font-medium text-gray-700 mb-1" %>
+      <%= render layout: "shared/mention_card" do %>
+        <%= render layout: "comments/editor", locals: {
+              id: form.field_id(:first_comment),
+              name: form.field_name(:first_comment),
+              value: service.comments.first&.body,
+              prompt_src: mentionable_users_services_path(guard_id: service.guard_id),
+              placeholder: t("comments.form.placeholder") } do %>
+        <% end %>
       <% end %>
-    <% end %>
-    <p class="mt-1 text-xs text-gray-500"><%= t("services.form.mentions_hint") %></p>
-  </div>
+    </div>
+  <% end %>
 
   <div class="border-t border-gray-100 pt-4 flex justify-end">
     <%= form.submit class: "cursor-pointer rounded-md bg-blue-600 px-6 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 transition-colors" %>

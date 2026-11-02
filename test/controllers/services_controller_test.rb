@@ -272,6 +272,16 @@ class ServicesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test "show keeps the map collapsed, with the Google Maps link visible" do
+    @service.update!(address: "Av. San Martín 1000, Mendoza")
+
+    get service_url(@service)
+
+    assert_select "button[data-action='lazy-toggle#toggle'][aria-expanded='false']"
+    assert_select "[data-lazy-toggle-target='content'][hidden] template [data-controller='address-map']"
+    assert_select "a[href^='https://maps.google.com/?q=']"
+  end
+
   test "show includes health facility name in clipboard text" do
     @service.update!(health_facility: health_facilities(:one))
     get service_url(@service)
@@ -897,41 +907,165 @@ class ServicesControllerTest < ActionDispatch::IntegrationTest
   # Comments (Lexxy rich text)
   # ---------------------------------------------------------------------------
 
-  test "edit renders the comments field as a Lexxy editor without attachments" do
-    @service.update!(comments: "<p>Llamar antes de ir</p>")
-
-    get edit_service_url(@service)
-
-    # The lexxy-content class makes Lexxy's text styles (strikethrough, underline, headings…) apply inside the editor.
-    assert_select "lexxy-editor.lexxy-content[name='service[comments]'][attachments='false']" do |editors|
-      assert_equal "<p>Llamar antes de ir</p>", editors.first["value"]
-    end
-    assert_select "textarea[name='service[comments]']", count: 0
-  end
-
-  test "edit offers the mention prompt in the comments editor" do
-    get edit_service_url(@service)
-
-    assert_select "lexxy-editor[name='service[comments]'] lexxy-prompt[trigger='@'][insert-editable-text][src=?]", mentionable_users_service_path(@service)
-  end
-
-  test "edit and show offer the mention popover" do
-    @service.update!(comments: "<p>#{mention_link(users(:vocal_guardian))}</p>")
-
-    get edit_service_url(@service)
-    assert_select "[data-controller=mention-card] lexxy-editor[name='service[comments]']"
-    assert_select "[data-controller=mention-card] turbo-frame#mention_card"
-
-    get service_url(@service)
-    assert_select "[data-controller=mention-card] .lexxy-content a[href=?]", user_path(users(:vocal_guardian))
-    assert_select "[data-controller=mention-card] turbo-frame#mention_card"
-  end
-
-  test "new offers the mention prompt in the comments editor" do
+  test "new starts the conversation in a Lexxy editor without attachments and with the @ prompt" do
     get new_service_url(guard_id: @service.guard_id)
 
     assert_response :success
-    assert_select "lexxy-editor[name='service[comments]'] lexxy-prompt[trigger='@'][src=?]", mentionable_users_services_path(guard_id: @service.guard_id)
+    # The lexxy-content class makes Lexxy's text styles (strikethrough, underline, headings…) apply inside the editor.
+    assert_select "[data-controller=mention-card] lexxy-editor.lexxy-content[name='service[first_comment]'][attachments='false']" do
+      assert_select "lexxy-prompt[trigger='@'][insert-editable-text][src=?]", mentionable_users_services_path(guard_id: @service.guard_id)
+    end
+  end
+
+  test "edit no longer shows the old comment, which now lives in the conversation" do
+    @service.update_column(:old_comment, "<p>Llamar antes de ir</p>")
+
+    get edit_service_url(@service)
+
+    assert_select "lexxy-editor", count: 0
+    assert_not_includes response.body, "Llamar antes de ir"
+  end
+
+  test "update ignores the old comment" do
+    @service.update_column(:old_comment, "<p>antes</p>")
+
+    patch service_url(@service), params: { service: { full_name: "Otro", old_comment: "<p>después</p>" } }
+
+    assert_equal "<p>antes</p>", @service.reload.old_comment
+  end
+
+  test "create adds the first comment by the current user and notifies its mentions" do
+    assert_difference -> { Comment.count } => 1, -> { CommentMention.count } => 1 do
+      assert_enqueued_emails 1 do
+        post services_url, params: { service: { full_name: "Carlos García", due_date: Date.current, guard_id: guards(:one).id,
+                                                first_comment: "<p>#{mention_link(users(:vocal_guardian))} llamar</p>" } }
+      end
+    end
+
+    comment = Service.order(:id).last.comments.sole
+    assert_equal @user, comment.user
+    assert_equal [ users(:vocal_guardian) ], comment.mentions.map(&:user)
+  end
+
+  test "create skips a blank first comment" do
+    assert_difference -> { Service.count } => 1, -> { Comment.count } => 0 do
+      post services_url, params: { service: { full_name: "Carlos García", due_date: Date.current, guard_id: guards(:one).id, first_comment: "<p><br></p>" } }
+    end
+  end
+
+  test "create sends nothing when it fails" do
+    assert_no_enqueued_emails do
+      assert_no_difference -> { Comment.count } do
+        post services_url, params: { service: { full_name: "", due_date: Date.current, guard_id: guards(:one).id,
+                                                first_comment: "<p>#{mention_link(users(:vocal_guardian))}</p>" } }
+      end
+    end
+  end
+
+  test "show lists the conversation and flags the current user's unread mentions" do
+    read = @service.comments.create!(user: users(:vocal_guardian), body: "<p>#{mention_link(@user)} leído</p>")
+    read.mentions.sole.read!
+    unread = @service.comments.create!(user: users(:vocal_guardian), body: "<p>#{mention_link(@user)} nuevo</p>")
+
+    get service_url(@service)
+
+    assert_select "#comments_service_#{@service.id} > li", count: 2
+    assert_select "##{dom_id(unread)} .badge_red", text: I18n.t("comments.comment.new")
+    assert_select "##{dom_id(read)} .badge_red", count: 0
+    assert_select "##{dom_id(unread)}[data-controller=mark-read][tabindex='0'][data-mark-read-url-value=?]", read_service_comment_path(@service, unread)
+    assert_select "##{dom_id(read)}[data-controller=mark-read]", count: 0
+    assert_select "form#comment_form_service_#{@service.id} lexxy-editor[name='comment[body]'] lexxy-prompt[src=?]", mentionable_users_service_path(@service)
+    assert unread.mentions.sole.reload.unread?, "opening the page must not mark it read; the user clicks the comment"
+  end
+
+  test "show has nothing to mark read when nothing is unread" do
+    get service_url(@service)
+
+    assert_select "#comments_empty_service_#{@service.id}"
+    assert_select "[data-controller=mark-read]", count: 0
+  end
+
+  test "show keeps mentions as links, with the user popover" do
+    target = users(:vocal_guardian)
+    @service.comments.create!(user: @user, body: "<p>#{mention_link(target)}</p>")
+
+    get service_url(@service)
+
+    assert_select "[data-controller=mention-card] .lexxy-content a[href=?]", user_path(target), text: "@#{target.full_name}"
+    assert_select "[data-controller=mention-card] turbo-frame#mention_card"
+  end
+
+  test "show renders rich text comments sanitized" do
+    @service.comments.create!(user: @user, body: %(<p>Paciente en <strong>sala 3</strong></p><script>alert("x")</script>))
+
+    get service_url(@service)
+
+    assert_select ".lexxy-content strong", text: "sala 3"
+    assert_select ".lexxy-content script", count: 0
+  end
+
+  test "show uses the author's picture in comments, or their role icon when they have none" do
+    with_picture = users(:two)
+    with_picture.avatar.attach(io: StringIO.new("fake image"), filename: "avatar.png", content_type: "image/png")
+    pictured = @service.comments.create!(user: with_picture, body: "<p>con foto</p>")
+    plain = @service.comments.create!(user: @user, body: "<p>sin foto</p>")
+
+    get service_url(@service)
+
+    assert_select "##{ActionView::RecordIdentifier.dom_id(pictured)} img[data-avatar-fallback-target='image']"
+    assert_select "##{ActionView::RecordIdentifier.dom_id(plain)} img", count: 0
+    assert_select "##{ActionView::RecordIdentifier.dom_id(plain)} i.#{@user.role_icon_class}"
+  end
+
+  test "show lists comments from newest to oldest" do
+    older = @service.comments.create!(user: @user, body: "<p>primero</p>", created_at: 2.days.ago)
+    newer = @service.comments.create!(user: @user, body: "<p>segundo</p>", created_at: 1.day.ago)
+
+    get service_url(@service)
+
+    ids = css_select("#comments_service_#{@service.id} > li").map { |li| li["id"] }
+    assert_equal [ newer, older ].map { |comment| ActionView::RecordIdentifier.dom_id(comment) }, ids
+  end
+
+  test "show offers to reply to every comment, starting with its mentions" do
+    mentioning = @service.comments.create!(user: users(:two), body: "<p>#{mention_link(@user)} #{mention_link(users(:vocal_guardian))}</p>")
+    plain = @service.comments.create!(user: users(:two), body: "<p>sin menciones</p>")
+
+    get service_url(@service)
+
+    assert_select "button[data-action='comment-reply#reply']", count: 2
+    assert_select "##{ActionView::RecordIdentifier.dom_id(mentioning)} button[data-comment-reply-body-param=?]",
+      "<p>#{mention_link(users(:two))} #{mention_link(users(:vocal_guardian))}&nbsp;</p>"
+    assert_select "##{ActionView::RecordIdentifier.dom_id(plain)} button[data-comment-reply-body-param=?]",
+      "<p>#{mention_link(users(:two))}&nbsp;</p>"
+  end
+
+  test "show marks the mentions of users who haven't read the comment yet" do
+    reader = users(:vocal_guardian)
+    pending = users(:two)
+    comment = @service.comments.create!(user: @user, body: "<p>#{mention_link(reader)} #{mention_link(pending)}</p>")
+    comment.mentions.find_by!(user: reader).read!
+
+    get service_url(@service)
+
+    assert_select ".lexxy-content a.mention-unread", count: 1
+    assert_select ".lexxy-content a.mention-unread[href=?] i.ph-eye-slash", user_path(pending)
+  end
+
+  test "show keeps Lexxy highlight colors in comments" do
+    @service.comments.create!(user: @user, body: %(<p><mark style="color: var(--highlight-2);">urgente</mark></p>))
+
+    get service_url(@service)
+
+    assert_select ".lexxy-content mark[style='color: var(--highlight-2);']", text: "urgente"
+  end
+
+  test "show keeps line breaks of plain text comments" do
+    @service.comments.create!(user: @user, body: "Primera línea\nSegunda línea")
+
+    get service_url(@service)
+
+    assert_select ".lexxy-content p br"
   end
 
   test "mentionable_users for a new service lists the active users" do
@@ -950,31 +1084,6 @@ class ServicesControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to root_url
   end
 
-  test "create emails the mentioned users" do
-    assert_enqueued_emails 1 do
-      post services_url, params: { service: { full_name: "Carlos García", due_date: Date.current, guard_id: guards(:one).id,
-                                              comments: "<p>#{mention_link(users(:vocal_guardian))} ver</p>" } }
-    end
-  end
-
-  test "create sends nothing without mentions or when it fails" do
-    assert_no_enqueued_emails do
-      post services_url, params: { service: { full_name: "Carlos García", due_date: Date.current, guard_id: guards(:one).id, comments: "<p>ver</p>" } }
-      post services_url, params: { service: { full_name: "", due_date: Date.current, guard_id: guards(:one).id,
-                                              comments: "<p>#{mention_link(users(:vocal_guardian))}</p>" } }
-    end
-  end
-
-  test "update emails only the user added to a comment with an earlier mention" do
-    @service.update!(comments: "<p>#{mention_link(users(:vocal_guardian))}</p>")
-
-    assert_enqueued_emails 1 do
-      assert_enqueued_email_with ServiceMailer, :mention, params: { service: @service, user: users(:unrelated_vocal), author: @user } do
-        patch service_url(@service), params: { service: { comments: "<p>#{mention_link(users(:vocal_guardian))} #{mention_link(users(:unrelated_vocal))}</p>" } }
-      end
-    end
-  end
-
   test "mentionable_users requires signing in" do
     sign_out @user
 
@@ -983,13 +1092,13 @@ class ServicesControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to new_user_session_url
   end
 
-  test "mentionable_users is denied to users who can't edit the service" do
+  test "mentionable_users of a service is open to every user, since anyone can join its conversation" do
     sign_out @user
     sign_in users(:two)
 
     get mentionable_users_service_url(@service)
 
-    assert_redirected_to root_url
+    assert_response :success
   end
 
   test "mentionable_users shows the role icon only in the menu" do
@@ -1016,76 +1125,6 @@ class ServicesControllerTest < ActionDispatch::IntegrationTest
     assert_not_includes response.body, target.email
     assert_not_includes response.body, target.phone
     assert_not_includes response.body, "<html"
-  end
-
-  test "update emails a newly mentioned user only once" do
-    mention = mention_link(users(:vocal_guardian))
-
-    assert_enqueued_emails 1 do
-      patch service_url(@service), params: { service: { comments: "<p>#{mention} ver</p>" } }
-    end
-
-    assert_no_enqueued_emails do
-      patch service_url(@service), params: { service: { comments: "<p>#{mention} ver hoy</p>" } }
-    end
-  end
-
-  test "update emails the mention when the service also moves to another guard" do
-    guard = Guard.create!(day_number: 2, due_date: Date.current, status: :open,
-                          vocal: users(:one), priest: users(:two), guard_setup: guard_setups(:one), guardians: [ users(:one) ])
-
-    assert_enqueued_emails 1 do
-      patch service_url(@service), params: { service: { guard_id: guard.id, comments: "<p>#{mention_link(users(:vocal_guardian))}</p>" } }
-    end
-    assert_equal guard.id, @service.reload.guard_id
-  end
-
-  test "update sends nothing when validation fails" do
-    assert_no_enqueued_emails do
-      patch service_url(@service), params: { service: { full_name: "", comments: "<p>#{mention_link(users(:vocal_guardian))}</p>" } }
-    end
-    assert_response :unprocessable_entity
-  end
-
-  test "show keeps mentions as links" do
-    target = users(:vocal_guardian)
-    @service.update!(comments: "<p>#{mention_link(target)}</p>")
-
-    get service_url(@service)
-
-    assert_select "a[href=?]", user_path(target), text: "@#{target.full_name}"
-  end
-
-  test "update saves rich text comments" do
-    patch service_url(@service), params: { service: { comments: "<p>Paciente en <strong>sala 3</strong></p>" } }
-
-    assert_redirected_to service_url(@service)
-    assert_equal "<p>Paciente en <strong>sala 3</strong></p>", @service.reload.comments
-  end
-
-  test "show renders rich text comments sanitized" do
-    @service.update!(comments: %(<p>Paciente en <strong>sala 3</strong></p><script>alert("x")</script>))
-
-    get service_url(@service)
-
-    assert_select ".lexxy-content strong", text: "sala 3"
-    assert_select ".lexxy-content script", count: 0
-  end
-
-  test "show keeps Lexxy highlight colors in comments" do
-    @service.update!(comments: %(<p><mark style="color: var(--highlight-2);">urgente</mark></p>))
-
-    get service_url(@service)
-
-    assert_select ".lexxy-content mark[style='color: var(--highlight-2);']", text: "urgente"
-  end
-
-  test "show keeps line breaks of plain text comments" do
-    @service.update!(comments: "Primera línea\nSegunda línea")
-
-    get service_url(@service)
-
-    assert_select ".lexxy-content p br"
   end
 
   private

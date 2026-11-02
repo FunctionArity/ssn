@@ -164,36 +164,30 @@
       </div>
     <% end %>
 
-    <%# Comments %>
-    <% if service.comments.present? %>
-      <div class="px-6 py-4 flex items-start gap-3">
-        <div class="flex items-center justify-center w-8 h-8 rounded-full bg-gray-100 text-gray-500 shrink-0 mt-0.5">
-          <i class="ph ph-note text-sm"></i>
-        </div>
-        <%= render layout: "shared/mention_card" do %>
-          <p class="text-xs font-medium text-gray-400 uppercase tracking-wide"><%= Service.human_attribute_name(:comments) %></p>
-          <div class="lexxy-content text-sm text-gray-700 mt-0.5"><%= rich_text_html(service.comments) %></div>
-        <% end %>
-      </div>
-    <% end %>
-
   </div>
 
   <%# Map %>
   <% map_address = service.address.presence || service.health_facility&.address %>
   <% if map_address.present? %>
-    <div class="border-t border-gray-100">
+    <%# Collapsed by default; the map, and Google Maps with it, only loads the first time it's expanded. %>
+    <div class="border-t border-gray-100" data-controller="lazy-toggle">
       <div class="flex items-center justify-between px-6 py-3">
-        <p class="text-xs font-semibold text-gray-400 uppercase tracking-wide flex items-center gap-1.5">
+        <button type="button" data-action="lazy-toggle#toggle" aria-expanded="false" aria-controls="<%= dom_id(service, :map) %>"
+                class="group cursor-pointer text-xs font-semibold text-gray-400 uppercase tracking-wide flex items-center gap-1.5 hover:text-gray-600">
+          <i class="ph ph-caret-right transition-transform duration-200 group-aria-expanded:rotate-90"></i>
           <i class="ph ph-map-trifold"></i> <%= t("services.show.map") %>
-        </p>
+        </button>
         <%= link_to "https://maps.google.com/?q=#{URI.encode_uri_component(map_address)}", target: "_blank", rel: "noopener", class: "text-xs text-indigo-600 hover:underline flex items-center gap-1" do %>
           <i class="ph ph-arrow-square-out"></i> <%= t("services.show.open_in_maps") %>
         <% end %>
       </div>
-      <div data-controller="address-map"
-           data-address-map-initial-address-value="<%= map_address %>">
-        <div data-address-map-target="map" class="w-full h-80"></div>
+      <div id="<%= dom_id(service, :map) %>" data-lazy-toggle-target="content" hidden>
+        <template data-lazy-toggle-target="template">
+          <div data-controller="address-map"
+               data-address-map-initial-address-value="<%= map_address %>">
+            <div data-address-map-target="map" class="w-full h-80"></div>
+          </div>
+        </template>
       </div>
     </div>
   <% end %>
