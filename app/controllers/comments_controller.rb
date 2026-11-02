@@ -39,7 +39,7 @@ class CommentsController < ApplicationController
     if mention
       authorize mention
       # An admin impersonating someone shouldn't clear that user's unread comments.
-      mention.read!
+      mention.read! if current_user == true_user
     else
       authorize @commentable, :comment?
     end
