@@ -9,5 +9,4 @@ class CommentPolicy < ApplicationPolicy
   def destroy?
     super_admin? || record.user == user
   end
-
 end
