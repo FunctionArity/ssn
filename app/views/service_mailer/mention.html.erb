@@ -1,0 +1,6 @@
+<p><%= t(".intro", author: @author.full_name, full_name: @service.full_name) %></p>
+
+<p><strong><%= t(".comment") %>:</strong></p>
+<%= rich_text_html(@comment) %>
+
+<p><%= link_to t(".action"), service_url(@service) %></p>

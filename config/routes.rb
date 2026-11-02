@@ -7,6 +7,7 @@ Rails.application.routes.draw do
       post :resend_invitation
       post :impersonate
       get  :history
+      get  :card
     end
     resources :avatar_direct_uploads, only: :create
   end
@@ -28,9 +29,11 @@ Rails.application.routes.draw do
 
   resources :services do
     get :duplicates, on: :collection
+    get :mentionable_users, on: :collection
     member do
       get   :pdf
       get   :history
+      get   :mentionable_users
       post  :complete
       patch :move
     end

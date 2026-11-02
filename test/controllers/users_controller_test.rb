@@ -13,6 +13,76 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test "card shows a summary of the user in its frame, without the layout" do
+    target = users(:vocal_guardian)
+    target.update_columns(phone: "261 555 1234", dni: 12345678)
+
+    get card_user_url(target)
+
+    assert_response :success
+    assert_select "turbo-frame#mention_card[target=_top]" do
+      assert_select "p", text: target.full_name
+      assert_select "a[href=?]", "tel:261 555 1234"
+      assert_select "a[href=?]", "mailto:#{target.email}"
+    end
+    assert_not_includes response.body, "<html"
+    assert_not_includes response.body, "12345678"
+  end
+
+  test "card shows every guard day of the user, sorted and once" do
+    target = users(:vocal_guardian)
+    target.guard_setups = [ guard_setups(:one), guard_setups(:two) ]
+
+    get card_user_url(target)
+
+    assert_select "p", text: [ 1, 20 ].map { |number| I18n.t("users.show.guard_day", number: number) }.join(", ")
+  end
+
+  test "card leaves out the guard days of a user without any" do
+    target = users(:agustin)
+    target.guard_setups = []
+    target.vocal_guard_setups = []
+
+    get card_user_url(target)
+
+    assert_select "i.ph-shield", count: 0
+  end
+
+  test "card leaves out the guard days of a priest" do
+    target = users(:priest_one)
+    target.guard_setups = [ guard_setups(:one) ]
+
+    get card_user_url(target)
+
+    assert_select "i.ph-shield", count: 0
+  end
+
+  test "card links the church of a priest" do
+    target = users(:priest_one)
+    target.update_columns(church_id: churches(:one).id)
+
+    get card_user_url(target)
+
+    assert_select "a[href=?]", church_path(churches(:one)), text: churches(:one).name
+  end
+
+  test "card leaves out the church of a user who isn't a priest" do
+    target = users(:vocal_guardian)
+    target.update_columns(church_id: churches(:one).id)
+
+    get card_user_url(target)
+
+    assert_select "a[href=?]", church_path(churches(:one)), count: 0
+  end
+
+  test "card requires signing in" do
+    sign_out @user
+
+    get card_user_url(users(:vocal_guardian))
+
+    assert_redirected_to new_user_session_url
+  end
+
   test "should get new" do
     get new_user_url
     assert_response :success

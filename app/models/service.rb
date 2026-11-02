@@ -1,4 +1,7 @@
 class Service < ApplicationRecord
+  # The @ prompt of the comments editor inserts a link to the mentioned user.
+  MENTION_HREF = %r{\A/users/(\d+)\z}
+
   belongs_to :guard
   belongs_to :created_by, class_name: "User"
   belongs_to :health_facility, optional: true
@@ -12,6 +15,7 @@ class Service < ApplicationRecord
   validate :guard_must_be_open, on: :update, if: :will_save_change_to_guard_id?
 
   before_validation :clear_blank_comments
+  after_save :notify_new_mentions, if: :saved_change_to_comments?
   after_update_commit :broadcast_changes
 
   # Every typed word must appear, in any order and ignoring case and accents: "rodriguez pablo" finds "Pablo Rodríguez".
@@ -44,6 +48,26 @@ class Service < ApplicationRecord
   end
 
   private
+
+  # Emails only the users who weren't mentioned before this save, so editing a comment doesn't notify anyone twice.
+  def notify_new_mentions
+    author = mention_author
+    previous_comments, current_comments = saved_change_to_comments
+    new_ids = mentioned_user_ids(current_comments) - mentioned_user_ids(previous_comments) - [ author.id ]
+
+    User.mentionable.where(id: new_ids).each do |user|
+      ServiceMailer.with(service: self, user: user, author: author).mention.deliver_later
+    end
+  end
+
+  # The model has no current_user, so it uses the user recorded for the request. Saves outside a request have none.
+  def mention_author
+    User.find_by(id: PaperTrail.request.whodunnit) || created_by
+  end
+
+  def mentioned_user_ids(html)
+    Nokogiri::HTML5.fragment(html.to_s).css("a[href]").filter_map { |link| link["href"][MENTION_HREF, 1]&.to_i }.uniq
+  end
 
   def broadcast_changes
     broadcast_replace_later_to "services",

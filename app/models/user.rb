@@ -29,6 +29,8 @@ class User < ApplicationRecord
     sanitized = "%#{sanitize_sql_like(query)}%"
     where("first_name ILIKE :q OR last_name ILIKE :q", q: sanitized)
   }
+  # Users who can sign in, leaving out pending invitations and locked accounts.
+  scope :mentionable, -> { where(invitation_token: nil, locked_at: nil) }
 
   belongs_to :church, optional: true
 
@@ -78,6 +80,10 @@ class User < ApplicationRecord
 
   def day_numbers
     (vocal_guard_setups + guard_setups).map(&:day_number).join(" ")
+  end
+
+  def guard_day_numbers
+    (vocal_guard_setups + guard_setups).map(&:day_number).uniq.sort
   end
 
   def self.current_priest(date = Date.current)

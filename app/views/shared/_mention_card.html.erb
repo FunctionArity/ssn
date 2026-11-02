@@ -1,0 +1,20 @@
+<%# Wraps a comment, or its editor, to show a popover with the user's info when hovering a mention. %>
+<div data-controller="mention-card"
+     data-turbo-prefetch="false"
+     data-action="mouseover->mention-card#show mouseout->mention-card#leave focusin->mention-card#show focusout->mention-card#leave scroll@window->mention-card#hide keydown.esc@window->mention-card#hide">
+  <%= yield %>
+
+  <template data-mention-card-target="loading">
+    <div role="status" class="py-4 text-center text-gray-400">
+      <i class="ph ph-spinner text-xl animate-spin"></i>
+    </div>
+  </template>
+  <div popover="manual"
+       data-mention-card-target="panel"
+       data-action="mouseenter->mention-card#cancelHide mouseleave->mention-card#scheduleHide"
+       class="fixed inset-auto m-0 w-64 p-3 bg-white rounded-xl border border-gray-200 shadow-lg">
+    <turbo-frame id="mention_card"
+                 data-mention-card-target="frame"
+                 data-action="turbo:frame-load->mention-card#position turbo:frame-missing->mention-card#loadFailed"></turbo-frame>
+  </div>
+</div>

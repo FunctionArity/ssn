@@ -38,6 +38,14 @@ class ServicesController < ApplicationController
     @authors = User.where(id: @versions.filter_map(&:whodunnit).uniq).index_by { |user| user.id.to_s }
   end
 
+  # Options for the @ prompt of the comments editor, which filters them as the user types.
+  def mentionable_users
+    service = params[:id] ? Service.find(params[:id]) : Service.new(guard_id: params[:guard_id])
+    authorize service, :edit?
+    @users = User.mentionable
+    render layout: false
+  end
+
   def complete
     authorize @service
     @service.completed!
