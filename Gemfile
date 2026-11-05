@@ -37,6 +37,8 @@ gem "tzinfo-data", platforms: %i[ windows jruby ]
 # Use the database-backed adapters for Rails.cache, Active Job, and Action Cable
 gem "solid_cache"
 gem "solid_queue"
+# Admin page to inspect, retry and discard background jobs, mounted at /jobs for super admins
+gem "mission_control-jobs"
 gem "solid_cable"
 
 # Reduces boot times through caching; required in config/boot.rb
