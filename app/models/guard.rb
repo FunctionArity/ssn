@@ -15,6 +15,8 @@ class Guard < ApplicationRecord
 
   validates :day_number, presence: true
   validates :due_date, presence: true
+  # Only one guard can be open per day; closed guards of the same day don't count.
+  validates :due_date, uniqueness: { conditions: -> { open }, message: :open_guard_taken }, if: :open?
   validate :at_least_one_guardian
 
 
