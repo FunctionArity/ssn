@@ -200,10 +200,12 @@ lexxy-toolbar {
   animation: cell-assigned 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
 }
 
+/* Slides down from above: starting below would push main past the bottom of short pages and flash
+   a scrollbar, while overflow above the top can't be scrolled to. */
 @keyframes page-enter {
   from {
     opacity: 0;
-    transform: translateY(10px);
+    transform: translateY(-10px);
   }
   to {
     opacity: 1;
