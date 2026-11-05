@@ -455,6 +455,8 @@ en:
     comment:
       new: New
       reply: Reply
+      edit: Edit comment
+      edited: (edited)
       mention_unread: Hasn't read it yet
       mark_read: Click to mark as read
       destroy: Delete comment
@@ -473,6 +475,9 @@ en:
       placeholder: Write a comment…
       hint: Type @ to mention a user. They will see it as unread and get it by email.
       submit: Comment
+    edit_form:
+      cancel: Cancel
+      submit: Save
   mentions:
     index:
       title: Mentions

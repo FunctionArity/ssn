@@ -26,6 +26,9 @@
       <time datetime="<%= comment.created_at.iso8601 %>" title="<%= l(comment.created_at, format: :long) %>" class="text-xs text-gray-400">
         <%= l(comment.created_at, format: :short) %>
       </time>
+      <% if comment.was_edited? %>
+        <span class="text-xs text-gray-400" title="<%= l(comment.updated_at, format: :long) %>"><%= t("comments.comment.edited") %></span>
+      <% end %>
       <% if unread %>
         <span class="badge_red"><%= t("comments.comment.new") %></span>
       <% end %>
@@ -42,9 +45,20 @@
           <i class="ph ph-arrow-bend-up-left"></i>
         <% end %>
       <% end %>
+      <%# Own comments, while nobody has replied, are edited in place. %>
+      <% editable = policy(comment).edit? %>
+      <% if editable %>
+        <%= link_to edit_polymorphic_path([ comment.commentable, comment ]),
+              data: { turbo_stream: true },
+              class: "ml-auto flex items-center text-gray-400 hover:text-blue-600",
+              title: t("comments.comment.edit"),
+              aria: { label: t("comments.comment.edit") } do %>
+          <i class="ph ph-pencil-simple"></i>
+        <% end %>
+      <% end %>
       <% if policy(comment).destroy? %>
         <%= button_to polymorphic_path([ comment.commentable, comment ]), method: :delete,
-              form: { class: ("ml-auto" if comment.user == current_user), data: { turbo_confirm: t("comments.comment.destroy_confirm"), turbo_confirm_title: t("comments.comment.destroy_confirm_title"), turbo_confirm_level: "danger" } },
+              form: { class: ("ml-auto" if comment.user == current_user && !editable), data: { turbo_confirm: t("comments.comment.destroy_confirm"), turbo_confirm_title: t("comments.comment.destroy_confirm_title"), turbo_confirm_level: "danger" } },
               class: "cursor-pointer flex items-center text-gray-400 hover:text-red-600",
               title: t("comments.comment.destroy"),
               aria: { label: t("comments.comment.destroy") } do %>

@@ -15,7 +15,7 @@ class Comment < ApplicationRecord
   validate :parent_on_same_record
 
   before_validation :clear_blank_body
-  after_create :create_mentions
+  after_save :sync_mentions, if: :saved_change_to_body?
 
   scope :newest_first, -> { order(created_at: :desc, id: :desc) }
 
@@ -25,11 +25,19 @@ class Comment < ApplicationRecord
     "<p>#{Mentions.to_html(links)}&nbsp;</p>"
   end
 
+  def was_edited?
+    updated_at > created_at
+  end
+
   private
 
-  # Every mentioned user, except the author, gets the comment as unread and by email.
-  def create_mentions
-    User.mentionable.where(id: Mentions.user_ids(body) - [ user_id ]).find_each do |mentioned|
+  # Every newly mentioned user, except the author, gets the comment as unread and by email. After an edit,
+  # users no longer mentioned lose it, and those still mentioned keep theirs as it was, read or not.
+  def sync_mentions
+    mentioned_ids = User.mentionable.where(id: Mentions.user_ids(body) - [ user_id ]).ids
+    mentions.where.not(user_id: mentioned_ids).destroy_all
+
+    User.where(id: mentioned_ids - mentions.pluck(:user_id)).find_each do |mentioned|
       mentions.create!(user: mentioned)
       CommentMailer.with(comment: self, user: mentioned).mention.deliver_later
     end

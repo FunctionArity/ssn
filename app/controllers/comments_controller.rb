@@ -20,6 +20,40 @@ class CommentsController < ApplicationController
     end
   end
 
+  # The comment as listed; cancelling an inline edit puts it back.
+  def show
+    authorize @comment
+
+    respond_to do |format|
+      format.turbo_stream { render turbo_stream: replace_entry }
+      format.html { redirect_to polymorphic_path(@commentable, anchor: helpers.dom_id(@comment)) }
+    end
+  end
+
+  # Swaps the comment for its inline edit form.
+  def edit
+    authorize @comment
+
+    respond_to do |format|
+      format.turbo_stream { render turbo_stream: turbo_stream.replace(@comment, partial: "comments/edit_form", locals: { comment: @comment }) }
+      format.html { redirect_to polymorphic_path(@commentable, anchor: helpers.dom_id(@comment)) }
+    end
+  end
+
+  def update
+    authorize @comment
+
+    respond_to do |format|
+      if @comment.update(body: params.dig(:comment, :body))
+        format.turbo_stream { render turbo_stream: replace_entry }
+        format.html { redirect_to polymorphic_path(@commentable, anchor: helpers.dom_id(@comment)) }
+      else
+        format.turbo_stream { render turbo_stream: turbo_stream.replace(@comment, partial: "comments/edit_form", locals: { comment: @comment }), status: :unprocessable_entity }
+        format.html { redirect_to @commentable, alert: @comment.errors.full_messages.to_sentence }
+      end
+    end
+  end
+
   def destroy
     authorize @comment
     had_replies = @comment.replies.exists?
@@ -39,7 +73,7 @@ class CommentsController < ApplicationController
     if mention
       authorize mention
       # An admin impersonating someone shouldn't clear that user's unread comments.
-      mention.read! if current_user == true_user
+      mention.read! if acting_as_self?
     else
       authorize @commentable, :comment?
     end
@@ -61,6 +95,11 @@ class CommentsController < ApplicationController
 
   def set_comment
     @comment = @commentable.comments.find(params.expect(:id))
+  end
+
+  def replace_entry
+    unread = current_user.comment_mentions.unread.exists?(comment: @comment)
+    turbo_stream.replace(@comment, partial: "comments/entry", locals: { comment: @comment, unread: unread })
   end
 
   # The comment being replied to, which must belong to the same record.

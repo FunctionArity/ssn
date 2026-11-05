@@ -108,6 +108,93 @@ class CommentsControllerTest < ActionDispatch::IntegrationTest
     assert_response :not_found
   end
 
+  test "edit swaps the author's comment for its inline form" do
+    comment = @service.comments.create!(user: @author, body: "<p>hola</p>")
+
+    get edit_service_comment_url(@service, comment), headers: TURBO_STREAM
+
+    assert_response :success
+    assert_includes response.body, %(action="replace" target="comment_#{comment.id}")
+    assert_includes response.body, %(action="/services/#{@service.id}/comments/#{comment.id}")
+    assert_includes response.body, I18n.t("comments.edit_form.submit")
+  end
+
+  test "edit is denied to other users and once the comment has replies" do
+    others = @service.comments.create!(user: @mentioned, body: "<p>ajeno</p>")
+    replied = @service.comments.create!(user: @author, body: "<p>pregunta</p>")
+    @service.comments.create!(user: @mentioned, body: "<p>respuesta</p>", parent: replied)
+
+    [ others, replied ].each do |comment|
+      get edit_service_comment_url(@service, comment), headers: TURBO_STREAM
+      assert_redirected_to root_url
+    end
+  end
+
+  test "update changes the body, marks it edited and shows the comment again" do
+    comment = @service.comments.create!(user: @author, body: "<p>hola</p>")
+
+    travel 1.minute do
+      patch service_comment_url(@service, comment), params: { comment: { body: "<p>hola de nuevo</p>" } }, headers: TURBO_STREAM
+    end
+
+    assert_response :success
+    assert_equal "<p>hola de nuevo</p>", comment.reload.body
+    assert_includes response.body, %(action="replace" target="comment_#{comment.id}")
+    assert_includes response.body, I18n.t("comments.comment.edited")
+  end
+
+  test "update notifies only newly mentioned users and drops the mentions removed from the text" do
+    kept = users(:unrelated_vocal)
+    comment = @service.comments.create!(user: @author, body: "<p>#{mention_link(kept)} #{mention_link(users(:two))}</p>")
+    comment.mentions.find_by!(user: kept).read!
+
+    assert_enqueued_emails 1 do
+      patch service_comment_url(@service, comment), params: { comment: { body: "<p>#{mention_link(kept)} #{mention_link(@mentioned)}</p>" } }, headers: TURBO_STREAM
+    end
+
+    assert_equal [ kept, @mentioned ].map(&:id).sort, comment.mentions.pluck(:user_id).sort
+    assert_not comment.mentions.find_by!(user: kept).unread?
+    assert comment.mentions.find_by!(user: @mentioned).unread?
+  end
+
+  test "update with a blank body shows the form again with the error" do
+    comment = @service.comments.create!(user: @author, body: "<p>hola</p>")
+
+    patch service_comment_url(@service, comment), params: { comment: { body: "<p><br></p>" } }, headers: TURBO_STREAM
+
+    assert_response :unprocessable_entity
+    assert_equal "<p>hola</p>", comment.reload.body
+    assert_includes response.body, Comment.human_attribute_name(:body)
+  end
+
+  test "update is denied once the comment has replies" do
+    comment = @service.comments.create!(user: @author, body: "<p>pregunta</p>")
+    @service.comments.create!(user: @mentioned, body: "<p>respuesta</p>", parent: comment)
+
+    patch service_comment_url(@service, comment), params: { comment: { body: "<p>otra pregunta</p>" } }, headers: TURBO_STREAM
+
+    assert_equal "<p>pregunta</p>", comment.reload.body
+  end
+
+  test "show puts the comment back, which cancels an inline edit" do
+    comment = @service.comments.create!(user: @author, body: "<p>hola</p>")
+
+    get service_comment_url(@service, comment), headers: TURBO_STREAM
+
+    assert_response :success
+    assert_includes response.body, %(action="replace" target="comment_#{comment.id}")
+    assert_includes response.body, "hola"
+  end
+
+  test "replying to your own comment removes its edit button" do
+    own = @service.comments.create!(user: @author, body: "<p>mi comentario</p>")
+
+    post service_comments_url(@service), params: { comment: { body: "<p>agrego algo</p>", parent_id: own.id } }, headers: TURBO_STREAM
+
+    assert_includes response.body, %(action="replace" target="comment_#{own.id}")
+    assert_not_includes response.body, edit_service_comment_path(@service, own)
+  end
+
   test "destroy is denied to other users but allowed to super admins" do
     comment = @service.comments.create!(user: @mentioned, body: "<p>hola</p>")
 

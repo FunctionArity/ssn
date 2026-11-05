@@ -28,7 +28,7 @@ Rails.application.routes.draw do
   resources :priest_setups
 
   concern :commentable do
-    resources :comments, only: %i[ create destroy ] do
+    resources :comments, only: %i[ show create edit update destroy ] do
       post :read, on: :member
     end
   end
