@@ -22,9 +22,6 @@ application.register("card-expand", CardExpandController)
 import ClipboardController from "./clipboard_controller"
 application.register("clipboard", ClipboardController)
 
-import ConfirmDialogController from "./confirm_dialog_controller"
-application.register("confirm-dialog", ConfirmDialogController)
-
 import DisclosureController from "./disclosure_controller"
 application.register("disclosure", DisclosureController)
 
@@ -51,6 +48,21 @@ application.register("health-facility-search", HealthFacilitySearchController)
 
 import HelloController from "./hello_controller"
 application.register("hello", HelloController)
+
+import MarkReadController from "./mark_read_controller"
+application.register("mark-read", MarkReadController)
+
+import CommentReplyController from "./comment_reply_controller"
+application.register("comment-reply", CommentReplyController)
+
+import LazyToggleController from "./lazy_toggle_controller"
+application.register("lazy-toggle", LazyToggleController)
+
+import CharCounterController from "./char_counter_controller"
+application.register("char-counter", CharCounterController)
+
+import AnchorHighlightController from "./anchor_highlight_controller"
+application.register("anchor-highlight", AnchorHighlightController)
 
 import MentionCardController from "./mention_card_controller"
 application.register("mention-card", MentionCardController)

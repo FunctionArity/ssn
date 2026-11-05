@@ -1,0 +1,35 @@
+<%# Lexxy editor with the @ prompt to mention users. Right below it, the hint and, on the right, how many
+    characters are left; then whatever the block renders, aligned right (e.g. the submit button).
+    Render it as a layout: render layout: "comments/editor", locals: { id:, name:, value:, prompt_src:, placeholder: } do ... end %>
+<%= tag.div data: {
+      controller: "char-counter",
+      action: "lexxy:initialize->char-counter#update lexxy:change->char-counter#update",
+      char_counter_max_value: Comment::MAX_LENGTH,
+      char_counter_remaining_value: { one: t("comments.editor.remaining.one"), other: t("comments.editor.remaining.other") },
+      char_counter_over_value: { one: t("comments.editor.over.one"), other: t("comments.editor.over.other") }
+    } do %>
+  <%= content_tag "lexxy-editor",
+        id: id,
+        name: name,
+        value: value,
+        placeholder: placeholder,
+        attachments: "false",
+        style: "--lexxy-editor-rows: 3lh",
+        data: { char_counter_target: "editor" },
+        class: "lexxy-content block w-full rounded-md border border-gray-300 bg-white shadow-sm focus-within:border-blue-500 focus-within:ring-1 focus-within:ring-blue-500" do %>
+    <%= content_tag "lexxy-prompt", "",
+          trigger: "@",
+          name: "mention",
+          src: prompt_src,
+          "insert-editable-text": true,
+          "supports-space-in-searches": true,
+          "empty-results": t("services.form.no_mentionable_users") %>
+  <% end %>
+  <div class="mt-1 flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 text-xs">
+    <p class="text-gray-500"><%= t("comments.form.hint") %></p>
+    <p data-char-counter-target="output" aria-live="polite" class="ml-auto whitespace-nowrap tabular-nums text-gray-400"></p>
+  </div>
+  <% if (actions = yield).present? %>
+    <div class="mt-3 flex justify-end"><%= actions %></div>
+  <% end %>
+<% end %>

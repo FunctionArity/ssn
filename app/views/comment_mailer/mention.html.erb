@@ -1,0 +1,6 @@
+<p><%= t("#{@scope}.intro", author: @author.full_name, name: @commentable.comment_subject) %></p>
+
+<p><strong><%= t("comment_mailer.mention.comment") %>:</strong></p>
+<%= rich_text_html(@body) %>
+
+<p><%= link_to t("comment_mailer.mention.action"), polymorphic_url(@commentable, anchor: dom_id(@comment)) %></p>

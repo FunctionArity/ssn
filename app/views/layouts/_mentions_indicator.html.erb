@@ -1,0 +1,13 @@
+<%# Bell with the number of unread comments that mention the user. Replaced by broadcasts, so it can't use current_user. locals: user %>
+<% unread_count = user.comment_mentions.unread.count %>
+<%= link_to mentions_path, id: "mentions_indicator",
+      class: "relative flex items-center justify-center w-8 h-8 rounded-md text-gray-500 hover:bg-gray-100 hover:text-gray-700 shrink-0",
+      title: t("mentions.indicator.title", count: unread_count),
+      aria: { label: t("mentions.indicator.title", count: unread_count) } do %>
+  <i class="ph ph-bell text-xl"></i>
+  <% if unread_count.positive? %>
+    <span class="absolute -top-0.5 -right-0.5 flex items-center justify-center min-w-4 h-4 px-1 rounded-full bg-red-600 text-[10px] font-semibold leading-none text-white">
+      <%= unread_count > 99 ? "99+" : unread_count %>
+    </span>
+  <% end %>
+<% end %>

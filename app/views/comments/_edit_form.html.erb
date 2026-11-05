@@ -1,0 +1,23 @@
+<%# A comment being edited in place of its entry, so it keeps the same id. locals: comment %>
+<%= tag.div id: dom_id(comment), class: "px-6 py-4 bg-blue-50/40" do %>
+  <%= form_with model: comment, url: polymorphic_path([ comment.commentable, comment ]), namespace: dom_id(comment, :edit), class: "space-y-3" do |form| %>
+    <% if comment.errors.any? %>
+      <p class="text-sm text-red-600"><%= comment.errors.full_messages.to_sentence %></p>
+    <% end %>
+    <%= render layout: "comments/editor", locals: {
+          id: form.field_id(:body),
+          name: form.field_name(:body),
+          value: comment.body,
+          prompt_src: polymorphic_path([ :mentionable_users, comment.commentable ]),
+          placeholder: t("comments.form.placeholder") } do %>
+      <div class="flex items-center gap-3">
+        <%= link_to t("comments.edit_form.cancel"), polymorphic_path([ comment.commentable, comment ]),
+              data: { turbo_stream: true },
+              class: "rounded-md px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900" %>
+        <%= form.button type: "submit", class: "cursor-pointer inline-flex items-center gap-1.5 rounded-md bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 disabled:cursor-not-allowed disabled:opacity-50" do %>
+          <i class="ph ph-check"></i> <%= t("comments.edit_form.submit") %>
+        <% end %>
+      </div>
+    <% end %>
+  <% end %>
+<% end %>

@@ -1,0 +1,26 @@
+<%# The conversation of any Commentable record. locals: commentable, comments (newest first), unread_comment_ids
+    Top-level comments, and the replies under each one, go newest first. %>
+<% top_level = comments.select { |comment| comment.parent_id.nil? } %>
+<% replies_by_parent = comments.group_by(&:parent_id) %>
+<section data-controller="comment-reply anchor-highlight" data-action="hashchange@window->anchor-highlight#highlight" class="mt-6 bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+  <div class="px-6 py-4 flex items-center gap-2 border-b border-gray-100">
+    <i class="ph ph-chats-circle text-lg text-gray-500"></i>
+    <h2 class="text-base font-semibold text-gray-900"><%= t("comments.thread.title") %></h2>
+  </div>
+
+  <%= render layout: "shared/mention_card" do %>
+    <%# Newest comments first, so the form sits above them. %>
+    <div class="border-b border-gray-100">
+      <%= render "comments/form", commentable: commentable, comment: Comment.new %>
+    </div>
+
+    <ol id="<%= dom_id(commentable, :comments) %>" class="divide-y divide-gray-100">
+      <% if top_level.empty? %>
+        <li id="<%= dom_id(commentable, :comments_empty) %>" class="px-6 py-6 text-center text-sm text-gray-400"><%= t("comments.thread.empty") %></li>
+      <% end %>
+      <% top_level.each do |comment| %>
+        <%= render "comments/comment", comment: comment, replies_by_parent: replies_by_parent, unread_comment_ids: unread_comment_ids %>
+      <% end %>
+    </ol>
+  <% end %>
+</section>

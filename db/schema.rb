@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_26_184909) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_02_180000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -48,6 +48,29 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_26_184909) do
     t.string "name"
     t.string "phone"
     t.datetime "updated_at", null: false
+  end
+
+  create_table "comment_mentions", force: :cascade do |t|
+    t.bigint "comment_id", null: false
+    t.bigint "user_id", null: false
+    t.datetime "read_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["comment_id", "user_id"], name: "index_comment_mentions_on_comment_id_and_user_id", unique: true
+    t.index ["user_id", "read_at"], name: "index_comment_mentions_on_user_id_and_read_at"
+  end
+
+  create_table "comments", force: :cascade do |t|
+    t.string "commentable_type", null: false
+    t.bigint "commentable_id", null: false
+    t.bigint "user_id", null: false
+    t.text "body", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "parent_id"
+    t.index ["commentable_type", "commentable_id"], name: "index_comments_on_commentable"
+    t.index ["parent_id"], name: "index_comments_on_parent_id"
+    t.index ["user_id"], name: "index_comments_on_user_id"
   end
 
   create_table "contact_directories", force: :cascade do |t|
@@ -170,7 +193,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_26_184909) do
     t.string "caller_full_name"
     t.string "caller_phone"
     t.string "caller_relationship"
-    t.text "comments"
+    t.text "old_comment"
     t.datetime "created_at", null: false
     t.bigint "created_by_id", null: false
     t.date "due_date", null: false
@@ -248,6 +271,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_26_184909) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "comment_mentions", "comments"
+  add_foreign_key "comment_mentions", "users"
+  add_foreign_key "comments", "comments", column: "parent_id", on_delete: :nullify
+  add_foreign_key "comments", "users"
   add_foreign_key "contact_directories", "headquarters"
   add_foreign_key "contact_groups", "contact_directories"
   add_foreign_key "contacts", "contact_groups"

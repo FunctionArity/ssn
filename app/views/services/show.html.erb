@@ -6,4 +6,6 @@
   </div>
 
   <%= render @service %>
+
+  <%= render "comments/thread", commentable: @service, comments: @comments, unread_comment_ids: @unread_comment_ids %>
 </div>

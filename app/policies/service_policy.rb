@@ -25,6 +25,11 @@ class ServicePolicy < ApplicationPolicy
     update? && record.can_be_completed?
   end
 
+  # Anyone signed in can follow a service's conversation; mentioned users may not belong to its guard.
+  def comment?
+    user.present?
+  end
+
   def history?
     super_admin?
   end

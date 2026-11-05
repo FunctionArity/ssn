@@ -11,7 +11,14 @@ class ApplicationController < ActionController::Base
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
+  helper_method :acting_as_self?
+
   protected
+
+  # True unless an admin is impersonating someone, e.g. to skip changes only the real user should make.
+  def acting_as_self?
+    current_user == true_user
+  end
 
   # Record the real user behind a change, even while impersonating someone else.
   def user_for_paper_trail

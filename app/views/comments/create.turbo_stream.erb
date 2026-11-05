@@ -1,0 +1,15 @@
+<% if @comment.persisted? %>
+  <% locals = { comment: @comment, replies_by_parent: {}, unread_comment_ids: [] } %>
+  <% if @comment.parent %>
+    <%= turbo_stream.prepend dom_id(@comment.parent, :replies), partial: "comments/comment", locals: locals %>
+    <%# Once replied, the parent can no longer be edited, so its edit button goes away. %>
+    <%= turbo_stream.replace @comment.parent, partial: "comments/entry",
+          locals: { comment: @comment.parent, unread: current_user.comment_mentions.unread.exists?(comment: @comment.parent) } %>
+  <% else %>
+    <%= turbo_stream.remove dom_id(@commentable, :comments_empty) %>
+    <%= turbo_stream.prepend dom_id(@commentable, :comments), partial: "comments/comment", locals: locals %>
+  <% end %>
+  <%= turbo_stream.replace dom_id(@commentable, :comment_form), partial: "comments/form", locals: { commentable: @commentable, comment: Comment.new } %>
+<% else %>
+  <%= turbo_stream.replace dom_id(@commentable, :comment_form), partial: "comments/form", locals: { commentable: @commentable, comment: @comment } %>
+<% end %>

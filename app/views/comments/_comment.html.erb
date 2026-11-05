@@ -1,0 +1,13 @@
+<%# A comment and, under it, its replies from newest to oldest, each with their own replies.
+    locals: comment, replies_by_parent (comments by parent_id), unread_comment_ids, depth (0 for top-level) %>
+<% depth = local_assigns.fetch(:depth, 0) %>
+<li id="<%= dom_id(comment, :thread) %>">
+  <%= render "comments/entry", comment: comment, unread: unread_comment_ids.include?(comment.id) %>
+  <%# Indented under the comment's text; deep threads stop indenting so they keep room on small screens.
+      Always rendered, as the target new replies are appended to; without whitespace, so empty:hidden applies. %>
+  <%= tag.ol safe_join(replies_by_parent.fetch(comment.id, []).map { |reply|
+        render("comments/comment", comment: reply, replies_by_parent: replies_by_parent, unread_comment_ids: unread_comment_ids, depth: depth + 1)
+      }),
+      id: dom_id(comment, :replies),
+      class: [ "empty:hidden mb-3 mr-6 border-l-2 border-gray-100 divide-y divide-gray-100", depth < 3 ? "ml-[3.25rem]" : "ml-6" ] %>
+</li>
