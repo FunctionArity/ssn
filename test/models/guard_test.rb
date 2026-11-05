@@ -23,6 +23,31 @@ class GuardTest < ActiveSupport::TestCase
     assert guard.valid?
   end
 
+  test "doesn't allow opening a second guard for the same day" do
+    guard = Guard.new(day_number: 1, due_date: guards(:one).due_date, vocal: users(:one), priest: users(:two), guard_setup: guard_setups(:one))
+    guard.guardians << users(:one)
+
+    assert_not guard.valid?
+    assert_includes guard.errors[:due_date], I18n.t("activerecord.errors.models.guard.attributes.due_date.open_guard_taken")
+  end
+
+  test "allows a guard for a day whose other guard is closed" do
+    guards(:one).closed!
+    guard = Guard.new(day_number: 1, due_date: guards(:one).due_date, vocal: users(:one), priest: users(:two), guard_setup: guard_setups(:one))
+    guard.guardians << users(:one)
+
+    assert guard.valid?
+  end
+
+  test "doesn't allow reopening a guard while another one is open for the same day" do
+    closed = Guard.new(day_number: 1, due_date: guards(:one).due_date, status: :closed, vocal: users(:one), priest: users(:two), guard_setup: guard_setups(:one))
+    closed.guardians << users(:one)
+    closed.save!
+
+    assert_not closed.update(status: :open)
+    assert closed.errors[:due_date].any?
+  end
+
   test "records a version with the changed attributes on update" do
     guard = guards(:one)
 

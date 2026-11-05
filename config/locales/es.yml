@@ -188,6 +188,8 @@ es:
               inclusion: "no es un número de semana válido"
         guard:
           attributes:
+            due_date:
+              open_guard_taken: "ya tiene otra guardia abierta"
             vocal:
               required: "debe seleccionar un vocal"
             priest:

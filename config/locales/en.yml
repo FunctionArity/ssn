@@ -139,6 +139,10 @@ en:
           attributes:
             guard:
               must_be_open: "must be open"
+        guard:
+          attributes:
+            due_date:
+              open_guard_taken: "already has another open guard"
   sidebar:
     menu: Menu
     setup: Setup
