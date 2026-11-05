@@ -1,5 +1,10 @@
 Rails.application.routes.draw do
   devise_for :users, path: "auth", skip: [ :registrations ]
+
+  # Background jobs dashboard. Only super admins see it; it's checked against the real user, even while impersonating.
+  authenticate :user, ->(user) { user.super_admin? } do
+    mount MissionControl::Jobs::Engine, at: "/jobs"
+  end
   resources :users do
     member do
       patch :lock

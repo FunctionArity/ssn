@@ -25,6 +25,9 @@ module Ssn
     # config.eager_load_paths << Rails.root.join("extras")
     config.i18n.default_locale = :es
 
+    # Mission Control (/jobs) is limited to signed-in super admins by its route, so it needs no HTTP Basic prompt.
+    config.mission_control.jobs.http_basic_auth_enabled = false
+
     # config.action_view.field_error_proc = proc { |html_tag, _instance|
     #  html_tag.sub(/class="/, 'class="has_error ').html_safe
     # }
