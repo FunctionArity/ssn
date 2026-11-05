@@ -22,9 +22,6 @@ application.register("card-expand", CardExpandController)
 import ClipboardController from "./clipboard_controller"
 application.register("clipboard", ClipboardController)
 
-import ConfirmDialogController from "./confirm_dialog_controller"
-application.register("confirm-dialog", ConfirmDialogController)
-
 import DisclosureController from "./disclosure_controller"
 application.register("disclosure", DisclosureController)
 

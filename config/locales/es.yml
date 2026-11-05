@@ -673,9 +673,10 @@ es:
       edited: (editado)
       mention_unread: Todavía no lo leyó
       mark_read: Haga clic para marcarlo como leído
-      destroy: Eliminar comentario
+      destroy: Eliminar
       destroy_confirm: ¿Está seguro de que desea eliminar este comentario?
-      destroy_confirm_title: Eliminar comentario
+      destroy_confirm_title: ¿ Eliminar comentario ?
+      destroy_button: Eliminar
     editor:
       remaining:
         one: Queda 1 carácter

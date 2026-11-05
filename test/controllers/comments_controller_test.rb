@@ -186,6 +186,14 @@ class CommentsControllerTest < ActionDispatch::IntegrationTest
     assert_includes response.body, "hola"
   end
 
+  test "the delete confirmation's button says what it does" do
+    comment = @service.comments.create!(user: @author, body: "<p>hola</p>")
+
+    get service_comment_url(@service, comment), headers: TURBO_STREAM
+
+    assert_includes response.body, %(data-turbo-confirm-button="#{I18n.t("comments.comment.destroy_button")}")
+  end
+
   test "replying to your own comment removes its edit button" do
     own = @service.comments.create!(user: @author, body: "<p>mi comentario</p>")
 
