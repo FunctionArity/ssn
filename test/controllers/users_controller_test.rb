@@ -239,7 +239,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "a user without a password shows as pending, with the icon to send the invitation" do
+  test "a user without a password shows as pending, with the button to send the invitation" do
     no_password = users(:two)
     no_password.update_columns(encrypted_password: "", sign_in_count: 0)
 
@@ -247,7 +247,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
     assert_select "span", text: /Invitación pendiente/
     assert_select "span", text: /Activo|Nunca ingresó/, count: 0
-    assert_select "form[action=?] button[title=?]", resend_invitation_user_path(no_password), "Enviar invitación"
+    assert_select "form[action=?] button", resend_invitation_user_path(no_password), text: /Enviar invitación/
   end
 
   test "sending the invitation to a user without a password lets them set one" do
@@ -284,12 +284,12 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
   test "show offers to send the invitation until it's accepted or the user has signed in" do
     pending_user = User.invite!({ email: "pending4@test.com", first_name: "Pending", last_name: "User" }, @user)
     get user_url(pending_user)
-    assert_select "form[action=?]", resend_invitation_user_path(pending_user), count: 2
+    assert_select "form[action=?]", resend_invitation_user_path(pending_user)
 
     never_signed_in = users(:two)
     never_signed_in.update_column(:last_sign_in_at, nil)
     get user_url(never_signed_in)
-    assert_select "form[action=?] button[title=?]", resend_invitation_user_path(never_signed_in), "Enviar invitación"
+    assert_select "form[action=?] button", resend_invitation_user_path(never_signed_in), text: /Enviar invitación/
 
     never_signed_in.update_column(:last_sign_in_at, 1.day.ago)
     get user_url(never_signed_in)

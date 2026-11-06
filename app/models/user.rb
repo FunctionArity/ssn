@@ -76,8 +76,9 @@ class User < ApplicationRecord
   end
 
   # Can't sign in until they accept an invitation: invited and not accepted yet, or without a password of their own.
+  # Lists preload devise_invitations so this doesn't query once per user.
   def pending_activation?
-    invitation_pending? || encrypted_password.blank?
+    encrypted_password.blank? || awaiting_invitation_acceptance?
   end
 
   # Never accepted an invitation nor signed in, so sending one is how they get in.
@@ -118,6 +119,13 @@ class User < ApplicationRecord
   end
 
   private
+
+  # Same as devise_invitable's invitation_pending?, but answered from the preloaded invitations when there are any.
+  def awaiting_invitation_acceptance?
+    return invitation_pending? unless devise_invitations.loaded?
+
+    devise_invitations.any? { |invitation| invitation.pending? && invitation.provisioning? }
+  end
 
   def move_to_guard_setup
     MoveUserToGuardSetupService.new(self, guard_setup_day_number).call

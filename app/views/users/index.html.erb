@@ -39,7 +39,7 @@
       <% %w[guardian vocal priest].each do |role| %>
         <% users = @users_by_role[role] %>
         <% next if users.blank? %>
-        <%= render "role_group", role: role, users: users, pending_user_ids: @pending_user_ids %>
+        <%= render "role_group", role: role, users: users %>
       <% end %>
     <% end %>
   </div>

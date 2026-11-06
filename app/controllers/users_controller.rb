@@ -7,10 +7,8 @@ class UsersController < ApplicationController
   def index
     @query = params[:q].to_s.strip
     searching = @query.length >= 3
-    @users_by_role = (searching ? User.search_by_name(@query) : User.all).grouped_by_role
-    # Users who can't sign in yet, marked in the list: invited and not accepted, or without a password
-    # (User#pending_activation?). Unscoped: the default order can't go with the invitations scope's DISTINCT.
-    @pending_user_ids = (User.unscoped.invitation_not_accepted.ids + User.unscoped.without_password.ids).to_set
+    # Invitations are preloaded for User#pending_activation?, which marks the users who can't sign in yet.
+    @users_by_role = (searching ? User.search_by_name(@query) : User.all).includes(:devise_invitations).grouped_by_role
 
     return unless current_user.super_admin?
     @recent_logins = User.unscoped.recent_logins
