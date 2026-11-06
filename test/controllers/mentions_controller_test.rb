@@ -2,6 +2,7 @@ require "test_helper"
 
 class MentionsControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
+  include WebPushTestHelper
 
   setup do
     @user = users(:vocal_guardian)
@@ -45,5 +46,31 @@ class MentionsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to mentions_url
     assert_equal 0, @user.comment_mentions.unread.count
     assert_equal 1, other.comment_mentions.unread.count
+  end
+
+  test "offers turning on push notifications on this device" do
+    capture_web_pushes do
+      get mentions_url
+
+      assert_select "[data-controller=push-subscription][data-push-subscription-public-key-value=?]", PushSubscription.vapid[:public_key] do
+        assert_select "button[data-action=?]", "push-subscription#enable", text: /Activar notificaciones/
+        assert_select "button[data-action=?]", "push-subscription#disable"
+      end
+    end
+  end
+
+  test "doesn't offer push notifications without VAPID keys" do
+    capture_web_pushes(vapid: false) { get mentions_url }
+
+    assert_select "[data-controller=push-subscription]", count: 0
+  end
+
+  test "doesn't offer push notifications to an admin impersonating the user" do
+    sign_in users(:super_admin)
+    post impersonate_user_path(@user)
+
+    capture_web_pushes { get mentions_url }
+
+    assert_select "[data-controller=push-subscription]", count: 0
   end
 end

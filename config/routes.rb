@@ -52,6 +52,7 @@ Rails.application.routes.draw do
   resources :mentions, only: :index do
     post :read_all, on: :collection
   end
+  resource :push_subscription, only: %i[create destroy]
   resources :health_facilities
   resources :churches
   resources :headquarters do

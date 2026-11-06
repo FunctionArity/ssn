@@ -680,6 +680,7 @@ es:
       mark_read: Haga clic para marcarlo como leído
       destroy: Eliminar
       destroy_confirm: ¿Está seguro de que desea eliminar este comentario?
+      destroy_with_replies_confirm: ¿Está seguro de que desea eliminar este comentario? También se eliminarán todas sus respuestas.
       destroy_confirm_title: ¿ Eliminar comentario ?
       destroy_button: Eliminar
     editor:
@@ -710,6 +711,19 @@ es:
         zero: No hay comentarios sin leer
         one: "%{count} comentario sin leer"
         other: "%{count} comentarios sin leer"
+    push_toggle:
+      "off": Recibir un aviso en este dispositivo cuando te mencionen en un comentario.
+      enable: Activar notificaciones
+      "on": Las notificaciones están activadas en este dispositivo.
+      disable: Desactivar
+      blocked: Las notificaciones están bloqueadas en este navegador. Se pueden permitir en su configuración.
+      install: Para recibir notificaciones en el iPhone, usar Compartir → "Agregar a inicio" y abrir la app desde ahí.
+  push_notifications:
+    mention:
+      title: "%{author} te mencionó"
+      open: Ver el comentario
+      body:
+        service: "Servicio de %{name}: %{text}"
   services:
     history:
       back: Volver al servicio

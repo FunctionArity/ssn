@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_06_160000) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_06_180000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -210,6 +210,18 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_06_160000) do
     t.index ["week_number", "day_of_week"], name: "index_priest_setups_on_week_number_and_day_of_week", unique: true
   end
 
+  create_table "push_subscriptions", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.text "endpoint", null: false
+    t.string "p256dh_key", null: false
+    t.string "auth_key", null: false
+    t.string "user_agent"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["endpoint"], name: "index_push_subscriptions_on_endpoint", unique: true
+    t.index ["user_id"], name: "index_push_subscriptions_on_user_id"
+  end
+
   create_table "services", force: :cascade do |t|
     t.string "address"
     t.integer "age"
@@ -301,6 +313,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_06_160000) do
   add_foreign_key "guards", "users", column: "priest_id"
   add_foreign_key "guards", "users", column: "vocal_id"
   add_foreign_key "priest_setups", "users", column: "priest_id"
+  add_foreign_key "push_subscriptions", "users"
   add_foreign_key "services", "guards"
   add_foreign_key "services", "health_facilities"
   add_foreign_key "services", "users", column: "created_by_id"

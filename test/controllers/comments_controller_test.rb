@@ -71,14 +71,52 @@ class CommentsControllerTest < ActionDispatch::IntegrationTest
     assert_includes response.body, %(action="remove" target="#{ActionView::RecordIdentifier.dom_id(comment, :thread)}")
   end
 
-  test "destroy keeps the replies as top-level comments and refreshes the page" do
+  test "destroy deletes the replies, all the way down, with their mentions" do
     comment = @service.comments.create!(user: @author, body: "<p>pregunta</p>")
-    reply = @service.comments.create!(user: @mentioned, body: "<p>respuesta</p>", parent: comment)
+    reply = @service.comments.create!(user: @mentioned, body: "<p>respuesta #{mention_link(@author)}</p>", parent: comment)
+    @service.comments.create!(user: @author, body: "<p>#{mention_link(@mentioned)} gracias</p>", parent: reply)
+    other = @service.comments.create!(user: @author, body: "<p>otro tema</p>")
 
-    delete service_comment_url(@service, comment), headers: TURBO_STREAM
+    assert_difference -> { Comment.count } => -3, -> { CommentMention.count } => -2 do
+      delete service_comment_url(@service, comment), headers: TURBO_STREAM
+    end
 
-    assert_nil reply.reload.parent
-    assert_includes response.body, %(action="refresh")
+    assert_equal [ other ], @service.comments.reload.to_a
+    assert_includes response.body, %(action="remove" target="#{ActionView::RecordIdentifier.dom_id(comment, :thread)}")
+    assert_not_includes response.body, %(action="refresh")
+  end
+
+  test "deleting a parent's last reply brings back its edit button" do
+    parent = @service.comments.create!(user: @author, body: "<p>pregunta</p>")
+    reply = @service.comments.create!(user: @author, body: "<p>me respondo</p>", parent: parent)
+
+    delete service_comment_url(@service, reply), headers: TURBO_STREAM
+
+    assert_select "turbo-stream[action=replace][target=?]", ActionView::RecordIdentifier.dom_id(parent) do
+      assert_select "template a[href=?]", edit_service_comment_path(@service, parent)
+    end
+  end
+
+  test "deleting one of several replies leaves the parent as it is" do
+    parent = @service.comments.create!(user: @author, body: "<p>pregunta</p>")
+    reply = @service.comments.create!(user: @mentioned, body: "<p>uno</p>", parent: parent)
+    @service.comments.create!(user: @mentioned, body: "<p>dos</p>", parent: parent)
+    sign_in @mentioned
+
+    delete service_comment_url(@service, reply), headers: TURBO_STREAM
+
+    assert_select "turbo-stream[action=replace]", count: 0
+  end
+
+  test "the delete confirmation warns when the replies go too" do
+    comment = @service.comments.create!(user: @author, body: "<p>pregunta</p>")
+    @service.comments.create!(user: @mentioned, body: "<p>respuesta</p>", parent: comment)
+    alone = @service.comments.create!(user: @author, body: "<p>sin respuestas</p>")
+
+    get service_url(@service)
+
+    assert_select "##{ActionView::RecordIdentifier.dom_id(comment)} form[data-turbo-confirm=?]", I18n.t("comments.comment.destroy_with_replies_confirm")
+    assert_select "##{ActionView::RecordIdentifier.dom_id(alone)} form[data-turbo-confirm=?]", I18n.t("comments.comment.destroy_confirm")
   end
 
   test "create links a reply to its parent and adds it first under it" do

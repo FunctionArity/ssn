@@ -73,6 +73,9 @@ application.register("mobile-nav", MobileNavController)
 import PriestAssignNewController from "./priest_assign_new_controller"
 application.register("priest-assign-new", PriestAssignNewController)
 
+import PushSubscriptionController from "./push_subscription_controller"
+application.register("push-subscription", PushSubscriptionController)
+
 import RoleSelectorController from "./role_selector_controller"
 application.register("role-selector", RoleSelectorController)
 

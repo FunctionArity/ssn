@@ -2,9 +2,9 @@
 class Comment < ApplicationRecord
   belongs_to :commentable, polymorphic: true
   belongs_to :user
-  # The comment this one replies to. Deleting a comment keeps its replies, as top-level comments.
+  # The comment this one replies to. Deleting a comment deletes its replies too, and theirs, all the way down.
   belongs_to :parent, class_name: "Comment", optional: true, inverse_of: :replies
-  has_many :replies, class_name: "Comment", foreign_key: :parent_id, inverse_of: :parent, dependent: :nullify
+  has_many :replies, class_name: "Comment", foreign_key: :parent_id, inverse_of: :parent, dependent: :destroy
   has_many :mentions, class_name: "CommentMention", dependent: :destroy
 
   # Characters of visible text; the markup doesn't count.
@@ -31,15 +31,17 @@ class Comment < ApplicationRecord
 
   private
 
-  # Every newly mentioned user, except the author, gets the comment as unread and by email. After an edit,
+  # Every newly mentioned user, except the author, gets the comment as unread, by email and as a push
+  # notification on the devices where they turned those on. After an edit,
   # users no longer mentioned lose it, and those still mentioned keep theirs as it was, read or not.
   def sync_mentions
     mentioned_ids = User.mentionable.where(id: Mentions.user_ids(body) - [ user_id ]).ids
     mentions.where.not(user_id: mentioned_ids).destroy_all
 
     User.where(id: mentioned_ids - mentions.pluck(:user_id)).find_each do |mentioned|
-      mentions.create!(user: mentioned)
+      mention = mentions.create!(user: mentioned)
       CommentMailer.with(comment: self, user: mentioned).mention.deliver_later
+      MentionPushJob.perform_later(mention)
     end
   end
 

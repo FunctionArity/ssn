@@ -56,12 +56,21 @@ class CommentsController < ApplicationController
 
   def destroy
     authorize @comment
-    had_replies = @comment.replies.exists?
     @comment.destroy!
 
     respond_to do |format|
-      # Its replies become top-level comments, so the page reloads to show them in their new place.
-      format.turbo_stream { render turbo_stream: had_replies ? turbo_stream.refresh(request_id: nil) : turbo_stream.remove(helpers.dom_id(@comment, :thread)) }
+      format.turbo_stream do
+        # Its replies are inside its thread, so they go away with it.
+        streams = [ turbo_stream.remove(helpers.dom_id(@comment, :thread)) ]
+        # A parent left without replies can be edited again, so its edit button comes back.
+        # Loaded again: the parent's replies in memory still hold the deleted comment.
+        parent = Comment.find_by(id: @comment.parent_id)
+        if parent && parent.replies.none?
+          streams << turbo_stream.replace(parent, partial: "comments/entry",
+                                                  locals: { comment: parent, unread: current_user.comment_mentions.unread.exists?(comment: parent) })
+        end
+        render turbo_stream: streams
+      end
       format.html { redirect_to @commentable, status: :see_other }
     end
   end
