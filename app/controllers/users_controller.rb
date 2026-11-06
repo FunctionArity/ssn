@@ -7,7 +7,8 @@ class UsersController < ApplicationController
   def index
     @query = params[:q].to_s.strip
     searching = @query.length >= 3
-    @users_by_role = (searching ? User.search_by_name(@query) : User.all).grouped_by_role
+    # Invitations are preloaded for User#pending_activation?, which marks the users who can't sign in yet.
+    @users_by_role = (searching ? User.search_by_name(@query) : User.all).includes(:devise_invitations).grouped_by_role
 
     return unless current_user.super_admin?
     @recent_logins = User.unscoped.recent_logins

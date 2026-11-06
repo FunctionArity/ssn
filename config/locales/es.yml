@@ -262,7 +262,12 @@ es:
       status: Estado
       active: Activo
       invitation_pending: Invitación pendiente
+      invitation_sent: Invitación enviada
+      invitation_accepted: Invitación aceptada
+      never_signed_in: Nunca ingresó
+      last_signed_in: "Último ingreso: %{time}"
       resend_invitation: Reenviar invitación
+      send_invitation: Enviar invitación
       church: Parroquia
       guard_setups: Guardias
       vocal_guard_setups: Guardias (vocal)

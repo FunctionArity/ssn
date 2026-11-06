@@ -23,7 +23,7 @@ class CommentTest < ActiveSupport::TestCase
 
   test "skips the author, locked and invited users, and links that aren't mentions" do
     users(:vocal_guardian).update_column(:locked_at, Time.current)
-    users(:unrelated_vocal).update_column(:invitation_token, "pending")
+    users(:unrelated_vocal).invite!(nil, skip_invitation: true)
 
     assert_no_enqueued_emails do
       comment = @service.comments.create!(user: @author, body: <<~HTML)

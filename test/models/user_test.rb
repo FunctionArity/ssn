@@ -213,7 +213,7 @@ class UserTest < ActiveSupport::TestCase
 
   test "mentionable leaves out locked users and pending invitations" do
     users(:one).update_column(:locked_at, Time.current)
-    users(:two).update_column(:invitation_token, "pending")
+    users(:two).invite!(nil, skip_invitation: true)
 
     assert_not_includes User.mentionable, users(:one)
     assert_not_includes User.mentionable, users(:two)

@@ -146,15 +146,75 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test "show displays active status when invitation accepted" do
-    get user_url(@user)
+  test "show displays active status once the user has signed in" do
+    users(:two).update_columns(sign_in_count: 1, last_sign_in_at: 1.day.ago)
+
+    get user_url(users(:two))
+
     assert_select "span", text: /Activo/
+    assert_select "span", text: /Nunca ingresó/, count: 0
   end
 
-  test "show displays invitation pending badge when not yet accepted" do
+  test "show displays when an active user last signed in" do
+    signed_in_at = Time.zone.local(2026, 11, 5, 16, 4)
+    users(:two).update_columns(sign_in_count: 3, current_sign_in_at: signed_in_at, last_sign_in_at: signed_in_at - 1.day)
+
+    get user_url(users(:two))
+
+    assert_select "p", text: /Último ingreso: #{Regexp.escape(I18n.l(signed_in_at, format: :short))}/
+  end
+
+  test "show doesn't display the last sign-in of locked users or users who never signed in" do
+    users(:two).update_columns(sign_in_count: 1, current_sign_in_at: 1.day.ago, last_sign_in_at: 1.day.ago)
+    users(:two).lock_access!(send_instructions: false)
+    get user_url(users(:two))
+    assert_select "p", text: /Último ingreso/, count: 0
+
+    users(:one).update_columns(sign_in_count: 0, current_sign_in_at: nil, last_sign_in_at: nil)
+    get user_url(users(:one))
+    assert_select "p", text: /Último ingreso/, count: 0
+  end
+
+  test "show doesn't display active status for a user who never signed in" do
+    users(:two).update_columns(sign_in_count: 0, last_sign_in_at: nil)
+
+    get user_url(users(:two))
+
+    assert_select "span", text: /Activo/, count: 0
+    assert_select "span", text: /Nunca ingresó/
+  end
+
+  test "show displays when the invitation was sent while it's pending" do
     pending_user = User.invite!({ email: "pending@test.com", first_name: "Pending", last_name: "User" }, @user)
     get user_url(pending_user)
+    assert_select "span", text: /Invitación enviada · #{Regexp.escape(I18n.l(pending_user.invitation_sent_at.to_date))}/
+    assert_select "span", text: /Activo/, count: 0
+  end
+
+  test "show displays an invitation created without sending as pending" do
+    pending_user = User.invite!({ email: "unsent@test.com", first_name: "Pending", last_name: "User" }, @user) { |u| u.skip_invitation = true }
+    get user_url(pending_user)
     assert_select "span", text: /Invitación pendiente/
+    assert_select "span", text: /Invitación enviada/, count: 0
+  end
+
+  test "show displays when the invitation was accepted" do
+    invited = User.invite!({ email: "accepted@test.com", first_name: "Accepted", last_name: "User" }, @user)
+    User.accept_invitation!(invitation_token: invited.raw_invitation_token, password: "secret123!", password_confirmation: "secret123!")
+
+    get user_url(invited)
+
+    assert_select "span", text: /Invitación aceptada · #{Regexp.escape(I18n.l(Date.current))}/
+    assert_select "span", text: /Invitación (enviada|pendiente)/, count: 0
+  end
+
+  test "show displays a locked user as locked, not active" do
+    users(:two).lock_access!(send_instructions: false)
+
+    get user_url(users(:two))
+
+    assert_select "span", text: /Bloqueado · #{Regexp.escape(I18n.l(Date.current))}/
+    assert_select "span", text: /Activo/, count: 0
   end
 
   test "should resend invitation email" do
@@ -163,6 +223,100 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
       post resend_invitation_user_url(pending_user)
     end
     assert_redirected_to user_url(pending_user)
+    assert pending_user.reload.invitation_pending?
+  end
+
+  test "index marks users whose invitation is still pending" do
+    pending_user = User.invite!({ email: "pending6@test.com", first_name: "Pendiente", last_name: "Zeta" }, @user)
+
+    get users_url
+
+    assert_select ".user-card", text: /#{pending_user.full_name}/ do
+      assert_select "span", text: /Invitación pendiente/
+    end
+    assert_select ".user-card", text: /#{users(:two).full_name}/ do
+      assert_select "span", text: /Invitación pendiente/, count: 0
+    end
+  end
+
+  test "a user without a password shows as pending, with the button to send the invitation" do
+    no_password = users(:two)
+    no_password.update_columns(encrypted_password: "", sign_in_count: 0)
+
+    get user_url(no_password)
+
+    assert_select "span", text: /Invitación pendiente/
+    assert_select "span", text: /Activo|Nunca ingresó/, count: 0
+    assert_select "form[action=?] button", resend_invitation_user_path(no_password), text: /Enviar invitación/
+  end
+
+  test "sending the invitation to a user without a password lets them set one" do
+    no_password = users(:two)
+    no_password.update_column(:encrypted_password, "")
+
+    assert_difference("ActionMailer::Base.deliveries.size") do
+      post resend_invitation_user_url(no_password)
+    end
+    no_password.reload
+    assert no_password.pending_activation?
+    assert no_password.invitation_sent_at
+
+    mail = ActionMailer::Base.deliveries.last
+    token = (mail.html_part || mail).body.decoded[/invitation_token=([^"&\s<]+)/, 1]
+    sign_out @user
+    put user_invitation_url, params: { user: { invitation_token: token, password: "secret123!", password_confirmation: "secret123!" } }
+
+    no_password.reload
+    assert no_password.encrypted_password.present?
+    assert_not no_password.pending_activation?
+  end
+
+  test "index marks users without a password as pending" do
+    users(:two).update_column(:encrypted_password, "")
+
+    get users_url
+
+    assert_select ".user-card", text: /#{users(:two).full_name}/ do
+      assert_select "span", text: /Invitación pendiente/
+    end
+  end
+
+  test "show offers to send the invitation until it's accepted or the user has signed in" do
+    pending_user = User.invite!({ email: "pending4@test.com", first_name: "Pending", last_name: "User" }, @user)
+    get user_url(pending_user)
+    assert_select "form[action=?]", resend_invitation_user_path(pending_user)
+
+    never_signed_in = users(:two)
+    never_signed_in.update_column(:last_sign_in_at, nil)
+    get user_url(never_signed_in)
+    assert_select "form[action=?] button", resend_invitation_user_path(never_signed_in), text: /Enviar invitación/
+
+    never_signed_in.update_column(:last_sign_in_at, 1.day.ago)
+    get user_url(never_signed_in)
+    assert_select "form[action=?]", resend_invitation_user_path(never_signed_in), count: 0
+  end
+
+  test "show doesn't offer to send the invitation once it was accepted" do
+    invited = User.invite!({ email: "accepted2@test.com", first_name: "Accepted", last_name: "User" }, @user)
+    User.accept_invitation!(invitation_token: invited.raw_invitation_token, password: "secret123!", password_confirmation: "secret123!")
+    invited.update_column(:last_sign_in_at, nil)
+
+    get user_url(invited)
+
+    assert_select "form[action=?]", resend_invitation_user_path(invited), count: 0
+  end
+
+  test "accepting the invitation activates the user created when inviting" do
+    pending_user = User.invite!({ email: "pending5@test.com", first_name: "Pending", last_name: "User" }, @user)
+    sign_out @user
+
+    put user_invitation_url, params: { user: { invitation_token: pending_user.raw_invitation_token, password: "secret123!", password_confirmation: "secret123!" } }
+
+    pending_user.reload
+    assert pending_user.invitation_accepted?
+    assert_not pending_user.invitation_pending?
+    assert_equal "Pending", pending_user.first_name
+    assert_includes User.mentionable, pending_user
   end
 
   test "registration route is not accessible" do

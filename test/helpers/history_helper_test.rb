@@ -89,7 +89,7 @@ class HistoryHelperTest < ActionView::TestCase
   end
 
   test "history_value shows polymorphic references by id" do
-    assert_equal "#5", history_value(User, "invited_by_id", 5)
+    assert_equal "#5", history_value(Comment, "commentable_id", 5)
   end
 
   test "history_value shows rich text as plain text" do

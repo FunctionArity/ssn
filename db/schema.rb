@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_02_180000) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_06_160000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -106,6 +106,29 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_02_180000) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["contact_group_id"], name: "index_contacts_on_contact_group_id"
+  end
+
+  create_table "devise_invitations", force: :cascade do |t|
+    t.string "invitation_token"
+    t.datetime "invitation_created_at"
+    t.datetime "invitation_sent_at"
+    t.datetime "invitation_accepted_at"
+    t.datetime "superseded_at"
+    t.string "superseded_reason"
+    t.datetime "revoked_at"
+    t.datetime "resource_created_at"
+    t.json "invite_key", default: {}, null: false
+    t.string "invite_key_digest", null: false
+    t.string "invitable_type"
+    t.bigint "invitable_id"
+    t.string "invited_by_type"
+    t.bigint "invited_by_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["invitable_type", "invitable_id"], name: "index_devise_invitations_on_invitable"
+    t.index ["invitable_type", "invite_key_digest"], name: "index_devise_invitations_on_type_and_invite_key"
+    t.index ["invitation_token"], name: "index_devise_invitations_on_invitation_token", unique: true
+    t.index ["invited_by_type", "invited_by_id"], name: "index_devise_invitations_on_invited_by"
   end
 
   create_table "guard_guardians", force: :cascade do |t|
@@ -230,13 +253,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_02_180000) do
     t.integer "failed_attempts", default: 0, null: false
     t.string "unlock_token"
     t.datetime "locked_at"
-    t.string "invitation_token"
-    t.datetime "invitation_created_at"
-    t.datetime "invitation_sent_at"
-    t.datetime "invitation_accepted_at"
     t.integer "invitation_limit"
-    t.string "invited_by_type"
-    t.bigint "invited_by_id"
     t.integer "invitations_count", default: 0
     t.integer "user_type", default: 0, null: false
     t.date "date_of_birth"
@@ -251,9 +268,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_02_180000) do
     t.string "last_sign_in_ip"
     t.index ["church_id"], name: "index_users_on_church_id"
     t.index ["email"], name: "index_users_on_email", unique: true
-    t.index ["invitation_token"], name: "index_users_on_invitation_token", unique: true
-    t.index ["invited_by_id"], name: "index_users_on_invited_by_id"
-    t.index ["invited_by_type", "invited_by_id"], name: "index_users_on_invited_by"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
   end
