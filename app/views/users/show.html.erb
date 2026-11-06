@@ -40,23 +40,36 @@
         </div>
         <div>
           <p class="text-xs font-medium text-gray-400 uppercase tracking-wide"><%= t(".status") %></p>
+          <%# Where the invitation stands, with its date, then whether the user is active: signed in at least
+              once and not locked. The full date and time is on hover. %>
+          <% status_badge = ->(text, icon, color, time = nil) {
+               tag.span(class: "inline-flex items-center gap-1.5 text-xs font-medium rounded-md border px-2 py-0.5 #{color}", title: (l(time, format: :long) if time)) do
+                 safe_join([ tag.i(class: "ph #{icon}"), text, (tag.span("· #{l(time.to_date)}", class: "font-normal") if time) ].compact, " ")
+               end
+             } %>
           <div class="mt-1 flex flex-wrap gap-1.5">
+            <% if @user.pending_activation? %>
+              <%# Invited and not accepted, or without a password; until an invitation is emailed, it's just pending. %>
+              <%= status_badge.(t(@user.invitation_sent_at ? ".invitation_sent" : ".invitation_pending"), "ph-envelope", "text-amber-600 bg-amber-50 border-amber-200", @user.invitation_sent_at) %>
+            <% elsif @user.invitation_accepted? %>
+              <%= status_badge.(t(".invitation_accepted"), "ph-check-circle", "text-green-600 bg-green-50 border-green-200", @user.invitation_accepted_at) %>
+            <% end %>
             <% if @user.access_locked? %>
-              <span class="inline-flex items-center gap-1.5 text-xs font-medium text-red-600 bg-red-50 border border-red-200 rounded-md px-2 py-0.5">
-                <i class="ph ph-lock-simple"></i> <%= t(".locked") %>
-              </span>
-            <% end %>
-            <% unless @user.invitation_accepted_at? %>
-              <span class="inline-flex items-center gap-1.5 text-xs font-medium text-amber-600 bg-amber-50 border border-amber-200 rounded-md px-2 py-0.5">
-                <i class="ph ph-envelope"></i> <%= t(".invitation_pending") %>
-              </span>
-            <% end %>
-            <% if @user.invitation_accepted_at? && !@user.access_locked? %>
-              <span class="inline-flex items-center gap-1.5 text-xs font-medium text-green-600 bg-green-50 border border-green-200 rounded-md px-2 py-0.5">
-                <i class="ph ph-check-circle"></i> <%= t(".active") %>
-              </span>
+              <%= status_badge.(t(".locked"), "ph-lock-simple", "text-red-600 bg-red-50 border-red-200", @user.locked_at) %>
+            <% elsif @user.sign_in_count.positive? %>
+              <%= status_badge.(t(".active"), "ph-check-circle", "text-green-600 bg-green-50 border-green-200") %>
+            <% elsif !@user.pending_activation? %>
+              <%# Not invited (e.g. created by seeds) and never signed in, so it isn't left without a status. %>
+              <%= status_badge.(t(".never_signed_in"), "ph-clock", "text-gray-500 bg-gray-50 border-gray-200") %>
             <% end %>
           </div>
+          <%# For active users. Devise's current_sign_in_at is the latest sign-in; last_sign_in_at the one before it. %>
+          <% signed_in_at = @user.current_sign_in_at || @user.last_sign_in_at %>
+          <% if !@user.access_locked? && @user.sign_in_count.positive? && signed_in_at %>
+            <p class="mt-1.5 flex items-center gap-1 text-xs text-gray-500" title="<%= l(signed_in_at, format: :long) %>">
+              <i class="ph ph-sign-in"></i> <%= t(".last_signed_in", time: l(signed_in_at, format: :short)) %>
+            </p>
+          <% end %>
         </div>
         <% if @user.phone.present? %>
           <div>
@@ -159,9 +172,9 @@
           <i class="ph ph-lock-simple"></i> <%= t(".lock") %>
         <% end %>
       <% end %>
-      <% if !@user.invitation_accepted_at? && policy(@user).resend_invitation? %>
+      <% if @user.invitation_needed? && policy(@user).resend_invitation? %>
         <%= button_to resend_invitation_user_path(@user), method: :post, form: { class: "w-full sm:w-auto" }, class: "w-full cursor-pointer flex items-center justify-center gap-1.5 rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500" do %>
-          <i class="ph ph-envelope"></i> <%= t(".resend_invitation") %>
+          <i class="ph ph-envelope"></i> <%= t(@user.invitation_sent_at ? ".resend_invitation" : ".send_invitation") %>
         <% end %>
       <% end %>
       <% if policy(@user).edit? %>
@@ -169,7 +182,7 @@
           <i class="ph ph-pencil-simple"></i> <%= t("edit") %>
         <% end %>
       <% end %>
-      <% if policy(@user).history? %>
+      <% if policy(@user).history? && @user.versions.count > 0%>
         <%= link_to history_user_path(@user), class: "w-full sm:w-auto flex items-center justify-center gap-1.5 rounded-md bg-white border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50" do %>
           <i class="ph ph-clock-counter-clockwise"></i> <%= t(".history") %>
           <span class="ml-0.5 min-w-5 rounded-full bg-gray-100 px-1.5 text-xs font-semibold text-gray-600 tabular-nums text-center"><%= @user.versions.count %></span>

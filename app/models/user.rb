@@ -10,10 +10,11 @@ class User < ApplicationRecord
   enum :user_type, { regular: 0, admin: 1, super_admin: 2 }, default: :regular
 
   # Secrets and IPs are never stored; Devise sign-in tracking and invitation bookkeeping alone don't create a version.
+  # Invitations themselves live in devise_invitations since devise_invitable 3.
   has_paper_trail \
-    skip: %i[encrypted_password reset_password_token unlock_token invitation_token remember_created_at current_sign_in_ip last_sign_in_ip],
+    skip: %i[encrypted_password reset_password_token unlock_token remember_created_at current_sign_in_ip last_sign_in_ip],
     ignore: %i[updated_at sign_in_count current_sign_in_at last_sign_in_at failed_attempts reset_password_sent_at
-               invitation_created_at invitation_sent_at invitation_limit invitations_count invited_by_type]
+               invitation_limit invitations_count]
 
   default_scope { order(:last_name, :first_name) }
 
@@ -30,7 +31,8 @@ class User < ApplicationRecord
     where("first_name ILIKE :q OR last_name ILIKE :q", q: sanitized)
   }
   # Users who can sign in, leaving out pending invitations and locked accounts.
-  scope :mentionable, -> { where(invitation_token: nil, locked_at: nil) }
+  scope :mentionable, -> { no_active_invitation.where(locked_at: nil) }
+  scope :without_password, -> { where(encrypted_password: [ nil, "" ]) }
 
   belongs_to :church, optional: true
 
@@ -71,6 +73,16 @@ class User < ApplicationRecord
     when "vocal"    then "text-red-600"
     when "priest"   then "text-purple-600"
     end
+  end
+
+  # Can't sign in until they accept an invitation: invited and not accepted yet, or without a password of their own.
+  def pending_activation?
+    invitation_pending? || encrypted_password.blank?
+  end
+
+  # Never accepted an invitation nor signed in, so sending one is how they get in.
+  def invitation_needed?
+    !invitation_accepted? && last_sign_in_at.nil?
   end
 
   def full_name

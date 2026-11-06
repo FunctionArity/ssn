@@ -7,7 +7,6 @@ one:
   phone: "1234567890"
   role: 1
   encrypted_password: <%= Devise::Encryptor.digest(User, 'password123') %>
-  invitation_accepted_at: <%= Time.current %>
 
 vocal_guardian:
   first_name: Maria
@@ -16,7 +15,6 @@ vocal_guardian:
   phone: "1234567895"
   role: 1
   encrypted_password: <%= Devise::Encryptor.digest(User, 'password123') %>
-  invitation_accepted_at: <%= Time.current %>
 
 unrelated_vocal:
   first_name: Pedro
@@ -25,7 +23,6 @@ unrelated_vocal:
   phone: "1234567896"
   role: 1
   encrypted_password: <%= Devise::Encryptor.digest(User, 'password123') %>
-  invitation_accepted_at: <%= Time.current %>
 
 two:
   first_name: Lucia
@@ -33,7 +30,6 @@ two:
   email: luis@rodriguez.com
   phone: "1234567891"
   encrypted_password: <%= Devise::Encryptor.digest(User, 'password123') %>
-  invitation_accepted_at: <%= Time.current %>
 
 agustin:
   first_name: Agustin
@@ -41,7 +37,6 @@ agustin:
   email: agustin@rodriguez.com
   phone: "1234567892"
   encrypted_password: <%= Devise::Encryptor.digest(User, 'password123') %>
-  invitation_accepted_at: <%= Time.current %>
 
 priest_one:
   first_name: Carlos
@@ -50,7 +45,6 @@ priest_one:
   phone: "1234567893"
   role: 2
   encrypted_password: <%= Devise::Encryptor.digest(User, 'password123') %>
-  invitation_accepted_at: <%= Time.current %>
 
 priest_two:
   first_name: Jorge
@@ -59,7 +53,6 @@ priest_two:
   phone: "1234567894"
   role: 2
   encrypted_password: <%= Devise::Encryptor.digest(User, 'password123') %>
-  invitation_accepted_at: <%= Time.current %>
 
 super_admin:
   first_name: Super
@@ -68,7 +61,6 @@ super_admin:
   phone: "1234567895"
   user_type: 2
   encrypted_password: <%= Devise::Encryptor.digest(User, 'password123') %>
-  invitation_accepted_at: <%= Time.current %>
 
 admin_user:
   first_name: Regular
@@ -77,4 +69,3 @@ admin_user:
   phone: "1234567896"
   user_type: 1
   encrypted_password: <%= Devise::Encryptor.digest(User, 'password123') %>
-  invitation_accepted_at: <%= Time.current %>

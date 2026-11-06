@@ -1,3 +1,4 @@
+<%# locals: role, users, pending_user_ids (ids of users whose invitation is still pending) %>
 <%
   accent_class = case role
     when "guardian" then "border-l-green-500"
@@ -52,8 +53,14 @@
             </div>
           </div>
 
-          <div class="flex items-center justify-end mt-auto pt-3 border-t border-gray-100">
-            <%= link_to user, class: "flex items-center gap-1 text-sm font-medium text-blue-600 hover:text-blue-800" do %>
+          <div class="flex flex-wrap items-center gap-2 mt-auto pt-3 border-t border-gray-100">
+            <%# Invited but not accepted yet, like the badge on the user's page. %>
+            <% if pending_user_ids.include?(user.id) %>
+              <span class="inline-flex items-center gap-1.5 whitespace-nowrap text-xs font-medium text-amber-600 bg-amber-50 border border-amber-200 rounded-md px-2 py-0.5">
+                <i class="ph ph-envelope"></i> <%= t("users.show.invitation_pending") %>
+              </span>
+            <% end %>
+            <%= link_to user, class: "ml-auto flex items-center gap-1 text-sm font-medium text-blue-600 hover:text-blue-800" do %>
               <i class="ph ph-arrow-right"></i> <%= t("users.index.show") %>
             <% end %>
           </div>

@@ -30,7 +30,8 @@
               <p class="font-semibold text-gray-900 leading-tight truncate"><%= user.full_name %></p>
               <p class="text-xs text-gray-400 truncate mt-0.5"><%= user.email %></p>
               <p class="text-xs text-gray-500 mt-1">
-                <i class="ph ph-clock"></i> <%= user.last_sign_in_at.strftime("%d/%m/%Y %H:%M") %>
+                <% signed_in_at = user.current_sign_in_at || user.last_sign_in_at %>
+                <i class="ph ph-clock"></i> <%= l(signed_in_at, format: :long) %>
               </p>
             </div>
           </div>

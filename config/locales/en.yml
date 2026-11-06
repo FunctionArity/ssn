@@ -171,6 +171,16 @@ en:
       destroy: Destroy this user
       destroy_confirm: "Are you sure you want to delete this user?"
       destroy_confirm_title: "Delete user"
+      locked: Locked
+      status: Status
+      active: Active
+      invitation_pending: Invitation pending
+      invitation_sent: Invitation sent
+      invitation_accepted: Invitation accepted
+      never_signed_in: Never signed in
+      last_signed_in: "Last signed in: %{time}"
+      resend_invitation: Resend invitation
+      send_invitation: Send invitation
       church: Church
       guard_setups: Guards
       vocal_guard_setups: Guards (vocal)

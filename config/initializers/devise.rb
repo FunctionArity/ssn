@@ -135,6 +135,10 @@ Devise.setup do |config|
   # config.send_password_change_notification = false
 
   # ==> Configuration for :invitable
+  # Inviting someone creates their user right away, with the name, role and church the admin entered,
+  # so they're listed and can be edited before they accept. devise_invitable 3 otherwise waits until acceptance.
+  config.create_resource_on_invitation = true
+
   # The period the generated invitation token is valid.
   # After this period, the invited resource won't be able to accept the invitation.
   # When invite_for is 0 (the default), the invitation won't expire.

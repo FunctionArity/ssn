@@ -1129,7 +1129,7 @@ class ServicesControllerTest < ActionDispatch::IntegrationTest
   test "mentionable_users exposes only the names and links of active users" do
     target = users(:vocal_guardian)
     users(:unrelated_vocal).update_column(:locked_at, Time.current)
-    users(:two).update_column(:invitation_token, "pending")
+    users(:two).invite!(nil, skip_invitation: true)
 
     get mentionable_users_service_url(@service)
 
