@@ -222,6 +222,24 @@ class GuardsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test "edit offers vocals and guardians as the guard's vocal, grouped by role" do
+    get edit_guard_url(@guard)
+
+    assert_select "select#guard_vocal_id" do
+      assert_select "optgroup[label=?] option[value=?]", I18n.t("activerecord.attributes.user.roles_plural.vocal"), users(:one).id.to_s
+      assert_select "optgroup[label=?] option[value=?]", I18n.t("activerecord.attributes.user.roles_plural.guardian"), users(:two).id.to_s
+      assert_select "option[value=?]", users(:priest_one).id.to_s, count: 0
+      assert_select "option[selected][value=?]", @guard.vocal_id.to_s
+    end
+  end
+
+  test "update can assign a guardian as the guard's vocal" do
+    patch guard_url(@guard), params: { guard: { vocal_id: users(:two).id, guardian_ids: [ users(:one).id ] } }
+
+    assert_redirected_to guard_url(@guard)
+    assert_equal users(:two), @guard.reload.vocal
+  end
+
   test "edit forbidden for non-vocal user" do
     sign_in users(:two)
     get edit_guard_url(@guard)
@@ -452,9 +470,11 @@ class GuardsControllerTest < ActionDispatch::IntegrationTest
 
     get edit_guard_url(@guard)
 
-    vocal_names = css_select("select[name='guard[vocal_id]'] option").reject { |o| o["value"].blank? }.map(&:text)
-    assert_includes vocal_names, "Alvarez Zoe"
-    assert_equal vocal_names.sort, vocal_names
+    # The vocal select groups vocals and guardians; each group is sorted by name.
+    groups = css_select("select[name='guard[vocal_id]'] optgroup").to_h { |g| [ g["label"], g.css("option").map(&:text) ] }
+    assert_includes groups.values.flatten, "Alvarez Zoe"
+    assert_includes groups.values.flatten, "Yanez Abel"
+    groups.each_value { |names| assert_equal names.sort, names }
 
     guardians = JSON.parse(css_select("[data-guardian-search-guardians-value]").first["data-guardian-search-guardians-value"])
     guardian_names = guardians.map { |g| g["name"] }
