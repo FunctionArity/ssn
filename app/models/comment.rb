@@ -6,6 +6,7 @@ class Comment < ApplicationRecord
   belongs_to :parent, class_name: "Comment", optional: true, inverse_of: :replies
   has_many :replies, class_name: "Comment", foreign_key: :parent_id, inverse_of: :parent, dependent: :destroy
   has_many :mentions, class_name: "CommentMention", dependent: :destroy
+  has_many :reactions, class_name: "CommentReaction", dependent: :delete_all
 
   # Characters of visible text; the markup doesn't count.
   MAX_LENGTH = 500

@@ -1,0 +1,7 @@
+<%# The app logo, linking home. The header has the nav links' padding and left border, and the logo, 28px wide,
+    is pulled 5px left so it's centered over their 18px icons. As tall as the collapse button, so the header
+    keeps its height when the button is hidden. %>
+<%= link_to root_path, class: "sidebar-logo -ml-[5px] flex items-center h-8 shrink-0 rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500",
+      title: t("sidebar.home"), aria: { label: t("sidebar.home") } do %>
+  <%= image_tag "icon.svg", alt: "", class: "h-7 w-7" %>
+<% end %>

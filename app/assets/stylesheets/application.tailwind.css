@@ -165,18 +165,50 @@ lexxy-toolbar {
     display: none;
   }
 
+  /* As tall as with their label (a 20px line), which the collapsed sidebar hides, so the links don't move up. */
   body.sidebar-collapsed .sidebar-link {
     justify-content: center;
+    min-height: 2.25rem;
   }
 
   body.sidebar-collapsed .sidebar-disclosure-caret {
     display: none;
   }
 
+  /* Collapsed, the header keeps its height so the links don't move: it shows the logo, and the expand
+     button takes its place on hover or keyboard focus. Without hover (touch screens), the button stays. */
   body.sidebar-collapsed .sidebar-header {
-    flex-direction: column;
+    position: relative;
     justify-content: center;
-    gap: 0.75rem;
+  }
+
+  body.sidebar-collapsed .sidebar-toggle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+    opacity: 0;
+    background-color: var(--color-white);
+  }
+
+  body.sidebar-collapsed .sidebar-header:hover .sidebar-toggle,
+  body.sidebar-collapsed .sidebar-toggle:focus-visible {
+    opacity: 1;
+  }
+
+  body.sidebar-collapsed .sidebar-toggle:hover {
+    background-color: var(--color-gray-100);
+  }
+
+  @media (hover: none) {
+    body.sidebar-collapsed .sidebar-toggle {
+      opacity: 1;
+    }
+  }
+
+  /* Centered like the collapsed links' icons, so it no longer needs pulling left. */
+  body.sidebar-collapsed .sidebar-logo {
+    margin-left: 0;
   }
 }
 

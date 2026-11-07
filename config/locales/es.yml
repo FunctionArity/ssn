@@ -227,7 +227,7 @@ es:
         one: "1 error impidió guardar este %{resource}:"
         other: "%{count} errores impidieron guardar este %{resource}:"
   sidebar:
-    menu: Menú
+    home: Ir al inicio
     setup: Configuración
     documentation: Documentación
     federacion: Federación
@@ -683,6 +683,11 @@ es:
       destroy_with_replies_confirm: ¿Está seguro de que desea eliminar este comentario? También se eliminarán todas sus respuestas.
       destroy_confirm_title: ¿ Eliminar comentario ?
       destroy_button: Eliminar
+    reactions:
+      add: Reaccionar
+      reaction:
+        one: "%{emoji} 1 reacción de %{names}"
+        other: "%{emoji} %{count} reacciones de %{names}"
     editor:
       remaining:
         one: Queda 1 carácter

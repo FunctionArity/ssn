@@ -57,6 +57,12 @@ class HomeControllerTest < ActionDispatch::IntegrationTest
     assert_select "a.sidebar-link[href=?]", federacion_path, text: /Federación/
   end
 
+  test "the sidebar logo links to the home page, on mobile and desktop" do
+    sign_in users(:one)
+    get services_url
+    assert_select "aside.sidebar a[href=?][aria-label=?] img[src*=icon]", root_path, I18n.t("sidebar.home"), count: 2
+  end
+
   test "dashboard has a quick access card to the headquarters" do
     sign_in users(:one)
     get root_url

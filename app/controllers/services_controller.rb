@@ -22,7 +22,7 @@ class ServicesController < ApplicationController
   end
 
   def show
-    @comments = @service.comments.newest_first.includes(:mentions, user: { avatar_attachment: :blob }).to_a
+    @comments = @service.comments.newest_first.includes(:mentions, reactions: :user, user: { avatar_attachment: :blob }).to_a
     @unread_comment_ids = current_user.comment_mentions.unread.where(comment: @comments).pluck(:comment_id)
   end
 
