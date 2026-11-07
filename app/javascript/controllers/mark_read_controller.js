@@ -6,8 +6,9 @@ export default class extends Controller {
   static values = { url: String }
 
   read(event) {
-    // Links and forms inside the comment, like a mention or delete, keep their own behavior. Replying marks it read too.
-    if (this.sent || event.target.closest("a, form")) return
+    // Links and forms inside the comment, like a mention or delete, keep their own behavior, and so do its
+    // reactions. Replying marks it read too.
+    if (this.sent || event.target.closest("a, form, [data-keeps-unread]")) return
     this.sent = true
 
     const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content

@@ -1,9 +1,6 @@
 <aside class="sidebar shrink-0 bg-white border-r border-gray-200 flex flex-col" data-controller="sidebar">
-  <div class="md:hidden flex items-center justify-between px-4 py-4 border-b border-gray-100 shrink-0">
-    <div class="flex items-center gap-2">
-      <%= image_tag "icon.svg", class: "h-7 w-7" %>
-      <span class="text-sm font-semibold text-gray-700"><%= t("sidebar.menu") %></span>
-    </div>
+  <div class="md:hidden flex items-center justify-between px-3 py-4 border-l-2 border-l-transparent border-b border-gray-100 shrink-0">
+    <%= render "layouts/sidebar_logo" %>
     <button type="button"
             class="cursor-pointer flex items-center justify-center w-8 h-8 rounded-md text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors"
             data-action="click->mobile-nav#close">
@@ -11,13 +8,10 @@
     </button>
   </div>
 
-  <div class="sidebar-header hidden md:flex items-center justify-between px-4 py-4 border-b border-gray-100 shrink-0">
-    <div class="flex items-center gap-2">
-      <%= image_tag "icon.svg", class: "h-7 w-7 shrink-0" %>
-      <span class="sidebar-label text-sm font-semibold text-gray-700"><%= t("sidebar.menu") %></span>
-    </div>
+  <div class="sidebar-header hidden md:flex items-center justify-between px-3 py-4 border-l-2 border-l-transparent border-b border-gray-100 shrink-0">
+    <%= render "layouts/sidebar_logo" %>
     <button type="button"
-            class="cursor-pointer flex items-center justify-center w-8 h-8 rounded-md text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors shrink-0"
+            class="sidebar-toggle cursor-pointer flex items-center justify-center w-8 h-8 rounded-md text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors shrink-0"
             data-action="click->sidebar#toggle"
             title="<%= t("sidebar.toggle") %>">
       <i class="ph ph-caret-line-left text-lg" data-sidebar-target="icon"></i>

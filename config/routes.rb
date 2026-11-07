@@ -35,6 +35,8 @@ Rails.application.routes.draw do
   concern :commentable do
     resources :comments, only: %i[ show create edit update destroy ] do
       post :read, on: :member
+      # Toggles the current user's reaction with the given emoji.
+      resources :reactions, only: :create, controller: "comment_reactions"
     end
   end
 

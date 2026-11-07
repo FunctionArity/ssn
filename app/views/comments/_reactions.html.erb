@@ -1,0 +1,39 @@
+<%# The emoji reactions to a comment, and the picker to add one. Clicking a reaction, or an emoji in the
+    picker, toggles the current user's. locals: comment %>
+<% by_emoji = comment.reactions.group_by(&:emoji) %>
+<% url = polymorphic_path([ comment.commentable, comment, :reactions ]) %>
+<%# Reacting doesn't mark the comment read: that would re-render it and close the picker. %>
+<%= tag.div id: dom_id(comment, :reactions), class: "mt-2 flex flex-wrap items-center gap-1.5",
+      data: { controller: "lazy-toggle", keeps_unread: true } do %>
+  <% CommentReaction::EMOJIS.each do |emoji| %>
+    <% reactions = by_emoji[emoji] %>
+    <% next unless reactions %>
+    <% mine = reactions.any? { |reaction| reaction.user_id == current_user.id } %>
+    <% names = reactions.map { |reaction| reaction.user.full_name }.to_sentence %>
+    <%= button_to url, params: { emoji: }, form: { class: "contents" }, title: names,
+          aria: { pressed: mine, label: t(".reaction", emoji:, count: reactions.size, names:) },
+          class: [ "cursor-pointer inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-xs transition-colors",
+                   mine ? "border-blue-300 bg-blue-50 text-blue-700 hover:bg-blue-100" : "border-gray-200 bg-white text-gray-600 hover:bg-gray-50" ] do %>
+      <span aria-hidden="true"><%= emoji %></span>
+      <span class="font-medium tabular-nums" aria-hidden="true"><%= reactions.size %></span>
+    <% end %>
+  <% end %>
+
+  <%= tag.button type: "button",
+        class: "cursor-pointer flex items-center justify-center w-7 h-6 rounded-full text-gray-400 hover:text-blue-600 hover:bg-gray-100 transition-colors",
+        title: t(".add"), aria: { label: t(".add"), expanded: false, controls: dom_id(comment, :reaction_picker) },
+        data: { action: "lazy-toggle#toggle" } do %>
+    <i class="ph ph-smiley text-base"></i>
+  <% end %>
+  <%= tag.div id: dom_id(comment, :reaction_picker), hidden: true, role: "group", aria: { label: t(".add") },
+        class: "flex items-center gap-0.5 rounded-full border border-gray-200 bg-white px-1 py-0.5 shadow-sm",
+        data: { lazy_toggle_target: "content" } do %>
+    <% CommentReaction::EMOJIS.each do |emoji| %>
+      <% mine = by_emoji[emoji]&.any? { |reaction| reaction.user_id == current_user.id } %>
+      <%= button_to emoji, url, params: { emoji: }, form: { class: "contents" },
+            aria: { pressed: mine.present? },
+            class: [ "cursor-pointer flex items-center justify-center w-8 h-8 rounded-full text-lg hover:bg-gray-100 transition-transform hover:scale-110",
+                     ("bg-blue-50" if mine) ] %>
+    <% end %>
+  <% end %>
+<% end %>

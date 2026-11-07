@@ -46,6 +46,7 @@ class User < ApplicationRecord
   has_many :comments, dependent: :destroy
   has_many :comment_mentions, dependent: :destroy
   has_many :push_subscriptions, dependent: :delete_all
+  has_many :comment_reactions, dependent: :delete_all
   has_many :guard_setups, through: :guard_setup_guardians
 
   attr_accessor :guard_setup_day_number

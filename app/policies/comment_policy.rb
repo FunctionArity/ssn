@@ -10,6 +10,11 @@ class CommentPolicy < ApplicationPolicy
     user.present?
   end
 
+  # Anyone in the conversation can react, to their own comments too.
+  def react?
+    user.present?
+  end
+
   # Only the author, and only while nobody has replied, so a reply never answers text that changed.
   def update?
     record.user == user && record.replies.none?

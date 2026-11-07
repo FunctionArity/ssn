@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_06_180000) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_06_200000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -58,6 +58,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_06_180000) do
     t.datetime "updated_at", null: false
     t.index ["comment_id", "user_id"], name: "index_comment_mentions_on_comment_id_and_user_id", unique: true
     t.index ["user_id", "read_at"], name: "index_comment_mentions_on_user_id_and_read_at"
+  end
+
+  create_table "comment_reactions", force: :cascade do |t|
+    t.bigint "comment_id", null: false
+    t.bigint "user_id", null: false
+    t.string "emoji", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["comment_id", "user_id", "emoji"], name: "index_comment_reactions_on_comment_id_and_user_id_and_emoji", unique: true
+    t.index ["user_id"], name: "index_comment_reactions_on_user_id"
   end
 
   create_table "comments", force: :cascade do |t|
@@ -299,6 +309,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_06_180000) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "comment_mentions", "comments"
   add_foreign_key "comment_mentions", "users"
+  add_foreign_key "comment_reactions", "comments", on_delete: :cascade
+  add_foreign_key "comment_reactions", "users", on_delete: :cascade
   add_foreign_key "comments", "comments", column: "parent_id", on_delete: :nullify
   add_foreign_key "comments", "users"
   add_foreign_key "contact_directories", "headquarters"
