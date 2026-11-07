@@ -1,0 +1,28 @@
+<%# Turns push notifications on or off on this device. Only one of the rows shows, depending on the browser. %>
+<% button_class = "cursor-pointer self-start sm:self-auto sm:ml-auto shrink-0 whitespace-nowrap inline-flex items-center gap-1.5 rounded-md bg-white border border-gray-300 px-3 py-1.5 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 transition-colors" %>
+<div data-controller="push-subscription"
+     data-push-subscription-public-key-value="<%= PushSubscription.vapid[:public_key] %>"
+     data-push-subscription-url-value="<%= push_subscription_path %>"
+     class="text-sm text-gray-600 border-b border-gray-100 bg-gray-50/60">
+  <div data-push-subscription-target="off" hidden class="flex flex-col gap-3 px-6 py-3 sm:flex-row sm:items-center">
+    <p class="flex items-start gap-2"><i class="ph ph-device-mobile text-lg text-gray-400 shrink-0"></i> <span><%= t(".off") %></span></p>
+    <button type="button" data-action="push-subscription#enable" class="<%= button_class %>">
+      <i class="ph ph-bell-ringing"></i> <%= t(".enable") %>
+    </button>
+  </div>
+
+  <div data-push-subscription-target="on" hidden class="flex flex-col gap-3 px-6 py-3 sm:flex-row sm:items-center">
+    <p class="flex items-start gap-2"><i class="ph ph-check-circle text-lg text-green-600 shrink-0"></i> <span><%= t(".on") %></span></p>
+    <button type="button" data-action="push-subscription#disable" class="<%= button_class %>">
+      <i class="ph ph-bell-slash"></i> <%= t(".disable") %>
+    </button>
+  </div>
+
+  <div data-push-subscription-target="blocked" hidden class="flex flex-col gap-3 px-6 py-3 sm:flex-row sm:items-center">
+    <p class="flex items-start gap-2"><i class="ph ph-prohibit text-lg text-gray-400 shrink-0"></i> <span><%= t(".blocked") %></span></p>
+  </div>
+
+  <div data-push-subscription-target="install" hidden class="flex flex-col gap-3 px-6 py-3 sm:flex-row sm:items-center">
+    <p class="flex items-start gap-2"><i class="ph ph-export text-lg text-gray-400 shrink-0"></i> <span><%= t(".install") %></span></p>
+  </div>
+</div>

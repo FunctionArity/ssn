@@ -471,6 +471,7 @@ en:
       mark_read: Click to mark as read
       destroy: Delete comment
       destroy_confirm: Are you sure you want to delete this comment?
+      destroy_with_replies_confirm: Are you sure you want to delete this comment? All its replies will be deleted too.
       destroy_confirm_title: Delete comment
       destroy_button: Delete
     editor:
@@ -501,6 +502,19 @@ en:
         zero: No unread comments
         one: "%{count} unread comment"
         other: "%{count} unread comments"
+    push_toggle:
+      "off": Get a notification on this device when someone mentions you in a comment.
+      enable: Turn on notifications
+      "on": Notifications are on for this device.
+      disable: Turn off
+      blocked: Notifications are blocked in this browser. You can allow them in its settings.
+      install: To get notifications on iPhone, tap Share, then "Add to Home Screen", and open the app from there.
+  push_notifications:
+    mention:
+      title: "%{author} mentioned you"
+      open: View comment
+      body:
+        service: "Service for %{name}: %{text}"
   services:
     history:
       back: Back to service

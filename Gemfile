@@ -50,6 +50,8 @@ gem "kamal", require: false
 # Add HTTP asset caching/compression and X-Sendfile acceleration to Puma [https://github.com/basecamp/thruster/]
 gem "thruster", require: false
 gem "csv"
+# Web Push notifications to users' browsers and phones (mentions in comments).
+gem "web-push"
 gem "prawn"
 gem "prawn-table"
 gem "prawn-svg"

@@ -19,6 +19,8 @@ class CommentTest < ActiveSupport::TestCase
     assert_equal [ mentioned ], comment.mentions.map(&:user)
     assert comment.mentions.sole.unread?
     assert_enqueued_email_with CommentMailer, :mention, params: { comment: comment, user: mentioned }
+    assert_enqueued_with job: MentionPushJob, args: [ comment.mentions.sole ]
+    assert_enqueued_jobs 1, only: MentionPushJob
   end
 
   test "skips the author, locked and invited users, and links that aren't mentions" do
@@ -32,6 +34,7 @@ class CommentTest < ActiveSupport::TestCase
       HTML
       assert_empty comment.mentions
     end
+    assert_no_enqueued_jobs only: MentionPushJob
   end
 
   test "keeps a comment that only has a mention" do

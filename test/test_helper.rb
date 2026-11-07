@@ -27,3 +27,27 @@ module ActiveSupport
     # Add more helper methods to be used by all tests here...
   end
 end
+
+# Web Push with throwaway VAPID keys, collecting what would be sent instead of calling the push services.
+module WebPushTestHelper
+  # vapid: false is a server without VAPID keys, where push notifications are off.
+  def capture_web_pushes(raising: nil, vapid: true)
+    sent = []
+    keys = WebPush.generate_key
+    vapid = { subject: "mailto:test@example.test", public_key: (keys.public_key if vapid), private_key: (keys.private_key if vapid) }
+
+    replacing(PushSubscription, :vapid, -> { vapid }) do
+      replacing(WebPush, :payload_send, ->(**args) { sent << args; raise raising if raising }) { yield sent }
+    end
+  end
+
+  private
+
+  def replacing(object, name, implementation)
+    original = object.method(name)
+    object.define_singleton_method(name, implementation)
+    yield
+  ensure
+    object.define_singleton_method(name, original)
+  end
+end

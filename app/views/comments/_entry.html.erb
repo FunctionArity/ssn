@@ -58,7 +58,7 @@
       <% end %>
       <% if policy(comment).destroy? %>
         <%= button_to polymorphic_path([ comment.commentable, comment ]), method: :delete,
-              form: { class: ("ml-auto" if comment.user == current_user && !editable), data: { turbo_confirm: t("comments.comment.destroy_confirm"), turbo_confirm_title: t("comments.comment.destroy_confirm_title"), turbo_confirm_button: t("comments.comment.destroy_button"), turbo_confirm_level: "danger" } },
+              form: { class: ("ml-auto" if comment.user == current_user && !editable), data: { turbo_confirm: t(comment.replies.exists? ? "comments.comment.destroy_with_replies_confirm" : "comments.comment.destroy_confirm"), turbo_confirm_title: t("comments.comment.destroy_confirm_title"), turbo_confirm_button: t("comments.comment.destroy_button"), turbo_confirm_level: "danger" } },
               class: "cursor-pointer flex items-center text-gray-400 hover:text-red-600",
               title: t("comments.comment.destroy"),
               aria: { label: t("comments.comment.destroy") } do %>
