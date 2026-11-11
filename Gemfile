@@ -25,6 +25,12 @@ gem "bcrypt", "~> 3.1.22"
 # Flexible authentication solution for Rails [https://github.com/heartcombo/devise]
 gem "devise"
 gem "devise_invitable"
+# Sign in with Google [https://github.com/zquestz/omniauth-google-oauth2]
+gem "omniauth-google-oauth2"
+# Only lets OmniAuth start with a POST that carries the CSRF token.
+gem "omniauth-rails_csrf_protection"
+# Checks the ID tokens of Google One Tap.
+gem "jwt"
 gem "pretender"
 gem "pundit"
 gem "friendly_id"

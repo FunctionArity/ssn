@@ -9,6 +9,7 @@
          { "@type": "WebSite", name: SeoHelper::SITE_NAME, url: root_url, inLanguage: "es", publisher: { "@id": "#{root_url}#organization" } }
        ]
      ) %>
+  <%= render "devise/shared/google_one_tap" %>
 <% end %>
 <% if user_signed_in? %>
   <%= render "dashboard" %>
