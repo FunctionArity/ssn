@@ -88,6 +88,13 @@ class User < ApplicationRecord
     !invitation_accepted? && last_sign_in_at.nil?
   end
 
+  # devise_invitable only treats an invitation as "provisioning" if it originally created the resource, so
+  # resending one to a user who's still passwordless isn't provisioning by its definition - it would strip
+  # the password params on acceptance, assuming (wrongly, here) that the resource is already active.
+  def resource_previously_provisioned?
+    super && encrypted_password.present?
+  end
+
   def full_name
     "#{last_name} #{first_name}"
   end

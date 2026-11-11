@@ -262,7 +262,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert no_password.invitation_sent_at
 
     mail = ActionMailer::Base.deliveries.last
-    token = (mail.html_part || mail).body.decoded[/invitation_token=([^"&\s<]+)/, 1]
+    token = CGI.unescape((mail.html_part || mail).body.decoded[/invitation_token=([^"&\s<]+)/, 1])
     sign_out @user
     put user_invitation_url, params: { user: { invitation_token: token, password: "secret123!", password_confirmation: "secret123!" } }
 
