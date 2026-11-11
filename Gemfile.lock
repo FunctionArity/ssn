@@ -573,6 +573,7 @@ DEPENDENCIES
   image_processing (~> 2.2)
   jbuilder
   jsbundling-rails
+  jwt
   kamal
   letter_opener
   minitest-reporters

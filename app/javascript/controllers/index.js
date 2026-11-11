@@ -25,6 +25,9 @@ application.register("clipboard", ClipboardController)
 import DisclosureController from "./disclosure_controller"
 application.register("disclosure", DisclosureController)
 
+import GoogleOneTapController from "./google_one_tap_controller"
+application.register("google-one-tap", GoogleOneTapController)
+
 import GuardDateReloadController from "./guard_date_reload_controller"
 application.register("guard-date-reload", GuardDateReloadController)
 

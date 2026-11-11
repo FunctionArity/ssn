@@ -1,0 +1,8 @@
+<%# Google One Tap for signed out visitors (google_one_tap_controller.js): Google shows "Sign in as …" for the
+    account signed in to the browser, and its token is posted with this form. Nothing without a Google client. %>
+<% if GoogleIdToken.client_id.present? %>
+  <%= form_with url: google_one_tap_path, html: { hidden: true },
+        data: { turbo: false, controller: "google-one-tap", google_one_tap_client_id_value: GoogleIdToken.client_id } do %>
+    <%= hidden_field_tag :credential, nil, id: nil, data: { google_one_tap_target: "credential" } %>
+  <% end %>
+<% end %>

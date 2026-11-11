@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
   devise_for :users, path: "auth", skip: [ :registrations ], controllers: { omniauth_callbacks: "users/omniauth_callbacks" }
+  # Google One Tap posts the ID token of the account the visitor picked here.
+  post "auth/google_one_tap", to: "users/google_one_tap#create", as: :google_one_tap
 
   # Background jobs dashboard. Only super admins see it; it's checked against the real user, even while impersonating.
   authenticate :user, ->(user) { user.super_admin? } do

@@ -317,8 +317,8 @@ Devise.setup do |config|
   # Sign in with Google, for users who already have an account (Users::OmniauthCallbacksController).
   # Google's redirect URI: https://<host>/auth/auth/google_oauth2/callback
   config.omniauth :google_oauth2,
-                  Rails.application.credentials.dig(:google, :client_id) || ENV["GOOGLE_CLIENT_ID"],
-                  Rails.application.credentials.dig(:google, :client_secret) || ENV["GOOGLE_CLIENT_SECRET"],
+                  Rails.application.credentials.dig(:google, :client_id),
+                  Rails.application.credentials.dig(:google, :client_secret),
                   scope: "email", prompt: "select_account"
 
   # ==> Warden configuration
