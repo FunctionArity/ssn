@@ -408,6 +408,8 @@ es:
       title: "Iniciar sesión"
       submit: "Iniciar sesión"
       remember_me: "Recordarme"
+      or: "o"
+      google: "Continuar con Google"
     registrations:
       new:
         title: "Registrarse"
@@ -482,6 +484,7 @@ es:
     failure:
       already_authenticated: "Ya has iniciado sesión."
       inactive: "Tu cuenta aún no ha sido activada."
+      invited: "Tienes una invitación pendiente. Acéptala desde el email para terminar de crear tu cuenta."
       invalid: "%{authentication_keys} o contraseña inválidos."
       locked: "Tu cuenta está bloqueada."
       last_attempt: "Tienes un intento más antes de que tu cuenta sea bloqueada."
@@ -500,6 +503,8 @@ es:
     omniauth_callbacks:
       failure: "No pudimos autenticarte desde %{kind} porque \"%{reason}\"."
       success: "Has sido autenticado exitosamente desde tu cuenta de %{kind}."
+      google_failure: "No se pudo iniciar sesión con Google. Inténtalo de nuevo."
+      no_account: "No hay una cuenta con ese email de Google. Pide a un administrador que te invite."
     passwords:
       no_token: "No puedes acceder a esta página sin venir de un correo de restablecimiento de contraseña. Si vienes de un correo de restablecimiento, asegúrate de usar la URL completa proporcionada."
       send_instructions: "Recibirás un correo electrónico con instrucciones sobre cómo restablecer tu contraseña en unos minutos."

@@ -2,7 +2,8 @@ class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :invitable, :database_authenticatable,
-         :recoverable, :rememberable, :validatable, :lockable, :trackable
+         :recoverable, :rememberable, :validatable, :lockable, :trackable,
+         :omniauthable, omniauth_providers: %i[google_oauth2]
 
   has_one_attached :avatar, service: :amazon_avatar
 
@@ -93,6 +94,14 @@ class User < ApplicationRecord
   # the password params on acceptance, assuming (wrongly, here) that the resource is already active.
   def resource_previously_provisioned?
     super && encrypted_password.present?
+  end
+
+  # The user Google signed in, by the email Google verified. Accounts are only made by invitation, so an
+  # email without one finds nobody. Locked users and pending invitations are then refused by Devise.
+  def self.from_google(auth)
+    return unless auth.info.email.present? && auth.extra.raw_info.email_verified
+
+    find_by(email: auth.info.email.downcase)
   end
 
   def full_name

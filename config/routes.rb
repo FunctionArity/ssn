@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  devise_for :users, path: "auth", skip: [ :registrations ]
+  devise_for :users, path: "auth", skip: [ :registrations ], controllers: { omniauth_callbacks: "users/omniauth_callbacks" }
 
   # Background jobs dashboard. Only super admins see it; it's checked against the real user, even while impersonating.
   authenticate :user, ->(user) { user.super_admin? } do

@@ -639,6 +639,8 @@ en:
       title: "Log in"
       submit: "Log in"
       remember_me: "Remember me"
+      or: "or"
+      google: "Continue with Google"
     registrations:
       new:
         title: "Sign up"
