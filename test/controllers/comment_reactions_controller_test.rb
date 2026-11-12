@@ -2,7 +2,6 @@ require "test_helper"
 
 class CommentReactionsControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
-  include MethodReplacement
 
   TURBO_STREAM = { "Accept" => "text/vnd.turbo-stream.html" }.freeze
 
@@ -48,7 +47,7 @@ class CommentReactionsControllerTest < ActionDispatch::IntegrationTest
     uniqueness = CommentReaction.validators_on(:emoji).grep(ActiveRecord::Validations::UniquenessValidator).sole
     duplicate_insert = ->(*) { raise ActiveRecord::RecordNotUnique, "duplicate key value violates unique constraint" }
 
-    replacing(uniqueness, :validate_each, duplicate_insert) do
+    uniqueness.stub(:validate_each, duplicate_insert) do
       post service_comment_reactions_url(@service, @comment), params: { emoji: "👍" }, headers: TURBO_STREAM
     end
 

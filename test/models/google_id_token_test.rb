@@ -11,8 +11,17 @@ class GoogleIdTokenTest < ActiveSupport::TestCase
 
   teardown { Rails.cache = @original_cache }
 
+  # CI can't read the real credentials, so the test brings its own.
   test "the client id is the app's Google client from the credentials" do
-    assert_equal Rails.application.credentials.dig(:google, :client_id), GoogleIdToken.client_id
+    credentials = { google: { client_id: GOOGLE_CLIENT_ID } }
+
+    Rails.application.stub(:credentials, credentials) do
+      assert_equal GOOGLE_CLIENT_ID, GoogleIdToken.client_id
+    end
+  end
+
+  test "there's no client id without Google credentials" do
+    Rails.application.stub(:credentials, {}) { assert_nil GoogleIdToken.client_id }
   end
 
   # verify
@@ -41,7 +50,7 @@ class GoogleIdTokenTest < ActiveSupport::TestCase
   test "rejects every token when the app has no Google client" do
     token = with_google_keys { google_id_token }
 
-    replacing(GoogleIdToken, :client_id, -> { nil }) { assert_nil GoogleIdToken.verify(token) }
+    GoogleIdToken.stub(:client_id, nil) { assert_nil GoogleIdToken.verify(token) }
   end
 
   test "rejects tokens that aren't Google's for this app, still valid" do
@@ -66,7 +75,7 @@ class GoogleIdTokenTest < ActiveSupport::TestCase
   test "verifies tokens with the keys fetched from Google" do
     keys = JWT::JWK::Set.new(google_signing_key).export.to_json
 
-    claims = replacing(GoogleIdToken, :client_id, -> { GOOGLE_CLIENT_ID }) do
+    claims = GoogleIdToken.stub(:client_id, GOOGLE_CLIENT_ID) do
       with_google_certs(keys) { GoogleIdToken.verify(google_id_token(email: "ana@example.test")) }
     end
 
@@ -114,7 +123,7 @@ class GoogleIdTokenTest < ActiveSupport::TestCase
   test "has no keys when Google can't be reached and none are cached" do
     warnings = []
 
-    replacing(Rails.logger, :warn, ->(message) { warnings << message }) do
+    Rails.logger.stub(:warn, ->(message) { warnings << message }) do
       [ Timeout::Error.new, Errno::ECONNREFUSED.new ].each do |error|
         with_google_certs(raising: error) { assert_equal [], GoogleIdToken.jwks }
       end
@@ -140,6 +149,6 @@ class GoogleIdTokenTest < ActiveSupport::TestCase
       block.call(http)
     end
 
-    replacing(Net::HTTP, :start, fake_start, &)
+    Net::HTTP.stub(:start, fake_start, &)
   end
 end

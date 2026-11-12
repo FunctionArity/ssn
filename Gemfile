@@ -100,6 +100,8 @@ group :test do
   gem "faker"
   gem "simplecov", require: false
   gem "minitest-reporters"
+  # Object#stub, which Minitest 6 moved out of minitest itself.
+  gem "minitest-mock"
 end
 
 gem "honeybadger", "~> 6.10"
