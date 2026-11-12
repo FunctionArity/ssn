@@ -50,7 +50,11 @@ class HeadquartersController < ApplicationController
 
   def destroy
     authorize @headquarter
-    @headquarter.destroy!
+    # A sede with users, guards or services keeps them: it can't be deleted.
+    unless @headquarter.destroy
+      redirect_to @headquarter, alert: t("headquarters.notices.not_destroyed"), status: :see_other
+      return
+    end
 
     respond_to do |format|
       format.html { redirect_to headquarters_path, notice: t("headquarters.notices.destroyed"), status: :see_other }

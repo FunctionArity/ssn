@@ -1,0 +1,26 @@
+<%# The sede the user works in. Super admins can switch to another one. %>
+<% if policy(current_headquarter).switch? %>
+  <details class="group rounded-lg border border-gray-100 bg-gray-50 overflow-hidden" data-controller="disclosure">
+    <summary data-action="click->disclosure#toggle" title="<%= t("sidebar.headquarter") %>" class="sidebar-link flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 cursor-pointer list-none select-none">
+      <i class="ph ph-map-pin text-lg"></i>
+      <span class="sidebar-label truncate"><%= current_headquarter.city %></span>
+      <i class="ph ph-caret-right sidebar-disclosure-caret text-xs ml-auto transition-transform duration-300 group-open:rotate-90"></i>
+    </summary>
+    <div id="headquarter_switcher" data-disclosure-target="content" class="overflow-hidden border-t border-gray-100 divide-y divide-gray-100">
+      <% Headquarter.order(:city).each do |headquarter| %>
+        <% current = headquarter == current_headquarter %>
+        <%= button_to current_headquarter_path, method: :patch, params: { headquarter_id: headquarter.id }, disabled: current,
+                      form: { class: "block" },
+                      class: "sidebar-link w-full cursor-pointer flex items-center gap-2 px-3 py-2 text-sm font-medium border-l-2 #{current ? 'text-blue-700 border-blue-600 cursor-default' : 'text-gray-600 border-transparent hover:bg-gray-100 hover:text-gray-900'}" do %>
+          <i class="ph <%= current ? "ph-check" : "ph-buildings" %> text-lg"></i>
+          <span class="sidebar-label truncate"><%= headquarter.city %></span>
+        <% end %>
+      <% end %>
+    </div>
+  </details>
+<% else %>
+  <div title="<%= t("sidebar.headquarter") %>" class="sidebar-link flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-500 border-l-2 border-transparent">
+    <i class="ph ph-map-pin text-lg"></i>
+    <span class="sidebar-label truncate"><%= current_headquarter.city %></span>
+  </div>
+<% end %>

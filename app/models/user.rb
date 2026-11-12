@@ -5,6 +5,9 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable, :lockable, :trackable,
          :omniauthable, omniauth_providers: %i[google_oauth2]
 
+  # A user works in one sede. Users are still found by email across sedes when they sign in.
+  acts_as_tenant :headquarter
+
   has_one_attached :avatar, service: :amazon_avatar
 
   enum :role, { guardian: 0, vocal: 1, priest: 2 }, default: :guardian

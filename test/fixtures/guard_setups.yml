@@ -1,9 +1,11 @@
 one:
+  headquarter: one
   day_number: 1
   notes: "Test guard setup notes"
   vocal: one
 
 two:
+  headquarter: one
   day_number: 20
   notes: "Second test guard setup notes"
   vocal: vocal_guardian

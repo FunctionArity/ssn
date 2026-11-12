@@ -1,4 +1,5 @@
 one:
+  headquarter: one
   full_name: "Juan Pérez"
   due_date: "2026-03-01"
   status: pending
@@ -7,6 +8,7 @@ one:
   position: 1
 
 completed_one:
+  headquarter: one
   full_name: "Maria López"
   due_date: "2026-03-02"
   status: completed

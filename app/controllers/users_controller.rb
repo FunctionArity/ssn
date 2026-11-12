@@ -11,7 +11,8 @@ class UsersController < ApplicationController
     @users_by_role = (searching ? User.search_by_name(@query) : User.all).includes(:devise_invitations).grouped_by_role
 
     return unless current_user.super_admin?
-    @recent_logins = User.unscoped.recent_logins
+    # unscoped drops the sede scope along with the ordering, so the sede goes back in.
+    @recent_logins = User.unscoped.where(headquarter: current_headquarter).recent_logins
     @recent_logins = @recent_logins.search_by_name(@query) if searching
   end
 

@@ -2,6 +2,7 @@ class PriestSetup < ApplicationRecord
   WEEK_NAMES = %w[First Second Third Fourth Fifth Sixth].freeze
   DAY_NAMES = %w[Sunday Monday Tuesday Wednesday Thursday Friday Saturday].freeze
 
+  acts_as_tenant :headquarter
   belongs_to :priest, class_name: "User"
 
   validates :week_number, inclusion: { in: 1..6 }, allow_nil: true

@@ -1,3 +1,6 @@
+# The guards and services so far are the Mendoza sede's.
+ActsAsTenant.current_tenant = Headquarter.friendly.find("mendoza")
+
 day = ENV["DAY"].presence&.to_i || Date.current.day
 
 guard_setup = GuardSetup.find_by(day_number: day)
