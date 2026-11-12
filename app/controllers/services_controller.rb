@@ -42,7 +42,7 @@ class ServicesController < ApplicationController
 
   # Options for the @ prompt of the comments editor, which filters them as the user types.
   def mentionable_users
-    # A service's conversation is open to every user; the new service form needs permission to create one.
+    # A service's conversation is open to every user; the new service form, for its note, needs permission to create one.
     service = params[:id] ? Service.find(params[:id]) : Service.new(guard_id: params[:guard_id])
     authorize service, params[:id] ? :comment? : :new?
     @users = User.mentionable
@@ -112,7 +112,7 @@ class ServicesController < ApplicationController
   end
 
   def create
-    @service = Service.new(service_params.merge(created_by: current_user, first_comment: params.dig(:service, :first_comment)))
+    @service = Service.new(service_params.merge(created_by: current_user))
     authorize @service
 
     respond_to do |format|
@@ -195,6 +195,6 @@ class ServicesController < ApplicationController
   end
 
   def service_params
-    params.expect(service: [ :guard_id, :due_date, :full_name, :age, :status, :caller_full_name, :caller_phone, :caller_relationship, :address, :health_facility_id, :health_facility_place, :pathology, :health_status, :sacraments ])
+    params.expect(service: [ :guard_id, :due_date, :full_name, :age, :status, :caller_full_name, :caller_phone, :caller_relationship, :address, :health_facility_id, :health_facility_place, :pathology, :health_status, :sacraments, :note, :priority ])
   end
 end

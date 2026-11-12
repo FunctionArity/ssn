@@ -110,10 +110,12 @@ en:
         pathology: Pathology
         health_status: Health status
         sacraments: Sacraments
+        priority: Priority
         caller_full_name: Caller full name
         caller_phone: Caller phone
         caller_relationship: Caller relationship
         comments: Comments
+        note: Note
       headquarter:
         country: Country
         state: State
@@ -582,8 +584,8 @@ en:
       duplicates_loading: Searching...
       choose_guard: Guard
       choose_guard_prompt: Select the guard for this service
-      first_comment: Comment
       no_mentionable_users: No users found
+      note_hint: Type @ to mention a user.
       guard_groups:
         current: "Service's current guard"
         today: "Today"
@@ -601,6 +603,8 @@ en:
     status:
       pending: Pending
       completed: Completed
+    priorities:
+      urgent: Urgent
   priest_setups:
     confirm:
       destroy: Are you sure you want to remove this priest assignment?

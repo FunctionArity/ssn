@@ -1,9 +1,13 @@
 <%# Read-only card shown over an unsaved form: every link opens in a new tab so the form isn't lost. %>
 <% link_options = { target: "_blank", rel: "noopener" } %>
-<div class="px-4 py-3 flex flex-col gap-1.5 <%= service.pending? ? "bg-red-50" : "bg-green-50" %> border border-gray-200 rounded-xl shadow-sm">
+<% colors = service_colors(service) %>
+<div class="px-4 py-3 flex flex-col gap-1.5 <%= colors[:card] %> border rounded-xl shadow-sm">
   <div class="flex items-center justify-between gap-2">
     <p class="text-sm font-semibold text-gray-900 truncate"><%= service.full_name %></p>
-    <span class="<%= service.pending? ? "badge_red" : "badge_green" %> shrink-0"><%= t("services.status.#{service.status}") %></span>
+    <div class="flex items-center gap-1.5 shrink-0">
+      <%= service_urgent_badge(service) %>
+      <span class="<%= colors[:badge] %>"><%= t("services.status.#{service.status}") %></span>
+    </div>
   </div>
 
   <div class="flex items-center justify-between gap-2">

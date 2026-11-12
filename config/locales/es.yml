@@ -110,6 +110,7 @@ es:
         pathology: Patología
         health_status: Estado de salud
         sacraments: Sacramentos
+        priority: Prioridad
         full_name: Nombre completo
         age: Edad
         due_date: Fecha
@@ -119,6 +120,7 @@ es:
         caller_phone: Teléfono
         caller_relationship: Parentesco
         comments: Comentarios
+        note: Nota
       church:
         name: Nombre
         phone: Teléfono
@@ -211,6 +213,7 @@ es:
             password_confirmation:
               confirmation: "y la contraseña no coinciden"
       messages:
+        record_invalid: "La validación falló: %{errors}"
         expired: "ha expirado, por favor solicita uno nuevo"
         not_found: "no encontrado"
         not_locked: "no estaba bloqueado"
@@ -798,8 +801,8 @@ es:
       duplicates_loading: Buscando...
       choose_guard: Guardia
       choose_guard_prompt: Seleccione la guardia del servicio
-      first_comment: Comentario
       no_mentionable_users: No se encontraron usuarios
+      note_hint: Escriba @ para mencionar a un usuario.
       guard_groups:
         current: "Guardia actual del servicio"
         today: "Hoy"
@@ -817,6 +820,8 @@ es:
     status:
       pending: Pendiente
       completed: Completado
+    priorities:
+      urgent: Urgente
   priest_setups:
     confirm:
       destroy: ¿Estás seguro de que deseas eliminar esta asignación?

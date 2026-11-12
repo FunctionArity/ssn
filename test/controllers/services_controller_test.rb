@@ -22,6 +22,20 @@ class ServicesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test "index marks urgent pending services on the phone and desktop cards" do
+    @service.update!(priority: :urgent)
+
+    get services_url
+
+    assert_select "turbo-frame#service_#{@service.id}" do
+      assert_select ".badge_urgent", count: 2
+      assert_select ".sm\\:hidden.bg-red-100.border-red-400 .animate-pulse"
+      # Over the details, at the top right: the header and the card keep their height.
+      assert_select ".ring-red-400 .from-red-300 .badge_urgent", count: 0
+      assert_select ".ring-red-400 .relative.pr-28 > .absolute .badge_urgent"
+    end
+  end
+
   test "duplicates lists services with the same name from the last 2 months" do
     travel_to Date.new(2026, 4, 15) do
       get duplicates_services_url, params: { full_name: "juan  perez " }
@@ -287,6 +301,85 @@ class ServicesControllerTest < ActionDispatch::IntegrationTest
     get service_url(@service)
     assert_response :success
     assert_select "button[data-clipboard-text-value*=?]", health_facilities(:one).name
+  end
+
+  test "the form marks a service urgent with a checkbox, and unchecking it leaves no priority" do
+    get new_service_url(guard_id: @service.guard_id)
+    assert_select "input[type=checkbox][name='service[priority]'][value=urgent]:not([checked])"
+    assert_select "input[type=hidden][name='service[priority]'][value='']"
+
+    post services_url, params: { service: { full_name: "Carlos García", due_date: Date.current, guard_id: guards(:one).id, priority: "urgent" } }
+    service = Service.order(:id).last
+    assert service.urgent?
+
+    get edit_service_url(service)
+    assert_select "input[type=checkbox][name='service[priority]'][checked]"
+
+    patch service_url(service), params: { service: { priority: "" } }
+    assert_nil service.reload.priority
+  end
+
+  test "an unknown priority isn't saved" do
+    patch service_url(@service), params: { service: { priority: "whenever" } }
+
+    assert_response :unprocessable_entity
+    assert_nil @service.reload.priority
+  end
+
+  test "an urgent pending service shows the urgent badge in a stronger red" do
+    @service.update!(priority: :urgent)
+
+    get service_url(@service)
+
+    assert_select "#service_#{@service.id}.ring-red-400" do
+      assert_select ".from-red-300"
+      assert_select ".badge_urgent:not(.badge_urgent_completed)", text: I18n.t("services.priorities.urgent")
+    end
+  end
+
+  test "a completed urgent service is green, and keeps the urgent badge" do
+    @service.update_columns(priority: Service.priorities[:urgent], status: Service.statuses[:completed])
+
+    get service_url(@service)
+
+    assert_select "#service_#{@service.id}:not(.ring-red-400)" do
+      assert_select ".from-green-100 .badge_urgent.badge_urgent_completed", text: I18n.t("services.priorities.urgent")
+      assert_select ".badge_green", text: I18n.t("services.status.completed")
+    end
+
+    get guard_url(@service.guard)
+    assert_select "#row_service_#{@service.id}:not(.ring-red-400)" do
+      assert_select ".from-green-100"
+      assert_select ".relative.pr-28 > .absolute .badge_urgent.badge_urgent_completed"
+    end
+  end
+
+  test "a normal pending service keeps the usual red" do
+    get service_url(@service)
+
+    assert_select ".badge_urgent", count: 0
+    assert_select "#service_#{@service.id}:not(.ring-red-400) .from-red-100"
+  end
+
+  test "the clipboard text has the age, sacraments and note" do
+    @service.update!(age: 80, sacraments: "unción", note: "<p>Hablar con <strong>Pepe</strong></p><ul><li>Confirmar antes de ir</li></ul>")
+
+    get service_url(@service)
+
+    text = css_select("button[data-controller=clipboard]").first["data-clipboard-text-value"]
+    assert_includes text.lines(chomp: true), "#{Service.human_attribute_name(:age)}: 80"
+    assert_includes text.lines(chomp: true), "#{Service.human_attribute_name(:sacraments)}: unción"
+    # The note goes without its markup.
+    assert text.end_with?("#{Service.human_attribute_name(:note)}: Hablar con Pepe\n• Confirmar antes de ir")
+  end
+
+  test "the clipboard text leaves out empty age, sacraments and note" do
+    @service.update!(age: nil, sacraments: "", note: nil)
+
+    get service_url(@service)
+
+    text = css_select("button[data-controller=clipboard]").first["data-clipboard-text-value"]
+    %i[age sacraments note].each { |attribute| assert_not_includes text, "#{Service.human_attribute_name(attribute)}:" }
   end
 
   test "should get edit" do
@@ -907,59 +1000,71 @@ class ServicesControllerTest < ActionDispatch::IntegrationTest
   # Comments (Lexxy rich text)
   # ---------------------------------------------------------------------------
 
-  test "new starts the conversation in a Lexxy editor without attachments and with the @ prompt" do
+  test "new has the note's Lexxy editor with the @ prompt, and no comment, which is added on the service page" do
     get new_service_url(guard_id: @service.guard_id)
 
     assert_response :success
     # The lexxy-content class makes Lexxy's text styles (strikethrough, underline, headings…) apply inside the editor.
-    assert_select "[data-controller=mention-card] lexxy-editor.lexxy-content[name='service[first_comment]'][attachments='false']" do
+    assert_select "[data-controller=mention-card] lexxy-editor.lexxy-content[name='service[note]'][attachments='false']" do
       assert_select "lexxy-prompt[trigger='@'][insert-editable-text][src=?]", mentionable_users_services_path(guard_id: @service.guard_id)
     end
+    assert_select "lexxy-editor", count: 1
   end
 
-  test "edit no longer shows the old comment, which now lives in the conversation" do
-    @service.update_column(:old_comment, "<p>Llamar antes de ir</p>")
+  test "edit shows the note in its Lexxy editor, mentioning from the service's users" do
+    @service.update!(note: "<p>Llamar <strong>antes</strong> de ir</p>")
 
     get edit_service_url(@service)
 
-    assert_select "lexxy-editor", count: 0
-    assert_not_includes response.body, "Llamar antes de ir"
+    assert_select "lexxy-editor[name='service[note]'][value=?]", "<p>Llamar <strong>antes</strong> de ir</p>" do
+      assert_select "lexxy-prompt[src=?]", mentionable_users_service_path(@service)
+    end
   end
 
-  test "update ignores the old comment" do
-    @service.update_column(:old_comment, "<p>antes</p>")
+  test "mentions in the note are links with the user's card, and notify nobody" do
+    mentioned = users(:vocal_guardian)
 
-    patch service_url(@service), params: { service: { full_name: "Otro", old_comment: "<p>después</p>" } }
-
-    assert_equal "<p>antes</p>", @service.reload.old_comment
-  end
-
-  test "create adds the first comment by the current user and notifies its mentions" do
-    assert_difference -> { Comment.count } => 1, -> { CommentMention.count } => 1 do
-      assert_enqueued_emails 1 do
-        post services_url, params: { service: { full_name: "Carlos García", due_date: Date.current, guard_id: guards(:one).id,
-                                                first_comment: "<p>#{mention_link(users(:vocal_guardian))} llamar</p>" } }
+    assert_no_difference -> { CommentMention.count } do
+      assert_no_enqueued_emails do
+        patch service_url(@service), params: { service: { note: "<p>#{mention_link(mentioned)} confirma</p>" } }
       end
     end
+    get service_url(@service)
 
-    comment = Service.order(:id).last.comments.sole
-    assert_equal @user, comment.user
-    assert_equal [ users(:vocal_guardian) ], comment.mentions.map(&:user)
+    # One popover for the whole page, around the note and the conversation.
+    assert_select "[data-controller=mention-card]", count: 1 do
+      assert_select "#service_#{@service.id} .lexxy-content a[href=?]", user_path(mentioned), text: "@#{mentioned.full_name}"
+      assert_select "form#comment_form_service_#{@service.id}"
+    end
+    assert_select "turbo-frame#mention_card", count: 1
   end
 
-  test "create skips a blank first comment" do
-    assert_difference -> { Service.count } => 1, -> { Comment.count } => 0 do
-      post services_url, params: { service: { full_name: "Carlos García", due_date: Date.current, guard_id: guards(:one).id, first_comment: "<p><br></p>" } }
+  test "create and update save the note, and an empty editor saves none" do
+    assert_no_difference -> { Comment.count } do
+      post services_url, params: { service: { full_name: "Carlos García", due_date: Date.current, guard_id: guards(:one).id, note: "<p>Tocar timbre 2</p>" } }
     end
+    service = Service.order(:id).last
+    assert_equal "<p>Tocar timbre 2</p>", service.note
+
+    patch service_url(service), params: { service: { note: "<p><br></p>" } }
+    assert_nil service.reload.note
   end
 
-  test "create sends nothing when it fails" do
-    assert_no_enqueued_emails do
-      assert_no_difference -> { Comment.count } do
-        post services_url, params: { service: { full_name: "", due_date: Date.current, guard_id: guards(:one).id,
-                                                first_comment: "<p>#{mention_link(users(:vocal_guardian))}</p>" } }
-      end
-    end
+  test "show renders the note's rich text, sanitized" do
+    @service.update!(note: %(<p>Hablar con <strong>Pepe</strong></p><script>alert(1)</script>))
+
+    get service_url(@service)
+
+    assert_select ".lexxy-content p strong", text: "Pepe"
+    assert_select ".lexxy-content script", count: 0
+  end
+
+  test "show keeps the line breaks of older plain text notes" do
+    @service.update!(note: "Hablar con Pepe\nConfirmar antes de ir")
+
+    get service_url(@service)
+
+    assert_select ".lexxy-content p br"
   end
 
   test "show lists the conversation and flags the current user's unread mentions" do

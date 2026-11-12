@@ -8,16 +8,19 @@
      }
    } : {} %>
 <%= turbo_frame_tag dom_id(service), **frame_options do %>
-  <% card_bg_class = service.pending? ? "bg-red-50" : "bg-green-50" %>
-  <% status_color = service.pending? ? "text-red-700" : "text-green-700" %>
-  <div class="sm:hidden flex items-center gap-3 px-4 py-3 <%= card_bg_class %> border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-all duration-200">
+  <% colors = service_colors(service) %>
+  <div class="sm:hidden flex items-center gap-3 px-4 py-3 <%= colors[:card] %> border rounded-xl shadow-sm hover:shadow-md transition-all duration-200">
     <% if sortable %>
-      <i class="ph-bold ph-dots-six-vertical text-lg <%= status_color %> cursor-grab shrink-0" title="Arrastrar para reordenar"></i>
+      <i class="ph-bold ph-dots-six-vertical text-lg <%= colors[:grip] %> cursor-grab shrink-0" title="Arrastrar para reordenar"></i>
     <% end %>
     <%= link_to service, data: { turbo_frame: "_top" }, class: "flex items-center gap-3 flex-1 min-w-0" do %>
-      <div class="w-2 h-2 rounded-full shrink-0 <%= service.pending? ? "bg-red-500" : "bg-green-500" %>"></div>
+      <div class="w-2 h-2 rounded-full shrink-0 <%= colors[:dot] %>"></div>
       <div class="min-w-0 flex-1">
-        <p class="text-sm font-semibold text-gray-900 truncate"><%= service.full_name %></p>
+        <%# On the name's line, so urgent rows are as tall as the others. %>
+        <div class="flex items-center gap-1.5 min-w-0">
+          <p class="text-sm font-semibold text-gray-900 truncate"><%= service.full_name %></p>
+          <%= service_urgent_badge(service) %>
+        </div>
         <p class="text-xs text-gray-500 truncate"><%= l(service.due_date, format: :long) %></p>
         <% if service.health_facility.present? %>
           <p class="text-xs text-teal-600 truncate flex items-center gap-1">
@@ -43,26 +46,22 @@
     <% end %>
   </div>
 
-  <div class="hidden sm:flex bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-0.5 overflow-hidden flex-col">
+  <div class="hidden sm:flex bg-white border <%= colors[:frame] %> rounded-xl shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-0.5 overflow-hidden flex-col">
 
-    <% header_class = service.pending? ? "bg-gradient-to-r from-red-100 to-white" : "bg-gradient-to-r from-green-100 to-white" %>
-    <% date_class   = service.pending? ? "text-red-500" : "text-green-600" %>
-    <% icon_class   = service.pending? ? "bg-red-200 text-red-700" : "bg-green-200 text-green-700" %>
-    <div class="<%= header_class %> border-b border-gray-100">
+    <div class="<%= colors[:header] %> border-b border-gray-100">
       <% if sortable %>
-        <div class="flex items-center justify-center py-1 <%= status_color %> cursor-grab" title="Arrastrar para reordenar">
+        <div class="flex items-center justify-center py-1 <%= colors[:grip] %> cursor-grab" title="Arrastrar para reordenar">
           <i class="ph-bold ph-dots-six-vertical text-lg"></i>
         </div>
       <% end %>
       <div class="px-5 <%= sortable ? "pb-4" : "py-4" %> flex items-center justify-between">
         <div class="min-w-0 pr-3">
-          <p class="text-xs font-medium <%= date_class %> uppercase tracking-wide"><%= l(service.due_date, format: :long) %></p>
+          <p class="text-xs font-medium <%= colors[:date] %> uppercase tracking-wide"><%= l(service.due_date, format: :long) %></p>
           <p class="text-base font-bold text-gray-900 truncate mt-0.5"><%= service.full_name %></p>
         </div>
         <div class="flex flex-col items-end gap-2 shrink-0">
-          <% status_class = service.pending? ? "badge_red" : "badge_green" %>
-          <span class="<%= status_class %>"><%= t("services.status.#{service.status}") %></span>
-          <div class="flex items-center justify-center w-8 h-8 rounded-full <%= icon_class %>">
+          <span class="<%= colors[:badge] %>"><%= t("services.status.#{service.status}") %></span>
+          <div class="flex items-center justify-center w-8 h-8 rounded-full <%= colors[:icon] %>">
             <span class="text-sm font-semibold"><%= service.position %></span>
           </div>
         </div>
@@ -76,7 +75,13 @@
       </div>
     <% end %>
 
-    <div class="px-5 py-4 flex flex-col gap-3 grow">
+    <%# The Urgente badge sits at the top right, over the details, so every card keeps the same height; the details
+       truncate before it, thanks to the padding. %>
+    <% urgent_badge = service_urgent_badge(service) %>
+    <div class="relative px-5 py-4 flex flex-col gap-3 grow <%= "pr-28" if urgent_badge %>">
+      <% if urgent_badge %>
+        <div class="absolute top-4 right-5"><%= urgent_badge %></div>
+      <% end %>
       <div class="flex items-center gap-2">
         <div class="flex items-center justify-center w-7 h-7 rounded-full bg-indigo-100 text-indigo-600 shrink-0">
           <i class="ph ph-shield text-xs"></i>
@@ -126,13 +131,14 @@
     </div>
 
     <div class="px-5 py-3 border-t border-gray-100 flex items-center justify-between">
-      <% if service.can_be_completed? %>
-        <%= button_to complete_service_path(service), method: :post, form: { data: { turbo_confirm: t("services.show.complete_confirm"), turbo_confirm_title: t("services.show.complete_confirm_title"), turbo_confirm_level: "success" } }, class: "cursor-pointer flex items-center gap-1.5 rounded-md bg-red-600 px-3 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-red-500" do %>
-          <%= t("services.show.complete") %>
+      <%# As tall as the Completar button, so cards without it keep the same height. %>
+      <div class="flex items-center gap-2 min-h-8">
+        <% if service.can_be_completed? %>
+          <%= button_to complete_service_path(service), method: :post, form: { data: { turbo_confirm: t("services.show.complete_confirm"), turbo_confirm_title: t("services.show.complete_confirm_title"), turbo_confirm_level: "success" } }, class: "cursor-pointer flex items-center gap-1.5 rounded-md bg-red-600 px-3 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-red-500" do %>
+            <%= t("services.show.complete") %>
+          <% end %>
         <% end %>
-      <% else %>
-        <span></span>
-      <% end %>
+      </div>
       <%= link_to service, class: "flex items-center gap-1 text-sm font-medium text-blue-600 hover:text-blue-800", data: { turbo_frame: "_top" } do %>
         <i class="ph ph-arrow-right"></i> <%= t("services.index.show") %>
       <% end %>

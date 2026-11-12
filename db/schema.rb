@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_06_200000) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_12_120000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -238,7 +238,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_06_200000) do
     t.string "caller_full_name"
     t.string "caller_phone"
     t.string "caller_relationship"
-    t.text "old_comment"
+    t.text "note"
     t.datetime "created_at", null: false
     t.bigint "created_by_id", null: false
     t.date "due_date", null: false
@@ -253,6 +253,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_06_200000) do
     t.datetime "updated_at", null: false
     t.bigint "nro"
     t.integer "position", null: false
+    t.integer "priority"
     t.index ["created_by_id"], name: "index_services_on_created_by_id"
     t.index ["guard_id", "position"], name: "index_services_on_guard_id_and_position"
     t.index ["guard_id"], name: "index_services_on_guard_id"

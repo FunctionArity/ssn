@@ -7,7 +7,8 @@ unless guard_setup
   exit 1
 end
 
-guard = Guard.where(day_number: day).order(due_date: :desc).first
+# This month's open guard for that day; another month's guard, or a closed one, takes no new services.
+guard = Guard.open.find_by(due_date: guard_setup.due_date)
 
 if guard
   puts "Found existing guard for day #{day} (#{guard.due_date})."
@@ -114,7 +115,9 @@ services_data.each_with_index do |data, i|
     health_facility_place: facility ? PLACES.sample : nil,
     address:               facility ? nil : GODOY_CRUZ_ADDRESSES.sample
   )
-  service.comments.create!(user: created_by, body: COMMENTS.sample)
+  # Some services have no comment.
+  comment = COMMENTS.sample
+  service.comments.create!(user: created_by, body: comment) if comment
 
   created += 1
 end
