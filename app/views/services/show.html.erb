@@ -5,7 +5,10 @@
     <% end %>
   </div>
 
-  <%= render @service %>
+  <%# One popover for the mentions in the service's note and in its conversation: the page can only have one. %>
+  <%= render layout: "shared/mention_card" do %>
+    <%= render @service %>
 
-  <%= render "comments/thread", commentable: @service, comments: @comments, unread_comment_ids: @unread_comment_ids %>
+    <%= render "comments/thread", commentable: @service, comments: @comments, unread_comment_ids: @unread_comment_ids %>
+  <% end %>
 </div>

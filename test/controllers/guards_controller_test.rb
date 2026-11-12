@@ -67,6 +67,18 @@ class GuardsControllerTest < ActionDispatch::IntegrationTest
     assert_select "button[data-clipboard-source-value='guard_#{@guard.id}_services']", count: 0
   end
 
+  test "show marks urgent pending services in the guard's list" do
+    services(:one).update!(priority: :urgent)
+
+    get guard_url(@guard)
+
+    assert_select "#row_service_#{services(:one).id}.ring-red-400" do
+      # Over the details, at the top right: the header and the card keep their height.
+      assert_select ".from-red-300 .badge_urgent", count: 0
+      assert_select ".relative.pr-28 > .absolute .badge_urgent", text: I18n.t("services.priorities.urgent")
+    end
+  end
+
   test "show displays guard actions to the vocal of the guard" do
     get guard_url(@guard)
     assert_select "a[href='#{edit_guard_path(@guard)}']"
