@@ -87,7 +87,7 @@ class UsersController < ApplicationController
   def history
     authorize @user
     @versions = @user.versions.reorder(created_at: :desc, id: :desc)
-    @authors = User.where(id: @versions.filter_map(&:whodunnit).uniq).index_by { |user| user.id.to_s }
+    @authors = User.authors_of(@versions)
   end
 
   def impersonate

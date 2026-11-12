@@ -119,6 +119,43 @@ class HeadquarterTenancyControllerTest < ActionDispatch::IntegrationTest
     assert_select "a[href=?]", guard_path(@quito_guard)
   end
 
+  test "a super admin's comments, reactions and mentions show in the sede they switched to" do
+    super_admin = users(:super_admin)
+    comment = @quito_service.comments.create!(user: super_admin, body: "<p>Visto</p>")
+    comment.reactions.create!(user: super_admin, emoji: "👍")
+    comment.mentions.create!(user: @quito_vocal)
+    sign_in @quito_vocal
+
+    get service_url(@quito_service)
+    assert_response :success
+    assert_select "a", text: super_admin.full_name
+
+    get mentions_url
+    assert_response :success
+    assert_select "span", text: super_admin.full_name
+  end
+
+  test "the history shows changes a super admin made from another sede" do
+    sign_in users(:super_admin)
+    patch current_headquarter_url, params: { headquarter_id: @quito.id }
+    patch service_url(@quito_service), params: { service: { full_name: "Servicio Renombrado" } }
+
+    get history_service_url(@quito_service)
+
+    assert_select "span", text: users(:super_admin).full_name
+  end
+
+  test "signing in again starts in the user's own sede" do
+    sign_in users(:super_admin)
+    patch current_headquarter_url, params: { headquarter_id: @quito.id }
+
+    sign_in users(:super_admin)
+    get guards_url
+
+    assert_select "a[href=?]", guard_path(guards(:one))
+    assert_select "a[href=?]", guard_path(@quito_guard), count: 0
+  end
+
   test "service changes are broadcast to the sede's stream" do
     sign_in users(:one)
     service = services(:one)

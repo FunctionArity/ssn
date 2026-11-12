@@ -52,6 +52,12 @@ class ApplicationPolicy
     super_admin? || admin?
   end
 
+  # Super admins manage every sede; admins only their own. The id is nil when the policy was given a class, not a
+  # record, so then only super admins can.
+  def manages_headquarter?(headquarter_id)
+    super_admin? || (admin? && headquarter_id.present? && headquarter_id == user.headquarter_id)
+  end
+
   def is_vocal?
     user.vocal?
   end

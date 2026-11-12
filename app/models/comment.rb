@@ -1,7 +1,7 @@
 # A comment on any Commentable record (services today, guards next), written by a user.
 class Comment < ApplicationRecord
   belongs_to :commentable, polymorphic: true
-  belongs_to :user
+  belongs_to :user, -> { in_any_sede }
   # The comment this one replies to. Deleting a comment deletes its replies too, and theirs, all the way down.
   belongs_to :parent, class_name: "Comment", optional: true, inverse_of: :replies
   has_many :replies, class_name: "Comment", foreign_key: :parent_id, inverse_of: :parent, dependent: :destroy

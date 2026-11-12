@@ -19,7 +19,7 @@ class GuardsController < ApplicationController
   def history
     authorize @guard
     @versions = @guard.versions.reorder(created_at: :desc, id: :desc)
-    @authors = User.where(id: @versions.filter_map(&:whodunnit).uniq).index_by { |user| user.id.to_s }
+    @authors = User.authors_of(@versions)
   end
 
   def close

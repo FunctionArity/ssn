@@ -37,6 +37,14 @@ class User < ApplicationRecord
   # Users who can sign in, leaving out pending invitations and locked accounts.
   scope :mentionable, -> { no_active_invitation.where(locked_at: nil) }
   scope :without_password, -> { where(encrypted_password: [ nil, "" ]) }
+  # Users of every sede, not just the current one: super admins work in any sede, so the author of a comment, a
+  # reaction, a service or a change may be from another one. Also the scope of associations to those authors.
+  scope :in_any_sede, -> { unscope(where: :headquarter_id) }
+
+  # The authors of the given PaperTrail versions, by id as a string, the way versions keep it.
+  def self.authors_of(versions)
+    in_any_sede.where(id: versions.filter_map(&:whodunnit).uniq).index_by { |user| user.id.to_s }
+  end
 
   belongs_to :church, optional: true
 
@@ -135,10 +143,6 @@ class User < ApplicationRecord
 
   def initials
     "#{last_name[0]}#{first_name[0]}"
-  end
-
-  def day_numbers
-    (vocal_guard_setups + guard_setups).map(&:day_number).join(" ")
   end
 
   def guard_day_numbers

@@ -2,7 +2,8 @@ class Service < ApplicationRecord
   include Commentable
   acts_as_tenant :headquarter
   belongs_to :guard
-  belongs_to :created_by, class_name: "User"
+  # Super admins create services in any sede, so the creator may be from another one.
+  belongs_to :created_by, -> { in_any_sede }, class_name: "User"
   belongs_to :health_facility, optional: true
 
   acts_as_list scope: :guard_id

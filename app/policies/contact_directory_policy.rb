@@ -7,7 +7,7 @@ class ContactDirectoryPolicy < ApplicationPolicy
   end
 
   def create?
-    is_admin?
+    manages_headquarter?(record.try(:headquarter_id))
   end
 
   def new?
@@ -15,7 +15,7 @@ class ContactDirectoryPolicy < ApplicationPolicy
   end
 
   def update?
-    is_admin?
+    create?
   end
 
   def edit?
@@ -23,7 +23,7 @@ class ContactDirectoryPolicy < ApplicationPolicy
   end
 
   def destroy?
-    is_admin?
+    create?
   end
 
   class Scope < ApplicationPolicy::Scope

@@ -15,6 +15,7 @@ class HeadquartersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should get new" do
+    sign_in users(:super_admin)
     get new_headquarter_url
     assert_response :success
   end
@@ -30,6 +31,8 @@ class HeadquartersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should create headquarter with valid params" do
+    sign_in users(:super_admin)
+
     assert_difference("Headquarter.count") do
       post headquarters_url, params: {
         headquarter: {
@@ -46,6 +49,8 @@ class HeadquartersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should not create headquarter without mandatory fields" do
+    sign_in users(:super_admin)
+
     assert_no_difference("Headquarter.count") do
       post headquarters_url, params: {
         headquarter: { country: "", state: "", city: "", address: "", phone: "351 555 1234" }
@@ -56,6 +61,8 @@ class HeadquartersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should not create headquarter without a contact method" do
+    sign_in users(:super_admin)
+
     assert_no_difference("Headquarter.count") do
       post headquarters_url, params: {
         headquarter: {
@@ -90,6 +97,8 @@ class HeadquartersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should destroy headquarter" do
+    sign_in users(:super_admin)
+
     assert_difference("Headquarter.count", -1) do
       delete headquarter_url(headquarters(:two))
     end
@@ -98,6 +107,8 @@ class HeadquartersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "a headquarter with users, guards or services is kept" do
+    sign_in users(:super_admin)
+
     assert_no_difference("Headquarter.count") do
       delete headquarter_url(@headquarter)
     end
@@ -106,11 +117,56 @@ class HeadquartersControllerTest < ActionDispatch::IntegrationTest
     assert_equal I18n.t("headquarters.notices.not_destroyed"), flash[:alert]
   end
 
+  test "a sede with users is kept when deleted from another sede" do
+    sign_in users(:super_admin)
+    ActsAsTenant.with_tenant(headquarters(:two)) do
+      User.create!(email: "vocal@quito.test", first_name: "Ana", last_name: "Quiteña", role: :vocal, password: "password123")
+    end
+
+    assert_no_difference("Headquarter.count") do
+      delete headquarter_url(headquarters(:two))
+    end
+
+    assert_redirected_to headquarter_url(headquarters(:two))
+    assert_equal I18n.t("headquarters.notices.not_destroyed"), flash[:alert]
+  end
+
+  test "admins edit their own sede, but don't create or delete sedes" do
+    get headquarters_url
+    assert_select "a[href='#{new_headquarter_path}']", count: 0
+
+    get new_headquarter_url
+    assert_redirected_to root_url
+
+    get headquarter_url(@headquarter)
+    assert_select "a[href='#{edit_headquarter_path(@headquarter)}']"
+    assert_select "form[action='#{headquarter_path(@headquarter)}'] input[name='_method'][value='delete']", count: 0
+
+    assert_no_difference("Headquarter.count") { delete headquarter_url(headquarters(:two)) }
+  end
+
+  test "admins only edit their own sede" do
+    other = headquarters(:two)
+
+    get headquarter_url(other)
+    assert_select "a[href='#{edit_headquarter_path(other)}']", count: 0
+    assert_select "form[action='#{headquarter_path(other)}'] input[name='_method'][value='delete']", count: 0
+
+    get edit_headquarter_url(other)
+    assert_redirected_to root_url
+
+    patch headquarter_url(other), params: { headquarter: { city: "Otra" } }
+    assert_not_equal "Otra", other.reload.city
+
+    assert_no_difference("Headquarter.count") { delete headquarter_url(other) }
+  end
+
   # ---------------------------------------------------------------------------
   # Authorization — non-admin users
   # ---------------------------------------------------------------------------
 
-  test "index shows new button to admin" do
+  test "index shows new button to super admins" do
+    sign_in users(:super_admin)
     get headquarters_url
     assert_select "a[href='#{new_headquarter_path}']"
   end
@@ -140,7 +196,8 @@ class HeadquartersControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "show displays edit and destroy actions to admin" do
+  test "show displays edit and destroy actions to super admins" do
+    sign_in users(:super_admin)
     get headquarter_url(@headquarter)
     assert_select "a[href='#{edit_headquarter_path(@headquarter)}']"
     assert_select "form[action='#{headquarter_path(@headquarter)}'] input[name='_method'][value='delete']"
