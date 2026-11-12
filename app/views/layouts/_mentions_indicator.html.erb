@@ -1,5 +1,5 @@
 <%# Bell with the number of unread comments that mention the user. Replaced by broadcasts, so it can't use current_user. locals: user %>
-<% unread_count = user.comment_mentions.unread.count %>
+<% unread_count = user.unread_mentions.count %>
 <%= link_to mentions_path, id: "mentions_indicator",
       class: "relative flex items-center justify-center w-8 h-8 rounded-md text-gray-500 hover:bg-gray-100 hover:text-gray-700 shrink-0",
       title: t("mentions.indicator.title", count: unread_count),

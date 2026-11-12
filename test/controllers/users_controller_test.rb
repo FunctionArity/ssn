@@ -602,6 +602,20 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_select "h2", text: /ltimos accesos|Recent logins/
   end
 
+  test "admins see the new user button on index" do
+    [ users(:super_admin), users(:admin_user) ].each do |admin|
+      sign_in admin
+      get users_url
+      assert_select "a[href=?]", new_user_path
+    end
+  end
+
+  test "regular users don't see the new user button on index" do
+    sign_in users(:one)
+    get users_url
+    assert_select "a[href=?]", new_user_path, count: 0
+  end
+
   test "non-super-admin does not see recent logins section on index" do
     users(:one).update!(last_sign_in_at: 1.hour.ago)
     sign_in users(:admin_user)

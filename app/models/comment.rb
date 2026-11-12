@@ -11,6 +11,9 @@ class Comment < ApplicationRecord
   # Characters of visible text; the markup doesn't count.
   MAX_LENGTH = 500
 
+  # The models that include Commentable. Each record belongs to a sede.
+  COMMENTABLE_TYPES = %w[Service].freeze
+
   validates :body, presence: true
   validate :body_length
   validate :parent_on_same_record
@@ -19,6 +22,10 @@ class Comment < ApplicationRecord
   after_save :sync_mentions, if: :saved_change_to_body?
 
   scope :newest_first, -> { order(created_at: :desc, id: :desc) }
+  # Comments on records of the current sede, the ones the user can open: comments have no sede of their own.
+  scope :in_current_sede, -> {
+    COMMENTABLE_TYPES.map { |type| where(commentable_type: type, commentable_id: type.constantize.select(:id)) }.reduce(:or)
+  }
 
   # How a reply from the given user starts: mentioning the author and everyone else this comment mentions.
   def reply_body_for(replier)

@@ -117,6 +117,18 @@ class User < ApplicationRecord
   end
   private_class_method :with_verified_google_email
 
+  # Mentions of the user in comments of the current sede, newest first, with what the mentions page shows of each.
+  def recent_mentions
+    comment_mentions.in_current_sede
+                    .includes(comment: %i[user commentable])
+                    .order(created_at: :desc, id: :desc)
+  end
+
+  # Comments of the current sede that mention the user and they haven't read: the number on the bell in the top nav.
+  def unread_mentions
+    comment_mentions.in_current_sede.unread
+  end
+
   def full_name
     "#{last_name} #{first_name}"
   end
