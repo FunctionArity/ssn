@@ -1,10 +1,11 @@
+<% new_user_url = policy(User).new? ? new_user_path : nil %>
 <div>
   <%= render "shared/page_header",
         title: t(".title"),
         icon: "ph-users",
         icon_class: "bg-gray-100 text-gray-700",
         action_label: t(".new_user"),
-        action_path: new_user_path %>
+        action_path: new_user_url %>
 
   <div data-controller="user-search">
     <%= form_with url: users_path, method: :get, data: { turbo_frame: "users_list", user_search_target: "form" } do |f| %>

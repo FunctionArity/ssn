@@ -1,6 +1,7 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
+  headquarter: one
   first_name: Pablo
   last_name: Rodriguez
   email: pablo@rodriguez.com
@@ -9,6 +10,7 @@ one:
   encrypted_password: <%= Devise::Encryptor.digest(User, 'password123') %>
 
 vocal_guardian:
+  headquarter: one
   first_name: Maria
   last_name: Garcia
   email: maria@garcia.com
@@ -17,6 +19,7 @@ vocal_guardian:
   encrypted_password: <%= Devise::Encryptor.digest(User, 'password123') %>
 
 unrelated_vocal:
+  headquarter: one
   first_name: Pedro
   last_name: Lopez
   email: pedro@lopez.com
@@ -25,6 +28,7 @@ unrelated_vocal:
   encrypted_password: <%= Devise::Encryptor.digest(User, 'password123') %>
 
 two:
+  headquarter: one
   first_name: Lucia
   last_name: Rodriguez
   email: luis@rodriguez.com
@@ -32,6 +36,7 @@ two:
   encrypted_password: <%= Devise::Encryptor.digest(User, 'password123') %>
 
 agustin:
+  headquarter: one
   first_name: Agustin
   last_name: Rodriguez
   email: agustin@rodriguez.com
@@ -39,6 +44,7 @@ agustin:
   encrypted_password: <%= Devise::Encryptor.digest(User, 'password123') %>
 
 priest_one:
+  headquarter: one
   first_name: Carlos
   last_name: Mendez
   email: carlos@mendez.com
@@ -47,6 +53,7 @@ priest_one:
   encrypted_password: <%= Devise::Encryptor.digest(User, 'password123') %>
 
 priest_two:
+  headquarter: one
   first_name: Jorge
   last_name: Perez
   email: jorge@perez.com
@@ -55,6 +62,7 @@ priest_two:
   encrypted_password: <%= Devise::Encryptor.digest(User, 'password123') %>
 
 super_admin:
+  headquarter: one
   first_name: Super
   last_name: Admin
   email: superadmin@test.com
@@ -63,6 +71,7 @@ super_admin:
   encrypted_password: <%= Devise::Encryptor.digest(User, 'password123') %>
 
 admin_user:
+  headquarter: one
   first_name: Regular
   last_name: Admin
   email: admin@test.com

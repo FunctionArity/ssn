@@ -1,7 +1,9 @@
 one:
+  headquarter: one
   name: Hospital Central
   address: "Alem y Salta, Ciudad de Mendoza, Mendoza, Argentina"
 
 two:
+  headquarter: one
   name: Clínica Santa Rosa
   address: "Las Heras 742, San José, Guaymallén, Mendoza, Argentina"

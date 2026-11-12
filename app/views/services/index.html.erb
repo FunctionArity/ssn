@@ -26,7 +26,8 @@
         action_path: new_service_path,
         extra_action: filters_button %>
 
-  <%= turbo_stream_from "services" %>
+  <%# Only this sede's services. %>
+  <%= turbo_stream_from current_headquarter, :services %>
 
   <div>
     <%# flow-root keeps the form's bottom margin inside the height that gets animated. %>

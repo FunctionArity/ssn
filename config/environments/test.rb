@@ -50,4 +50,8 @@ Rails.application.configure do
 
   # Raise error when a before_action's only/except options reference missing actions.
   config.action_controller.raise_on_missing_callback_actions = true
+
+  # Requests ignore the tests' sede (ActsAsTenant.test_tenant) and use the signed-in user's, like in production.
+  require "acts_as_tenant/test_tenant_middleware"
+  config.middleware.use ActsAsTenant::TestTenantMiddleware
 end

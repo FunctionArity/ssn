@@ -36,6 +36,8 @@ gem "pundit"
 gem "friendly_id"
 gem "acts_as_list"
 gem "paper_trail"
+# Keeps each sede's data apart: users, guards, services... belong to a headquarter.
+gem "acts_as_tenant"
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: %i[ windows jruby ]

@@ -59,7 +59,9 @@ class ContactDirectoryTest < ActiveSupport::TestCase
   end
 
   test "destroying a headquarter removes its directories" do
-    headquarter = headquarters(:one)
+    # A sede without users, guards or services can be deleted.
+    headquarter = headquarters(:two)
+    ContactDirectory.where(headquarter: headquarters(:one)).update_all(headquarter_id: headquarter.id)
 
     assert_difference -> { ContactDirectory.count }, -2 do
       headquarter.destroy!

@@ -59,6 +59,7 @@ Rails.application.routes.draw do
   resource :push_subscription, only: %i[create destroy]
   resources :health_facilities
   resources :churches
+  resource :current_headquarter, only: :update
   resources :headquarters do
     resources :contact_directories, except: :index
   end

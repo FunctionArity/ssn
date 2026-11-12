@@ -182,6 +182,11 @@ lexxy-toolbar {
     min-height: 2.25rem;
   }
 
+  /* A sede can't be told apart by its pin alone, so the collapsed sidebar leaves the switcher out. */
+  body.sidebar-collapsed .sidebar-headquarter {
+    display: none;
+  }
+
   body.sidebar-collapsed .sidebar-disclosure-caret {
     display: none;
   }

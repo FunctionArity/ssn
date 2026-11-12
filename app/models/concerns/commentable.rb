@@ -1,4 +1,5 @@
-# A record users can comment on, mentioning others with @. Include it and define `comment_subject`.
+# A record users can comment on, mentioning others with @. Include it, define `comment_subject` and add the model to
+# Comment::COMMENTABLE_TYPES.
 module Commentable
   extend ActiveSupport::Concern
 

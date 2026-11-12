@@ -4,6 +4,15 @@ class Headquarter < ApplicationRecord
 
   has_many :contact_directories, -> { order(:position) }, dependent: :destroy
 
+  # The sede's own data. Sedes that have any can't be deleted.
+  has_many :users, dependent: :restrict_with_error
+  has_many :guard_setups, dependent: :restrict_with_error
+  has_many :guards, dependent: :restrict_with_error
+  has_many :services, dependent: :restrict_with_error
+  has_many :priest_setups, dependent: :restrict_with_error
+  has_many :health_facilities, dependent: :restrict_with_error
+  has_many :churches, dependent: :restrict_with_error
+
   validates :country, :state, :city, :address, presence: true
   validate :contact_method_present
 

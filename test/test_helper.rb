@@ -24,7 +24,9 @@ module ActiveSupport
     # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
     fixtures :all
 
-    # Add more helper methods to be used by all tests here...
+    # Records made by the tests belong to the Mendoza sede, like the fixtures; requests use the signed-in user's sede.
+    setup { ActsAsTenant.test_tenant = headquarters(:one) }
+    teardown { ActsAsTenant.test_tenant = nil }
   end
 end
 

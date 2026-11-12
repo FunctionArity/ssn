@@ -1,4 +1,6 @@
 class Church < ApplicationRecord
+  acts_as_tenant :headquarter
+
   has_many :priests, class_name: "User", foreign_key: :church_id, dependent: :nullify
 
   validates :name, presence: true

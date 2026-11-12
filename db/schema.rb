@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_12_120000) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_12_170000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -48,6 +48,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_12_120000) do
     t.string "name"
     t.string "phone"
     t.datetime "updated_at", null: false
+    t.bigint "headquarter_id", null: false
+    t.index ["headquarter_id"], name: "index_churches_on_headquarter_id"
   end
 
   create_table "comment_mentions", force: :cascade do |t|
@@ -167,6 +169,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_12_120000) do
     t.text "notes"
     t.datetime "updated_at", null: false
     t.bigint "vocal_id", null: false
+    t.bigint "headquarter_id", null: false
+    t.index ["headquarter_id"], name: "index_guard_setups_on_headquarter_id"
     t.index ["vocal_id"], name: "index_guard_setups_on_vocal_id"
   end
 
@@ -180,7 +184,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_12_120000) do
     t.integer "status", default: 0, null: false
     t.datetime "updated_at", null: false
     t.bigint "vocal_id", null: false
+    t.bigint "headquarter_id", null: false
     t.index ["guard_setup_id"], name: "index_guards_on_guard_setup_id"
+    t.index ["headquarter_id"], name: "index_guards_on_headquarter_id"
     t.index ["priest_id"], name: "index_guards_on_priest_id"
     t.index ["vocal_id"], name: "index_guards_on_vocal_id"
   end
@@ -207,6 +213,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_12_120000) do
     t.datetime "created_at", null: false
     t.string "name", null: false
     t.datetime "updated_at", null: false
+    t.bigint "headquarter_id", null: false
+    t.index ["headquarter_id"], name: "index_health_facilities_on_headquarter_id"
   end
 
   create_table "priest_setups", force: :cascade do |t|
@@ -216,8 +224,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_12_120000) do
     t.bigint "priest_id", null: false
     t.datetime "updated_at", null: false
     t.integer "week_number"
+    t.bigint "headquarter_id", null: false
+    t.index ["headquarter_id", "week_number", "day_of_week"], name: "index_priest_setups_on_headquarter_week_and_day", unique: true
+    t.index ["headquarter_id"], name: "index_priest_setups_on_headquarter_id"
     t.index ["priest_id"], name: "index_priest_setups_on_priest_id"
-    t.index ["week_number", "day_of_week"], name: "index_priest_setups_on_week_number_and_day_of_week", unique: true
   end
 
   create_table "push_subscriptions", force: :cascade do |t|
@@ -254,9 +264,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_12_120000) do
     t.bigint "nro"
     t.integer "position", null: false
     t.integer "priority"
+    t.bigint "headquarter_id", null: false
     t.index ["created_by_id"], name: "index_services_on_created_by_id"
     t.index ["guard_id", "position"], name: "index_services_on_guard_id_and_position"
     t.index ["guard_id"], name: "index_services_on_guard_id"
+    t.index ["headquarter_id"], name: "index_services_on_headquarter_id"
     t.index ["health_facility_id"], name: "index_services_on_health_facility_id"
   end
 
@@ -289,8 +301,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_12_120000) do
     t.datetime "last_sign_in_at"
     t.string "current_sign_in_ip"
     t.string "last_sign_in_ip"
+    t.bigint "headquarter_id", null: false
     t.index ["church_id"], name: "index_users_on_church_id"
     t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["headquarter_id"], name: "index_users_on_headquarter_id"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
   end
@@ -308,6 +322,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_12_120000) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "churches", "headquarters"
   add_foreign_key "comment_mentions", "comments"
   add_foreign_key "comment_mentions", "users"
   add_foreign_key "comment_reactions", "comments", on_delete: :cascade
@@ -321,14 +336,20 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_12_120000) do
   add_foreign_key "guard_guardians", "users"
   add_foreign_key "guard_setup_guardians", "guard_setups"
   add_foreign_key "guard_setup_guardians", "users"
+  add_foreign_key "guard_setups", "headquarters"
   add_foreign_key "guard_setups", "users", column: "vocal_id"
   add_foreign_key "guards", "guard_setups"
+  add_foreign_key "guards", "headquarters"
   add_foreign_key "guards", "users", column: "priest_id"
   add_foreign_key "guards", "users", column: "vocal_id"
+  add_foreign_key "health_facilities", "headquarters"
+  add_foreign_key "priest_setups", "headquarters"
   add_foreign_key "priest_setups", "users", column: "priest_id"
   add_foreign_key "push_subscriptions", "users"
   add_foreign_key "services", "guards"
+  add_foreign_key "services", "headquarters"
   add_foreign_key "services", "health_facilities"
   add_foreign_key "services", "users", column: "created_by_id"
   add_foreign_key "users", "churches"
+  add_foreign_key "users", "headquarters"
 end

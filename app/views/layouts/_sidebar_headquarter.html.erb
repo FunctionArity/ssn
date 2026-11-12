@@ -1,0 +1,28 @@
+<%# Super admins work in any sede: the one they're in, and the others to switch to. Everyone else only has theirs. %>
+<% if policy(current_headquarter).switch? %>
+  <%# Blue and set apart from the menu below, so the sede the super admin is working in stands out. %>
+  <details class="sidebar-headquarter group mb-4 rounded-lg border border-blue-200 bg-blue-50 shadow-sm overflow-hidden" data-controller="disclosure">
+    <summary data-action="click->disclosure#toggle" title="<%= t("sidebar.headquarter") %>" class="sidebar-link flex items-center gap-2 px-3 py-2 text-sm font-semibold text-blue-800 hover:bg-blue-100 cursor-pointer list-none select-none">
+      <i class="ph-fill ph-map-pin text-lg text-blue-600"></i>
+      <%# The sidebar's label rule sets its display, so the two lines go in a span of their own. %>
+      <span class="sidebar-label min-w-0">
+        <span class="flex flex-col leading-tight">
+          <span class="text-[10px] font-medium uppercase tracking-wide text-blue-500"><%= t("sidebar.headquarter") %></span>
+          <span id="sidebar_headquarter" class="truncate"><%= current_headquarter.city %></span>
+        </span>
+      </span>
+      <i class="ph ph-caret-right sidebar-disclosure-caret text-xs ml-auto text-blue-500 transition-transform duration-300 group-open:rotate-90"></i>
+    </summary>
+    <div id="headquarter_switcher" data-disclosure-target="content" class="overflow-hidden border-t border-blue-200 bg-white divide-y divide-gray-100">
+      <% Headquarter.order(:city).each do |headquarter| %>
+        <% current = headquarter == current_headquarter %>
+        <%= button_to current_headquarter_path, method: :patch, params: { headquarter_id: headquarter.id }, disabled: current,
+                      form: { class: "block" },
+                      class: "sidebar-link w-full cursor-pointer flex items-center gap-2 px-3 py-2 text-sm font-medium border-l-2 #{current ? 'text-blue-700 border-blue-600 cursor-default' : 'text-gray-600 border-transparent hover:bg-gray-100 hover:text-gray-900'}" do %>
+          <i class="ph <%= current ? "ph-check" : "ph-buildings" %> text-lg"></i>
+          <span class="sidebar-label truncate"><%= headquarter.city %></span>
+        <% end %>
+      <% end %>
+    </div>
+  </details>
+<% end %>

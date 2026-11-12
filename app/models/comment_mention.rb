@@ -4,6 +4,8 @@ class CommentMention < ApplicationRecord
   belongs_to :user
 
   scope :unread, -> { where(read_at: nil) }
+  # A super admin working in another sede only sees that sede's mentions.
+  scope :in_current_sede, -> { where(comment: Comment.in_current_sede) }
 
   after_commit :broadcast_unread_count, on: %i[create update destroy]
 

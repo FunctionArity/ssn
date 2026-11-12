@@ -1,5 +1,6 @@
 class Service < ApplicationRecord
   include Commentable
+  acts_as_tenant :headquarter
   belongs_to :guard
   belongs_to :created_by, class_name: "User"
   belongs_to :health_facility, optional: true
@@ -52,10 +53,15 @@ class Service < ApplicationRecord
     pending? && guard.open?
   end
 
+  # A super admin working in another sede creates services there as themselves, so the creator can be from any sede.
+  def validate_tenant_association?(reflection)
+    reflection.name != :created_by
+  end
+
   private
 
   def broadcast_changes
-    broadcast_replace_later_to "services",
+    broadcast_replace_later_to headquarter, :services,
       partial: "services/small_view",
       locals: { service: self }
     broadcast_guard_services_lists

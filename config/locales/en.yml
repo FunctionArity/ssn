@@ -151,6 +151,10 @@ en:
     documentation: Documentation
     federacion: Federation
     toggle: Collapse/expand menu
+    headquarter: Headquarter
+  current_headquarters:
+    notices:
+      switched: "You are now working in the %{name} headquarter."
   users:
     history:
       back: Back to user
@@ -453,6 +457,7 @@ en:
       created: Headquarter was successfully created.
       updated: Headquarter was successfully updated.
       destroyed: Headquarter was successfully destroyed.
+      not_destroyed: The headquarter has users, guards, services, health facilities or churches, so it can't be deleted.
   comment_mailer:
     mention:
       comment: Comment

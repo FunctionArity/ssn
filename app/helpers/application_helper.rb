@@ -1,9 +1,9 @@
 module ApplicationHelper
-  def user_crown_icon(user = current_user)
-    return if user&.regular?
-    return tag.i class: "ph ph-crown-simple" if user&.admin?
+  # A colored ring around the picture of admins (blue) and super admins (amber), so each is easy to tell apart.
+  USER_TYPE_RINGS = { "admin" => "ring-2 ring-offset-2 ring-sky-500", "super_admin" => "ring-2 ring-offset-2 ring-amber-500" }.freeze
 
-    tag.i class: "ph ph-crown" if user&.super_admin?
+  def user_type_ring_class(user)
+    USER_TYPE_RINGS[user.user_type]
   end
 
   # Text from the Lexxy editor is sanitized HTML; older plain text keeps its line breaks.

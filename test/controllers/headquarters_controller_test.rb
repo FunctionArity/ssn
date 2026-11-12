@@ -91,10 +91,19 @@ class HeadquartersControllerTest < ActionDispatch::IntegrationTest
 
   test "should destroy headquarter" do
     assert_difference("Headquarter.count", -1) do
-      delete headquarter_url(@headquarter)
+      delete headquarter_url(headquarters(:two))
     end
 
     assert_redirected_to headquarters_url
+  end
+
+  test "a headquarter with users, guards or services is kept" do
+    assert_no_difference("Headquarter.count") do
+      delete headquarter_url(@headquarter)
+    end
+
+    assert_redirected_to headquarter_url(@headquarter)
+    assert_equal I18n.t("headquarters.notices.not_destroyed"), flash[:alert]
   end
 
   # ---------------------------------------------------------------------------

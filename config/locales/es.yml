@@ -214,6 +214,9 @@ es:
               confirmation: "y la contraseña no coinciden"
       messages:
         record_invalid: "La validación falló: %{errors}"
+        acts_as_tenant:
+          tenant_mismatch: "debe ser la sede actual"
+          association_invalid: "no pertenece a esta sede"
         expired: "ha expirado, por favor solicita uno nuevo"
         not_found: "no encontrado"
         not_locked: "no estaba bloqueado"
@@ -235,6 +238,10 @@ es:
     documentation: Documentación
     federacion: Federación
     toggle: Contraer/expandir menú
+    headquarter: Sede
+  current_headquarters:
+    notices:
+      switched: "Ahora estás trabajando en la sede %{name}."
   users:
     history:
       back: Volver al usuario
@@ -668,6 +675,7 @@ es:
       created: La sede fue creada exitosamente.
       updated: La sede fue actualizada exitosamente.
       destroyed: La sede fue eliminada exitosamente.
+      not_destroyed: La sede tiene usuarios, guardias, servicios, centros de salud o iglesias, así que no se puede eliminar.
   comment_mailer:
     mention:
       comment: Comentario

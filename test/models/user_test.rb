@@ -219,4 +219,24 @@ class UserTest < ActiveSupport::TestCase
     assert_not_includes User.mentionable, users(:two)
     assert_includes User.mentionable, users(:vocal_guardian)
   end
+
+  test "unread_mentions.count counts the unread mentions of the current sede" do
+    user = users(:vocal_guardian)
+    mention = ->(text) { services(:one).comments.create!(user: users(:one), body: %(<p><a href="/users/#{user.id}">@x</a> #{text}</p>)).mentions.sole }
+    mention.call("uno")
+    mention.call("dos").read!
+
+    assert_equal 1, user.unread_mentions.count
+    ActsAsTenant.with_tenant(headquarters(:two)) { assert_equal 0, user.unread_mentions.count }
+  end
+
+  test "recent_mentions lists the mentions of the current sede, newest first" do
+    user = users(:vocal_guardian)
+    older, newer = [ "uno", "dos" ].map do |text|
+      services(:one).comments.create!(user: users(:one), body: %(<p><a href="/users/#{user.id}">@x</a> #{text}</p>)).mentions.sole
+    end
+
+    assert_equal [ newer, older ], user.recent_mentions.to_a
+    ActsAsTenant.with_tenant(headquarters(:two)) { assert_empty user.recent_mentions }
+  end
 end

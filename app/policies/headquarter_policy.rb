@@ -29,6 +29,11 @@ class HeadquarterPolicy < ApplicationPolicy
     true
   end
 
+  # Only super admins work in any sede; everyone else works in their own.
+  def switch?
+    super_admin?
+  end
+
   class Scope < ApplicationPolicy::Scope
     def resolve
       scope.all

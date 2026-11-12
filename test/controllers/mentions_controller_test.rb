@@ -44,8 +44,35 @@ class MentionsControllerTest < ActionDispatch::IntegrationTest
     post read_all_mentions_url
 
     assert_redirected_to mentions_url
-    assert_equal 0, @user.comment_mentions.unread.count
-    assert_equal 1, other.comment_mentions.unread.count
+    assert_equal 0, @user.unread_mentions.count
+    assert_equal 1, other.unread_mentions.count
+  end
+
+  test "a super admin in another sede only sees that sede's mentions" do
+    admin = users(:super_admin)
+    mendoza_comment = services(:one).comments.create!(user: users(:one), body: %(<p><a href="/users/#{admin.id}">@#{admin.full_name}</a> mirá</p>))
+    quito_comment = ActsAsTenant.with_tenant(headquarters(:two)) do
+      vocal = User.create!(email: "vocal@quito.test", first_name: "Ana", last_name: "Quiteña", role: :vocal, password: "password123")
+      setup = GuardSetup.create!(day_number: 1, vocal: vocal, guardian_ids: [ vocal.id ])
+      guard = Guard.create!(guard_setup: setup, day_number: 1, due_date: Date.current, vocal: vocal, priest: vocal, guardian_ids: [ vocal.id ])
+      service = guard.services.create!(full_name: "Servicio Quiteño", due_date: Date.current, created_by: vocal)
+      # Mentions only find the comment's sede users, so the Mendoza super admin's mention there is made directly.
+      service.comments.create!(user: vocal, body: "<p>hola</p>").tap { |comment| comment.mentions.create!(user: admin) }
+    end
+    sign_in admin
+    patch current_headquarter_url, params: { headquarter_id: headquarters(:two).id }
+
+    get mentions_url
+
+    assert_response :success
+    assert_select "ul > li", count: 1
+    assert_select "a[href*=?]", "comment_#{quito_comment.id}"
+    assert_select "a#mentions_indicator span", text: "1"
+
+    post read_all_mentions_url
+
+    assert quito_comment.mentions.sole.reload.read_at
+    assert_nil mendoza_comment.mentions.sole.reload.read_at
   end
 
   test "offers turning on push notifications on this device" do
