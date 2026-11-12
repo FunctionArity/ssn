@@ -153,4 +153,19 @@ class ContactDirectoriesControllerTest < ActionDispatch::IntegrationTest
     assert_select "h2", text: @directory.title, count: 0
     assert_select "a[href='mailto:capellan@example.com']"
   end
+
+  test "edit shows the directory's form" do
+    get edit_headquarter_contact_directory_url(@headquarter, @directory)
+
+    assert_response :success
+    assert_select "form[action=?]", headquarter_contact_directory_path(@headquarter, @directory)
+  end
+
+  test "update re-renders the form when invalid" do
+    patch headquarter_contact_directory_url(@headquarter, @directory), params: { contact_directory: { title: "" } }
+
+    assert_response :unprocessable_entity
+    assert_select "form[action=?]", headquarter_contact_directory_path(@headquarter, @directory)
+    assert_equal contact_directories(:pastoral).title, @directory.reload.title
+  end
 end

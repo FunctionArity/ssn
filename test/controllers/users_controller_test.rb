@@ -733,4 +733,32 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     get user_url(users(:one))
     assert_select "a[href='#{history_user_path(users(:one))}']", count: 0
   end
+
+  test "an admin locks and unlocks a user" do
+    user = users(:two)
+
+    patch lock_user_url(user)
+    assert_redirected_to user_url(user)
+    assert_equal I18n.t("users.notices.locked"), flash[:notice]
+    assert user.reload.access_locked?
+
+    patch unlock_user_url(user)
+    assert_redirected_to user_url(user)
+    assert_equal I18n.t("users.notices.unlocked"), flash[:notice]
+    assert_not user.reload.access_locked?
+  end
+
+  test "regular users can't lock or unlock users" do
+    user = users(:two)
+    sign_in users(:one)
+
+    patch lock_user_url(user)
+    assert_redirected_to root_path
+    assert_not user.reload.access_locked?
+
+    user.lock_access!(send_instructions: false)
+    patch unlock_user_url(user)
+    assert_redirected_to root_path
+    assert user.reload.access_locked?
+  end
 end

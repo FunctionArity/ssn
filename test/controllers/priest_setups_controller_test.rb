@@ -79,6 +79,46 @@ class PriestSetupsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to new_priest_setup_url
   end
 
+  test "new shows every slot, with its priest, and the priests without one" do
+    unassigned = User.create!(email: "priest.new@example.test", first_name: "Nuevo", last_name: "Sacerdote", role: :priest, password: "password123")
+
+    get new_priest_setup_url
+
+    assert_response :success
+    # Four weeks of seven days, then the 29th to the 31st.
+    assert_select "td[id^=priest_setup_cell_]", count: 31
+    assert_select "#priest_setup_cell_5_3"
+    assert_select "#priest_setup_cell_1_1", text: /#{users(:priest_one).full_name}/
+    assert_select "#priests-panel [data-priest-id=?]", unassigned.id.to_s
+    assert_select "#priests-panel [data-priest-id=?]", users(:priest_one).id.to_s, count: 0
+  end
+
+  test "moving an assignment to another slot empties the slot it came from" do
+    assert_no_difference("PriestSetup.count") do
+      post priest_setups_url, params: {
+        source_setup_id: @priest_setup.id,
+        priest_setup: { priest_id: @priest_setup.priest_id, week_number: 3, day_of_week: 5 }
+      }, as: :turbo_stream
+    end
+
+    assert_not PriestSetup.exists?(@priest_setup.id)
+    assert_equal @priest_setup.priest_id, PriestSetup.find_by(week_number: 3, day_of_week: 5).priest_id
+    assert_select "turbo-stream[action=replace][target=priest_setup_cell_3_5]"
+    assert_select "turbo-stream[action=replace][target=priest_setup_cell_#{@priest_setup.week_number}_#{@priest_setup.day_of_week}]"
+  end
+
+  test "a source slot that no longer exists is ignored" do
+    assert_difference("PriestSetup.count") do
+      post priest_setups_url, params: {
+        source_setup_id: 0,
+        priest_setup: { priest_id: users(:priest_two).id, week_number: 3, day_of_week: 5 }
+      }, as: :turbo_stream
+    end
+
+    assert PriestSetup.exists?(@priest_setup.id)
+    assert_select "turbo-stream[action=replace]", count: 1
+  end
+
   # ---------------------------------------------------------------------------
   # Authorization — non-admin users
   # ---------------------------------------------------------------------------
