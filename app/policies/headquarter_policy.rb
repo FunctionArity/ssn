@@ -5,8 +5,9 @@ class HeadquarterPolicy < ApplicationPolicy
     true
   end
 
+  # Sedes are added and removed by super admins: a sede can only be deleted once nobody works there.
   def create?
-    is_admin?
+    super_admin?
   end
 
   def new?
@@ -14,7 +15,7 @@ class HeadquarterPolicy < ApplicationPolicy
   end
 
   def update?
-    is_admin?
+    manages_headquarter?(record.try(:id))
   end
 
   def edit?
@@ -22,7 +23,7 @@ class HeadquarterPolicy < ApplicationPolicy
   end
 
   def destroy?
-    is_admin?
+    super_admin?
   end
 
   def show?
@@ -38,11 +39,5 @@ class HeadquarterPolicy < ApplicationPolicy
     def resolve
       scope.all
     end
-  end
-
-  private
-
-  def is_admin?
-    super_admin? || admin?
   end
 end

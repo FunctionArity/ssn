@@ -13,8 +13,10 @@ class GuardSetup < ApplicationRecord
   validates :day_number, presence: true
   validate :at_least_one_guardian
 
+  # This month's date for the setup's day. Months without that day (the 29th to the 31st) use their last day.
   def due_date
-    Date.current.change(day: day_number)
+    today = Date.current
+    today.change(day: [ day_number, today.end_of_month.day ].min)
   end
 
   private

@@ -37,7 +37,7 @@ class ServicesController < ApplicationController
   def history
     authorize @service
     @versions = @service.versions.reorder(created_at: :desc, id: :desc)
-    @authors = User.where(id: @versions.filter_map(&:whodunnit).uniq).index_by { |user| user.id.to_s }
+    @authors = User.authors_of(@versions)
   end
 
   # Options for the @ prompt of the comments editor, which filters them as the user types.

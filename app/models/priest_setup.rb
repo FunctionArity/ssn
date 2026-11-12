@@ -33,12 +33,8 @@ class PriestSetup < ApplicationRecord
 
     target = last_week? ? bom + 27.days + day_of_week : first_occurrence + ((week_number - 1) * 7)
 
-    return target.day if target.month == reference.month
-
-    fallback_day = { 1 => 29, 2 => 30, 3 => 31 }[day_of_week]
-    return nil if day_of_week > 3 || fallback_day > reference.end_of_month.day
-
-    fallback_day
+    # A last-week day past the month's end (e.g. the 30th in February) isn't in this month.
+    target.day if target.month == reference.month
   end
 
   def current_date(reference = Date.current)

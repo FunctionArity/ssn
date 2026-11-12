@@ -4,7 +4,7 @@ class CommentReaction < ApplicationRecord
   EMOJIS = %w[👍 ❤️ 😂 😮 😢 🙏].freeze
 
   belongs_to :comment
-  belongs_to :user
+  belongs_to :user, -> { in_any_sede }
 
   validates :emoji, inclusion: { in: EMOJIS }
   validates :emoji, uniqueness: { scope: %i[comment_id user_id] }

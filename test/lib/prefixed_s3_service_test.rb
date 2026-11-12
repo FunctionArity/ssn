@@ -15,4 +15,12 @@ class PrefixedS3ServiceTest < ActiveSupport::TestCase
     assert_equal "avatar/variants/abc/", client.api_requests.find { |r| r[:operation_name] == :list_objects_v2 }[:params][:prefix]
     assert client.api_requests.any? { |r| r[:operation_name] == :delete_objects }
   end
+
+  test "keeps every blob inside its prefix" do
+    client = @service.client.client
+
+    @service.exist?("abc123")
+
+    assert_equal "avatar/abc123", client.api_requests.find { |r| r[:operation_name] == :head_object }[:params][:key]
+  end
 end

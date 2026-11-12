@@ -85,6 +85,28 @@ class HeadquarterTenancyTest < ActiveSupport::TestCase
     assert headquarters(:one).persisted?
   end
 
+  test "a sede with users can't be deleted while working in another sede" do
+    in_quito { create_user("vocal") }
+
+    assert_not @quito.destroy
+    assert @quito.reload.persisted?
+  end
+
+  test "authors from another sede are found" do
+    service = in_quito do
+      vocal = create_user("vocal")
+      guard = quito_guard(due_date: Date.current, vocal: vocal)
+      guard.save!
+      guard.services.create!(full_name: "Servicio Quiteño", due_date: Date.current, created_by: users(:super_admin))
+    end
+
+    in_quito do
+      assert_equal users(:super_admin), Service.find(service.id).created_by
+      assert_equal users(:super_admin), Service.includes(:created_by).find(service.id).created_by
+      assert_equal({ users(:super_admin).id.to_s => users(:super_admin) }, User.authors_of([ PaperTrail::Version.new(whodunnit: users(:super_admin).id.to_s) ]))
+    end
+  end
+
   private
 
   def in_quito(&) = ActsAsTenant.with_tenant(@quito, &)

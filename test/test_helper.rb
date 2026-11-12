@@ -12,6 +12,7 @@ end
 ENV["RAILS_ENV"] ||= "test"
 require_relative "../config/environment"
 require "rails/test_help"
+require "minitest/mock"
 
 module ActiveSupport
   class TestCase
@@ -30,30 +31,14 @@ module ActiveSupport
   end
 end
 
-# Swaps a method of an object, e.g. a class method, for the duration of the block.
-module MethodReplacement
-  private
-
-  def replacing(object, name, implementation)
-    original = object.method(name)
-    object.define_singleton_method(name, implementation)
-    yield
-  ensure
-    object.define_singleton_method(name, original)
-  end
-end
-
 # Google ID tokens signed with a throwaway key, which GoogleIdToken trusts as Google's while the block runs.
 module GoogleIdTokenTestHelper
-  include MethodReplacement
-
   GOOGLE_CLIENT_ID = "test-client.apps.googleusercontent.com".freeze
 
   def with_google_keys(&)
-    # The replacements run as GoogleIdToken methods, so they can't call this test's: the keys go in a variable.
     keys = JWT::JWK::Set.new(google_signing_key).export
-    replacing(GoogleIdToken, :client_id, -> { GOOGLE_CLIENT_ID }) do
-      replacing(GoogleIdToken, :jwks, ->(_options = {}) { keys }, &)
+    GoogleIdToken.stub(:client_id, GOOGLE_CLIENT_ID) do
+      GoogleIdToken.stub(:jwks, ->(_options = {}) { keys }, &)
     end
   end
 
@@ -71,16 +56,14 @@ end
 
 # Web Push with throwaway VAPID keys, collecting what would be sent instead of calling the push services.
 module WebPushTestHelper
-  include MethodReplacement
-
   # vapid: false is a server without VAPID keys, where push notifications are off.
   def capture_web_pushes(raising: nil, vapid: true)
     sent = []
     keys = WebPush.generate_key
     vapid = { subject: "mailto:test@example.test", public_key: (keys.public_key if vapid), private_key: (keys.private_key if vapid) }
 
-    replacing(PushSubscription, :vapid, -> { vapid }) do
-      replacing(WebPush, :payload_send, ->(**args) { sent << args; raise raising if raising }) { yield sent }
+    PushSubscription.stub(:vapid, vapid) do
+      WebPush.stub(:payload_send, ->(**args) { sent << args; raise raising if raising }) { yield sent }
     end
   end
 end

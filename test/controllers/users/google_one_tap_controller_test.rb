@@ -59,9 +59,24 @@ class Users::GoogleOneTapControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "the home page has no One Tap without a Google client" do
-    replacing(GoogleIdToken, :client_id, -> { nil }) { get root_path }
+    GoogleIdToken.stub(:client_id, nil) { get root_path }
 
     assert_select "[data-controller=google-one-tap]", count: 0
+  end
+
+  test "more than 10 tries a minute from one address are turned away" do
+    tries = 0
+    # The test environment's cache counts nothing, so the count is kept here.
+    Users::GoogleOneTapController.cache_store.stub(:increment, ->(*_args, **_options) { tries += 1 }) do
+      with_google_keys do
+        10.times { post google_one_tap_path, params: { credential: "not-a-token" } }
+        post google_one_tap_path, params: { credential: google_id_token(email: @user.email) }
+      end
+    end
+
+    assert_redirected_to new_user_session_path
+    assert_equal I18n.t("devise.omniauth_callbacks.google_failure"), flash[:alert]
+    assert_signed_out
   end
 
   private

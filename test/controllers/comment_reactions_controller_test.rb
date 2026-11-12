@@ -42,6 +42,19 @@ class CommentReactionsControllerTest < ActionDispatch::IntegrationTest
     assert_select "button[aria-pressed=true]", text: /👍\s*2/
   end
 
+  test "a double click whose other click already saved the reaction doesn't fail" do
+    # The other click saves it between this one's uniqueness check and its insert, so the database refuses the insert.
+    uniqueness = CommentReaction.validators_on(:emoji).grep(ActiveRecord::Validations::UniquenessValidator).sole
+    duplicate_insert = ->(*) { raise ActiveRecord::RecordNotUnique, "duplicate key value violates unique constraint" }
+
+    uniqueness.stub(:validate_each, duplicate_insert) do
+      post service_comment_reactions_url(@service, @comment), params: { emoji: "👍" }, headers: TURBO_STREAM
+    end
+
+    assert_response :success
+    assert_includes response.body, %(action="replace" target="reactions_comment_#{@comment.id}")
+  end
+
   test "an emoji outside the list is rejected" do
     assert_no_difference -> { CommentReaction.count } do
       post service_comment_reactions_url(@service, @comment), params: { emoji: "💩" }, headers: TURBO_STREAM

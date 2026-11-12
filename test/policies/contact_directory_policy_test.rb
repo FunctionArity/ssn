@@ -28,6 +28,20 @@ class ContactDirectoryPolicyTest < ActiveSupport::TestCase
     end
   end
 
+  test "admins only manage their own sede's directories" do
+    other = ContactDirectory.new(headquarter: headquarters(:two))
+
+    assert_not policy(users(:admin_user), other).create?
+    assert_not policy(users(:admin_user), other).update?
+    assert_not policy(users(:admin_user), other).destroy?
+    assert policy(users(:super_admin), other).update?
+  end
+
+  test "checked against the class, only super admins can create" do
+    assert_not policy(users(:admin_user), ContactDirectory).create?
+    assert policy(users(:super_admin), ContactDirectory).create?
+  end
+
   test "scope returns every directory to signed-in users and only public ones to visitors" do
     assert_equal ContactDirectory.count, ContactDirectoryPolicy::Scope.new(users(:one), ContactDirectory).resolve.count
     assert_equal [ contact_directories(:public_directory) ], ContactDirectoryPolicy::Scope.new(nil, ContactDirectory).resolve.to_a

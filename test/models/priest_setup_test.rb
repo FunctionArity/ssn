@@ -214,4 +214,38 @@ class PriestSetupTest < ActiveSupport::TestCase
     assert priest_setup.errors[:week_number].any?
     assert priest_setup.errors[:day_of_week].any?
   end
+
+  test "find_priest_by_day_of_month returns the priest set up for that day of the month" do
+    PriestSetup.create!(priest: users(:priest_two), day_of_month: 30)
+
+    assert_equal users(:priest_two), PriestSetup.find_priest_by_day_of_month(Date.new(2027, 3, 30))
+    assert_nil PriestSetup.find_priest_by_day_of_month(Date.new(2027, 3, 29))
+  end
+
+  test "set_day_of_month keeps the day of a last-week setup that falls after the 28th" do
+    # March 2027 starts on a Monday, so its last Monday is the 29th.
+    priest_setup = PriestSetup.new(priest: users(:priest_one), week_number: 5, day_of_week: 1)
+
+    travel_to(Date.new(2027, 3, 10)) { priest_setup.set_day_of_month }
+
+    assert_equal 29, priest_setup.day_of_month
+  end
+
+  test "set_day_of_month leaves the day empty on the 28th or before, and when the month doesn't have it" do
+    first_monday = PriestSetup.new(priest: users(:priest_one), week_number: 1, day_of_week: 1)
+    last_monday = PriestSetup.new(priest: users(:priest_one), week_number: 5, day_of_week: 1)
+
+    travel_to(Date.new(2027, 3, 10)) { first_monday.set_day_of_month }
+    # February 2027 has 28 days, so it has no Monday after the 28th.
+    travel_to(Date.new(2027, 2, 10)) { last_monday.set_day_of_month }
+
+    assert_nil first_monday.day_of_month
+    assert_nil last_monday.day_of_month
+  end
+
+  test "date is this month's date of the day of the month" do
+    priest_setup = PriestSetup.new(priest: users(:priest_one), day_of_month: 30)
+
+    travel_to(Date.new(2027, 3, 10)) { assert_equal Date.new(2027, 3, 30), priest_setup.date }
+  end
 end
