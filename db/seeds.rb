@@ -9,9 +9,9 @@
 load_seed = ->(seed) { load Rails.root.join("db/seeds", "#{seed}.rb") }
 
 # Shared by every sede.
-%w[headquarters mendoza_health_facilities churches contact_directories].each(&load_seed)
+%w[headquarters contact_directories].each(&load_seed)
 
-# The users so far are the Mendoza sede's.
+# The users, health facilities and churches so far are the Mendoza sede's.
 ActsAsTenant.with_tenant(Headquarter.friendly.find("mendoza")) do
-  %w[admin_user priest_users users].each(&load_seed)
+  %w[admin_user mendoza_health_facilities churches priest_users users].each(&load_seed)
 end

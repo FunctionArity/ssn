@@ -1,12 +1,19 @@
-<%# The sede the user works in. Super admins can switch to another one. %>
+<%# Super admins work in any sede: the one they're in, and the others to switch to. Everyone else only has theirs. %>
 <% if policy(current_headquarter).switch? %>
-  <details class="group rounded-lg border border-gray-100 bg-gray-50 overflow-hidden" data-controller="disclosure">
-    <summary data-action="click->disclosure#toggle" title="<%= t("sidebar.headquarter") %>" class="sidebar-link flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 cursor-pointer list-none select-none">
-      <i class="ph ph-map-pin text-lg"></i>
-      <span class="sidebar-label truncate"><%= current_headquarter.city %></span>
-      <i class="ph ph-caret-right sidebar-disclosure-caret text-xs ml-auto transition-transform duration-300 group-open:rotate-90"></i>
+  <%# Blue and set apart from the menu below, so the sede the super admin is working in stands out. %>
+  <details class="sidebar-headquarter group mb-4 rounded-lg border border-blue-200 bg-blue-50 shadow-sm overflow-hidden" data-controller="disclosure">
+    <summary data-action="click->disclosure#toggle" title="<%= t("sidebar.headquarter") %>" class="sidebar-link flex items-center gap-2 px-3 py-2 text-sm font-semibold text-blue-800 hover:bg-blue-100 cursor-pointer list-none select-none">
+      <i class="ph-fill ph-map-pin text-lg text-blue-600"></i>
+      <%# The sidebar's label rule sets its display, so the two lines go in a span of their own. %>
+      <span class="sidebar-label min-w-0">
+        <span class="flex flex-col leading-tight">
+          <span class="text-[10px] font-medium uppercase tracking-wide text-blue-500"><%= t("sidebar.headquarter") %></span>
+          <span id="sidebar_headquarter" class="truncate"><%= current_headquarter.city %></span>
+        </span>
+      </span>
+      <i class="ph ph-caret-right sidebar-disclosure-caret text-xs ml-auto text-blue-500 transition-transform duration-300 group-open:rotate-90"></i>
     </summary>
-    <div id="headquarter_switcher" data-disclosure-target="content" class="overflow-hidden border-t border-gray-100 divide-y divide-gray-100">
+    <div id="headquarter_switcher" data-disclosure-target="content" class="overflow-hidden border-t border-blue-200 bg-white divide-y divide-gray-100">
       <% Headquarter.order(:city).each do |headquarter| %>
         <% current = headquarter == current_headquarter %>
         <%= button_to current_headquarter_path, method: :patch, params: { headquarter_id: headquarter.id }, disabled: current,
@@ -18,9 +25,4 @@
       <% end %>
     </div>
   </details>
-<% else %>
-  <div title="<%= t("sidebar.headquarter") %>" class="sidebar-link flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-500 border-l-2 border-transparent">
-    <i class="ph ph-map-pin text-lg"></i>
-    <span class="sidebar-label truncate"><%= current_headquarter.city %></span>
-  </div>
 <% end %>

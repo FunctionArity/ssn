@@ -675,7 +675,7 @@ es:
       created: La sede fue creada exitosamente.
       updated: La sede fue actualizada exitosamente.
       destroyed: La sede fue eliminada exitosamente.
-      not_destroyed: La sede tiene usuarios, guardias o servicios, así que no se puede eliminar.
+      not_destroyed: La sede tiene usuarios, guardias, servicios, centros de salud o iglesias, así que no se puede eliminar.
   comment_mailer:
     mention:
       comment: Comentario

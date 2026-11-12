@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_12_150000) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_12_170000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -48,6 +48,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_12_150000) do
     t.string "name"
     t.string "phone"
     t.datetime "updated_at", null: false
+    t.bigint "headquarter_id", null: false
+    t.index ["headquarter_id"], name: "index_churches_on_headquarter_id"
   end
 
   create_table "comment_mentions", force: :cascade do |t|
@@ -211,6 +213,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_12_150000) do
     t.datetime "created_at", null: false
     t.string "name", null: false
     t.datetime "updated_at", null: false
+    t.bigint "headquarter_id", null: false
+    t.index ["headquarter_id"], name: "index_health_facilities_on_headquarter_id"
   end
 
   create_table "priest_setups", force: :cascade do |t|
@@ -318,6 +322,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_12_150000) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "churches", "headquarters"
   add_foreign_key "comment_mentions", "comments"
   add_foreign_key "comment_mentions", "users"
   add_foreign_key "comment_reactions", "comments", on_delete: :cascade
@@ -337,6 +342,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_12_150000) do
   add_foreign_key "guards", "headquarters"
   add_foreign_key "guards", "users", column: "priest_id"
   add_foreign_key "guards", "users", column: "vocal_id"
+  add_foreign_key "health_facilities", "headquarters"
   add_foreign_key "priest_setups", "headquarters"
   add_foreign_key "priest_setups", "users", column: "priest_id"
   add_foreign_key "push_subscriptions", "users"

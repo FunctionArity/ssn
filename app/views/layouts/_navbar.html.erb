@@ -23,9 +23,24 @@
         <% if user_signed_in? %>
           <%= turbo_stream_from current_user, :mentions %>
           <%= render "layouts/mentions_indicator", user: current_user %>
-          <span class="shrink-0"><%= user_crown_icon %></span>
-          <i class="ph <%= current_user.role_icon_class %> <%= current_user.role_icon_color_class %> shrink-0"
-             title="<%= t("activerecord.attributes.user.roles.#{current_user.role}") %>"></i>
+          <%# The user's picture, or their role icon when they have none or it fails to load. Admins and super admins
+             get a colored ring around it. %>
+          <% role_icon = capture do %>
+            <i class="ph <%= current_user.role_icon_class %> <%= current_user.role_icon_color_class %>"></i>
+          <% end %>
+          <% picture_title = [ t("activerecord.attributes.user.roles.#{current_user.role}"),
+                               (t("activerecord.attributes.user.user_types.#{current_user.user_type}") unless current_user.regular?) ].compact.join(" · ") %>
+          <div id="navbar_user_picture" title="<%= picture_title %>" class="shrink-0 rounded-full <%= user_type_ring_class(current_user) %>">
+            <% if current_user.avatar.attached? %>
+              <div data-controller="avatar-fallback">
+                <%= image_tag url_for(current_user.avatar), alt: "", id: "navbar_avatar", class: "block w-7 h-7 rounded-full object-cover",
+                      data: { avatar_fallback_target: "image", action: "error->avatar-fallback#fallback" } %>
+                <div data-avatar-fallback-target="placeholder" class="hidden items-center justify-center w-7 h-7 rounded-full bg-gray-100"><%= role_icon %></div>
+              </div>
+            <% else %>
+              <div class="flex items-center justify-center w-7 h-7 rounded-full bg-gray-100"><%= role_icon %></div>
+            <% end %>
+          </div>
           <%= link_to current_user.full_name, user_path(current_user), class: "text-gray-600 truncate min-w-0 max-w-[110px] sm:max-w-none" %>
 
           <%= button_to destroy_user_session_path, method: :delete, class: "flex items-center gap-1 text-blue-600 hover:text-blue-800 font-medium cursor-pointer shrink-0" do %>

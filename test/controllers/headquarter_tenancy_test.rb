@@ -30,6 +30,20 @@ class HeadquarterTenancyControllerTest < ActionDispatch::IntegrationTest
     assert_response :not_found
   end
 
+  test "the health facilities list only has the sede's facilities" do
+    quito_facility = ActsAsTenant.with_tenant(@quito) { HealthFacility.create!(name: "Hospital Eugenio Espejo", address: "Av. Gran Colombia, Quito") }
+    sign_in users(:super_admin)
+
+    get health_facilities_url
+    assert_select "a[href=?]", health_facility_path(health_facilities(:one))
+    assert_select "a[href=?]", health_facility_path(quito_facility), count: 0
+
+    patch current_headquarter_url, params: { headquarter_id: @quito.id }
+    get health_facilities_url
+    assert_select "a[href=?]", health_facility_path(quito_facility)
+    assert_select "a[href=?]", health_facility_path(health_facilities(:one)), count: 0
+  end
+
   test "the users list only has the sede's users" do
     sign_in users(:super_admin)
 
@@ -86,6 +100,7 @@ class HeadquarterTenancyControllerTest < ActionDispatch::IntegrationTest
     get guards_url
     assert_select "a[href=?]", guard_path(guards(:one))
     assert_select "#headquarter_switcher", count: 0
+    assert_select "aside [title=?]", I18n.t("sidebar.headquarter"), count: 0
   end
 
   test "a super admin impersonates the users of the sede they switched to" do

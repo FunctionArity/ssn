@@ -457,7 +457,7 @@ en:
       created: Headquarter was successfully created.
       updated: Headquarter was successfully updated.
       destroyed: Headquarter was successfully destroyed.
-      not_destroyed: The headquarter has users, guards or services, so it can't be deleted.
+      not_destroyed: The headquarter has users, guards, services, health facilities or churches, so it can't be deleted.
   comment_mailer:
     mention:
       comment: Comment

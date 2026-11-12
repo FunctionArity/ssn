@@ -46,6 +46,40 @@ class HeadquarterTenancyTest < ActiveSupport::TestCase
     in_quito { assert_equal quito_priest, User.current_priest(first_monday) }
   end
 
+  test "each sede has its own health facilities" do
+    quito_facility = in_quito { HealthFacility.create!(name: "Hospital Eugenio Espejo", address: "Av. Gran Colombia, Quito") }
+
+    assert_not_includes HealthFacility.all, quito_facility
+    in_quito { assert_equal [ quito_facility ], HealthFacility.all.to_a }
+  end
+
+  test "a service's health facility must be from its sede" do
+    quito_facility = in_quito { HealthFacility.create!(name: "Hospital Eugenio Espejo", address: "Av. Gran Colombia, Quito") }
+    service = services(:one)
+
+    service.health_facility_id = quito_facility.id
+
+    assert_not service.valid?
+    assert service.errors.include?(:health_facility_id)
+  end
+
+  test "each sede has its own churches" do
+    quito_church = in_quito { Church.create!(name: "Basílica del Voto Nacional") }
+
+    assert_not_includes Church.all, quito_church
+    in_quito { assert_equal [ quito_church ], Church.all.to_a }
+  end
+
+  test "a priest's church must be from their sede" do
+    quito_church = in_quito { Church.create!(name: "Basílica del Voto Nacional") }
+    priest = users(:priest_one)
+
+    priest.church_id = quito_church.id
+
+    assert_not priest.valid?
+    assert priest.errors.include?(:church_id)
+  end
+
   test "a sede with users can't be deleted" do
     assert_not headquarters(:one).destroy
     assert headquarters(:one).persisted?
