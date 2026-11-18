@@ -17,3 +17,10 @@ production:
   purge_unattached_blobs:
     command: "ActiveStorage::Blob.unattached.where(created_at: ..2.days.ago).find_each(&:purge_later)"
     schedule: every day at 3am
+  # Revoked API tokens only matter until they would have expired anyway
+  purge_expired_jwt_denylist:
+    command: "JwtDenylist.expired.delete_all"
+    schedule: every day at 4am
+  purge_expired_personal_access_tokens:
+    command: "PersonalAccessToken.expired.delete_all"
+    schedule: every day at 4:10am

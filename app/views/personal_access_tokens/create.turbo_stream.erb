@@ -1,0 +1,7 @@
+<%= turbo_stream.update "new_personal_access_token" do %>
+  <%= render "new_token", token: @new_token %>
+<% end %>
+
+<%= turbo_stream.update "personal_access_tokens" do %>
+  <%= render "list", tokens: @tokens %>
+<% end %>

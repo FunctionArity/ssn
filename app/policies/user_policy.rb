@@ -45,6 +45,11 @@ class UserPolicy < ApplicationPolicy
     super_admin?
   end
 
+  # The link to their API tokens, on a super admin's own profile.
+  def api_tokens?
+    super_admin? && own_profile?
+  end
+
   private
 
   def own_profile?

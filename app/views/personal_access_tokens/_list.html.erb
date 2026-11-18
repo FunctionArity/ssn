@@ -1,0 +1,31 @@
+<%# locals: (tokens:) %>
+<% if tokens.empty? %>
+  <div class="px-6 py-12 text-center">
+    <i class="ph ph-key text-3xl text-gray-300"></i>
+    <p class="mt-2 text-sm text-gray-400"><%= t("personal_access_tokens.list.empty") %></p>
+  </div>
+<% else %>
+  <ul class="divide-y divide-gray-100">
+    <% tokens.each do |token| %>
+      <li id="<%= dom_id(token) %>" class="flex items-center gap-3 px-6 py-4">
+        <i class="ph ph-key text-lg text-gray-400 shrink-0"></i>
+        <div class="min-w-0 flex-1">
+          <p class="text-sm font-medium text-gray-900 font-mono">&hellip;<%= token.hint %></p>
+          <p class="text-xs text-gray-500">
+            <%= t("personal_access_tokens.list.created", time: l(token.created_at, format: :short)) %>
+            &middot;
+            <%= t("personal_access_tokens.list.expires", time: l(token.expires_at, format: :short)) %>
+          </p>
+        </div>
+        <%= button_to personal_access_token_path(token), method: :delete,
+              form: { data: { turbo_confirm: t("personal_access_tokens.list.revoke_confirm"),
+                              turbo_confirm_title: t("personal_access_tokens.list.revoke_confirm_title"),
+                              turbo_confirm_button: t("personal_access_tokens.list.revoke"),
+                              turbo_confirm_level: "danger" } },
+              class: "cursor-pointer inline-flex items-center gap-1.5 rounded-md bg-white border border-gray-300 px-3 py-1.5 text-sm font-medium text-red-600 shadow-sm hover:bg-red-50 transition-colors" do %>
+          <i class="ph ph-trash"></i> <span class="hidden sm:inline"><%= t("personal_access_tokens.list.revoke") %></span>
+        <% end %>
+      </li>
+    <% end %>
+  </ul>
+<% end %>

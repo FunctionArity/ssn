@@ -637,6 +637,26 @@ en:
       priest: Priest
       map: Map
       open_in_maps: Open in Google Maps
+  personal_access_tokens:
+    impersonating: You can't create or revoke API tokens while acting as another user.
+    index:
+      title: API tokens
+      create: Create token
+      intro: Create a token to call the API (/api/v1) from Postman or another client. It lasts %{days} days and stops working if you change your password or revoke it.
+      usage: "Send it with every request:"
+    new_token:
+      title: Token created
+      copy_now: Copy it now. For security, it won't be shown again.
+      copy: Copy
+    list:
+      empty: You have no active tokens.
+      created: Created %{time}
+      expires: Expires %{time}
+      revoke: Revoke
+      revoke_confirm_title: Revoke this token?
+      revoke_confirm: It stops working right away in any client using it.
+    destroy:
+      revoked: Token revoked.
   pundit:
     not_authorized: You are not authorized to perform this action.
   edit: Edit

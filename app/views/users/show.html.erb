@@ -177,6 +177,11 @@
           <i class="ph ph-envelope"></i> <%= t(@user.invitation_sent_at ? ".resend_invitation" : ".send_invitation") %>
         <% end %>
       <% end %>
+      <% if policy(@user).api_tokens? && acting_as_self? %>
+        <%= link_to personal_access_tokens_path, class: "w-full sm:w-auto flex items-center justify-center gap-1.5 rounded-md bg-white border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50" do %>
+          <i class="ph ph-key"></i> <%= t("personal_access_tokens.index.title") %>
+        <% end %>
+      <% end %>
       <% if policy(@user).edit? %>
         <%= link_to edit_user_path(@user), class: "w-full sm:w-auto flex items-center justify-center gap-1.5 rounded-md bg-white border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50" do %>
           <i class="ph ph-pencil-simple"></i> <%= t("edit") %>

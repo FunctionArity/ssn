@@ -854,6 +854,30 @@ es:
       no_priests: Todos los sacerdotes ya tienen una asignación.
       week: Semana
 
+  api:
+    errors:
+      not_found: No se encontró lo que buscás.
+      too_many_attempts: Demasiados intentos. Esperá un minuto y volvé a probar.
+  personal_access_tokens:
+    impersonating: No podés crear ni revocar tokens de la API mientras actuás como otro usuario.
+    index:
+      title: Tokens de la API
+      create: Crear token
+      intro: Creá un token para llamar a la API (/api/v1) desde Postman u otro cliente. Dura %{days} días y deja de funcionar si cambiás tu contraseña o lo revocás.
+      usage: "Envialo en cada pedido:"
+    new_token:
+      title: Token creado
+      copy_now: Copialo ahora. Por seguridad no se vuelve a mostrar.
+      copy: Copiar
+    list:
+      empty: No tenés tokens activos.
+      created: Creado %{time}
+      expires: Vence %{time}
+      revoke: Revocar
+      revoke_confirm_title: ¿Revocar este token?
+      revoke_confirm: Deja de funcionar al instante en cualquier cliente que lo use.
+    destroy:
+      revoked: Token revocado.
   pundit:
     not_authorized: No tenés permiso para realizar esta acción.
   edit: Editar
