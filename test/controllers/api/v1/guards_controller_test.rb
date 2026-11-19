@@ -27,6 +27,26 @@ class Api::V1::GuardsControllerTest < ActionDispatch::IntegrationTest
     assert_equal 1, json["page"]
   end
 
+  test "includes today's guard setup when today has no guard yet" do
+    travel_to Date.new(2026, 11, 20) do
+      get api_v1_guards_url, headers: api_headers(users(:one)), as: :json
+    end
+
+    assert_response :success
+    assert_equal guard_setups(:two).id, json.dig("today_guard_setup", "id")
+    assert_equal users(:vocal_guardian).id, json.dig("today_guard_setup", "vocal", "id")
+  end
+
+  test "has no guard setup for today when there's no setup for today's day" do
+    travel_to Date.new(2026, 11, 19) do
+      get api_v1_guards_url, headers: api_headers(users(:one)), as: :json
+    end
+
+    assert_response :success
+    assert json.key?("today_guard_setup")
+    assert_nil json["today_guard_setup"]
+  end
+
   test "pages the list" do
     get api_v1_guards_url(page: 99), headers: api_headers(users(:one)), as: :json
 
