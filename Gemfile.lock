@@ -188,7 +188,7 @@ GEM
       activesupport (>= 6.1)
     hashie (5.2.0)
       logger
-    honeybadger (6.10.1)
+    honeybadger (6.10.2)
       logger
       ostruct
     i18n (1.15.2)
