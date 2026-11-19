@@ -460,6 +460,7 @@ es:
       sign_up: "Registrarse"
       forgot_password: "¿Olvidaste tu contraseña?"
       privacy_policy: Política de privacidad
+      terms: Términos y condiciones
       unlock_instructions: "¿No recibiste las instrucciones de desbloqueo?"
     mailer:
       greeting: "¡Hola %{email}!"

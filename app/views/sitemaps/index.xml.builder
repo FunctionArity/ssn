@@ -30,6 +30,12 @@ xml.urlset xmlns: "http://www.sitemaps.org/schemas/sitemap/0.9" do
     xml.priority "0.3"
   end
 
+  xml.url do
+    xml.loc terminos_url
+    xml.changefreq "yearly"
+    xml.priority "0.3"
+  end
+
   @headquarters.each do |headquarter|
     xml.url do
       xml.loc sede_url(headquarter)

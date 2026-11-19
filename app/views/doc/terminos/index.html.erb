@@ -1,0 +1,77 @@
+<% content_for :title, "Términos y condiciones" %>
+<% content_for :description, "Las condiciones para usar la aplicación del Servicio Sacerdotal Nocturno: quién puede usarla, para qué y cómo cuidar los datos de las personas que visitamos." %>
+<% h2_class = "text-xl font-bold text-indigo-900 mt-10 mb-3" %>
+<% list_class = "list-disc pl-6 space-y-1.5" %>
+<% link_class = "text-indigo-700 font-medium hover:underline" %>
+
+<article class="max-w-3xl mx-auto bg-white border border-gray-200 rounded-2xl px-5 sm:px-10 py-8 sm:py-10 text-gray-700 leading-relaxed">
+  <p class="text-xs font-semibold uppercase tracking-widest text-indigo-500 mb-3">Servicio Sacerdotal Nocturno</p>
+  <h1 class="text-3xl font-extrabold tracking-tight text-gray-900">Términos y condiciones</h1>
+  <p class="mt-2 text-sm text-gray-500">Última actualización: <%= l(Doc::TerminosController::UPDATED_ON, format: :long) %></p>
+
+  <p class="mt-6">
+    Esta aplicación es la herramienta del Servicio Sacerdotal Nocturno para organizar sus guardias y las visitas a
+    enfermos. Al iniciar sesión aceptás estas condiciones. Si no estás de acuerdo, no uses la aplicación y avisale a tu
+    sede.
+  </p>
+
+  <h2 class="<%= h2_class %>">Quién puede usarla</h2>
+  <p>
+    Solo los voluntarios y sacerdotes del Servicio, invitados por su sede. No hay registro abierto: cada cuenta la crea
+    un administrador de la sede, que también define el rol de cada persona (guardián, vocal o sacerdote) y puede
+    bloquearla o darla de baja.
+  </p>
+
+  <h2 class="<%= h2_class %>">Tu cuenta</h2>
+  <ul class="<%= list_class %>">
+    <li>La cuenta es personal: no la compartas ni le pases tu contraseña a nadie.</li>
+    <li>Si iniciás sesión con Google, usá la cuenta de Google con el mismo email que tiene tu sede.</li>
+    <li>Mantené tus datos al día, sobre todo el teléfono, para que puedan contactarte durante una guardia.</li>
+    <li>
+      Si creés que alguien entró a tu cuenta, cambiá la contraseña y avisá a tu sede o escribinos a
+      <%= mail_to Doc::PrivacidadController::CONTACT_EMAIL, class: link_class %>.
+    </li>
+  </ul>
+
+  <h2 class="<%= h2_class %>">Cómo usarla</h2>
+  <p>Te pedimos que uses la aplicación solo para la tarea del Servicio. En particular:</p>
+  <ul class="<%= list_class %> mt-2">
+    <li>
+      Los datos de las personas que visitamos, sobre todo su salud y los sacramentos que piden, son confidenciales.
+      Usalos solo para atender el servicio y no los copies, publiques ni compartas fuera del Servicio.
+    </li>
+    <li>Cargá información verdadera y respetuosa, tanto en los servicios como en los comentarios.</li>
+    <li>No intentes ver datos de otras sedes o funciones que tu rol no permite, ni interferir con la aplicación.</li>
+  </ul>
+  <p class="mt-3">
+    Si alguien no cumple estas condiciones, la sede o la Federación pueden suspender o dar de baja su cuenta.
+  </p>
+
+  <h2 class="<%= h2_class %>">Lo que cargás</h2>
+  <p>
+    Los datos que cargás quedan a disposición de tu sede para organizar el Servicio, y la aplicación guarda quién
+    hizo cada cambio. Cómo tratamos los datos personales se explica en la
+    <%= link_to "política de privacidad", privacidad_path, class: link_class %>, que forma parte de estas condiciones.
+  </p>
+
+  <h2 class="<%= h2_class %>">Disponibilidad</h2>
+  <p>
+    El Servicio es una obra voluntaria y ofrece la aplicación sin costo. Hacemos lo posible para que funcione siempre,
+    pero puede haber interrupciones o errores, y podemos cambiar o quitar funciones. La aplicación es una ayuda: ante
+    una urgencia, comunicate también por teléfono con el guardián o el sacerdote de turno.
+  </p>
+
+  <h2 class="<%= h2_class %>">Cambios en estas condiciones</h2>
+  <p>
+    Si cambiamos estas condiciones, vamos a actualizar esta página y la fecha de arriba. Seguir usando la aplicación
+    después de un cambio significa que lo aceptás.
+  </p>
+
+  <h2 class="<%= h2_class %>">Ley aplicable y contacto</h2>
+  <p>
+    Estas condiciones se rigen por las leyes de la República Argentina. Para cualquier consulta, escribinos a
+    <%= mail_to Doc::PrivacidadController::CONTACT_EMAIL, class: link_class %>
+    o comunicate con los contactos de tu sede, que figuran en
+    <%= link_to "la página de sedes", sedes_path, class: link_class %>.
+  </p>
+</article>

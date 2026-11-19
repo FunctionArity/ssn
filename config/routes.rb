@@ -72,6 +72,7 @@ Rails.application.routes.draw do
   get "asamblea2026", to: "doc/asamblea#index", as: :asamblea2026
   get "federacion", to: "doc/federacion#index", as: :federacion
   get "privacidad", to: "doc/privacidad#index", as: :privacidad
+  get "terminos", to: "doc/terminos#index", as: :terminos
 
   get "sitemap.xml", to: "sitemaps#index", as: :sitemap, defaults: { format: "xml" }
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
