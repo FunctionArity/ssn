@@ -761,4 +761,22 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to root_path
     assert user.reload.access_locked?
   end
+
+  test "a super admin's own profile links to their API tokens" do
+    sign_in users(:super_admin)
+
+    get user_url(users(:super_admin))
+
+    assert_select "main a[href='#{personal_access_tokens_path}']", text: /#{I18n.t("personal_access_tokens.index.title")}/
+  end
+
+  test "the API tokens link isn't on other profiles nor for other users" do
+    sign_in users(:super_admin)
+    get user_url(users(:one))
+    assert_select "main a[href='#{personal_access_tokens_path}']", count: 0
+
+    sign_in users(:admin_user)
+    get user_url(users(:admin_user))
+    assert_select "main a[href='#{personal_access_tokens_path}']", count: 0
+  end
 end

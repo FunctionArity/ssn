@@ -67,3 +67,16 @@ module WebPushTestHelper
     end
   end
 end
+
+# Requests to the JSON API (/api/v1) as the given user, with the token the sign-in endpoint would give them.
+module ApiTestHelper
+  def api_headers(user, headquarter: nil)
+    headers = { "Authorization" => "Bearer #{ApiToken.issue(user)}" }
+    headers["X-Headquarter-Id"] = headquarter.id.to_s if headquarter
+    headers
+  end
+
+  def json
+    response.parsed_body
+  end
+end

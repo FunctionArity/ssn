@@ -31,6 +31,8 @@ gem "omniauth-google-oauth2"
 gem "omniauth-rails_csrf_protection"
 # Checks the ID tokens of Google One Tap.
 gem "jwt"
+# Lets the React front end (ssn-front) call /api from its own origin.
+gem "rack-cors"
 gem "pretender"
 gem "pundit"
 gem "friendly_id"

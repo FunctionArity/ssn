@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_12_170000) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_18_201611) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -217,6 +217,26 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_12_170000) do
     t.index ["headquarter_id"], name: "index_health_facilities_on_headquarter_id"
   end
 
+  create_table "jwt_denylists", force: :cascade do |t|
+    t.string "jti", null: false
+    t.datetime "exp", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["exp"], name: "index_jwt_denylists_on_exp"
+    t.index ["jti"], name: "index_jwt_denylists_on_jti", unique: true
+  end
+
+  create_table "personal_access_tokens", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "jti", null: false
+    t.string "hint", null: false
+    t.datetime "expires_at", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["jti"], name: "index_personal_access_tokens_on_jti", unique: true
+    t.index ["user_id"], name: "index_personal_access_tokens_on_user_id"
+  end
+
   create_table "priest_setups", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.integer "day_of_month"
@@ -343,6 +363,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_12_170000) do
   add_foreign_key "guards", "users", column: "priest_id"
   add_foreign_key "guards", "users", column: "vocal_id"
   add_foreign_key "health_facilities", "headquarters"
+  add_foreign_key "personal_access_tokens", "users"
   add_foreign_key "priest_setups", "headquarters"
   add_foreign_key "priest_setups", "users", column: "priest_id"
   add_foreign_key "push_subscriptions", "users"

@@ -57,6 +57,8 @@ Rails.application.routes.draw do
     post :read_all, on: :collection
   end
   resource :push_subscription, only: %i[create destroy]
+  # API tokens users create for themselves, e.g. to call the JSON API from Postman.
+  resources :personal_access_tokens, path: "api_tokens", only: %i[index create destroy]
   resources :health_facilities
   resources :churches
   resource :current_headquarter, only: :update
@@ -73,6 +75,22 @@ Rails.application.routes.draw do
   get "federacion", to: "doc/federacion#index", as: :federacion
   get "privacidad", to: "doc/privacidad#index", as: :privacidad
   get "terminos", to: "doc/terminos#index", as: :terminos
+
+  # JSON API for the React front end (ssn-front). See Api::V1::BaseController.
+  namespace :api, defaults: { format: :json } do
+    namespace :v1 do
+      resource :session, only: %i[ create destroy ] do
+        post :google
+      end
+      resource :me, only: :show, controller: "me"
+      resources :headquarters, only: :index
+      resources :guards, only: %i[ index show ]
+      resources :guard_setups, only: %i[ index show ]
+      resources :services, only: %i[ index show ]
+      resources :churches, only: :index
+      resources :health_facilities, only: :index
+    end
+  end
 
   get "sitemap.xml", to: "sitemaps#index", as: :sitemap, defaults: { format: "xml" }
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
