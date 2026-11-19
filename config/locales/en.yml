@@ -681,6 +681,7 @@ en:
       log_in: "Log in"
       sign_up: "Sign up"
       forgot_password: "Forgot your password?"
+      privacy_policy: Privacy policy
       unlock_instructions: "Didn't receive unlock instructions?"
     mailer:
       greeting: "Hello %{email}!"

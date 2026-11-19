@@ -22,5 +22,8 @@
     <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
       <%= yield %>
     </main>
+    <footer class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-10 text-center text-xs text-gray-400">
+      <%= link_to t("devise_views.shared.privacy_policy"), privacidad_path, class: "hover:text-gray-600 hover:underline" %>
+    </footer>
   </body>
 </html>
