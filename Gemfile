@@ -104,6 +104,8 @@ group :test do
   gem "minitest-reporters"
   # Object#stub, which Minitest 6 moved out of minitest itself.
   gem "minitest-mock"
+  # Checks the API responses against config/openapi.yaml.
+  gem "committee-rails"
 end
 
 gem "honeybadger", "~> 6.10"

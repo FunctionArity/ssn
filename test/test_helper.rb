@@ -68,8 +68,25 @@ module WebPushTestHelper
   end
 end
 
-# Requests to the JSON API (/api/v1) as the given user, with the token the sign-in endpoint would give them.
+# Requests to the JSON API (/api/v1) as the given user, with the token the sign-in endpoint would give them. Every
+# response to an API request is checked against the public spec (config/openapi.yaml), so the docs can't fall behind.
 module ApiTestHelper
+  include Committee::Rails::Test::Methods
+
+  API_SCHEMA = Committee::Drivers.load_from_data(Doc::ApiController.spec, parser_options: { strict_reference_validation: true })
+
+  %i[ get post patch put delete ].each do |verb|
+    define_method(verb) do |*args, **kwargs|
+      super(*args, **kwargs).tap do
+        assert_response_schema_confirm(response.status) if request.path.start_with?("/api/v1/")
+      end
+    end
+  end
+
+  def committee_options
+    { schema: API_SCHEMA, strict_reference_validation: true }
+  end
+
   def api_headers(user, headquarter: nil)
     headers = { "Authorization" => "Bearer #{ApiToken.issue(user)}" }
     headers["X-Headquarter-Id"] = headquarter.id.to_s if headquarter
