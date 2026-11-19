@@ -73,6 +73,8 @@ Rails.application.routes.draw do
   get "sedes/:id", to: "doc/headquarters#show", as: :sede
   get "asamblea2026", to: "doc/asamblea#index", as: :asamblea2026
   get "federacion", to: "doc/federacion#index", as: :federacion
+  get "privacidad", to: "doc/privacidad#index", as: :privacidad
+  get "terminos", to: "doc/terminos#index", as: :terminos
 
   # JSON API for the React front end (ssn-front). See Api::V1::BaseController.
   namespace :api, defaults: { format: :json } do

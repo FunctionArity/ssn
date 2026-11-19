@@ -80,6 +80,11 @@
           <%= link_to t("devise_views.shared.forgot_password"), new_password_path(resource_name), class: "text-indigo-400 hover:text-indigo-200 text-xs" %>
         </p>
       <% end %>
+      <p>
+        <%= link_to t("devise_views.shared.privacy_policy"), privacidad_path, class: "text-indigo-400 hover:text-indigo-200 text-xs" %>
+        <span class="text-indigo-400 text-xs mx-1" aria-hidden="true">·</span>
+        <%= link_to t("devise_views.shared.terms"), terminos_path, class: "text-indigo-400 hover:text-indigo-200 text-xs" %>
+      </p>
     </div>
 
   </div>
