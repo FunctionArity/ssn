@@ -703,6 +703,7 @@ en:
       forgot_password: "Forgot your password?"
       privacy_policy: Privacy policy
       terms: Terms and conditions
+      api_docs: API
       unlock_instructions: "Didn't receive unlock instructions?"
     mailer:
       greeting: "Hello %{email}!"
