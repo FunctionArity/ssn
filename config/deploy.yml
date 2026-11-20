@@ -54,6 +54,9 @@ env:
     # Use ssn-db for the db accessory server on the same machine via local kamal docker network.
     DB_HOST: ssn-db
 
+    # Origins allowed to call /api from the browser (the React front end), comma separated. See config/initializers/cors.rb.
+    API_CORS_ORIGINS: https://app.serviciosacerdotalnocturno.org
+
     # Log everything from Rails
     # RAILS_LOG_LEVEL: debug
 
