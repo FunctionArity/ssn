@@ -21,7 +21,17 @@
 
   <%- if devise_mapping.omniauthable? %>
     <%- resource_class.omniauth_providers.each do |provider| %>
-      <p><%= button_to "Sign in with #{OmniAuth::Utils.camelize(provider)}", omniauth_authorize_path(resource_name, provider), data: { turbo: false } %></p>
+      <p>
+        <%= button_to omniauth_authorize_path(resource_name, provider), form: { data: { turbo: false } },
+              class: "cursor-pointer inline-flex items-center justify-center gap-2.5 rounded-md bg-white/10 border border-white/20 px-4 py-2 text-sm font-medium text-white hover:bg-white/20 transition-colors" do %>
+          <% if provider.to_s == "google_oauth2" %>
+            <span class="flex items-center justify-center w-5 h-5 rounded-full bg-white"><%= image_tag "google.svg", alt: "", class: "w-3 h-3" %></span>
+            <%= t("devise_views.sessions.google") %>
+          <% else %>
+            Sign in with <%= OmniAuth::Utils.camelize(provider) %>
+          <% end %>
+        <% end %>
+      </p>
     <% end %>
   <% end %>
 </div>

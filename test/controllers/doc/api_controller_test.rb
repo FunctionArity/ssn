@@ -33,10 +33,7 @@ class Doc::ApiControllerTest < ActionDispatch::IntegrationTest
     assert_empty routes.uniq - documented, "Add these API routes to config/openapi.yaml"
   end
 
-  test "the public pages link to it and it's in the sitemap" do
-    get federacion_url
-    assert_select "footer a[href=?]", api_docs_path
-
+  test "it's in the sitemap" do
     get sitemap_url
     assert_includes response.body, "<loc>#{api_docs_url}</loc>"
   end

@@ -461,7 +461,6 @@ es:
       forgot_password: "¿Olvidaste tu contraseña?"
       privacy_policy: Política de privacidad
       terms: Términos y condiciones
-      api_docs: API
       unlock_instructions: "¿No recibiste las instrucciones de desbloqueo?"
     mailer:
       greeting: "¡Hola %{email}!"
