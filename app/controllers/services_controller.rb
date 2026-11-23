@@ -181,7 +181,7 @@ class ServicesController < ApplicationController
   end
 
   def set_service
-    @service = Service.find(params.expect(:id))
+    @service = Service.includes(guard: %i[ vocal guardians ]).find(params.expect(:id))
   end
 
   # Open guards, plus the service's current guard so it stays selected when that guard is closed.

@@ -55,6 +55,13 @@ lexxy-toolbar {
   }
 }
 
+/* Lexxy's default @ mention menu is only 20ch wide, so full names like "Gonzalez Fernando Alberto" wrap
+   onto a second line; the menu then auto-scrolls to the selected item assuming single-line rows, clipping
+   the wrapped line's top half. Widen it so names fit on one line instead. */
+.lexxy-prompt-menu {
+  max-inline-size: min(36ch, calc(100% - var(--lexxy-prompt-offset-x)));
+}
+
 /* The element a link's #anchor points to, e.g. a comment opened from a mention: a blue bar on its left that
    stays, and a blue glow that fades out after a few seconds. */
 @keyframes anchor-highlight {
