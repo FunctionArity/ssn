@@ -6,7 +6,7 @@ info:
   title: API del Servicio Sacerdotal Nocturno
   version: "1.0"
   description: |
-    La API con la que las aplicaciones del Servicio Sacerdotal Nocturno consultan guardias, servicios y catálogos.
+    La API con la que las aplicaciones del Servicio Sacerdotal Nocturno consultan guardias, servicios y ubicaciones.
 
     ## Autenticación
 
@@ -46,7 +46,7 @@ tags:
   - name: Sesión
   - name: Guardias
   - name: Servicios
-  - name: Catálogos
+  - name: Ubicaciones
 
 paths:
   /api/v1/session:
@@ -135,7 +135,7 @@ paths:
 
   /api/v1/headquarters:
     get:
-      tags: [Catálogos]
+      tags: [Ubicaciones]
       summary: Sedes
       description: Todas las sedes, para que los super administradores elijan en cuál trabajar.
       operationId: listHeadquarters
@@ -317,7 +317,7 @@ paths:
 
   /api/v1/churches:
     get:
-      tags: [Catálogos]
+      tags: [Ubicaciones]
       summary: Parroquias
       operationId: listChurches
       parameters:
@@ -347,7 +347,7 @@ paths:
 
   /api/v1/health_facilities:
     get:
-      tags: [Catálogos]
+      tags: [Ubicaciones]
       summary: Centros de salud
       operationId: listHealthFacilities
       parameters:
