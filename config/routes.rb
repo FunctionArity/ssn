@@ -75,6 +75,8 @@ Rails.application.routes.draw do
   get "federacion", to: "doc/federacion#index", as: :federacion
   get "privacidad", to: "doc/privacidad#index", as: :privacidad
   get "terminos", to: "doc/terminos#index", as: :terminos
+  get "api/docs", to: "doc/api#index", as: :api_docs
+  get "api/openapi.json", to: "doc/api#spec", as: :api_spec, format: false, defaults: { format: :json }
 
   # JSON API for the React front end (ssn-front). See Api::V1::BaseController.
   namespace :api, defaults: { format: :json } do

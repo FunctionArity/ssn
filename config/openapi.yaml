@@ -1,0 +1,718 @@
+# The public description of the JSON API (/api/v1), shown at /api/docs and served as JSON at /api/openapi.json
+# (Doc::ApiController). The API tests check every response against it (ApiTestHelper), so a change to a response that
+# isn't made here too fails the tests. The <<: merge keys are resolved when it's loaded, so clients never see them.
+openapi: 3.0.3
+info:
+  title: API del Servicio Sacerdotal Nocturno
+  version: "1.0"
+  description: |
+    La API con la que las aplicaciones del Servicio Sacerdotal Nocturno consultan guardias, servicios y ubicaciones.
+
+    ## Autenticación
+
+    Todas las llamadas, salvo el inicio de sesión, necesitan un token en el encabezado
+    `Authorization: Bearer <token>`. Para obtenerlo:
+
+    1. `POST /api/v1/session` con el email y la contraseña de un usuario invitado por su sede, o
+       `POST /api/v1/session/google` con el ID token de Google.
+    2. Usá el `token` de la respuesta en las llamadas siguientes. Vence a las 12 horas.
+    3. `DELETE /api/v1/session` lo revoca antes de que venza.
+
+    Los tokens dejan de valer si el usuario cambia su contraseña. Los super administradores también pueden crear
+    tokens personales de 7 días desde la aplicación, para probar la API con Postman.
+
+    ## Sedes
+
+    Cada llamada ve solo los datos de la sede del usuario. Los super administradores pueden trabajar en otra sede
+    enviando su id en el encabezado `X-Headquarter-Id` (ver `GET /api/v1/headquarters`).
+
+    ## Errores
+
+    Los errores devuelven `{ "error": "<mensaje>" }` con el código HTTP correspondiente. El inicio de sesión admite
+    10 intentos por minuto; después responde `429`.
+
+    ## Postman
+
+    Para importar la API en Postman (o generar un cliente), usá la especificación OpenAPI de
+    [/api/openapi.json](/api/openapi.json).
+  contact:
+    name: Servicio Sacerdotal Nocturno
+    email: info@serviciosacerdotalnocturno.org
+servers:
+  - url: /
+security:
+  - bearerAuth: []
+tags:
+  - name: Sesión
+  - name: Guardias
+  - name: Servicios
+  - name: Ubicaciones
+
+paths:
+  /api/v1/session:
+    post:
+      tags: [Sesión]
+      summary: Iniciar sesión con email y contraseña
+      operationId: createSession
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: voluntario@example.com
+                password:
+                  type: string
+                  format: password
+      responses:
+        "201":
+          description: Sesión iniciada. Incluye el token para las llamadas siguientes.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Session" }
+        "401": { $ref: "#/components/responses/SignInFailed" }
+        "429": { $ref: "#/components/responses/TooManyAttempts" }
+    delete:
+      tags: [Sesión]
+      summary: Cerrar sesión
+      description: Revoca el token con el que se llama.
+      operationId: destroySession
+      parameters:
+        - $ref: "#/components/parameters/HeadquarterId"
+      responses:
+        "204":
+          description: Token revocado.
+        "401": { $ref: "#/components/responses/Unauthorized" }
+
+  /api/v1/session/google:
+    post:
+      tags: [Sesión]
+      summary: Iniciar sesión con Google
+      description: Recibe el ID token que da Google (One Tap o el botón de Google) para un email con cuenta en una sede.
+      operationId: createGoogleSession
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [credential]
+              properties:
+                credential:
+                  type: string
+                  description: El ID token (JWT) que devuelve Google.
+      responses:
+        "201":
+          description: Sesión iniciada. Incluye el token para las llamadas siguientes.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Session" }
+        "401": { $ref: "#/components/responses/SignInFailed" }
+        "429": { $ref: "#/components/responses/TooManyAttempts" }
+
+  /api/v1/me:
+    get:
+      tags: [Sesión]
+      summary: Usuario actual
+      description: El usuario del token y la sede en la que trabaja.
+      operationId: showMe
+      parameters:
+        - $ref: "#/components/parameters/HeadquarterId"
+      responses:
+        "200":
+          description: El usuario y su sede.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Me" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+
+  /api/v1/headquarters:
+    get:
+      tags: [Ubicaciones]
+      summary: Sedes
+      description: Todas las sedes, para que los super administradores elijan en cuál trabajar.
+      operationId: listHeadquarters
+      responses:
+        "200":
+          description: Las sedes, por país y ciudad.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                required: [headquarters]
+                properties:
+                  headquarters:
+                    type: array
+                    items: { $ref: "#/components/schemas/Headquarter" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+
+  /api/v1/guards:
+    get:
+      tags: [Guardias]
+      summary: Guardias
+      description: |
+        Las guardias de la sede, de la más reciente a la más antigua, de a 20 por página. Si hoy todavía no hay
+        guardia, `today_guard_setup` trae la configuración del día del mes de hoy, si existe.
+      operationId: listGuards
+      parameters:
+        - $ref: "#/components/parameters/HeadquarterId"
+        - $ref: "#/components/parameters/Page"
+      responses:
+        "200":
+          description: Una página de guardias.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                required: [today_guard_setup, guards, page, total_pages]
+                properties:
+                  today_guard_setup:
+                    nullable: true
+                    allOf:
+                      - $ref: "#/components/schemas/GuardSetup"
+                  guards:
+                    type: array
+                    items: { $ref: "#/components/schemas/GuardSummary" }
+                  page: { type: integer, example: 1 }
+                  total_pages: { type: integer, example: 3 }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+
+  /api/v1/guards/{id}:
+    get:
+      tags: [Guardias]
+      summary: Guardia
+      description: Una guardia con sus servicios, en el orden en que se atienden.
+      operationId: showGuard
+      parameters:
+        - $ref: "#/components/parameters/HeadquarterId"
+        - $ref: "#/components/parameters/Id"
+      responses:
+        "200":
+          description: La guardia.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                required: [guard]
+                properties:
+                  guard: { $ref: "#/components/schemas/GuardDetail" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "404": { $ref: "#/components/responses/NotFound" }
+
+  /api/v1/guard_setups:
+    get:
+      tags: [Guardias]
+      summary: Configuración de guardias
+      description: |
+        Quién está a cargo de la guardia de cada día del mes. La lista viene en la clave `guards`.
+      operationId: listGuardSetups
+      parameters:
+        - $ref: "#/components/parameters/HeadquarterId"
+      responses:
+        "200":
+          description: Las configuraciones, por día del mes.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                required: [guards]
+                properties:
+                  guards:
+                    type: array
+                    items: { $ref: "#/components/schemas/GuardSetup" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+
+  /api/v1/guard_setups/{id}:
+    get:
+      tags: [Guardias]
+      summary: Configuración de una guardia
+      operationId: showGuardSetup
+      parameters:
+        - $ref: "#/components/parameters/HeadquarterId"
+        - $ref: "#/components/parameters/Id"
+      responses:
+        "200":
+          description: La configuración.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/GuardSetup" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "404": { $ref: "#/components/responses/NotFound" }
+
+  /api/v1/services:
+    get:
+      tags: [Servicios]
+      summary: Servicios
+      description: |
+        Sin filtros, devuelve la guardia abierta de hoy con sus servicios y los servicios pendientes de otras
+        guardias. Con algún filtro, busca en todos los servicios de la sede, de a 12 por página.
+      operationId: listServices
+      parameters:
+        - $ref: "#/components/parameters/HeadquarterId"
+        - name: full_name
+          in: query
+          description: Nombre de la persona visitada.
+          schema: { type: string }
+        - name: health_facility
+          in: query
+          description: Nombre del centro de salud.
+          schema: { type: string }
+        - name: date
+          in: query
+          description: Fecha del servicio.
+          schema: { type: string, format: date }
+        - name: guard_day
+          in: query
+          description: Día del mes de la guardia.
+          schema: { type: integer, minimum: 1, maximum: 31 }
+        - name: caller_phone
+          in: query
+          description: Teléfono de quien pidió la visita.
+          schema: { type: string }
+        - $ref: "#/components/parameters/Page"
+      responses:
+        "200":
+          description: Los servicios de hoy o los resultados de la búsqueda.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/TodayServices"
+                  - $ref: "#/components/schemas/ServiceSearch"
+        "401": { $ref: "#/components/responses/Unauthorized" }
+
+  /api/v1/services/{id}:
+    get:
+      tags: [Servicios]
+      summary: Servicio
+      description: Un servicio con los datos de la persona, de quien pidió la visita y de su guardia.
+      operationId: showService
+      parameters:
+        - $ref: "#/components/parameters/HeadquarterId"
+        - $ref: "#/components/parameters/Id"
+      responses:
+        "200":
+          description: El servicio.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                required: [service]
+                properties:
+                  service: { $ref: "#/components/schemas/ServiceDetail" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "404": { $ref: "#/components/responses/NotFound" }
+
+  /api/v1/churches:
+    get:
+      tags: [Ubicaciones]
+      summary: Parroquias
+      operationId: listChurches
+      parameters:
+        - $ref: "#/components/parameters/HeadquarterId"
+      responses:
+        "200":
+          description: Las parroquias de la sede, por nombre.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                required: [churches]
+                properties:
+                  churches:
+                    type: array
+                    items:
+                      type: object
+                      additionalProperties: false
+                      required: [id, name, phone, address]
+                      properties:
+                        id: { type: integer }
+                        name: { type: string, nullable: true }
+                        phone: { type: string, nullable: true }
+                        address: { type: string, nullable: true }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+
+  /api/v1/health_facilities:
+    get:
+      tags: [Ubicaciones]
+      summary: Centros de salud
+      operationId: listHealthFacilities
+      parameters:
+        - $ref: "#/components/parameters/HeadquarterId"
+        - name: q
+          in: query
+          description: Filtra por nombre. Se aplica a partir de 3 caracteres.
+          schema: { type: string }
+      responses:
+        "200":
+          description: Los centros de salud de la sede, por nombre.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                required: [health_facilities]
+                properties:
+                  health_facilities:
+                    type: array
+                    items:
+                      type: object
+                      additionalProperties: false
+                      required: [id, name, address]
+                      properties:
+                        id: { type: integer }
+                        name: { type: string }
+                        address: { type: string }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: El token que devuelve `POST /api/v1/session`.
+
+  parameters:
+    HeadquarterId:
+      name: X-Headquarter-Id
+      in: header
+      required: false
+      description: Solo super administradores. El id de la sede en la que trabajar; sin él, se usa la sede propia.
+      schema: { type: integer }
+    Id:
+      name: id
+      in: path
+      required: true
+      schema: { type: integer }
+    Page:
+      name: page
+      in: query
+      description: Número de página, desde 1. Fuera de rango, se usa la página más cercana.
+      schema: { type: integer, minimum: 1, default: 1 }
+
+  responses:
+    Unauthorized:
+      description: Falta el token, venció o fue revocado.
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/Error" }
+    SignInFailed:
+      description: Email o contraseña incorrectos, cuenta bloqueada, invitación pendiente o cuenta de Google sin usuario.
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/Error" }
+    TooManyAttempts:
+      description: Más de 10 intentos de inicio de sesión en un minuto.
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/Error" }
+    NotFound:
+      description: No existe o es de otra sede.
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/Error" }
+
+  schemas:
+    Error:
+      type: object
+      additionalProperties: false
+      required: [error]
+      properties:
+        error:
+          type: string
+          example: Necesitás iniciar sesión para continuar.
+
+    Session:
+      description: La respuesta del inicio de sesión. Como `Me`, con el token.
+      type: object
+      additionalProperties: false
+      required: [token, user, headquarter]
+      properties:
+        token:
+          type: string
+          description: JWT para el encabezado `Authorization`. Vence a las 12 horas.
+        user: { $ref: "#/components/schemas/CurrentUser" }
+        headquarter: { $ref: "#/components/schemas/Headquarter" }
+
+    Me:
+      type: object
+      additionalProperties: false
+      required: [user, headquarter]
+      properties:
+        user: { $ref: "#/components/schemas/CurrentUser" }
+        headquarter: { $ref: "#/components/schemas/Headquarter" }
+
+    CurrentUser:
+      type: object
+      additionalProperties: false
+      required: [id, first_name, last_name, full_name, initials, role, email, user_type, can_switch_headquarter]
+      properties:
+        id: { type: integer }
+        first_name: { type: string, nullable: true }
+        last_name: { type: string, nullable: true }
+        full_name: { type: string, example: Pérez Juan }
+        initials: { type: string, example: PJ }
+        role: { $ref: "#/components/schemas/Role" }
+        email: { type: string, format: email }
+        user_type:
+          type: string
+          enum: [regular, admin, super_admin]
+          description: "`admin` administra su sede; `super_admin` administra todas."
+        can_switch_headquarter:
+          type: boolean
+          description: Si puede usar el encabezado `X-Headquarter-Id`.
+
+    User:
+      type: object
+      additionalProperties: false
+      required: [id, first_name, last_name, full_name, initials, role]
+      properties:
+        id: { type: integer }
+        first_name: { type: string, nullable: true }
+        last_name: { type: string, nullable: true }
+        full_name: { type: string, example: Pérez Juan }
+        initials: { type: string, example: PJ }
+        role: { $ref: "#/components/schemas/Role" }
+
+    Role:
+      type: string
+      enum: [guardian, vocal, priest]
+      description: Guardián, vocal o sacerdote.
+
+    Headquarter:
+      type: object
+      additionalProperties: false
+      required: [id, slug, city, state, country]
+      properties:
+        id: { type: integer }
+        slug: { type: string, example: mendoza }
+        city: { type: string, example: Mendoza }
+        state: { type: string, example: Mendoza }
+        country: { type: string, example: Argentina }
+
+    GuardSetup:
+      description: Quién está a cargo de la guardia de un día del mes.
+      type: object
+      additionalProperties: false
+      required: [id, day_number, due_date, notes, vocal, guardians]
+      properties:
+        id: { type: integer }
+        day_number: { type: integer, minimum: 1, maximum: 31 }
+        due_date:
+          type: string
+          format: date
+          description: La fecha de ese día en el mes actual.
+        notes: { type: string, nullable: true }
+        vocal: { $ref: "#/components/schemas/User" }
+        guardians:
+          type: array
+          items: { $ref: "#/components/schemas/User" }
+
+    GuardStatus:
+      type: string
+      enum: [open, closed]
+
+    Guard:
+      type: object
+      additionalProperties: false
+      required: [id, number, day_number, due_date, status, notes, vocal, priest, guardians]
+      properties: &guard_properties
+        id: { type: integer }
+        number: { type: integer, description: Número correlativo de la guardia. }
+        day_number: { type: integer, minimum: 1, maximum: 31 }
+        due_date: { type: string, format: date }
+        status: { $ref: "#/components/schemas/GuardStatus" }
+        notes: { type: string, nullable: true }
+        vocal: { $ref: "#/components/schemas/User" }
+        priest: { $ref: "#/components/schemas/User" }
+        guardians:
+          type: array
+          items: { $ref: "#/components/schemas/User" }
+
+    GuardSummary:
+      description: Una guardia en la lista, con la cantidad de servicios.
+      type: object
+      additionalProperties: false
+      required: [id, number, day_number, due_date, status, notes, vocal, priest, guardians, services_count]
+      properties:
+        <<: *guard_properties
+        services_count: { type: integer }
+
+    GuardDetail:
+      description: Una guardia con sus servicios.
+      type: object
+      additionalProperties: false
+      required: [id, number, day_number, due_date, status, notes, vocal, priest, guardians, services]
+      properties:
+        <<: *guard_properties
+        services:
+          type: array
+          items: { $ref: "#/components/schemas/Service" }
+
+    Service:
+      description: Una visita a una persona enferma.
+      type: object
+      additionalProperties: false
+      required:
+        - id
+        - guard_id
+        - position
+        - full_name
+        - age
+        - due_date
+        - status
+        - priority
+        - health_facility_place
+        - pathology
+        - health_facility
+        - created_by
+      properties: &service_properties
+        id: { type: integer }
+        guard_id: { type: integer }
+        position: { type: integer, description: Orden de atención dentro de la guardia. }
+        full_name: { type: string, description: Nombre de la persona a visitar. }
+        age: { type: integer, nullable: true }
+        due_date: { type: string, format: date }
+        status:
+          type: string
+          enum: [pending, completed]
+        priority:
+          type: string
+          nullable: true
+          enum: [urgent, null]
+        health_facility_place:
+          type: string
+          nullable: true
+          description: Habitación o sector dentro del centro de salud.
+        pathology: { type: string, nullable: true }
+        health_facility:
+          type: object
+          nullable: true
+          additionalProperties: false
+          required: [id, name]
+          properties:
+            id: { type: integer }
+            name: { type: string }
+        created_by: { $ref: "#/components/schemas/User" }
+
+    PendingService:
+      description: Un servicio pendiente de otra guardia, con la fecha de esa guardia.
+      type: object
+      additionalProperties: false
+      required:
+        - id
+        - guard_id
+        - position
+        - full_name
+        - age
+        - due_date
+        - status
+        - priority
+        - health_facility_place
+        - pathology
+        - health_facility
+        - created_by
+        - guard_due_date
+      properties:
+        <<: *service_properties
+        guard_due_date: { type: string, format: date }
+
+    ServiceDetail:
+      description: Un servicio con todos sus datos.
+      type: object
+      additionalProperties: false
+      required:
+        - id
+        - guard_id
+        - position
+        - full_name
+        - age
+        - due_date
+        - status
+        - priority
+        - health_facility_place
+        - pathology
+        - health_facility
+        - created_by
+        - address
+        - caller_full_name
+        - caller_phone
+        - caller_relationship
+        - health_status
+        - sacraments
+        - note
+        - created_at
+        - updated_at
+        - comments_count
+        - guard
+      properties:
+        <<: *service_properties
+        address: { type: string, nullable: true, description: Domicilio, si no está en un centro de salud. }
+        caller_full_name: { type: string, nullable: true, description: Quién pidió la visita. }
+        caller_phone: { type: string, nullable: true }
+        caller_relationship: { type: string, nullable: true, description: Parentesco con la persona. }
+        health_status: { type: string, nullable: true }
+        sacraments: { type: string, nullable: true, description: Sacramentos que pide o recibió. }
+        note: { type: string, nullable: true, description: Notas para el sacerdote. }
+        created_at: { type: string, format: date-time }
+        updated_at: { type: string, format: date-time }
+        comments_count: { type: integer }
+        guard:
+          type: object
+          additionalProperties: false
+          required: [id, day_number, due_date, status]
+          properties:
+            id: { type: integer }
+            day_number: { type: integer }
+            due_date: { type: string, format: date }
+            status: { $ref: "#/components/schemas/GuardStatus" }
+
+    TodayServices:
+      description: La respuesta sin filtros.
+      type: object
+      additionalProperties: false
+      required: [current_guard, services, pending_other_services]
+      properties:
+        current_guard:
+          description: La guardia abierta de hoy, o `null` si no hay.
+          nullable: true
+          allOf:
+            - $ref: "#/components/schemas/Guard"
+        services:
+          type: array
+          description: Los servicios de la guardia de hoy.
+          items: { $ref: "#/components/schemas/Service" }
+        pending_other_services:
+          type: array
+          items: { $ref: "#/components/schemas/PendingService" }
+
+    ServiceSearch:
+      description: La respuesta con algún filtro.
+      type: object
+      additionalProperties: false
+      required: [filters, results, results_count, page, total_pages]
+      properties:
+        filters:
+          type: object
+          description: Los filtros aplicados.
+          additionalProperties: { type: string }
+        results:
+          type: array
+          items: { $ref: "#/components/schemas/Service" }
+        results_count: { type: integer }
+        page: { type: integer }
+        total_pages: { type: integer }
