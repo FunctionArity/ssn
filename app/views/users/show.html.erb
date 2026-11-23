@@ -74,7 +74,11 @@
         <% if @user.phone.present? %>
           <div>
             <p class="text-xs font-medium text-gray-400 uppercase tracking-wide"><%= User.human_attribute_name(:phone) %></p>
-            <p class="mt-1 text-sm text-gray-900"><i class="ph ph-phone text-gray-400"></i> <%= @user.phone %></p>
+            <p class="mt-1 text-sm text-gray-900">
+              <%= link_to "https://wa.me/#{@user.phone_digits}", target: "_blank", rel: "noopener", title: "WhatsApp", class: "inline-flex items-center gap-1 hover:text-green-700" do %>
+                <i class="ph ph-whatsapp-logo text-gray-400"></i> <%= @user.phone %>
+              <% end %>
+            </p>
           </div>
         <% end %>
         <% if @user.dni.present? %>

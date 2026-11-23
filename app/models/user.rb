@@ -146,6 +146,11 @@ class User < ApplicationRecord
     "#{last_name[0]}#{first_name[0]}"
   end
 
+  # Digits for WhatsApp links, e.g. "261 5087203" => "2615087203".
+  def phone_digits
+    phone.to_s.gsub(/\D/, "")
+  end
+
   def guard_day_numbers
     (vocal_guard_setups + guard_setups).map(&:day_number).uniq.sort
   end
