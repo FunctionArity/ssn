@@ -18,34 +18,39 @@
           <% end %>
         </div>
       </div>
-      <div class="flex flex-col items-start sm:items-end gap-2 shrink-0">
-        <div class="flex flex-wrap items-center gap-2 sm:justify-end">
+      <div class="flex flex-col items-start sm:items-end gap-2 shrink-0 w-full sm:w-80" data-controller="lazy-toggle">
+        <div class="flex flex-wrap items-center gap-2 sm:justify-end w-full">
           <% if service.nro.present? %>
             <span class="badge_blue">NRO <%= service.nro %></span>
           <% end %>
           <%= service_urgent_badge(service) %>
           <span class="<%= colors[:badge] %>"><%= t("services.status.#{service.status}") %></span>
         </div>
-        <div class="flex flex-col sm:items-end gap-1 text-sm text-gray-500">
-          <span class="flex items-center gap-1.5">
-            <i class="ph ph-shield text-indigo-500"></i>
-            <%= Service.human_attribute_name(:guard) %>:
+        <div class="w-full bg-white/70 border border-white rounded-lg px-3.5 py-3 space-y-2 text-sm text-gray-600 shadow-sm cursor-pointer hover:bg-white/90 transition-colors"
+             role="button" tabindex="0" aria-expanded="false" aria-controls="<%= dom_id(service, :guard_info) %>"
+             title="<%= t("services.show.guard_info") %>" aria-label="<%= t("services.show.guard_info") %>"
+             data-action="click->lazy-toggle#toggle keydown.enter->lazy-toggle#toggle keydown.space->lazy-toggle#toggle">
+          <div class="flex items-center gap-2">
+            <i class="ph ph-shield text-indigo-500 shrink-0"></i>
+            <span class="text-gray-400"><%= Service.human_attribute_name(:guard) %>:</span>
             <%= link_to l(service.guard.due_date, format: :long), service.guard, class: "font-medium text-indigo-600 hover:underline" %>
-          </span>
-          <span class="flex items-center gap-1.5">
-            <i class="ph ph-user text-red-500"></i>
-            <%= Guard.human_attribute_name(:vocal) %>:
-            <%= link_to service.guard.vocal.full_name, service.guard.vocal, class: "font-medium text-indigo-600 hover:underline" %>
-          </span>
-          <span class="flex items-start gap-1.5">
-            <i class="ph ph-users text-green-500 mt-0.5"></i>
-            <span class="sm:text-right">
-              <%= Guard.human_attribute_name(:guardians) %>:
-              <%= safe_join(service.guard.guardians.sort_by { |g| [ g.last_name, g.first_name ] }.map { |guardian|
-                    link_to guardian.full_name, guardian, class: "font-medium text-indigo-600 hover:underline"
-                  }, ", ") %>
-            </span>
-          </span>
+          </div>
+          <div id="<%= dom_id(service, :guard_info) %>" data-lazy-toggle-target="content" class="space-y-2" hidden>
+            <div class="flex items-center gap-2">
+              <i class="ph ph-user text-red-500 shrink-0"></i>
+              <span class="text-gray-400"><%= Guard.human_attribute_name(:vocal) %>:</span>
+              <%= link_to service.guard.vocal.full_name, service.guard.vocal, class: "font-medium text-indigo-600 hover:underline" %>
+            </div>
+            <div class="flex items-start gap-2">
+              <i class="ph ph-users text-green-500 shrink-0 mt-0.5"></i>
+              <div>
+                <span class="text-gray-400"><%= Guard.human_attribute_name(:guardians) %>:</span>
+                <%= safe_join(service.guard.guardians.sort_by { |g| [ g.last_name, g.first_name ] }.map { |guardian|
+                      link_to guardian.full_name, guardian, class: "font-medium text-indigo-600 hover:underline"
+                    }, ", ") %>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

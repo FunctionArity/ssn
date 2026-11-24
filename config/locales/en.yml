@@ -28,6 +28,9 @@ en:
       headquarter:
         one: Headquarter
         other: Headquarters
+      church:
+        one: Church
+        other: Churches
     attributes:
       contact_directory:
         title: Title
@@ -79,6 +82,7 @@ en:
           guardian: Guardians
           vocal: Vocals
           priest: Priests
+        church: Church
       guard:
         day_number: Day number
         due_date: Due date
@@ -127,6 +131,10 @@ en:
         web_address: Website
         facebook: Facebook
         instagram: Instagram
+      church:
+        name: Name
+        phone: Phone
+        address: Address
     errors:
       models:
         comment:
@@ -141,10 +149,44 @@ en:
           attributes:
             guard:
               must_be_open: "must be open"
+              required: must be selected
         guard:
           attributes:
             due_date:
               open_guard_taken: "already has another open guard"
+            vocal:
+              required: must have a vocal
+            priest:
+              required: must have a priest
+            guard_setup:
+              required: must have a guard setup
+            guardians:
+              blank: can't be blank
+        priest_setup:
+          attributes:
+            day_of_week:
+              inclusion: is not a valid day of the week
+            week_number:
+              inclusion: is not a valid week number
+        user:
+          attributes:
+            first_name:
+              too_short: is too short (minimum is %{count} characters)
+            last_name:
+              too_short: is too short (minimum is %{count} characters)
+            email:
+              invalid: is not valid
+            password:
+              too_short: is too short (minimum is %{count} characters)
+            password_confirmation:
+              confirmation: doesn't match the password
+      messages:
+        expired: has expired, please request a new one
+        not_found: not found
+        not_locked: was not locked
+        not_saved:
+          one: '1 error prohibited this %{resource} from being saved:'
+          other: "%{count} errors prohibited this %{resource} from being saved:"
   sidebar:
     home: Go to home page
     setup: Setup
@@ -192,6 +234,10 @@ en:
       vocal_guard_setups: Guards (vocal)
       guard_day: "Guard #%{number}"
       impersonate: Impersonate
+      lock: Lock
+      lock_confirm: Are you sure you want to lock this user?
+      lock_confirm_title: Lock user
+      unlock: Unlock
     new:
       title: New user
       back: Back to users
@@ -215,6 +261,7 @@ en:
         title:
           one: "%{count} error prohibited this user from being saved:"
           other: "%{count} errors prohibited this user from being saved:"
+      select_church: Select a church
     impersonation:
       banner: "Impersonating %{name}."
       stop: Stop impersonating
@@ -256,6 +303,9 @@ en:
       guardians_count:
         one: "%{count} guardian"
         other: "%{count} guardians"
+      today_setup: Today's guard (not created yet)
+      today: Today
+      create_guard: Create guard
     show:
       history: History
       edit: Edit this guard
@@ -266,6 +316,10 @@ en:
       print_pdf: Print
       download_pdf: View Information
       copy_services: Copy Information
+      close_guard: Close guard
+      close_confirm: Are you sure you want to close this guard?
+      services: Services
+      new_service: New service
     new:
       title: New guard
       back: Back to guards
@@ -288,6 +342,11 @@ en:
       created: Guard was successfully created.
       updated: Guard was successfully updated.
       destroyed: Guard was successfully destroyed.
+      closed: The guard was closed successfully.
+    errors:
+      no_guard_setup: There is no guard setup for today.
+    services_list:
+      empty: There are no services for this guard.
   guard_setups:
     index:
       menu_title: Guards
@@ -303,6 +362,8 @@ en:
       edit: Edit this guard setup
       back: Back to guard setups
       destroy: Destroy this guard setup
+      destroy_confirm: Are you sure you want to delete this guard setup?
+      destroy_confirm_title: Delete guard setup?
     new:
       title: New guard setup
       back: Back to guard setups
@@ -337,6 +398,8 @@ en:
       copy: Copy
       map: Map
       open_in_maps: Open in Google Maps
+      destroy_confirm: Are you sure you want to delete this health facility?
+      destroy_confirm_title: Delete health facility?
     new:
       title: New health facility
       back: Back to health facilities
@@ -358,6 +421,13 @@ en:
       sedes: Headquarters
       federacion: Federation
       asamblea: Assembly 2026
+    locale_switch:
+      label: Language
+    confirm_dialog:
+      title: Confirm action
+      close: Close
+      cancel: Cancel
+      accept: Accept
   doc:
     headquarters:
       index:
@@ -569,11 +639,14 @@ en:
       destroy_confirm_title: "Delete service"
       complete: Mark as completed
       reassign_to_open_guard: This service must be reassigned to an open guard
+      guard_info: Show or hide the guard's info
       history: History
       print_pdf: Print
       copy: Copy
       map: Map
       open_in_maps: Open in Google Maps
+      complete_confirm: Are you sure you want to mark this service as completed?
+      complete_confirm_title: Complete service?
     new:
       title: New service
       back: Back to services
@@ -613,6 +686,7 @@ en:
   priest_setups:
     confirm:
       destroy: Are you sure you want to remove this priest assignment?
+      destroy_title: Delete assignment?
     notices:
       created: Priest was successfully assigned.
       destroyed: Assignment was successfully removed.
@@ -632,11 +706,35 @@ en:
       select_priest_hint: Seleccioná un sacerdote y luego hacé clic en el casillero para asignarlo.
       no_priests: Todos los sacerdotes ya tienen una asignación.
       week: Week
+    index:
+      current_month: Current month
   churches:
     show:
       priest: Priest
       map: Map
       open_in_maps: Open in Google Maps
+      back: Back to churches
+      destroy_confirm: Are you sure you want to delete this church?
+      destroy_confirm_title: Delete church?
+    index:
+      title: Churches
+      new_church: New church
+      show: View
+    new:
+      title: New church
+      back: Back to churches
+    edit:
+      title: Editing church
+      back: Back to church
+    form:
+      errors:
+        title:
+          one: "%{count} error prohibited this church from being saved:"
+          other: "%{count} errors prohibited this church from being saved:"
+    notices:
+      created: The church was created successfully.
+      updated: The church was updated successfully.
+      destroyed: The church was deleted successfully.
   personal_access_tokens:
     impersonating: You can't create or revoke API tokens while acting as another user.
     index:
@@ -704,6 +802,8 @@ en:
       privacy_policy: Privacy policy
       terms: Terms and conditions
       unlock_instructions: "Didn't receive unlock instructions?"
+      no_account: Don't have an account?
+      email_placeholder: you@email.com
     mailer:
       greeting: "Hello %{email}!"
       welcome: "Welcome %{email}!"
@@ -721,8 +821,56 @@ en:
         intro: "Your account has been locked due to an excessive number of unsuccessful sign in attempts."
         instruction: "Click the link below to unlock your account:"
         action: "Unlock my account"
+    invitations:
+      edit:
+        title: Accept invitation
+        submit: Set password
+    unlocks:
+      new:
+        title: Is your account locked?
+        submit: Resend unlock instructions
   guard_info:
     show:
       back: Back to guard
       title: "Guard #%{number} PDF"
       open_in_new_tab: Open in new tab
+  api:
+    errors:
+      not_found: We couldn't find what you're looking for.
+      too_many_attempts: Too many attempts. Wait a minute and try again.
+  delete: Delete
+  view: View
+  back: Back
+  home:
+    index:
+      headline_1: Coordinating night
+      headline_2: priest guards
+      intro: A management system to assign and follow the priests' night guards and shifts, so the service is always covered and organized.
+      headquarters_description: List of headquarters
+      guards: Guards
+      priests: Priests
+      services: Services
+    dashboard:
+      previous: Previous
+      next: Next
+      view: View
+      view_guard: View guard
+      no_guard_today: No guard scheduled for today
+      quick_access: Quick access
+      guards: Guards
+      guards_description: Organizing and following the night shifts
+      view_guards: View guards
+      services: Services
+      services_description: Managing the services provided
+      view_services: View services
+      setup: Setup
+      setup_description: Priests, shifts and health facilities
+      view_setup: View setup
+      headquarters: Headquarters
+      headquarters_description: The service's headquarters, their contacts and directories
+      view_headquarters: View headquarters
+      documentation: Documentation
+      documentation_description: Guides and manuals for the system
+      view_documentation: View documentation
+      federation: Federation
+      view_federation: View federation

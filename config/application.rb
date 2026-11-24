@@ -24,6 +24,7 @@ module Ssn
     config.time_zone = "Buenos Aires"
     # config.eager_load_paths << Rails.root.join("extras")
     config.i18n.default_locale = :es
+    config.i18n.available_locales = %i[ es en ]
 
     # Mission Control (/jobs) is limited to signed-in super admins by its route, so it needs no HTTP Basic prompt.
     config.mission_control.jobs.http_basic_auth_enabled = false

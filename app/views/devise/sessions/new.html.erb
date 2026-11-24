@@ -23,7 +23,7 @@
           <%= f.label :email, class: "block text-sm font-medium text-indigo-200 mb-1.5" %>
           <%= f.email_field :email, autofocus: true, autocomplete: "email",
               class: "w-full rounded-md bg-white/10 border border-white/20 px-4 py-2.5 text-white placeholder-indigo-300 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent",
-              placeholder: "tu@email.com" %>
+              placeholder: t("devise_views.shared.email_placeholder") %>
         </div>
 
         <div>
@@ -71,7 +71,7 @@
     <div class="mt-5 text-center space-y-2 text-sm">
       <%- if devise_mapping.registerable? %>
         <p class="text-indigo-300">
-          ¿No tenés cuenta?
+          <%= t("devise_views.shared.no_account") %>
           <%= link_to t("devise_views.shared.sign_up"), new_registration_path(resource_name), class: "text-white font-medium hover:underline" %>
         </p>
       <% end %>
@@ -85,6 +85,9 @@
         <span class="text-indigo-400 text-xs mx-1" aria-hidden="true">·</span>
         <%= link_to t("devise_views.shared.terms"), terminos_path, class: "text-indigo-400 hover:text-indigo-200 text-xs" %>
       </p>
+      <div class="flex justify-center">
+        <%= render "layouts/locale_switch", link_class: "text-indigo-400 hover:text-indigo-200", current_class: "text-white" %>
+      </div>
     </div>
 
   </div>

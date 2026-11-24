@@ -7,7 +7,7 @@
       <% if @previous_guard %>
         <%= link_to @previous_guard, class: "group bg-white border border-gray-200 rounded-md shadow-sm hover:shadow-md transition-all duration-200 overflow-hidden flex flex-col opacity-60 hover:opacity-80" do %>
           <div class="px-4 py-3 flex items-center justify-between bg-gradient-to-r from-gray-50 to-white border-b border-gray-100">
-            <p class="text-xs font-medium text-gray-400 uppercase tracking-wide">Anterior</p>
+            <p class="text-xs font-medium text-gray-400 uppercase tracking-wide"><%= t(".previous") %></p>
             <span class="text-base font-bold text-gray-400"># <%= @previous_guard.day_number %></span>
           </div>
           <div class="px-4 py-3 flex flex-col gap-1.5 grow">
@@ -23,7 +23,7 @@
           </div>
           <div class="px-4 py-2 border-t border-gray-100 flex items-center justify-end">
             <span class="flex items-center gap-1 text-xs font-medium text-gray-400 group-hover:text-gray-700">
-              <i class="ph ph-arrow-right"></i> Ver
+              <i class="ph ph-arrow-right"></i> <%= t(".view") %>
             </span>
           </div>
         <% end %>
@@ -86,14 +86,14 @@
           </div>
           <div class="px-5 py-3 border-t border-gray-100 flex items-center justify-end">
             <span class="flex items-center gap-1 text-sm font-medium text-indigo-600">
-              <i class="ph ph-arrow-right"></i> Ver guardia
+              <i class="ph ph-arrow-right"></i> <%= t(".view_guard") %>
             </span>
           </div>
         <% end %>
       <% else %>
         <div class="h-full px-6 py-8 bg-gray-50 border border-dashed border-gray-200 rounded-md flex flex-col items-center justify-center text-center">
           <i class="ph ph-calendar-x text-2xl text-gray-300 mb-1 block"></i>
-          <p class="text-sm text-gray-400">No hay guardia programada para hoy</p>
+          <p class="text-sm text-gray-400"><%= t(".no_guard_today") %></p>
         </div>
       <% end %>
     </div>
@@ -103,7 +103,7 @@
       <% if @next_guard %>
         <%= link_to @next_guard, class: "group bg-white border border-gray-200 rounded-md shadow-sm hover:shadow-md transition-all duration-200 overflow-hidden flex flex-col opacity-60 hover:opacity-80" do %>
           <div class="px-4 py-3 flex items-center justify-between bg-gradient-to-r from-indigo-50/50 to-white border-b border-gray-100">
-            <p class="text-xs font-medium text-indigo-400 uppercase tracking-wide">Próxima</p>
+            <p class="text-xs font-medium text-indigo-400 uppercase tracking-wide"><%= t(".next") %></p>
             <span class="text-base font-bold text-indigo-300"># <%= @next_guard.day_number %></span>
           </div>
           <div class="px-4 py-3 flex flex-col gap-1.5 grow">
@@ -119,7 +119,7 @@
           </div>
           <div class="px-4 py-2 border-t border-gray-100 flex items-center justify-end">
             <span class="flex items-center gap-1 text-xs font-medium text-indigo-400 group-hover:text-indigo-700">
-              <i class="ph ph-arrow-right"></i> Ver
+              <i class="ph ph-arrow-right"></i> <%= t(".view") %>
             </span>
           </div>
         <% end %>
@@ -132,21 +132,21 @@
 
   <%# Quick links %>
   <div class="mt-auto">
-  <p class="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-3">Acceso rápido</p>
+  <p class="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-3"><%= t(".quick_access") %></p>
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
     <%= link_to guards_path, class: "group bg-white border border-gray-200 rounded-md shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 overflow-hidden flex flex-col" do %>
       <div class="px-5 py-4 flex items-center gap-4 bg-gradient-to-r from-indigo-50 to-white border-b border-gray-100">
         <div class="flex items-center justify-center w-10 h-10 rounded-full bg-indigo-100 text-indigo-700 shrink-0">
           <i class="ph ph-shield text-xl"></i>
         </div>
-        <p class="text-base font-semibold text-gray-900">Guardias</p>
+        <p class="text-base font-semibold text-gray-900"><%= t(".guards") %></p>
       </div>
       <div class="px-5 py-4 grow">
-        <p class="text-sm text-gray-500 leading-relaxed">Organización y seguimiento de turnos nocturnos</p>
+        <p class="text-sm text-gray-500 leading-relaxed"><%= t(".guards_description") %></p>
       </div>
       <div class="px-5 py-3 border-t border-gray-100 flex items-center justify-end">
         <span class="flex items-center gap-1 text-sm font-medium text-indigo-600 group-hover:text-indigo-800">
-          <i class="ph ph-arrow-right"></i> Ver guardias
+          <i class="ph ph-arrow-right"></i> <%= t(".view_guards") %>
         </span>
       </div>
     <% end %>
@@ -156,14 +156,14 @@
         <div class="flex items-center justify-center w-10 h-10 rounded-full bg-green-100 text-green-700 shrink-0">
           <i class="ph ph-hand-heart text-xl"></i>
         </div>
-        <p class="text-base font-semibold text-gray-900">Servicios</p>
+        <p class="text-base font-semibold text-gray-900"><%= t(".services") %></p>
       </div>
       <div class="px-5 py-4 grow">
-        <p class="text-sm text-gray-500 leading-relaxed">Gestión de servicios realizados</p>
+        <p class="text-sm text-gray-500 leading-relaxed"><%= t(".services_description") %></p>
       </div>
       <div class="px-5 py-3 border-t border-gray-100 flex items-center justify-end">
         <span class="flex items-center gap-1 text-sm font-medium text-green-600 group-hover:text-green-800">
-          <i class="ph ph-arrow-right"></i> Ver servicios
+          <i class="ph ph-arrow-right"></i> <%= t(".view_services") %>
         </span>
       </div>
     <% end %>
@@ -173,14 +173,14 @@
         <div class="flex items-center justify-center w-10 h-10 rounded-full bg-violet-100 text-violet-700 shrink-0">
           <i class="ph ph-sliders text-xl"></i>
         </div>
-        <p class="text-base font-semibold text-gray-900">Configuración</p>
+        <p class="text-base font-semibold text-gray-900"><%= t(".setup") %></p>
       </div>
       <div class="px-5 py-4 grow">
-        <p class="text-sm text-gray-500 leading-relaxed">Sacerdotes, turnos y centros de salud</p>
+        <p class="text-sm text-gray-500 leading-relaxed"><%= t(".setup_description") %></p>
       </div>
       <div class="px-5 py-3 border-t border-gray-100 flex items-center justify-end">
         <span class="flex items-center gap-1 text-sm font-medium text-violet-600 group-hover:text-violet-800">
-          <i class="ph ph-arrow-right"></i> Ver configuración
+          <i class="ph ph-arrow-right"></i> <%= t(".view_setup") %>
         </span>
       </div>
     <% end %>
@@ -189,14 +189,14 @@
         <div class="flex items-center justify-center w-10 h-10 rounded-full bg-amber-100 text-amber-700 shrink-0">
           <i class="ph ph-buildings text-xl"></i>
         </div>
-        <p class="text-base font-semibold text-gray-900">Sedes</p>
+        <p class="text-base font-semibold text-gray-900"><%= t(".headquarters") %></p>
       </div>
       <div class="px-5 py-4 grow">
-        <p class="text-sm text-gray-500 leading-relaxed">Sedes del servicio, sus contactos y directorios</p>
+        <p class="text-sm text-gray-500 leading-relaxed"><%= t(".headquarters_description") %></p>
       </div>
       <div class="px-5 py-3 border-t border-gray-100 flex items-center justify-end">
         <span class="flex items-center gap-1 text-sm font-medium text-amber-600 group-hover:text-amber-800">
-          <i class="ph ph-arrow-right"></i> Ver sedes
+          <i class="ph ph-arrow-right"></i> <%= t(".view_headquarters") %>
         </span>
       </div>
     <% end %>
@@ -205,14 +205,14 @@
         <div class="flex items-center justify-center w-10 h-10 rounded-full bg-amber-100 text-amber-700 shrink-0">
           <i class="ph ph-info text-xl"></i>
         </div>
-        <p class="text-base font-semibold text-gray-900">Documentación</p>
+        <p class="text-base font-semibold text-gray-900"><%= t(".documentation") %></p>
       </div>
       <div class="px-5 py-4 grow">
-        <p class="text-sm text-gray-500 leading-relaxed">Guías y manuales de uso del sistema</p>
+        <p class="text-sm text-gray-500 leading-relaxed"><%= t(".documentation_description") %></p>
       </div>
       <div class="px-5 py-3 border-t border-gray-100 flex items-center justify-end">
         <span class="flex items-center gap-1 text-sm font-medium text-amber-600 group-hover:text-amber-800">
-          <i class="ph ph-arrow-square-out"></i> Ver documentación
+          <i class="ph ph-arrow-square-out"></i> <%= t(".view_documentation") %>
         </span>
       </div>
     <% end %>
@@ -221,14 +221,14 @@
         <div class="flex items-center justify-center w-10 h-10 rounded-full bg-sky-100 text-sky-700 shrink-0">
           <i class="ph ph-users-three text-xl"></i>
         </div>
-        <p class="text-base font-semibold text-gray-900">Federación</p>
+        <p class="text-base font-semibold text-gray-900"><%= t(".federation") %></p>
       </div>
       <div class="px-5 py-4 grow">
         <p class="text-sm text-gray-500 leading-relaxed">Federación Argentina del Servicio Sacerdotal</p>
       </div>
       <div class="px-5 py-3 border-t border-gray-100 flex items-center justify-end">
         <span class="flex items-center gap-1 text-sm font-medium text-sky-600 group-hover:text-sky-800">
-          <i class="ph ph-arrow-square-out"></i> Ver federación
+          <i class="ph ph-arrow-square-out"></i> <%= t(".view_federation") %>
         </span>
       </div>
     <% end %>

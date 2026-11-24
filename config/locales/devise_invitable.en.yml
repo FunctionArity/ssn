@@ -12,9 +12,11 @@ en:
       new:
         header: "Send invitation"
         submit_button: "Send an invitation"
+        submit: Send an invitation
       edit:
         header: "Set your password"
         submit_button: "Set my password"
+        submit: Set my password
     mailer:
       invitation_instructions:
         subject: "Invitation instructions"

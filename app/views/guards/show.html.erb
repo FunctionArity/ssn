@@ -114,7 +114,7 @@
 
   <div class="mt-8">
     <div class="flex items-center justify-between mb-3">
-      <h2 class="text-sm font-semibold text-gray-700 uppercase tracking-wide">Servicios</h2>
+      <h2 class="text-sm font-semibold text-gray-700 uppercase tracking-wide"><%= t(".services") %></h2>
       <div class="flex items-center gap-2">
         <% if @guard.closed? %>
           <button type="button"
@@ -127,7 +127,7 @@
         <% end %>
         <% if policy(Service.new(guard: @guard)).new? %>
           <%= link_to new_service_path(guard_id: @guard.id), class: "flex items-center gap-1.5 rounded-md bg-blue-600 px-3 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 active:scale-95 transition-all" do %>
-            <i class="ph ph-plus text-base"></i> Nuevo servicio
+            <i class="ph ph-plus text-base"></i> <%= t(".new_service") %>
           <% end %>
         <% end %>
       </div>

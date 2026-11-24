@@ -1,0 +1,14 @@
+<%# ES · EN links to the current page in each language (ApplicationController#switch_locale). The current one isn't a
+   link. Locals: link_class and current_class, so it fits both the white navbar and the dark sign-in page. %>
+<% names = { es: "Español", en: "English" } %>
+<div role="group" aria-label="<%= t("layouts.locale_switch.label") %>" class="flex items-center gap-1.5 text-xs font-semibold shrink-0">
+  <% I18n.available_locales.each_with_index do |locale, index| %>
+    <% if index.positive? %><span class="<%= link_class %>" aria-hidden="true">·</span><% end %>
+    <% if locale == I18n.locale %>
+      <span class="<%= current_class %>" lang="<%= locale %>" aria-current="true"><%= locale.upcase %></span>
+    <% else %>
+      <%= link_to locale.upcase, "#{request.path}?#{request.query_parameters.merge("locale" => locale).to_query}",
+            class: link_class, title: names[locale], lang: locale, hreflang: locale, data: { turbo: false } %>
+    <% end %>
+  <% end %>
+</div>

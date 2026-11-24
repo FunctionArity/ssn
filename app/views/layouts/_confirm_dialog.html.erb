@@ -1,11 +1,11 @@
-<div id="confirm-dialog" class="hidden fixed inset-0 z-50 items-center justify-center bg-black/50">
+<div id="confirm-dialog" data-default-title="<%= t("layouts.confirm_dialog.title") %>" data-default-button="<%= t("layouts.confirm_dialog.accept") %>" class="hidden fixed inset-0 z-50 items-center justify-center bg-black/50">
   <div class="bg-white rounded-2xl shadow-xl w-full max-w-sm mx-4 overflow-hidden">
     <div class="px-6 pt-6 pb-4 flex items-center gap-3 border-b border-gray-200">
       <div id="confirm-dialog-icon" class="flex items-center justify-center w-10 h-10 rounded-full shrink-0 bg-red-100 text-red-600">
         <i id="confirm-dialog-icon-glyph" class="ph ph-warning text-lg"></i>
       </div>
-      <h3 id="confirm-dialog-title" class="flex-1 text-base font-semibold text-gray-900">Confirmar acción</h3>
-      <button id="confirm-dialog-close" type="button" aria-label="Cerrar"
+      <h3 id="confirm-dialog-title" class="flex-1 text-base font-semibold text-gray-900"><%= t("layouts.confirm_dialog.title") %></h3>
+      <button id="confirm-dialog-close" type="button" aria-label="<%= t("layouts.confirm_dialog.close") %>"
               class="cursor-pointer flex items-center justify-center w-8 h-8 rounded-full text-gray-800 hover:bg-gray-100 hover:text-gray-700 shrink-0">
         <i class="ph ph-x text-lg"></i>
       </button>
@@ -14,11 +14,11 @@
     <div class="px-6 py-4 bg-gray-50 flex justify-end gap-3">
       <button id="confirm-dialog-cancel"
               class="cursor-pointer rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50">
-        Cancelar
+        <%= t("layouts.confirm_dialog.cancel") %>
       </button>
       <button id="confirm-dialog-confirm"
               class="cursor-pointer rounded-lg px-4 py-2 text-sm font-semibold text-white shadow-sm bg-red-600 hover:bg-red-500">
-        Aceptar
+        <%= t("layouts.confirm_dialog.accept") %>
       </button>
     </div>
   </div>

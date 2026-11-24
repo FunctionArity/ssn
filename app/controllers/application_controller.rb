@@ -3,6 +3,10 @@ class ApplicationController < ActionController::Base
 
   include Pundit::Authorization
 
+  # The language comes from ?locale=es|en and is remembered in a cookie, so it outlasts signing out; Spanish
+  # otherwise. Prepended so Devise's messages and everything after it use it too.
+  prepend_around_action :switch_locale
+
   set_current_tenant_through_filter
 
   # Only allow modern browsers supporting webp images, web push, badges, import maps, CSS nesting, and CSS :has.
@@ -37,6 +41,15 @@ class ApplicationController < ActionController::Base
 
   def switched_headquarter
     Headquarter.find_by(id: session[:headquarter_id]) if session[:headquarter_id]
+  end
+
+  def switch_locale(&)
+    cookies[:locale] = { value: params[:locale], expires: 1.year } if available_locale?(params[:locale])
+    I18n.with_locale(available_locale?(cookies[:locale]) ? cookies[:locale] : I18n.default_locale, &)
+  end
+
+  def available_locale?(locale)
+    locale.to_s.in?(I18n.available_locales.map(&:to_s))
   end
 
   # Record the real user behind a change, even while impersonating someone else.

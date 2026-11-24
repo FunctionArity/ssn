@@ -352,6 +352,8 @@ es:
       print_pdf: Imprimir
       download_pdf: Ver Información
       copy_services: Copiar Información
+      services: Servicios
+      new_service: Nuevo servicio
     new:
       title: Nueva guardia
       back: Volver a guardias
@@ -377,6 +379,8 @@ es:
       closed: La guardia fue finalizada exitosamente.
     errors:
       no_guard_setup: No se encontró una configuración de guardia para el día de hoy.
+    services_list:
+      empty: No hay servicios registrados para esta guardia.
   guard_setups:
     index:
       menu_title: Guardias
@@ -462,6 +466,8 @@ es:
       privacy_policy: Política de privacidad
       terms: Términos y condiciones
       unlock_instructions: "¿No recibiste las instrucciones de desbloqueo?"
+      no_account: "¿No tenés cuenta?"
+      email_placeholder: tu@email.com
     mailer:
       greeting: "¡Hola %{email}!"
       welcome: "¡Bienvenido %{email}!"
@@ -578,6 +584,13 @@ es:
       sedes: Sedes
       federacion: Federación
       asamblea: Asamblea 2026
+    locale_switch:
+      label: Idioma
+    confirm_dialog:
+      title: Confirmar acción
+      close: Cerrar
+      cancel: Cancelar
+      accept: Aceptar
   doc:
     headquarters:
       index:
@@ -791,6 +804,7 @@ es:
       complete_confirm: "¿Estás seguro de marcar este servicio como completado?"
       complete_confirm_title: "¿ Completar servicio ?"
       reassign_to_open_guard: El servicio debe ser reasignado a una guardia abierta
+      guard_info: Mostrar u ocultar la información de la guardia
       history: Historial
       print_pdf: Imprimir
       copy: Copiar
@@ -855,6 +869,8 @@ es:
       select_priest_hint: Seleccioná un sacerdote y luego hacé clic en el casillero para asignarlo.
       no_priests: Todos los sacerdotes ya tienen una asignación.
       week: Semana
+    index:
+      current_month: Mes actual
 
   api:
     errors:
@@ -921,3 +937,36 @@ es:
       back: Volver a la guardia
       title: "PDF de la guardia #%{number}"
       open_in_new_tab: Abrir en pestaña nueva
+  home:
+    index:
+      headline_1: Coordinación de guardias
+      headline_2: sacerdotales nocturnas
+      intro: Sistema de gestión para la asignación y seguimiento de guardias y turnos nocturnos del servicio sacerdotal, asegurando una cobertura continua y organizada.
+      headquarters_description: Listado de sedes disponibles
+      guards: Guardias
+      priests: Sacerdotes
+      services: Servicios
+    dashboard:
+      previous: Anterior
+      next: Próxima
+      view: Ver
+      view_guard: Ver guardia
+      no_guard_today: No hay guardia programada para hoy
+      quick_access: Acceso rápido
+      guards: Guardias
+      guards_description: Organización y seguimiento de turnos nocturnos
+      view_guards: Ver guardias
+      services: Servicios
+      services_description: Gestión de servicios realizados
+      view_services: Ver servicios
+      setup: Configuración
+      setup_description: Sacerdotes, turnos y centros de salud
+      view_setup: Ver configuración
+      headquarters: Sedes
+      headquarters_description: Sedes del servicio, sus contactos y directorios
+      view_headquarters: Ver sedes
+      documentation: Documentación
+      documentation_description: Guías y manuales de uso del sistema
+      view_documentation: Ver documentación
+      federation: Federación
+      view_federation: Ver federación

@@ -1,8 +1,8 @@
 let _resolve = null
 
-const DEFAULT_TITLE = "Confirmar acción"
+// The default title and button come translated from the dialog (layouts/_confirm_dialog), in the page's language.
+const defaultText = (key) => document.getElementById("confirm-dialog")?.dataset?.[key] || ""
 const DEFAULT_LEVEL = "danger"
-const DEFAULT_BUTTON = "Aceptar"
 
 const LEVELS = {
   danger: {
@@ -48,12 +48,12 @@ function open(message, { title, level, button } = {}) {
 
   return new Promise((resolve) => {
     _resolve = resolve
-    document.getElementById("confirm-dialog-title").textContent = title || DEFAULT_TITLE
+    document.getElementById("confirm-dialog-title").textContent = title || defaultText("defaultTitle")
     document.getElementById("confirm-dialog-message").textContent = message
     document.getElementById("confirm-dialog-icon").className = `${BASE_ICON_CLASS} ${config.iconClass}`
     document.getElementById("confirm-dialog-icon-glyph").className = `ph ${config.icon} text-lg`
     document.getElementById("confirm-dialog-confirm").className = `${BASE_BUTTON_CLASS} ${config.buttonClass}`
-    document.getElementById("confirm-dialog-confirm").textContent = button || DEFAULT_BUTTON
+    document.getElementById("confirm-dialog-confirm").textContent = button || defaultText("defaultButton")
     document.getElementById("confirm-dialog").classList.remove("hidden")
     document.getElementById("confirm-dialog").classList.add("flex")
   })
